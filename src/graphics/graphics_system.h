@@ -1,7 +1,8 @@
 #ifndef GRAPHICS_SYSTEM_H
 #define GRAPHICS_SYSTEM_H
 
-#include <memory>
+#include <thread>
+#include <atomic>
 #include <glfw3.h>
 
 namespace Graphics {
@@ -9,7 +10,11 @@ namespace Graphics {
     private:
       GLFWwindow* window;
       bool initialized;
+      std::atomic_bool running;
       std::string window_title;
+      std::thread update_thread;
+
+      static void updateLoop(GraphicsSystem* instance);
 
     public:
       GraphicsSystem();
@@ -22,6 +27,11 @@ namespace Graphics {
       const int windowWidth();
 
       const std::string windowName() const noexcept;
+
+      std::thread::id start();
+      void stop();
+
+      const bool isRunning() const noexcept;
 
       void destroy();
   };
