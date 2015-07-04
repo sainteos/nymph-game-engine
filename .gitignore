@@ -2,6 +2,7 @@ bin
 build
 lib
 obj
+logs
 Makefile
 *.make
 *.out
