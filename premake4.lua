@@ -12,12 +12,12 @@ solution "TileEngine"
     targetextension ".out"
 
     libdirs { "./lib" }
-    links { "Box2d", "GLUI", "SOIL", "fmod" }
+    links { "Box2d", "GLUI", "SOIL", "fmod", "glfw3"}
 
-    includedirs { "./include" }
+    includedirs { "./include", "./src" }
 
     files { "**.h", "**.hpp", "**.cpp" }
-    excludes { "test/*" }
+    excludes { "./test/**" }
 
     configuration "Debug"
       defines { "DEBUG" }
@@ -35,12 +35,12 @@ solution "TileEngine"
     targetextension ".out"
 
     libdirs { "./lib" }
-    links { "Box2d", "GLUI", "SOIL", "fmod" }
+    links { "Box2d", "GLUI", "SOIL", "fmod", "glfw3" }
 
-    includedirs { "./include" }
+    includedirs { "./include", "./src" }
 
     files { "**.h", "**.hpp", "**.cpp" }
-    excludes { "src/*" }
+    excludes { "./src/main.cpp" }
 
     configuration "Debug"
       defines { "DEBUG" }
