@@ -1,0 +1,86 @@
+\hypertarget{graphics__system__test_8cpp}{}\section{test/graphics/graphics\+\_\+system\+\_\+test.cpp File Reference}
+\label{graphics__system__test_8cpp}\index{test/graphics/graphics\+\_\+system\+\_\+test.\+cpp@{test/graphics/graphics\+\_\+system\+\_\+test.\+cpp}}
+{\ttfamily \#include $<$catch.\+hpp$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$random$>$}\\*
+{\ttfamily \#include $<$thread$>$}\\*
+{\ttfamily \#include \char`\"{}graphics/graphics\+\_\+system.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/system\+\_\+already\+\_\+initialized\+\_\+exception.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/system\+\_\+not\+\_\+initialized\+\_\+exception.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/system\+\_\+already\+\_\+running\+\_\+exception.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/system\+\_\+not\+\_\+running\+\_\+exception.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{graphics__system__test_8cpp_acb8214ec493a3617eff027e38c555270}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}the graphics system can be initialized\char`\"{},\char`\"{}\mbox{[}graphics\mbox{]}\char`\"{})
+\item 
+\hyperlink{graphics__system__test_8cpp_a619d22d7ee59d4dd8aa92242138a0fc9}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}the graphics system can be started\char`\"{},\char`\"{}\mbox{[}graphics\mbox{]}\char`\"{})
+\item 
+\hyperlink{graphics__system__test_8cpp_a0b892292334b40f1188cee0306e28bf3}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}the graphics system can be stopped\char`\"{},\char`\"{}\mbox{[}graphics\mbox{]}\char`\"{})
+\item 
+\hyperlink{graphics__system__test_8cpp_ac224d651330e1a5717d34b10b27ad273}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}the graphics system can be destroyed\char`\"{},\char`\"{}\mbox{[}graphics\mbox{]}\char`\"{})
+\item 
+\hyperlink{graphics__system__test_8cpp_ac2199b10682bd556118f1ae71ce7c743}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}the graphics system can have objects for rendering added to it\char`\"{},\char`\"{}\mbox{[}graphics\mbox{]}\char`\"{})
+\item 
+\hyperlink{graphics__system__test_8cpp_a3ca4ab95742c1cb589848e6590f5a07f}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}the graphics system can have objects for rendering removed from it\char`\"{},\char`\"{}\mbox{[}graphics\mbox{]}\char`\"{})
+\item 
+\hyperlink{graphics__system__test_8cpp_a7e4a8d64e1fca8af44728f0e3c6a5d59}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}the window\textquotesingle{}s width and height can be retrieved\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{graphics__system__test_8cpp_acb8214ec493a3617eff027e38c555270}{}\index{graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}the graphics system can be initialized\char`\"{}}]{, }
+\item[{\char`\"{}\char`\"{}}]{\mbox{[}graphics\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{graphics__system__test_8cpp_acb8214ec493a3617eff027e38c555270}
+\hypertarget{graphics__system__test_8cpp_a619d22d7ee59d4dd8aa92242138a0fc9}{}\index{graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}the graphics system can be started\char`\"{}}]{, }
+\item[{\char`\"{}\char`\"{}}]{\mbox{[}graphics\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{graphics__system__test_8cpp_a619d22d7ee59d4dd8aa92242138a0fc9}
+\hypertarget{graphics__system__test_8cpp_a0b892292334b40f1188cee0306e28bf3}{}\index{graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}the graphics system can be stopped\char`\"{}}]{, }
+\item[{\char`\"{}\char`\"{}}]{\mbox{[}graphics\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{graphics__system__test_8cpp_a0b892292334b40f1188cee0306e28bf3}
+\hypertarget{graphics__system__test_8cpp_ac224d651330e1a5717d34b10b27ad273}{}\index{graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}the graphics system can be destroyed\char`\"{}}]{, }
+\item[{\char`\"{}\char`\"{}}]{\mbox{[}graphics\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{graphics__system__test_8cpp_ac224d651330e1a5717d34b10b27ad273}
+\hypertarget{graphics__system__test_8cpp_ac2199b10682bd556118f1ae71ce7c743}{}\index{graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}the graphics system can have objects for rendering added to it\char`\"{}}]{, }
+\item[{\char`\"{}\char`\"{}}]{\mbox{[}graphics\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{graphics__system__test_8cpp_ac2199b10682bd556118f1ae71ce7c743}
+\hypertarget{graphics__system__test_8cpp_a3ca4ab95742c1cb589848e6590f5a07f}{}\index{graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}the graphics system can have objects for rendering removed from it\char`\"{}}]{, }
+\item[{\char`\"{}\char`\"{}}]{\mbox{[}graphics\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{graphics__system__test_8cpp_a3ca4ab95742c1cb589848e6590f5a07f}
+\hypertarget{graphics__system__test_8cpp_a7e4a8d64e1fca8af44728f0e3c6a5d59}{}\index{graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!graphics\+\_\+system\+\_\+test.\+cpp@{graphics\+\_\+system\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}the window\textquotesingle{}s width and height can be retrieved\char`\"{}}]{}
+\end{DoxyParamCaption}
+)}\label{graphics__system__test_8cpp_a7e4a8d64e1fca8af44728f0e3c6a5d59}

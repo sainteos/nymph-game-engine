@@ -19,7 +19,16 @@ namespace Graphics {
     public:
       GraphicsSystem();
       ~GraphicsSystem();
-
+      /**
+       * @brief Initializes the graphics system.
+       * @details This function initializes the graphics system by
+       * creating a GLFW based window at the specified size, and having
+       * the supplied name as the window title.
+       * 
+       * @param width window width in px
+       * @param height window height in px
+       * @param name string containing the name of the window to be built
+       */
       void initialize(const int width, const int height, std::string name);
       const bool isInitialized() const noexcept;
 

@@ -1,0 +1,180 @@
+\hypertarget{class_graphics_1_1_graphics_system}{}\section{Graphics\+:\+:Graphics\+System Class Reference}
+\label{class_graphics_1_1_graphics_system}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+
+
+{\ttfamily \#include $<$graphics\+\_\+system.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_graphics_1_1_graphics_system_a748459586ae5ea2aa8721dddb8660de6}{Graphics\+System} ()
+\item 
+\hyperlink{class_graphics_1_1_graphics_system_a6504df337bfae3a08abc8a63deb6df37}{$\sim$\+Graphics\+System} ()
+\item 
+void \hyperlink{class_graphics_1_1_graphics_system_aab302ea4f5ee819d582d4eba5c17787b}{initialize} (const int width, const int height, std\+::string name)
+\begin{DoxyCompactList}\small\item\em Initializes the graphics system. \end{DoxyCompactList}\item 
+const bool \hyperlink{class_graphics_1_1_graphics_system_a1bd027633e66df5a65f2df33952d1dbd}{is\+Initialized} () const noexcept
+\item 
+const int \hyperlink{class_graphics_1_1_graphics_system_a09710fc777ac4db1b44c63c2921d217f}{window\+Height} ()
+\item 
+const int \hyperlink{class_graphics_1_1_graphics_system_adab3606d554a85ca13aaaec29ceee68c}{window\+Width} ()
+\item 
+const std\+::string \hyperlink{class_graphics_1_1_graphics_system_a691efb4de942f8da79ecbcf626280724}{window\+Name} () const noexcept
+\item 
+std\+::thread\+::id \hyperlink{class_graphics_1_1_graphics_system_adf3edc07e52292d8251d2c18fc9e6d65}{start} ()
+\item 
+void \hyperlink{class_graphics_1_1_graphics_system_ae91bfded776e654aa28ea8c0185ecc8d}{stop} ()
+\item 
+const bool \hyperlink{class_graphics_1_1_graphics_system_a44c11ee970c78093a60cb2c3125a7764}{is\+Running} () const noexcept
+\item 
+void \hyperlink{class_graphics_1_1_graphics_system_a629d2fe80f761f4f4004ba74ad458e3f}{destroy} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{class_graphics_1_1_graphics_system_a80b30e50d7c6d082f1a2670a575a39e3}{update\+Loop} (\hyperlink{class_graphics_1_1_graphics_system}{Graphics\+System} $\ast$instance)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+G\+L\+F\+Wwindow $\ast$ \hyperlink{class_graphics_1_1_graphics_system_a4430d61bb3fd528b617e8fea26744a8c}{window}
+\item 
+bool \hyperlink{class_graphics_1_1_graphics_system_a7228e859a8b7da7d9cbc3e151ab2df72}{initialized}
+\item 
+std\+::atomic\+\_\+bool \hyperlink{class_graphics_1_1_graphics_system_a1bfa03debaff99f5f0556c29cd5bb57b}{running}
+\item 
+std\+::string \hyperlink{class_graphics_1_1_graphics_system_a7b543ac0f4323ec286519a3dfef0df1c}{window\+\_\+title}
+\item 
+std\+::thread \hyperlink{class_graphics_1_1_graphics_system_af27f571390ef3f9d552ab79fba538810}{update\+\_\+thread}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_graphics_1_1_graphics_system_a748459586ae5ea2aa8721dddb8660de6}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!Graphics\+System@{Graphics\+System}}
+\index{Graphics\+System@{Graphics\+System}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{Graphics\+System}]{\setlength{\rightskip}{0pt plus 5cm}Graphics\+::\+Graphics\+System\+::\+Graphics\+System (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_a748459586ae5ea2aa8721dddb8660de6}
+\hypertarget{class_graphics_1_1_graphics_system_a6504df337bfae3a08abc8a63deb6df37}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!````~Graphics\+System@{$\sim$\+Graphics\+System}}
+\index{````~Graphics\+System@{$\sim$\+Graphics\+System}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{$\sim$\+Graphics\+System}]{\setlength{\rightskip}{0pt plus 5cm}Graphics\+::\+Graphics\+System\+::$\sim$\+Graphics\+System (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_a6504df337bfae3a08abc8a63deb6df37}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_graphics_1_1_graphics_system_a629d2fe80f761f4f4004ba74ad458e3f}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!destroy@{destroy}}
+\index{destroy@{destroy}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{destroy}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::destroy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_a629d2fe80f761f4f4004ba74ad458e3f}
+\hypertarget{class_graphics_1_1_graphics_system_aab302ea4f5ee819d582d4eba5c17787b}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!initialize@{initialize}}
+\index{initialize@{initialize}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{initialize}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::initialize (
+\begin{DoxyParamCaption}
+\item[{const int}]{width, }
+\item[{const int}]{height, }
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_aab302ea4f5ee819d582d4eba5c17787b}
+
+
+Initializes the graphics system. 
+
+This function initializes the graphics system by creating a G\+L\+F\+W based window at the specified size, and having the supplied name as the window title.
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & window width in px \\
+\hline
+{\em height} & window height in px \\
+\hline
+{\em name} & string containing the name of the window to be built \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_graphics_1_1_graphics_system_a1bd027633e66df5a65f2df33952d1dbd}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!is\+Initialized@{is\+Initialized}}
+\index{is\+Initialized@{is\+Initialized}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{is\+Initialized}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Graphics\+System\+::is\+Initialized (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a1bd027633e66df5a65f2df33952d1dbd}
+\hypertarget{class_graphics_1_1_graphics_system_a44c11ee970c78093a60cb2c3125a7764}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!is\+Running@{is\+Running}}
+\index{is\+Running@{is\+Running}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{is\+Running}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Graphics\+System\+::is\+Running (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a44c11ee970c78093a60cb2c3125a7764}
+\hypertarget{class_graphics_1_1_graphics_system_adf3edc07e52292d8251d2c18fc9e6d65}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!start@{start}}
+\index{start@{start}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}std\+::thread\+::id Graphics\+::\+Graphics\+System\+::start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_adf3edc07e52292d8251d2c18fc9e6d65}
+\hypertarget{class_graphics_1_1_graphics_system_ae91bfded776e654aa28ea8c0185ecc8d}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!stop@{stop}}
+\index{stop@{stop}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{stop}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::stop (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_ae91bfded776e654aa28ea8c0185ecc8d}
+\hypertarget{class_graphics_1_1_graphics_system_a80b30e50d7c6d082f1a2670a575a39e3}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!update\+Loop@{update\+Loop}}
+\index{update\+Loop@{update\+Loop}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{update\+Loop}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::update\+Loop (
+\begin{DoxyParamCaption}
+\item[{{\bf Graphics\+System} $\ast$}]{instance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a80b30e50d7c6d082f1a2670a575a39e3}
+\hypertarget{class_graphics_1_1_graphics_system_a09710fc777ac4db1b44c63c2921d217f}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!window\+Height@{window\+Height}}
+\index{window\+Height@{window\+Height}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{window\+Height}]{\setlength{\rightskip}{0pt plus 5cm}const int Graphics\+::\+Graphics\+System\+::window\+Height (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_a09710fc777ac4db1b44c63c2921d217f}
+\hypertarget{class_graphics_1_1_graphics_system_a691efb4de942f8da79ecbcf626280724}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!window\+Name@{window\+Name}}
+\index{window\+Name@{window\+Name}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{window\+Name}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string Graphics\+::\+Graphics\+System\+::window\+Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a691efb4de942f8da79ecbcf626280724}
+\hypertarget{class_graphics_1_1_graphics_system_adab3606d554a85ca13aaaec29ceee68c}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!window\+Width@{window\+Width}}
+\index{window\+Width@{window\+Width}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{window\+Width}]{\setlength{\rightskip}{0pt plus 5cm}const int Graphics\+::\+Graphics\+System\+::window\+Width (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_adab3606d554a85ca13aaaec29ceee68c}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_graphics_1_1_graphics_system_a7228e859a8b7da7d9cbc3e151ab2df72}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!initialized@{initialized}}
+\index{initialized@{initialized}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{initialized}]{\setlength{\rightskip}{0pt plus 5cm}bool Graphics\+::\+Graphics\+System\+::initialized\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a7228e859a8b7da7d9cbc3e151ab2df72}
+\hypertarget{class_graphics_1_1_graphics_system_a1bfa03debaff99f5f0556c29cd5bb57b}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!running@{running}}
+\index{running@{running}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{running}]{\setlength{\rightskip}{0pt plus 5cm}std\+::atomic\+\_\+bool Graphics\+::\+Graphics\+System\+::running\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a1bfa03debaff99f5f0556c29cd5bb57b}
+\hypertarget{class_graphics_1_1_graphics_system_af27f571390ef3f9d552ab79fba538810}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!update\+\_\+thread@{update\+\_\+thread}}
+\index{update\+\_\+thread@{update\+\_\+thread}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{update\+\_\+thread}]{\setlength{\rightskip}{0pt plus 5cm}std\+::thread Graphics\+::\+Graphics\+System\+::update\+\_\+thread\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_af27f571390ef3f9d552ab79fba538810}
+\hypertarget{class_graphics_1_1_graphics_system_a4430d61bb3fd528b617e8fea26744a8c}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!window@{window}}
+\index{window@{window}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{window}]{\setlength{\rightskip}{0pt plus 5cm}G\+L\+F\+Wwindow$\ast$ Graphics\+::\+Graphics\+System\+::window\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a4430d61bb3fd528b617e8fea26744a8c}
+\hypertarget{class_graphics_1_1_graphics_system_a7b543ac0f4323ec286519a3dfef0df1c}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!window\+\_\+title@{window\+\_\+title}}
+\index{window\+\_\+title@{window\+\_\+title}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{window\+\_\+title}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string Graphics\+::\+Graphics\+System\+::window\+\_\+title\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a7b543ac0f4323ec286519a3dfef0df1c}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/graphics/\hyperlink{graphics__system_8h}{graphics\+\_\+system.\+h}\item 
+src/graphics/\hyperlink{graphics__system_8cpp}{graphics\+\_\+system.\+cpp}\end{DoxyCompactItemize}
