@@ -9,7 +9,7 @@
 #include "exceptions/system_not_running_exception.h"
 
 namespace Graphics {
-  GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), running(false) {
+  GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), running(false), next_id(1) {
   }
 
   GraphicsSystem::~GraphicsSystem() {
@@ -48,6 +48,8 @@ namespace Graphics {
   }
 
   const int GraphicsSystem::windowWidth() {
+    if(!initialized)
+      throw Exceptions::SystemNotInitializedException("Graphics");
     int width, height;
 
     glfwGetWindowSize(window, &width, &height);
@@ -56,6 +58,8 @@ namespace Graphics {
   }
 
   const int GraphicsSystem::windowHeight() {
+    if(!initialized)
+      throw Exceptions::SystemNotInitializedException("Graphics");
     int width, height;
 
     glfwGetWindowSize(window, &width, &height);
@@ -64,6 +68,8 @@ namespace Graphics {
   }
 
   const std::string GraphicsSystem::windowName() const noexcept {
+    if(!initialized)
+      throw Exceptions::SystemNotInitializedException("Graphics");
     return window_title;
   }
 
@@ -94,6 +100,30 @@ namespace Graphics {
     return running.load();
   }
 
+  const int GraphicsSystem::addRenderable(std::shared_ptr<Graphics::Renderable> renderable) {
+    if(!initialized)
+      throw Exceptions::SystemNotInitializedException("Graphics");
+    renderables_map[next_id] = renderable;
+    return next_id++;
+  }
+
+  const bool GraphicsSystem::removeRenderable(const int id) {
+    if(!initialized)
+      throw Exceptions::SystemNotInitializedException("Graphics");
+    if(id < 1) 
+      throw std::out_of_range("Cannot have id less than 1");
+    if(renderables_map.count(id) <= 0)
+      return false;
+    renderables_map.erase(id);
+    return true;
+  }
+
+  const int GraphicsSystem::renderablesCount() const noexcept {
+    if(!initialized)
+      throw Exceptions::SystemNotInitializedException("Graphics");
+    return renderables_map.size();
+  }
+
   void GraphicsSystem::updateLoop(GraphicsSystem* instance) {
     while(instance->running.load()) {
 
@@ -103,7 +133,7 @@ namespace Graphics {
   void GraphicsSystem::destroy() {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
-      
+
     if(running.load())
       stop();
 
