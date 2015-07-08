@@ -580,3 +580,11 @@ SCENARIO("the window's width and height can be retrieved") {
     }
   }
 }
+
+SCENARIO("the graphics system updates renderables in the update loop") {
+
+}
+
+SCENARIO("the graphics system updates at the specified frames per second") {
+  
+}
