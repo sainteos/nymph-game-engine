@@ -6,3 +6,4 @@ logs
 Makefile
 *.make
 *.out
+.DS_Store

@@ -581,10 +581,20 @@ SCENARIO("the window's width and height can be retrieved") {
   }
 }
 
-SCENARIO("the graphics system updates renderables in the update loop") {
-
-}
 
 SCENARIO("the graphics system updates at the specified frames per second") {
-  
+  GIVEN("an initialized graphics system") {
+    Graphics::GraphicsSystem graphics_system;
+    double fps = 60.0;
+    graphics_system.initialize(400, 400, "butts", fps);
+    WHEN("start is called") {
+      graphics_system.start();
+      THEN("getMaxFPS should return the desired FPS") {
+        REQUIRE(graphics_system.getMaxFPS() == fps);
+      }
+      THEN("getCurrentFPS should return the desired FPS within an epsilon") {
+        REQUIRE(graphics_system.getCurrentFPS() == Approx(fps).epsilon(0.1));
+      }
+    }
+  }
 }

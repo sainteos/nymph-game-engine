@@ -4,6 +4,9 @@
 #include <thread>
 #include <atomic>
 #include <map>
+#include <set>
+#include <chrono>
+#include <mutex>
 #include <glfw3.h>
 #include "graphics/renderable.h"
 
@@ -17,8 +20,14 @@ namespace Graphics {
       std::thread update_thread;
 
       std::map<int, std::shared_ptr<Graphics::Renderable>> renderables_map;
+      std::mutex renderables_mutex;
+
       //The next id for renderables
       int next_id;
+
+      double max_fps;
+      std::atomic<double> current_fps;
+      std::chrono::time_point<std::chrono::high_resolution_clock> last_time;
       
       static void updateLoop(GraphicsSystem* instance);
 
@@ -29,13 +38,15 @@ namespace Graphics {
        * @brief Initializes the graphics system.
        * @details This function initializes the graphics system by
        * creating a GLFW based window at the specified size, and having
-       * the supplied name as the window title.
+       * the supplied name as the window title. Max FPS can also be
+       * supplied to allow VSYNC.
        * 
        * @param width window width in px
        * @param height window height in px
        * @param name string containing the name of the window to be built
+       * @param max_fps double containing the max allowed fps. Default 0.0.
        */
-      void initialize(const int width, const int height, std::string name);
+      void initialize(const int width, const int height, std::string name, const double max_fps = 0.0);
       /**
        * @brief Getter to see if system is initialized
        * @details Will return true after initialize() is called.
@@ -90,7 +101,7 @@ namespace Graphics {
        */
       const int addRenderable(std::shared_ptr<Graphics::Renderable> renderable);
       /**
-       * @brief Remves a renderable from the renderable pool
+       * @brief Removes a renderable from the renderable pool
        * @details Removed from the pool of renderables to take it out of
        *          the update loop.
        * 
@@ -99,7 +110,16 @@ namespace Graphics {
        */
       const bool removeRenderable(const int id);
 
-      const int renderablesCount() const noexcept;
+      /**
+       * @brief Returns the number of renderables currently in the system
+       * @details This returns the number of renderables that have been 
+       *          added to the system, and are ready to be updated and rendered.
+       * @return integer representing number of renderables in the system
+       */
+      const int renderablesCount();
+
+      const double getMaxFPS() const noexcept;
+      const double getCurrentFPS() const noexcept;
 
       /**
        * @brief Closes window, and destroys GLFW context.
