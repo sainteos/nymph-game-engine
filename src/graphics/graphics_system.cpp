@@ -30,10 +30,16 @@ namespace Graphics {
       throw Exceptions::SystemAlreadyInitializedException("Graphics");
     }
 
+    glfwSetErrorCallback(errorCallback);
+
     if(!glfwInit()) {
       LOG(FATAL)<<"Glfw couldn't be initialized!";
       throw std::runtime_error("Glfw couldn't be initialized!");
     }
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 
     window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
     window_title = name;
@@ -175,6 +181,17 @@ namespace Graphics {
       instance->current_fps.store(1.0 / (std::chrono::duration_cast<microseconds>(now_time - instance->last_time).count() / 1000000.0));
       //set last time to the now time
       instance->last_time = now_time;
+    }
+  }
+
+  void GraphicsSystem::errorCallback(int error, const char* description) {
+    switch(error) {
+      case GLFW_NOT_INITIALIZED:
+        LOG(ERROR)<<description;
+        break;
+      default:
+        LOG(ERROR)<<"Unknown error: "<<description;
+        break;
     }
   }
 

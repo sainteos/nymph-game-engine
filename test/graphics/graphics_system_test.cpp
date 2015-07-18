@@ -1,17 +1,30 @@
+#include <easylogging++.h>
 #include <catch.hpp>
 #include <iostream>
 #include <random>
 #include <thread>
 #include <memory>
+#include <OpenGL/gl3.h>
+#include <glfw3.h>
 #include "graphics/graphics_system.h"
 #include "graphics/renderable.h"
 #include "exceptions/system_already_initialized_exception.h"
 #include "exceptions/system_not_initialized_exception.h"
 #include "exceptions/system_already_running_exception.h"
 #include "exceptions/system_not_running_exception.h"
+#include "exceptions/invalid_vertex_array_exception.h"
 
 //I'm lazy
 using RenderablePtr = std::shared_ptr<Graphics::Renderable>;
+
+RenderablePtr constructRenderable() {
+  unsigned int good_binding;
+  glGenVertexArrays(1, &good_binding);
+  glBindVertexArray(good_binding);
+  RenderablePtr renderable(new Graphics::Renderable(good_binding));
+  glBindVertexArray(0);
+  return renderable;
+}
 
 SCENARIO("the graphics system can be initialized", "[graphics]") {
   //Setup rand
@@ -241,7 +254,7 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
     graphics_system.initialize(300, 400, "test_window");
 
     WHEN("addRenderable is called") {
-      RenderablePtr renderable(new Graphics::Renderable());
+      RenderablePtr renderable = constructRenderable();
       int id = graphics_system.addRenderable(renderable);
       THEN("a non-negative id is returned") {
         REQUIRE(id > 0);
@@ -255,10 +268,9 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
 
   GIVEN("an uninitialized graphics system") {
     Graphics::GraphicsSystem graphics_system;
-    RenderablePtr renderable(new Graphics::Renderable());
-    WHEN("addRenderable is called") {
-      THEN("a SystemNotInitialized exception is thrown") {
-        REQUIRE_THROWS_AS(graphics_system.addRenderable(renderable), Exceptions::SystemNotInitializedException);
+    WHEN("a renderable is constructed") {
+      THEN("a InvalidVertexArray exception is thrown") {
+        REQUIRE_THROWS_AS(constructRenderable(), Exceptions::InvalidVertexArrayException);
       }
     }
   }
@@ -269,7 +281,7 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
     graphics_system.start();
 
     WHEN("addRenderable is called") {
-      RenderablePtr renderable(new Graphics::Renderable());
+      RenderablePtr renderable = constructRenderable();
       int id = graphics_system.addRenderable(renderable);
       THEN("a non-negative id is returned") {
         REQUIRE(id > 0);
@@ -289,7 +301,7 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
 
 
     WHEN("addRenderable is called") {
-      RenderablePtr renderable(new Graphics::Renderable());
+      RenderablePtr renderable = constructRenderable();
       int id = graphics_system.addRenderable(renderable);
       THEN("a non-negative id is returned") {
         REQUIRE(id > 0);
@@ -305,10 +317,10 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
     Graphics::GraphicsSystem graphics_system;
     graphics_system.initialize(300, 400, "test_window");
     graphics_system.destroy();
-    RenderablePtr renderable(new Graphics::Renderable());
-    WHEN("addRenderable is called") {
-      THEN("a SystemNotInitialized exception is thrown") {
-        REQUIRE_THROWS_AS(graphics_system.addRenderable(renderable), Exceptions::SystemNotInitializedException);
+    
+    WHEN("a renderable is constructed") {
+      THEN("a InvalidVertexArray exception is thrown") {
+        REQUIRE_THROWS_AS(constructRenderable(), Exceptions::InvalidVertexArrayException);
       }
     }
   }
@@ -316,8 +328,8 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
   GIVEN("a graphics system with an object already in it") {
     Graphics::GraphicsSystem graphics_system;
     graphics_system.initialize(300, 400, "test_window");
-    RenderablePtr renderable(new Graphics::Renderable());
-    RenderablePtr renderable2(new Graphics::Renderable());
+    RenderablePtr renderable = constructRenderable();
+    RenderablePtr renderable2 = constructRenderable();
     int id = graphics_system.addRenderable(renderable);
     WHEN("addRenderable is called") {
       int id2 = graphics_system.addRenderable(renderable2);
@@ -340,11 +352,11 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
     std::set<int> ids;
     graphics_system.initialize(300, 400, "test_window");
     for(int i = 0; i < 10000; i++) {
-      int id = graphics_system.addRenderable(RenderablePtr(new Graphics::Renderable()));
+      int id = graphics_system.addRenderable(constructRenderable());
       ids.insert(id);
     }
     
-    RenderablePtr renderable(new Graphics::Renderable());
+    RenderablePtr renderable(constructRenderable());
     WHEN("addRenderable is called") {
       int id = graphics_system.addRenderable(renderable);
       THEN("a non-negative id is returned") {
@@ -428,7 +440,7 @@ SCENARIO("the graphics system can have objects for rendering removed from it", "
     Graphics::GraphicsSystem graphics_system;
     graphics_system.initialize(300, 400, "test_window");
     graphics_system.start();
-    RenderablePtr renderable(new Graphics::Renderable());
+    RenderablePtr renderable = constructRenderable();
     int id = graphics_system.addRenderable(renderable);
     graphics_system.stop();
     WHEN("removeRenderable is called") {
@@ -473,7 +485,7 @@ SCENARIO("the graphics system can have objects for rendering removed from it", "
   GIVEN("a graphics system with an object already in it") {
     Graphics::GraphicsSystem graphics_system;
     graphics_system.initialize(300, 400, "test_window");
-    RenderablePtr renderable(new Graphics::Renderable());
+    RenderablePtr renderable = constructRenderable();
     int id = graphics_system.addRenderable(renderable);
 
     WHEN("removeRenderable is called") {
@@ -508,7 +520,7 @@ SCENARIO("the graphics system can have objects for rendering removed from it", "
     std::set<int> ids;
     graphics_system.initialize(300, 400, "test_window");
     for(int i = 0; i < 10000; i++) {
-      int id = graphics_system.addRenderable(RenderablePtr(new Graphics::Renderable()));
+      int id = graphics_system.addRenderable(constructRenderable());
       ids.insert(id);
     }
     WHEN("removeRenderable is called") {

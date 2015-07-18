@@ -12,7 +12,7 @@ solution "TileEngine"
     targetextension ".out"
 
     libdirs { "./lib" }
-    links { "Box2d", "GLUI", "SOIL", "fmod", "glfw3"}
+    links { "Box2d", "GLUI", "SOIL", "fmod", "OpenGL.framework", "glfw3"}
 
     includedirs { "./include", "./src" }
 
@@ -35,7 +35,7 @@ solution "TileEngine"
     targetextension ".out"
 
     libdirs { "./lib" }
-    links { "Box2d", "GLUI", "SOIL", "fmod", "glfw3" }
+    links { "Box2d", "GLUI", "SOIL", "fmod", "OpenGL.framework", "glfw3" }
 
     includedirs { "./include", "./src" }
 

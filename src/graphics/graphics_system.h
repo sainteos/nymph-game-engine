@@ -30,7 +30,7 @@ namespace Graphics {
       std::chrono::time_point<std::chrono::high_resolution_clock> last_time;
       
       static void updateLoop(GraphicsSystem* instance);
-
+      static void errorCallback(int error, const char* description);
     public:
       GraphicsSystem();
       ~GraphicsSystem();
@@ -118,7 +118,20 @@ namespace Graphics {
        */
       const int renderablesCount();
 
+      /**
+       * @brief Returns the max FPS set on the graphics system
+       * @details This is the highest frames per second the graphics system
+       *          can run at (to allow things like vsync)
+       * @return double containing the max fps
+       */
       const double getMaxFPS() const noexcept;
+
+      /**
+       * @brief Returns the current running FPS on the graphics system
+       * @details This is the current fps that has been recorded as the
+       *          graphics system is running.
+       * @return double containing the current fps
+       */
       const double getCurrentFPS() const noexcept;
 
       /**
