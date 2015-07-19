@@ -1,7 +1,9 @@
 #ifndef RENDERABLE_H
 #define RENDERABLE_H
 #include <glm/vec3.hpp>
+#include <map>
 #include "component.h"
+#include "vertex_data.h"
 
 namespace Graphics {
   class Renderable : Component {
@@ -13,13 +15,15 @@ namespace Graphics {
       unsigned int num_of_vertex_buffers;
       unsigned int* vertex_buffer_objects;
       unsigned int index_buffer_object;
+
+      std::map<VertexData::DATA_TYPE, unsigned int> type_to_buffer_index;
     public:
 
       Renderable() = delete;
       Renderable(const unsigned int vertex_array_object);
       ~Renderable();
       
-      void initialize(const std::vector<std::vector<glm::vec3>>& vertex_data, const std::vector<unsigned int>& index_data = std::vector<unsigned int>());
+      void initialize(const VertexData& vertex_data);
       const bool isInitialized() const noexcept;
 
       void setActive() noexcept;
@@ -27,7 +31,7 @@ namespace Graphics {
       const bool isActive() const noexcept;
 
       const unsigned int getVertexArrayBinding() const noexcept;
-      const unsigned int getVertexBufferBinding(const unsigned int index) const;
+      const unsigned int getVertexBufferBinding(const VertexData::DATA_TYPE& data_type);
       const unsigned int getIndexBufferBinding() const noexcept;
       
       void destroy();

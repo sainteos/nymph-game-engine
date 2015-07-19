@@ -2,7 +2,7 @@
 
 solution "TileEngine"
   configurations { "Debug", "Release" }
-  buildoptions { "-std=c++11" }
+  buildoptions { "-std=c++11", "-Wno-unknown-pragmas" }
 
   project "TileEngine"
     kind "ConsoleApp"
@@ -12,7 +12,7 @@ solution "TileEngine"
     targetextension ".out"
 
     libdirs { "./lib" }
-    links { "Box2d", "GLUI", "SOIL", "fmod", "OpenGL.framework", "glfw3"}
+    links { "Box2d", "GLUI", "SOIL", "fmod", "glfw3", "OpenGL.framework"}
 
     includedirs { "./include", "./src" }
 
@@ -35,7 +35,7 @@ solution "TileEngine"
     targetextension ".out"
 
     libdirs { "./lib" }
-    links { "Box2d", "GLUI", "SOIL", "fmod", "OpenGL.framework", "glfw3" }
+    links { "Box2d", "GLUI", "SOIL", "fmod", "glfw3", "OpenGL.framework"}
 
     includedirs { "./include", "./src" }
 
