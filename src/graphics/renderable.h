@@ -17,13 +17,14 @@ namespace Graphics {
       unsigned int index_buffer_object;
 
       std::map<VertexData::DATA_TYPE, unsigned int> type_to_buffer_index;
+      VertexData vertex_data;
     public:
 
       Renderable() = delete;
-      Renderable(const unsigned int vertex_array_object);
+      Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data);
       ~Renderable();
       
-      void initialize(const VertexData& vertex_data);
+      void initialize();
       const bool isInitialized() const noexcept;
 
       void setActive() noexcept;

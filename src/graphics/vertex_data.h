@@ -1,5 +1,6 @@
 #ifndef VERTEX_DATA_H
 #define VERTEX_DATA_H
+#include <OpenGL/gl3.h>
 #include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
@@ -20,7 +21,11 @@ namespace Graphics {
         RESERVED6 = 8,
         RESERVED7 = 9,
         RESERVED8 = 10,
-        RESERVED9 = 11
+        RESERVED9 = 11,
+        ONE_WIDE = 12,
+        TWO_WIDE = 13,
+        THREE_WIDE = 14,
+        FOUR_WIDE = 15
       };
 
     private:
@@ -41,33 +46,52 @@ namespace Graphics {
       std::map<DATA_TYPE, std::vector<glm::uvec3>> unsigned_int_vector3s;
       std::map<DATA_TYPE, std::vector<glm::uvec4>> unsigned_int_vector4s;
       std::vector<unsigned int> indices;
+      unsigned int index_count;
+      unsigned int vertex_count;
+      GLenum primitive_type;
+
+      const unsigned char ANY = 0;
+
+      const std::map<GLenum, unsigned char> divisibility {
+        {GL_TRIANGLES, 3},
+        {GL_TRIANGLE_STRIP, ANY},
+        {GL_TRIANGLE_FAN, ANY},
+        {GL_LINES, 2},
+        {GL_LINE_LOOP, ANY},
+        {GL_LINE_STRIP, ANY},
+        {GL_QUADS, 4}
+      };
+
+      const std::map<GLenum, unsigned char> minimum {
+        {GL_TRIANGLES, 3},
+        {GL_TRIANGLE_STRIP, 3},
+        {GL_TRIANGLE_FAN, 3},
+        {GL_LINES, 2},
+        {GL_LINE_STRIP, 2},
+        {GL_LINE_LOOP, 3},
+        {GL_QUADS, 4}
+      };
+
+      void checkDivisibility(const unsigned int size);
+      void checkMinimum(const unsigned int size);
     public:
       static const std::map<DATA_TYPE, unsigned char> DataWidth;
-
-      VertexData();
+      
+      VertexData() = delete;
+      VertexData(const GLenum primitive_type);
+      ~VertexData();
 
       void addIndices(const std::vector<unsigned int>& indices);
-      void addFloatVec1(DATA_TYPE data_type, const std::vector<float>& vec);
-      void addFloatVec2(DATA_TYPE data_type, const std::vector<glm::vec2>& vec);
-      void addFloatVec3(DATA_TYPE data_type, const std::vector<glm::vec3>& vec);
-      void addFloatVec4(DATA_TYPE data_type, const std::vector<glm::vec4>& vec);
-      void addDoubleVec1(DATA_TYPE data_type, const std::vector<double>& vec);
-      void addDoubleVec2(DATA_TYPE data_type, const std::vector<glm::dvec2>& vec);
-      void addDoubleVec3(DATA_TYPE data_type, const std::vector<glm::dvec3>& vec);
-      void addDoubleVec4(DATA_TYPE data_type, const std::vector<glm::dvec4>& vec);
-      void addIntVec1(DATA_TYPE data_type, const std::vector<int>& vec);
-      void addIntVec2(DATA_TYPE data_type, const std::vector<glm::ivec2>& vec);
-      void addIntVec3(DATA_TYPE data_type, const std::vector<glm::ivec3>& vec);
-      void addIntVec4(DATA_TYPE data_type, const std::vector<glm::ivec4>& vec);
-      void addUnsignedIntVec1(DATA_TYPE data_type, const std::vector<unsigned int>& vec);
-      void addUnsignedIntVec2(DATA_TYPE data_type, const std::vector<glm::uvec2>& vec);
-      void addUnsignedIntVec3(DATA_TYPE data_type, const std::vector<glm::uvec3>& vec);
-      void addUnsignedIntVec4(DATA_TYPE data_type, const std::vector<glm::uvec4>& vec);
 
-      std::map<DATA_TYPE, std::vector<float>> getCollapsedFloatVectors() const;
-      std::map<DATA_TYPE, std::vector<double>> getCollapsedDoubleVectors() const;
-      std::map<DATA_TYPE, std::vector<int>> getCollapsedIntVectors() const;
-      std::map<DATA_TYPE, std::vector<unsigned int>> getCollapsedUnsignedIntVectors() const;
+      template<typename T>
+      void addVec(DATA_TYPE data_type, const std::vector<T>& vec);
+
+      const unsigned int getIndexCount() const noexcept;
+      const unsigned int getVertexCount() const noexcept;
+      
+      template<typename T>
+      std::map<DATA_TYPE, std::vector<T>> getCollapsedVectors() const;
+
       std::vector<unsigned int> getIndices() const noexcept;
   };
 }

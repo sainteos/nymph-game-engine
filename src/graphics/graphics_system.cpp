@@ -15,15 +15,16 @@ namespace Graphics {
   using clock = std::chrono::high_resolution_clock;
   using microseconds = std::chrono::microseconds;
 
-  GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), running(false), next_id(1) {
+  GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), next_id(1) {
   }
 
   GraphicsSystem::~GraphicsSystem() {
-    if(initialized)
+    if(initialized){
       destroy();
+    }
   }
 
-  void GraphicsSystem::initialize(const int width, const int height, const std::string name, const double max_fps) {
+  void GraphicsSystem::initialize(const int width, const int height, const std::string name, const WindowExitFunctor& window_exit, const double max_fps) {
     LOG(INFO)<<"Graphics System initializing...";
     if(initialized) {
       LOG(WARNING)<<"Can't reinitialize graphics system.";
@@ -31,6 +32,7 @@ namespace Graphics {
     }
 
     glfwSetErrorCallback(errorCallback);
+
 
     if(!glfwInit()) {
       LOG(FATAL)<<"Glfw couldn't be initialized!";
@@ -43,7 +45,7 @@ namespace Graphics {
 
     window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
     window_title = name;
-
+    this->window_exit = window_exit;
     if(window == nullptr) {
       LOG(ERROR)<<"Glfw window couldn't be created.";
       throw std::runtime_error("Glfw window couldn't be created.");
@@ -87,36 +89,6 @@ namespace Graphics {
     return window_title;
   }
 
-  std::thread::id GraphicsSystem::start() {
-    if(!initialized)
-      throw Exceptions::SystemNotInitializedException("Graphics");
-
-    if(running.load())
-      throw Exceptions::SystemAlreadyRunningException("Graphics");
-
-    update_thread = std::thread(GraphicsSystem::updateLoop, this);
-    running.store(true);
-
-    last_time = clock::now();
-
-    LOG(INFO)<<"Graphics update thread started!";
-    return update_thread.get_id();
-  }
-  
-  void GraphicsSystem::stop() {
-    if(!initialized)
-      throw Exceptions::SystemNotInitializedException("Graphics");
-    if(!running.load())
-      throw Exceptions::SystemNotRunningException("Graphics");
-    running.store(false);
-    update_thread.join();
-    LOG(INFO)<<"Graphics update thread stopped!";
-  }
-
-  const bool GraphicsSystem::isRunning() const noexcept {
-    return running.load();
-  }
-
   const int GraphicsSystem::addRenderable(std::shared_ptr<Graphics::Renderable> renderable) {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
@@ -154,33 +126,45 @@ namespace Graphics {
     return current_fps.load();
   }
 
-  void GraphicsSystem::updateLoop(GraphicsSystem* instance) {
-    auto current_time = clock::now();
-    auto delta = std::chrono::duration_cast<microseconds>(current_time - instance->last_time).count() / 1000.0;
-    while(instance->running.load()) {
+  GLFWwindow* GraphicsSystem::getCurrentWindow() noexcept {
+    return window;
+  }
 
-      instance->renderables_mutex.lock();
-      for(auto renderables_iter : instance->renderables_map) {
+  void GraphicsSystem::renderLoop() {
+    if(!initialized)
+      throw Exceptions::SystemNotInitializedException("Graphics");
+
+    LOG(INFO)<<"Render loop started.";
+    bool running = true;
+    std::chrono::time_point<std::chrono::high_resolution_clock> last_time = clock::now();
+    auto current_time = clock::now();
+    auto delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
+
+    while(running) {
+      renderables_mutex.lock();
+      for(auto& renderables_iter : renderables_map) {
         if(renderables_iter.second->isActive() && renderables_iter.second->onUpdate(delta)) {
           //if renderable was updated, then render
           renderables_iter.second->onRender();
         }
       }
-      instance->renderables_mutex.unlock();
+      renderables_mutex.unlock();
 
       //if we have a max fps
-      if(instance->max_fps > 0.0) {
+      if(max_fps > 0.0) {
         //keep sleeping until we hit the right time
-        while(std::chrono::duration_cast<microseconds>(clock::now() - instance->last_time).count() / 1000.0 < 1.0 / (instance->max_fps / 1000.0)) {
+        while(std::chrono::duration_cast<microseconds>(clock::now() - last_time).count() / 1000.0 < 1.0 / (max_fps / 1000.0)) {
           std::this_thread::sleep_for(microseconds(1));
         }
       }
 
+      glfwSwapBuffers(window);
       //update the current fps
-      auto now_time = clock::now();
-      instance->current_fps.store(1.0 / (std::chrono::duration_cast<microseconds>(now_time - instance->last_time).count() / 1000000.0));
+      current_time = clock::now();
+      current_fps.store(1.0 / (std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000000.0));
       //set last time to the now time
-      instance->last_time = now_time;
+      last_time = current_time;
+      running = !window_exit(window);
     }
   }
 
@@ -198,9 +182,6 @@ namespace Graphics {
   void GraphicsSystem::destroy() {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
-
-    if(running.load())
-      stop();
 
     initialized = false;
     glfwTerminate();

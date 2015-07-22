@@ -8,6 +8,8 @@
 #include <glfw3.h>
 #include "graphics/graphics_system.h"
 #include "graphics/renderable.h"
+#include "graphics/vertex_data.h"
+#include "graphics/window_exit_functor.h"
 #include "exceptions/system_already_initialized_exception.h"
 #include "exceptions/system_not_initialized_exception.h"
 #include "exceptions/system_already_running_exception.h"
@@ -21,7 +23,7 @@ RenderablePtr constructRenderable() {
   unsigned int good_binding;
   glGenVertexArrays(1, &good_binding);
   glBindVertexArray(good_binding);
-  RenderablePtr renderable(new Graphics::Renderable(good_binding));
+  RenderablePtr renderable(new Graphics::Renderable(good_binding, Graphics::VertexData(GL_TRIANGLES)));
   glBindVertexArray(0);
   return renderable;
 }
@@ -41,7 +43,7 @@ SCENARIO("the graphics system can be initialized", "[graphics]") {
       int height = dist(mt);
       std::string name = "test_window";
 
-      graphics_system.initialize(width, height, name);
+      graphics_system.initialize(width, height, name, Graphics::WindowExitFunctor());
 
       THEN("a window context is created with the correct size") {
         REQUIRE(graphics_system.windowWidth() == width);
@@ -58,143 +60,8 @@ SCENARIO("the graphics system can be initialized", "[graphics]") {
 
       WHEN("initialize is called again") {
         THEN("a SystemAlreadyInitialized exception is thrown") {
-          REQUIRE_THROWS_AS(graphics_system.initialize(width, height, name), Exceptions::SystemAlreadyInitializedException);
+          REQUIRE_THROWS_AS(graphics_system.initialize(width, height, name, Graphics::WindowExitFunctor()), Exceptions::SystemAlreadyInitializedException);
         }
-      }
-    }
-  }
-}
-
-SCENARIO("the graphics system can be started", "[graphics]") {
-  GIVEN("a recently initialized graphics system object") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-
-    REQUIRE(graphics_system.isInitialized() == true);
-
-    WHEN("start is called") {
-      std::thread::id thread_id = graphics_system.start();
-
-      THEN("a graphics update loop should start in a separate thread") {
-        REQUIRE(thread_id != std::this_thread::get_id());
-      }
-
-      THEN("isRunning returns true") {
-        REQUIRE(graphics_system.isRunning() == true);
-      }
-    }
-  }
-  
-  GIVEN("an already started graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-    WHEN("start is called") {
-      THEN("a SystemAlreadyRunning exception is thrown") {
-        REQUIRE_THROWS_AS(graphics_system.start(), Exceptions::SystemAlreadyRunningException);
-      }
-    }
-  }
-
-  GIVEN("a stopped graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-    graphics_system.stop();
-    WHEN("start is called") {
-      std::thread::id thread_id = graphics_system.start();
-      THEN("a graphics update loop should start in a separate thread from the main thread") {
-        REQUIRE(thread_id != std::this_thread::get_id());
-      }
-
-      THEN("isRunning returns true") {
-        REQUIRE(graphics_system.isRunning() == true);
-      }
-    }
-  }
-
-  GIVEN("an uninitialized graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    WHEN("start is called") {
-      THEN("a SystemNotInitialized exception is thrown") {
-        REQUIRE_THROWS_AS(graphics_system.start(), Exceptions::SystemNotInitializedException);
-      }
-
-      THEN("isRunning returns false") {
-        REQUIRE(graphics_system.isRunning() == false);
-      }
-    }
-  }
-
-  GIVEN("a destroyed graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-    graphics_system.destroy();
-    WHEN("start is called") {
-      THEN("a SystemNotInitialized exception is thrown") {
-        REQUIRE_THROWS_AS(graphics_system.start(), Exceptions::SystemNotInitializedException);
-      }
-
-      THEN("isRunning returns false") {
-        REQUIRE(graphics_system.isRunning() == false);
-      }
-    }
-  }
-}
-
-SCENARIO("the graphics system can be stopped", "[graphics]") {
-  GIVEN("a recently initialized graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-
-    WHEN("the graphics system has been started") {
-      graphics_system.start();
-      REQUIRE(graphics_system.isRunning() == true);
-
-      WHEN("stop is called") {
-        graphics_system.stop();
-        THEN("isRunning returns false") {
-          REQUIRE(graphics_system.isRunning() == false);
-        }
-      }
-    }
-
-    WHEN("stop is called") {
-      THEN("a SystemNotRunning exception is thrown") {
-        REQUIRE_THROWS_AS(graphics_system.stop(), Exceptions::SystemNotRunningException);
-      }
-    }
-  }
-  
-  GIVEN("an uninitialized graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    WHEN("stop is called") {
-      THEN("a SystemNotInitialized exception is thrown") {
-        REQUIRE_THROWS_AS(graphics_system.stop(), Exceptions::SystemNotInitializedException);
-      }
-    }
-  }
-
-  GIVEN("a stopped graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-    graphics_system.stop();
-    WHEN("stop is called") {
-      THEN("a SystemNotRunning exception is thrown") {
-        REQUIRE_THROWS_AS(graphics_system.stop(), Exceptions::SystemNotRunningException);
-      }
-    }
-  }
-
-  GIVEN("a destroyed graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.destroy();
-    WHEN("stop is called") {
-      THEN("a SystemNotInitialized exception is thrown") {
-        REQUIRE_THROWS_AS(graphics_system.stop(), Exceptions::SystemNotInitializedException);
       }
     }
   }
@@ -203,26 +70,11 @@ SCENARIO("the graphics system can be stopped", "[graphics]") {
 SCENARIO("the graphics system can be destroyed", "[graphics]") {
   GIVEN("a recently initialized graphics system") {
     Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
     WHEN("destroy is called") {
       graphics_system.destroy();
       THEN("isInitialized is false") {
         REQUIRE(graphics_system.isInitialized() == false);
-      }
-    }
-  }
-
-  GIVEN("a started graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-    WHEN("destroy is called") {
-      graphics_system.destroy();
-      THEN("isInitialized is false") {
-        REQUIRE(graphics_system.isInitialized() == false);
-      }
-      THEN("isRunning is false") {
-        REQUIRE(graphics_system.isRunning() == false);
       }
     }
   }
@@ -238,7 +90,7 @@ SCENARIO("the graphics system can be destroyed", "[graphics]") {
 
   GIVEN("a destroyed graphics system") {
     Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
     graphics_system.destroy();
     WHEN("destroy is called") {
       THEN("a SystemNotInitialized exception is thrown") {
@@ -251,7 +103,7 @@ SCENARIO("the graphics system can be destroyed", "[graphics]") {
 SCENARIO("the graphics system can have objects for rendering added to it", "[graphics]") {
   GIVEN("an initialized graphics system") {
     Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
 
     WHEN("addRenderable is called") {
       RenderablePtr renderable = constructRenderable();
@@ -275,47 +127,9 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
     }
   }
 
-  GIVEN("a started graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-
-    WHEN("addRenderable is called") {
-      RenderablePtr renderable = constructRenderable();
-      int id = graphics_system.addRenderable(renderable);
-      THEN("a non-negative id is returned") {
-        REQUIRE(id > 0);
-      }
-
-      THEN("the number of renderables is 1") {
-        REQUIRE(graphics_system.renderablesCount() == 1);
-      }
-    }
-  }
-
-  GIVEN("a stopped graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-    graphics_system.stop();
-
-
-    WHEN("addRenderable is called") {
-      RenderablePtr renderable = constructRenderable();
-      int id = graphics_system.addRenderable(renderable);
-      THEN("a non-negative id is returned") {
-        REQUIRE(id > 0);
-      }
-
-      THEN("the number of renderables is 1") {
-        REQUIRE(graphics_system.renderablesCount() == 1);
-      }
-    }
-  }
-
   GIVEN("a destroyed graphics system") {
     Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
     graphics_system.destroy();
     
     WHEN("a renderable is constructed") {
@@ -327,7 +141,7 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
 
   GIVEN("a graphics system with an object already in it") {
     Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
     RenderablePtr renderable = constructRenderable();
     RenderablePtr renderable2 = constructRenderable();
     int id = graphics_system.addRenderable(renderable);
@@ -350,7 +164,7 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
   GIVEN("a graphics system with 10000 objects already in it") {
     Graphics::GraphicsSystem graphics_system;
     std::set<int> ids;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
     for(int i = 0; i < 10000; i++) {
       int id = graphics_system.addRenderable(constructRenderable());
       ids.insert(id);
@@ -377,7 +191,7 @@ SCENARIO("the graphics system can have objects for rendering added to it", "[gra
 SCENARIO("the graphics system can have objects for rendering removed from it", "[graphics]") {
   GIVEN("an initialized graphics system") {
     Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
 
     WHEN("removeRenderable is called") {
       bool removed = graphics_system.removeRenderable(1);
@@ -399,81 +213,9 @@ SCENARIO("the graphics system can have objects for rendering removed from it", "
     }
   }
 
-  GIVEN("a started graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-    WHEN("removeRenderable is called") {
-      WHEN("a negative number is supplied as id") {
-        THEN("a std::out_of_range error is thrown") {
-          REQUIRE_THROWS_AS(graphics_system.removeRenderable(-1), std::out_of_range);
-        }
-      }
-      WHEN("a positive number is supplied as id") {
-        THEN("it returns false") {
-          REQUIRE(graphics_system.removeRenderable(10) == false);
-        }
-      }
-    }
-  }
-
-  GIVEN("a stopped graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-    graphics_system.stop();
-    WHEN("removeRenderable is called") {
-      WHEN("a negative number is supplied as id") {
-        THEN("a std::out_of_range error is thrown") {
-          REQUIRE_THROWS_AS(graphics_system.removeRenderable(-1), std::out_of_range);
-        }
-      }
-      WHEN("a positive number is supplied as id") {
-        THEN("it returns false") {
-          REQUIRE(graphics_system.removeRenderable(10) == false);
-        }
-      }
-    }
-  }
-
-  GIVEN("a stopped graphics system with a renderable already in it") {
-    Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
-    graphics_system.start();
-    RenderablePtr renderable = constructRenderable();
-    int id = graphics_system.addRenderable(renderable);
-    graphics_system.stop();
-    WHEN("removeRenderable is called") {
-      WHEN("a negative number is supplied as id") {
-        THEN("a std::out_of_range error is thrown") {
-          REQUIRE_THROWS_AS(graphics_system.removeRenderable(-1), std::out_of_range);
-        }
-      }
-      WHEN("a wrong number is supplied as id") {
-        bool removed = graphics_system.removeRenderable(id + 1);
-        THEN("it returns false") {
-          REQUIRE(removed == false);
-        }
-        THEN("the number of renderables is 1") {
-          REQUIRE(graphics_system.renderablesCount() == 1);
-        }
-      }
-      WHEN("a correct number is suppled as id") {
-        bool removed = graphics_system.removeRenderable(id);
-        THEN("it returns true") {
-          REQUIRE(removed == true);
-        }
-
-        THEN("the number of renderables is 0") {
-          REQUIRE(graphics_system.renderablesCount() == 0);
-        }
-      }
-    }
-  }
-
   GIVEN("a destroyed graphics system") {
     Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
     graphics_system.destroy();
     WHEN("removeRenderable is called") {
       THEN("a SystemNotInitialized exception is thrown") {
@@ -484,7 +226,7 @@ SCENARIO("the graphics system can have objects for rendering removed from it", "
 
   GIVEN("a graphics system with an object already in it") {
     Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
     RenderablePtr renderable = constructRenderable();
     int id = graphics_system.addRenderable(renderable);
 
@@ -518,7 +260,7 @@ SCENARIO("the graphics system can have objects for rendering removed from it", "
   GIVEN("a graphics system with 10000 objects already in it") {
     Graphics::GraphicsSystem graphics_system;
     std::set<int> ids;
-    graphics_system.initialize(300, 400, "test_window");
+    graphics_system.initialize(300, 400, "test_window", Graphics::WindowExitFunctor());
     for(int i = 0; i < 10000; i++) {
       int id = graphics_system.addRenderable(constructRenderable());
       ids.insert(id);
@@ -562,7 +304,7 @@ SCENARIO("the window's width and height can be retrieved") {
     int height = dist(mt);
     std::string name = "test_window";
     Graphics::GraphicsSystem graphics_system;
-    graphics_system.initialize(width, height, name);
+    graphics_system.initialize(width, height, name, Graphics::WindowExitFunctor());
 
     WHEN("windowWidth is called") {
       THEN("the window's set width is returned") {
@@ -588,24 +330,6 @@ SCENARIO("the window's width and height can be retrieved") {
     WHEN("windowHeight is called") {
       THEN("a SystemNotInitialized excpetion is thrown") {
         REQUIRE_THROWS_AS(graphics_system.windowHeight(), Exceptions::SystemNotInitializedException);        
-      }
-    }
-  }
-}
-
-
-SCENARIO("the graphics system updates at the specified frames per second") {
-  GIVEN("an initialized graphics system") {
-    Graphics::GraphicsSystem graphics_system;
-    double fps = 60.0;
-    graphics_system.initialize(400, 400, "butts", fps);
-    WHEN("start is called") {
-      graphics_system.start();
-      THEN("getMaxFPS should return the desired FPS") {
-        REQUIRE(graphics_system.getMaxFPS() == fps);
-      }
-      THEN("getCurrentFPS should return the desired FPS within an epsilon") {
-        REQUIRE(graphics_system.getCurrentFPS() == Approx(fps).epsilon(0.1));
       }
     }
   }

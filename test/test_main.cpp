@@ -3,6 +3,7 @@
 #include <easylogging++.h>
 
 INITIALIZE_EASYLOGGINGPP
+#define ELPP_THREAD_SAFE
 
 int main( int argc, char** argv)
 {

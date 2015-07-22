@@ -2,7 +2,7 @@
 
 solution "TileEngine"
   configurations { "Debug", "Release" }
-  buildoptions { "-std=c++11", "-Wno-unknown-pragmas" }
+  buildoptions { "-std=c++11", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread'}
 
   project "TileEngine"
     kind "ConsoleApp"
