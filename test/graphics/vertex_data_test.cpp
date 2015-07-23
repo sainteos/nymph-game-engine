@@ -45,7 +45,6 @@ SCENARIO("Indices added to Vertex Data with less than minimum are rejected") {
   GIVEN("Vectors with 1 less than the minimum for each primitive type") {
     for(auto& min : minimum){
       std::vector<unsigned int> vec(min.second - 1, 0);
-      LOG(INFO)<<"Testing low count indices: "<<enum_to_string[min.first];
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -60,7 +59,6 @@ SCENARIO("Indices added to Vertex Data not divisible by the correct amount are r
   GIVEN("Vectors divisible by the correct amount for each primitive type") {
     for(auto& divide : divisibility){
       std::vector<unsigned int> vec(minimum[divide.first] + divide.second + 1, 0);
-      LOG(INFO)<<"Testing wrong divisibility indices: "<<enum_to_string[divide.first];
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -82,7 +80,6 @@ SCENARIO("Valid indices added to Vertex Data reflect in getter and count") {
       auto multiplier = dist(mt);
       std::uniform_int_distribution<unsigned int> index(0, min.second * multiplier);
       std::vector<unsigned int> vec(min.second * multiplier, index(mt));
-      LOG(INFO)<<"Testing correct indices: "<<enum_to_string[min.first];
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addIndices(vec);
@@ -102,7 +99,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //float
     for(auto& min : minimum){
       std::vector<float> vec(min.second - 1, 0.0);
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", float";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -113,7 +109,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::vec2
     for(auto& min : minimum){
       std::vector<glm::vec2> vec(min.second - 1, glm::vec2());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", vec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -124,7 +119,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::vec3
     for(auto& min : minimum){
       std::vector<glm::vec3> vec(min.second - 1, glm::vec3());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", vec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -135,7 +129,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::vec4
     for(auto& min : minimum){
       std::vector<glm::vec4> vec(min.second - 1, glm::vec4());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", vec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -146,7 +139,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //double
     for(auto& min : minimum){
       std::vector<double> vec(min.second - 1, 0.0);
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", double";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -157,7 +149,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::dvec2
     for(auto& min : minimum){
       std::vector<glm::dvec2> vec(min.second - 1, glm::dvec2());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", dvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -168,7 +159,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::dvec3
     for(auto& min : minimum){
       std::vector<glm::dvec3> vec(min.second - 1, glm::dvec3());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", dvec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -179,7 +169,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::dvec4
     for(auto& min : minimum){
       std::vector<glm::dvec4> vec(min.second - 1, glm::dvec4());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", dvec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -190,7 +179,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //int
     for(auto& min : minimum){
       std::vector<int> vec(min.second - 1, 0);
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", int";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -201,7 +189,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::ivec2
     for(auto& min : minimum){
       std::vector<glm::ivec2> vec(min.second - 1, glm::ivec2());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", ivec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -212,7 +199,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::ivec3
     for(auto& min : minimum){
       std::vector<glm::ivec3> vec(min.second - 1, glm::ivec3());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", ivec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -223,7 +209,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::ivec4
     for(auto& min : minimum){
       std::vector<glm::ivec4> vec(min.second - 1, glm::ivec4());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", ivec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -234,7 +219,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //unsigned int
     for(auto& min : minimum){
       std::vector<unsigned int> vec(min.second - 1, 0);
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", unsigned int";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -245,7 +229,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::uvec2
     for(auto& min : minimum){
       std::vector<glm::uvec2> vec(min.second - 1, glm::uvec2());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", uvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -256,7 +239,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::uvec3
     for(auto& min : minimum){
       std::vector<glm::uvec3> vec(min.second - 1, glm::uvec3());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", uvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -267,7 +249,6 @@ SCENARIO("Vertices added to Vertex Data with less than minimum are rejected") {
     //glm::ivec4
     for(auto& min : minimum){
       std::vector<glm::uvec4> vec(min.second - 1, glm::uvec4());
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", uvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         THEN("it will throw a std::length_error") {
@@ -292,7 +273,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<float> vec(min.second * multiplier, rand_float(mt));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", float";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<float>(VertexData::DATA_TYPE::ONE_WIDE, vec);
@@ -308,7 +288,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::vec2> vec(min.second * multiplier, glm::vec2(rand_float(mt), rand_float(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", vec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::vec2>(VertexData::DATA_TYPE::TWO_WIDE, vec);
@@ -328,7 +307,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::vec3> vec(min.second * multiplier, glm::vec3(rand_float(mt), rand_float(mt), rand_float(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", vec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::vec3>(VertexData::DATA_TYPE::THREE_WIDE, vec);
@@ -349,7 +327,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::vec4> vec(min.second * multiplier, glm::vec4(rand_float(mt), rand_float(mt), rand_float(mt), rand_float(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", vec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::vec4>(VertexData::DATA_TYPE::FOUR_WIDE, vec);
@@ -371,7 +348,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<double> vec(min.second * multiplier, rand_double(mt));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", double";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<double>(VertexData::DATA_TYPE::ONE_WIDE, vec);
@@ -387,7 +363,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::dvec2> vec(min.second * multiplier, glm::dvec2(rand_double(mt), rand_double(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", dvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::dvec2>(VertexData::DATA_TYPE::TWO_WIDE, vec);
@@ -407,7 +382,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::dvec3> vec(min.second * multiplier, glm::dvec3(rand_double(mt), rand_double(mt), rand_double(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", dvec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::dvec3>(VertexData::DATA_TYPE::THREE_WIDE, vec);
@@ -428,7 +402,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::dvec4> vec(min.second * multiplier, glm::dvec4(rand_double(mt), rand_double(mt), rand_double(mt), rand_double(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", dvec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::dvec4>(VertexData::DATA_TYPE::FOUR_WIDE, vec);
@@ -450,7 +423,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<int> vec(min.second * multiplier, rand_int(mt));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", int";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<int>(VertexData::DATA_TYPE::ONE_WIDE, vec);
@@ -466,7 +438,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::ivec2> vec(min.second * multiplier, glm::ivec2(rand_int(mt), rand_int(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", ivec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::ivec2>(VertexData::DATA_TYPE::TWO_WIDE, vec);
@@ -486,7 +457,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::ivec3> vec(min.second * multiplier, glm::ivec3(rand_int(mt), rand_int(mt), rand_int(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", ivec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::ivec3>(VertexData::DATA_TYPE::THREE_WIDE, vec);
@@ -507,7 +477,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::ivec4> vec(min.second * multiplier, glm::ivec4(rand_int(mt), rand_int(mt), rand_int(mt), rand_int(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", ivec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::ivec4>(VertexData::DATA_TYPE::FOUR_WIDE, vec);
@@ -529,7 +498,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<unsigned int> vec(min.second * multiplier, rand_uint(mt));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", unsigned int";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<unsigned int>(VertexData::DATA_TYPE::ONE_WIDE, vec);
@@ -545,7 +513,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::uvec2> vec(min.second * multiplier, glm::uvec2(rand_uint(mt), rand_uint(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", uvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::uvec2>(VertexData::DATA_TYPE::TWO_WIDE, vec);
@@ -565,7 +532,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::uvec3> vec(min.second * multiplier, glm::uvec3(rand_uint(mt), rand_uint(mt), rand_uint(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", uvec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::uvec3>(VertexData::DATA_TYPE::THREE_WIDE, vec);
@@ -586,7 +552,6 @@ SCENARIO("Valid Vertices added to Vertex Data are reflected in count and getter"
     for(auto& min : minimum){
       auto multiplier = dist(mt);
       std::vector<glm::uvec4> vec(min.second * multiplier, glm::uvec4(rand_uint(mt), rand_uint(mt), rand_uint(mt), rand_uint(mt)));
-      LOG(INFO)<<"Testing: "<<enum_to_string[min.first]<<", uvec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(min.first);
         data.addVec<glm::uvec4>(VertexData::DATA_TYPE::FOUR_WIDE, vec);
@@ -612,7 +577,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //float
     for(auto& divide : divisibility){
       std::vector<float> vec(minimum[divide.first] + divide.second + 1, 0.0);
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", float";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -623,7 +587,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::vec2
     for(auto& divide : divisibility){
       std::vector<glm::vec2> vec(minimum[divide.first] + divide.second + 1, glm::vec2());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", vec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -634,7 +597,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::vec3
     for(auto& divide : divisibility){
       std::vector<glm::vec3> vec(minimum[divide.first] + divide.second + 1, glm::vec3());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", vec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -645,7 +607,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::vec4
     for(auto& divide : divisibility){
       std::vector<glm::vec4> vec(minimum[divide.first] + divide.second + 1, glm::vec4());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", vec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -656,7 +617,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //double
     for(auto& divide : divisibility){
       std::vector<double> vec(minimum[divide.first] + divide.second + 1, 0.0);
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", double";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -667,7 +627,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::dvec2
     for(auto& divide : divisibility){
       std::vector<glm::dvec2> vec(minimum[divide.first] + divide.second + 1, glm::dvec2());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", dvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -678,7 +637,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::dvec3
     for(auto& divide : divisibility){
       std::vector<glm::dvec3> vec(minimum[divide.first] + divide.second + 1, glm::dvec3());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", dvec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -689,7 +647,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::dvec4
     for(auto& divide : divisibility){
       std::vector<glm::dvec4> vec(minimum[divide.first] + divide.second + 1, glm::dvec4());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", dvec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -700,7 +657,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //int
     for(auto& divide : divisibility){
       std::vector<int> vec(minimum[divide.first] + divide.second + 1, 0);
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", int";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -711,7 +667,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::ivec2
     for(auto& divide : divisibility){
       std::vector<glm::ivec2> vec(minimum[divide.first] + divide.second + 1, glm::ivec2());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", ivec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -722,7 +677,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::ivec3
     for(auto& divide : divisibility){
       std::vector<glm::ivec3> vec(minimum[divide.first] + divide.second + 1, glm::ivec3());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", ivec3";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -733,7 +687,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::ivec4
     for(auto& divide : divisibility){
       std::vector<glm::ivec4> vec(minimum[divide.first] + divide.second + 1, glm::ivec4());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", ivec4";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -744,7 +697,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //unsigned int
     for(auto& divide : divisibility){
       std::vector<unsigned int> vec(minimum[divide.first] + divide.second + 1, 0);
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", unsigned int";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -755,7 +707,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::uvec2
     for(auto& divide : divisibility){
       std::vector<glm::uvec2> vec(minimum[divide.first] + divide.second + 1, glm::uvec2());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", uvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -766,7 +717,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::uvec3
     for(auto& divide : divisibility){
       std::vector<glm::uvec3> vec(minimum[divide.first] + divide.second + 1, glm::uvec3());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", uvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -777,7 +727,6 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
     //glm::ivec4
     for(auto& divide : divisibility){
       std::vector<glm::uvec4> vec(minimum[divide.first] + divide.second + 1, glm::uvec4());
-      LOG(INFO)<<"Testing: "<<enum_to_string[divide.first]<<", uvec2";
       WHEN("Added to a VertexData configured for the current iter's primitive type") {
         VertexData data(divide.first);
         THEN("it will throw a std::length_error") {
@@ -789,9 +738,40 @@ SCENARIO("Correct Vertices added to Vertex Data not divisible by the right amoun
 }
 
 SCENARIO("Various types of vectors added as vertex data, reflect the correct vertex count") {
+  GIVEN("A vertex data object configured for GL_TRIANGLES") {
+    VertexData data(GL_TRIANGLES);
+    WHEN("two kinds of vectors compatible with GL_TRIANGLES are added") {
 
-}
+      std::vector<glm::vec3> vec1(12, glm::vec3());
+      std::vector<glm::uvec2> vec2(12, glm::uvec2());
+      data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, vec1);
+      data.addVec<glm::uvec2>(VertexData::DATA_TYPE::TEX_COORDS, vec2);
+      THEN("Vertex Count should reflect the same count for both of them") {
+        REQUIRE(data.getVertexCount() == vec1.size());
+        REQUIRE(data.getVertexCount() == vec2.size());
+      }
 
-SCENARIO("Various types of vectors added as vertex data can be collapsed correctly for OpenGL use") {
+      THEN("the data can be collapsed in the correct way") {
+        auto floats = data.getCollapsedVectors<float>();
+        auto uints = data.getCollapsedVectors<unsigned int>();
 
+        for(int i = 0; i < data.getVertexCount() * 3; i+=3) {
+          REQUIRE(floats[VertexData::DATA_TYPE::GEOMETRY][i] == vec1[i/3].x);
+          REQUIRE(floats[VertexData::DATA_TYPE::GEOMETRY][i+1] == vec1[i/3].y);
+          REQUIRE(floats[VertexData::DATA_TYPE::GEOMETRY][i+2] == vec1[i/3].z);
+        }
+
+        for(int i = 0; i < data.getVertexCount() * 2; i+= 2) {
+          REQUIRE(uints[VertexData::DATA_TYPE::TEX_COORDS][i] == vec2[i/2].x);
+          REQUIRE(uints[VertexData::DATA_TYPE::TEX_COORDS][i] == vec2[i/2].y);
+        }
+      }
+    }
+    WHEN("a vector that is not compatible with GL_TRIANGLES is added") {
+      std::vector<int> vec3(11, 5);
+      THEN("it will throw a std::length_error") {
+        REQUIRE_THROWS_AS(data.addVec<int>(VertexData::DATA_TYPE::ONE_WIDE, vec3), std::length_error);
+      }
+    }
+  }
 }
