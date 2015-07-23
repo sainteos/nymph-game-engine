@@ -775,3 +775,29 @@ SCENARIO("Various types of vectors added as vertex data, reflect the correct ver
     }
   }
 }
+
+SCENARIO("A VertexData object can only have one set of data for a data type") {
+  GIVEN("A VertexData object with data already in it") {
+    VertexData data(GL_TRIANGLES);
+    std::vector<glm::vec3> vec1(12, glm::vec3());
+    data.addVec<glm::vec3>(VertexData::DATA_TYPE::THREE_WIDE, vec1);
+    WHEN("another set of data for the same data type is added to it") {
+      std::vector<glm::ivec3> vec2(12, glm::ivec3());
+      data.addVec<glm::ivec3>(VertexData::DATA_TYPE::THREE_WIDE, vec2);
+      THEN("the collapsed data of the old type should be nonexistent") {
+        REQUIRE(data.getCollapsedVectors<float>().count(VertexData::DATA_TYPE::THREE_WIDE) == 0);
+      }
+      THEN("the collapsed data of the new type should be reflected correctly") {
+        auto ints = data.getCollapsedVectors<int>();
+        for(int i = 0; i < data.getVertexCount() * 3; i+=3) {
+          REQUIRE(ints[VertexData::DATA_TYPE::THREE_WIDE][i] == vec2[i/3].x);
+          REQUIRE(ints[VertexData::DATA_TYPE::THREE_WIDE][i+1] == vec2[i/3].y);
+          REQUIRE(ints[VertexData::DATA_TYPE::THREE_WIDE][i+2] == vec2[i/3].z);
+        }
+      }
+      THEN("the vertex count should be of the new added data") {
+        REQUIRE(data.getVertexCount() == vec2.size());
+      }
+    }
+  }
+}

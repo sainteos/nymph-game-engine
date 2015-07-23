@@ -38,6 +38,41 @@ namespace Graphics {
       throw std::length_error("Passed data doesn't comform to vertex count minimum spec!");
   }
 
+  void VertexData::clearDataType(const DATA_TYPE& type) {
+    if(float_vector1s.count(type) > 0)
+      float_vector1s.erase(type);
+    if(float_vector2s.count(type) > 0)
+      float_vector2s.erase(type);
+    if(float_vector3s.count(type) > 0)
+      float_vector3s.erase(type);
+    if(float_vector4s.count(type) > 0)
+      float_vector4s.erase(type);
+    if(double_vector1s.count(type) > 0)
+      double_vector1s.erase(type);
+    if(double_vector2s.count(type) > 0)
+      double_vector2s.erase(type);
+    if(double_vector3s.count(type) > 0)
+      double_vector3s.erase(type);
+    if(double_vector4s.count(type) > 0)
+      double_vector4s.erase(type);
+    if(int_vector1s.count(type) > 0)
+      int_vector1s.erase(type);
+    if(int_vector2s.count(type) > 0)
+      int_vector2s.erase(type);
+    if(int_vector3s.count(type) > 0)
+      int_vector3s.erase(type);
+    if(int_vector4s.count(type) > 0)
+      int_vector4s.erase(type);
+    if(unsigned_int_vector1s.count(type) > 0)
+      unsigned_int_vector1s.erase(type);
+    if(unsigned_int_vector2s.count(type) > 0)
+      unsigned_int_vector2s.erase(type);
+    if(unsigned_int_vector3s.count(type) > 0)
+      unsigned_int_vector3s.erase(type);
+    if(unsigned_int_vector4s.count(type) > 0)
+      unsigned_int_vector4s.erase(type);
+  }
+
   void VertexData::addIndices(const std::vector<unsigned int>& indices) {
     checkMinimum(indices.size());
     checkDivisibility(indices.size());
@@ -56,6 +91,7 @@ namespace Graphics {
   void VertexData::addVec<float>(VertexData::DATA_TYPE data_type, const std::vector<float>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       float_vector1s[data_type] = vec;
       vertex_count = vec.size();
@@ -71,6 +107,7 @@ namespace Graphics {
   void VertexData::addVec<glm::vec2>(VertexData::DATA_TYPE data_type, const std::vector<glm::vec2>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       float_vector2s[data_type] = vec;
       vertex_count = vec.size();
@@ -86,6 +123,7 @@ namespace Graphics {
   void VertexData::addVec<glm::vec3>(VertexData::DATA_TYPE data_type, const std::vector<glm::vec3>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       float_vector3s[data_type] = vec;
       vertex_count = vec.size();
@@ -101,6 +139,7 @@ namespace Graphics {
   void VertexData::addVec<glm::vec4>(VertexData::DATA_TYPE data_type, const std::vector<glm::vec4>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       float_vector4s[data_type] = vec;
       vertex_count = vec.size();
@@ -116,6 +155,7 @@ namespace Graphics {
   void VertexData::addVec<double>(VertexData::DATA_TYPE data_type, const std::vector<double>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       double_vector1s[data_type] = vec;
       vertex_count = vec.size();
@@ -131,6 +171,7 @@ namespace Graphics {
   void VertexData::addVec<glm::dvec2>(VertexData::DATA_TYPE data_type, const std::vector<glm::dvec2>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       double_vector2s[data_type] = vec;
       vertex_count = vec.size();
@@ -146,6 +187,7 @@ namespace Graphics {
   void VertexData::addVec<glm::dvec3>(VertexData::DATA_TYPE data_type, const std::vector<glm::dvec3>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       double_vector3s[data_type] = vec;
       vertex_count = vec.size();
@@ -161,6 +203,7 @@ namespace Graphics {
   void VertexData::addVec<glm::dvec4>(VertexData::DATA_TYPE data_type, const std::vector<glm::dvec4>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       double_vector4s[data_type] = vec;
       vertex_count = vec.size();
@@ -176,6 +219,7 @@ namespace Graphics {
   void VertexData::addVec<int>(VertexData::DATA_TYPE data_type, const std::vector<int>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       int_vector1s[data_type] = vec;
       vertex_count = vec.size();
@@ -191,6 +235,7 @@ namespace Graphics {
   void VertexData::addVec<glm::ivec2>(VertexData::DATA_TYPE data_type, const std::vector<glm::ivec2>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       int_vector2s[data_type] = vec;
       vertex_count = vec.size();
@@ -206,6 +251,7 @@ namespace Graphics {
   void VertexData::addVec<glm::ivec3>(VertexData::DATA_TYPE data_type, const std::vector<glm::ivec3>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       int_vector3s[data_type] = vec;
       vertex_count = vec.size();
@@ -221,6 +267,7 @@ namespace Graphics {
   void VertexData::addVec<glm::ivec4>(VertexData::DATA_TYPE data_type, const std::vector<glm::ivec4>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       int_vector4s[data_type] = vec;
       vertex_count = vec.size();
@@ -236,6 +283,7 @@ namespace Graphics {
   void VertexData::addVec<unsigned int>(VertexData::DATA_TYPE data_type, const std::vector<unsigned int>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       unsigned_int_vector1s[data_type] = vec;
       vertex_count = vec.size();
@@ -251,6 +299,7 @@ namespace Graphics {
   void VertexData::addVec<glm::uvec2>(VertexData::DATA_TYPE data_type, const std::vector<glm::uvec2>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       unsigned_int_vector2s[data_type] = vec;
       vertex_count = vec.size();
@@ -266,6 +315,7 @@ namespace Graphics {
   void VertexData::addVec<glm::uvec3>(VertexData::DATA_TYPE data_type, const std::vector<glm::uvec3>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       unsigned_int_vector3s[data_type] = vec;
       vertex_count = vec.size();
@@ -281,6 +331,7 @@ namespace Graphics {
   void VertexData::addVec<glm::uvec4>(VertexData::DATA_TYPE data_type, const std::vector<glm::uvec4>& vec){
     checkMinimum(vec.size());
     checkDivisibility(vec.size());
+    clearDataType(data_type);
     if(this->vertex_count <= 0) {
       unsigned_int_vector4s[data_type] = vec;
       vertex_count = vec.size();

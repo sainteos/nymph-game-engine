@@ -5,12 +5,16 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "exceptions/invalid_vertex_array_exception.h"
 #include "exceptions/renderable_not_initialized_exception.h"
+#include "exceptions/invalid_shader_object_exception.h"
 #include "renderable.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data) : initialized(false), vertex_data(vertex_data) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, RenderableAttributeTrait* trait) : initialized(false), vertex_data(vertex_data), trait(trait) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
+    }
+    if(trait == nullptr) {
+      throw std::invalid_argument("Can't pass a nullptr as a trait, this argument is required");
     }
     this->vertex_array_object = vertex_array_object;
   }
@@ -30,53 +34,69 @@ namespace Graphics {
     auto int_data = vertex_data.getCollapsedVectors<int>();
     auto unsigned_int_data = vertex_data.getCollapsedVectors<unsigned int>();
 
-    num_of_vertex_buffers = float_data.size() + double_data.size() + int_data.size() + unsigned_int_data.size();
+    num_of_vertex_buffers = (*trait)().size();
     vertex_buffer_objects = new unsigned int[num_of_vertex_buffers];
     glGenBuffers(num_of_vertex_buffers, vertex_buffer_objects);
-
-    int current_buffer = 0;
-    for(auto i : float_data) {
-      type_to_buffer_index[i.first] = current_buffer;
-      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
-      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(float), &(i.second)[0], GL_STATIC_DRAW);
-      glVertexAttribPointer((int)i.first, VertexData::DataWidth.at(i.first), GL_FLOAT, GL_FALSE, 0, 0);
-      glEnableVertexAttribArray((int)i.first);
-    }
-
-    for(auto i : double_data) {
-      type_to_buffer_index[i.first] = current_buffer;
-      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
-      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(double), &(i.second)[0], GL_STATIC_DRAW);
-      glVertexAttribPointer((int)i.first, VertexData::DataWidth.at(i.first), GL_DOUBLE, GL_FALSE, 0, 0);
-      glEnableVertexAttribArray((int)i.first);
-    }
-
-    for(auto i : int_data) {
-      type_to_buffer_index[i.first] = current_buffer;
-      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
-      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(int), &(i.second)[0], GL_STATIC_DRAW);
-      glVertexAttribPointer((int)i.first, VertexData::DataWidth.at(i.first), GL_INT, GL_FALSE, 0, 0);
-      glEnableVertexAttribArray((int)i.first);
-    }
-
-    for(auto i : unsigned_int_data) {
-      type_to_buffer_index[i.first] = current_buffer;
-      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
-      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(unsigned int), &(i.second)[0], GL_STATIC_DRAW);
-      glVertexAttribPointer((int)i.first, VertexData::DataWidth.at(i.first), GL_UNSIGNED_INT, GL_FALSE, 0, 0);
-      glEnableVertexAttribArray((int)i.first);
-    }
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     //Do this if we actually have indices
     if(vertex_data.getIndices().size() > 0) {
       glGenBuffers(1, &index_buffer_object);
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertex_data.getIndices().size() * sizeof(unsigned int), &(vertex_data.getIndices())[0], GL_STATIC_DRAW);
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    for(auto i : float_data) {
+      if((*trait)().count(i.first) > 0) {
+        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
+        glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(float), &(i.second)[0], GL_STATIC_DRAW);
+        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray((*trait)().at(i.first));
+      }
+      else {
+        LOG(WARNING)<<"Float data trying to be added that doesn't conform to trait.";
+      }
+    }
+
+    for(auto i : double_data) {
+      if((*trait)().count(i.first) > 0) {
+        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
+        glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(double), &(i.second)[0], GL_STATIC_DRAW);
+        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_DOUBLE, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray((*trait)().at(i.first));
+      }
+      else {
+        LOG(WARNING)<<"Double data trying to be added that doesn't conform to trait.";
+      }
+    }
+
+    for(auto i : int_data) {
+      if((*trait)().count(i.first) > 0) {
+        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
+        glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(int), &(i.second)[0], GL_STATIC_DRAW);
+        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_INT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray((*trait)().at(i.first));
+      }
+      else {
+        LOG(WARNING)<<"Int Data trying to be added that doesn't conform to trait.";
+      }
+    }
+
+    for(auto i : unsigned_int_data) {
+      if((*trait)().count(i.first) > 0) {
+        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
+        glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(unsigned int), &(i.second)[0], GL_STATIC_DRAW);
+        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_UNSIGNED_INT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray((*trait)().at(i.first));
+      }
+      else {
+        LOG(WARNING)<<"Unsigned int Data trying to be added that doesn't conform to trait.";
+      }
     }
 
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     initialized = true;
     LOG(INFO)<<"Renderable initialized!";
   }
@@ -96,16 +116,27 @@ namespace Graphics {
   const bool Renderable::isActive() const noexcept {
     return active;
   }
+
+  void Renderable::setShader(const unsigned int shader_object) {
+    if(!glIsProgram(shader_object))
+      throw Exceptions::InvalidShaderObjectException(shader_object);
+
+    this->shader_object = shader_object;
+  }
+
+  const unsigned int Renderable::getShaderBinding() const noexcept {
+    return shader_object;
+  }
   
   const unsigned int Renderable::getVertexArrayBinding() const noexcept {
     return vertex_array_object;
   }
 
   const unsigned int Renderable::getVertexBufferBinding(const VertexData::DATA_TYPE& data_type) {
-    if(type_to_buffer_index.find(data_type) == type_to_buffer_index.end())
+    if((*trait)().count(data_type) <= 0)
       throw std::invalid_argument("Renderable does not have data for data type.");
 
-    return vertex_buffer_objects[type_to_buffer_index[data_type]];
+    return vertex_buffer_objects[(*trait)().at(data_type)];
   }
 
   const unsigned int Renderable::getIndexBufferBinding() const noexcept {
@@ -116,13 +147,11 @@ namespace Graphics {
     if(!initialized) {
       throw Exceptions::RenderableNotInitializedException();
     }
-
+    
     glDeleteBuffers(num_of_vertex_buffers, vertex_buffer_objects);
     glDeleteBuffers(1, &index_buffer_object);
     glBindVertexArray(0);
     glDeleteVertexArrays(1, &vertex_array_object);
-
-    type_to_buffer_index.clear();
     initialized = false;
     active = false;
   }
@@ -133,19 +162,25 @@ namespace Graphics {
 
   const bool Renderable::onRender() {
     if(active) {
+      if(!glIsProgram(shader_object)) {
+        throw Exceptions::InvalidShaderObjectException(shader_object);
+      }
+      if(!glIsVertexArray(vertex_array_object)) {
+        throw Exceptions::InvalidVertexArrayException(vertex_array_object);
+      }
+
+      glUseProgram(shader_object);
       glBindVertexArray(vertex_array_object);
-      LOG(INFO)<<"Error 1: "<<glGetError();
       if(vertex_data.getIndexCount() > 0) {
-        LOG(INFO)<<"With indices";
         glDrawElements(GL_TRIANGLES, vertex_data.getIndexCount(), GL_UNSIGNED_INT, 0);
       }
       else {
-        LOG(INFO)<<"Without indices";
         glDrawArrays(GL_TRIANGLES, 0, vertex_data.getVertexCount());
       }
-
-      LOG(INFO)<<"Error 2: "<<glGetError();
+      return true;
     }
-    return true;
+    else {
+      return false;
+    }
   }
 }

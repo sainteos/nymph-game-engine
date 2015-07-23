@@ -4,6 +4,8 @@
 #include <map>
 #include "component.h"
 #include "vertex_data.h"
+#include "renderable_attribute_trait.h"
+#include "tile_attribute_trait.h"
 
 namespace Graphics {
   class Renderable : Component {
@@ -15,13 +17,14 @@ namespace Graphics {
       unsigned int num_of_vertex_buffers;
       unsigned int* vertex_buffer_objects;
       unsigned int index_buffer_object;
+      unsigned int shader_object;
 
-      std::map<VertexData::DATA_TYPE, unsigned int> type_to_buffer_index;
       VertexData vertex_data;
+      RenderableAttributeTrait* trait;
     public:
 
       Renderable() = delete;
-      Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data);
+      Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, RenderableAttributeTrait* trait = new TileAttributeTrait());
       ~Renderable();
       
       void initialize();
@@ -30,6 +33,9 @@ namespace Graphics {
       void setActive() noexcept;
       void setInactive() noexcept;
       const bool isActive() const noexcept;
+
+      void setShader(const unsigned int shader_object);
+      const unsigned int getShaderBinding() const noexcept;
 
       const unsigned int getVertexArrayBinding() const noexcept;
       const unsigned int getVertexBufferBinding(const VertexData::DATA_TYPE& data_type);

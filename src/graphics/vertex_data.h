@@ -74,6 +74,7 @@ namespace Graphics {
 
       void checkDivisibility(const unsigned int size);
       void checkMinimum(const unsigned int size);
+      void clearDataType(const DATA_TYPE& type);
     public:
       static const std::map<DATA_TYPE, unsigned char> DataWidth;
       
