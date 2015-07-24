@@ -10,6 +10,7 @@
 #include "graphics/renderable_attribute_trait.h"
 #include "exceptions/invalid_vertex_array_exception.h"
 #include "exceptions/invalid_shader_object_exception.h"
+#include "opengl_setup.h"
 
 class TestAttributeTrait : public Graphics::RenderableAttributeTrait {
   private:
@@ -41,18 +42,6 @@ class TestAttributeTrait : public Graphics::RenderableAttributeTrait {
     }
 
 };
-
-void setup_opengl() {
-  glfwInit();
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-  auto window = glfwCreateWindow(400, 400, "Renderable test window", nullptr, nullptr);
-  glfwMakeContextCurrent(window);
-  GLint attribs; 
-  glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &attribs);
-}
 
 Graphics::Renderable setup_renderable() {
   unsigned int good_binding;
@@ -116,25 +105,25 @@ const unsigned int setup_shader() {
     {
         fragColor = vec4(1.0, 0.0, 0.0, 1.0);
     })");
-    const char *vc_str = vertex_code.c_str();
-    const char *fc_str = fragment_code.c_str();
-    glShaderSource(vertex_shader, 1, &vc_str, new int[1] {(int)vertex_code.size()});
-    glShaderSource(fragment_shader, 1, &fc_str, new int[1] {(int)fragment_code.size()});
-    glCompileShader(vertex_shader);
-    GLint is_vert_compiled = 0;
-    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &is_vert_compiled);
-    glCompileShader(fragment_shader);
-    GLint is_frag_compiled = 0;
-    glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &is_frag_compiled);
-    glAttachShader(program_object, vertex_shader);
-    glAttachShader(program_object, fragment_shader);
-    glLinkProgram(program_object);
-    GLint is_linked = 0;
-    glGetProgramiv(program_object, GL_LINK_STATUS, (int *)&is_linked);
+  const char *vc_str = vertex_code.c_str();
+  const char *fc_str = fragment_code.c_str();
+  glShaderSource(vertex_shader, 1, &vc_str, new int[1] {(int)vertex_code.size()});
+  glShaderSource(fragment_shader, 1, &fc_str, new int[1] {(int)fragment_code.size()});
+  glCompileShader(vertex_shader);
+  GLint is_vert_compiled = 0;
+  glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &is_vert_compiled);
+  glCompileShader(fragment_shader);
+  GLint is_frag_compiled = 0;
+  glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &is_frag_compiled);
+  glAttachShader(program_object, vertex_shader);
+  glAttachShader(program_object, fragment_shader);
+  glLinkProgram(program_object);
+  GLint is_linked = 0;
+  glGetProgramiv(program_object, GL_LINK_STATUS, (int *)&is_linked);
 
-    LOG(INFO)<<"Test shader created!";
-    
-    return program_object;
+  LOG(INFO)<<"Test shader created!";
+  
+  return program_object;
 }
 
 Graphics::Renderable setup_renderable_with_data(bool multiple_vertex_data, bool use_index) {
@@ -170,11 +159,6 @@ Graphics::Renderable setup_initialized_renderable(bool multiple_vertex_data, boo
   renderable.setShader(setup_shader());
   renderable.initialize();
   return renderable;
-}
-
-
-void destroy_opengl() {
-  glfwTerminate();
 }
 
 SCENARIO("A renderable can't be constructed with an invalid vertex array object", "[renderable]") {
