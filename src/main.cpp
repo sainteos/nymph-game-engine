@@ -41,6 +41,7 @@ unsigned int generate_valid_vertex() {
     #version 330
 
     layout(location = 0)in vec3 vert;
+    uniform float dick;
 
     void main()
     {
@@ -87,6 +88,7 @@ int main(int argc, char** argv) {
   renderable_ptr->initialize();
   renderable_ptr->setActive();
   graphics.addRenderable(renderable_ptr);
+  //renderable_ptr->getShader()->setUniform<float>("dick", 10.0f);
 
   glViewport(0, 0, 800, 800);
   graphics.renderLoop();
