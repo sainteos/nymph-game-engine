@@ -88,3 +88,19 @@ SCENARIO("Shader can't be created with a valid fragment and invalid vertex shade
   }
   destroy_opengl();
 }
+
+SCENARIO("Valid shader can be bound") {
+  setup_opengl();
+  GIVEN("A valid, setup shader") {
+    Graphics::Shader shader(generate_valid_vertex(), generate_valid_fragment());
+    WHEN("use program is called") {
+      shader.useProgram();
+      THEN("There is no opengl error") {
+        REQUIRE(glGetError() == GL_NO_ERROR);
+      }
+      THEN("the currently bound program has the same id is the shader") {
+        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == shader.getHandle());
+      }
+    }
+  }
+}

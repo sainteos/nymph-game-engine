@@ -10,6 +10,7 @@
 #include "graphics/renderable.h"
 #include "graphics/vertex_data.h"
 #include "graphics/window_exit_functor.h"
+#include "graphics/tile_attribute_trait.h"
 #include "exceptions/system_already_initialized_exception.h"
 #include "exceptions/system_not_initialized_exception.h"
 #include "exceptions/system_already_running_exception.h"
@@ -23,7 +24,7 @@ RenderablePtr constructRenderable() {
   unsigned int good_binding;
   glGenVertexArrays(1, &good_binding);
   glBindVertexArray(good_binding);
-  RenderablePtr renderable(new Graphics::Renderable(good_binding, Graphics::VertexData(GL_TRIANGLES)));
+  RenderablePtr renderable = std::make_shared<Graphics::Renderable>(good_binding, Graphics::VertexData(GL_TRIANGLES));
   glBindVertexArray(0);
   return renderable;
 }

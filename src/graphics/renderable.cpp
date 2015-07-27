@@ -9,14 +9,45 @@
 #include "renderable.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, RenderableAttributeTrait* trait) : initialized(false), vertex_data(vertex_data), trait(trait) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, RenderableAttributeTrait* ra_trait) : initialized(false), vertex_data(vertex_data), trait(std::unique_ptr<RenderableAttributeTrait>(std::move(ra_trait))), shader(nullptr) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
     }
     if(trait == nullptr) {
-      throw std::invalid_argument("Can't pass a nullptr as a trait, this argument is required");
+      throw std::invalid_argument("Constructor: Can't pass a nullptr as a trait, this argument is required");
     }
     this->vertex_array_object = vertex_array_object;
+  }
+
+  Renderable::Renderable(Renderable&& renderable) : vertex_data(renderable.vertex_data) {
+    active = std::move(renderable.active);
+    initialized = std::move(renderable.initialized);
+    vertex_array_object = std::move(renderable.vertex_array_object);
+    num_of_vertex_buffers = std::move(renderable.num_of_vertex_buffers);
+    vertex_buffer_objects = std::move(renderable.vertex_buffer_objects);
+    index_buffer_object = std::move(renderable.index_buffer_object);
+    shader = renderable.shader;
+    trait.reset(std::move(renderable.trait.release()));
+    if(trait == nullptr) {
+      throw std::invalid_argument("Move constructor: Can't pass a nullptr as a trait, this argument is required");
+    }
+  }
+
+  Renderable& Renderable::operator=(Renderable&& renderable) { 
+    active = std::move(renderable.active);
+    initialized = std::move(renderable.initialized);
+    vertex_array_object = std::move(renderable.vertex_array_object);
+    num_of_vertex_buffers = std::move(renderable.num_of_vertex_buffers);
+    vertex_buffer_objects = std::move(renderable.vertex_buffer_objects);
+    index_buffer_object = std::move(renderable.index_buffer_object);
+    shader = renderable.shader;
+    vertex_data = renderable.vertex_data;
+    trait.reset(std::move(renderable.trait.release()));
+    if(trait == nullptr) {
+      throw std::invalid_argument("Move assignment: Can't pass a nullptr as a trait, this argument is required");
+    }
+
+    return *this;
   }
 
   Renderable::~Renderable() {
@@ -33,11 +64,12 @@ namespace Graphics {
     auto double_data = vertex_data.getCollapsedVectors<double>();
     auto int_data = vertex_data.getCollapsedVectors<int>();
     auto unsigned_int_data = vertex_data.getCollapsedVectors<unsigned int>();
-
+    
     num_of_vertex_buffers = (*trait)().size();
     vertex_buffer_objects = new unsigned int[num_of_vertex_buffers];
     glGenBuffers(num_of_vertex_buffers, vertex_buffer_objects);
 
+    
     //Do this if we actually have indices
     if(vertex_data.getIndices().size() > 0) {
       glGenBuffers(1, &index_buffer_object);
@@ -117,15 +149,12 @@ namespace Graphics {
     return active;
   }
 
-  void Renderable::setShader(const unsigned int shader_object) {
-    if(!glIsProgram(shader_object))
-      throw Exceptions::InvalidShaderObjectException(shader_object);
-
-    this->shader_object = shader_object;
+  void Renderable::setShader(const std::shared_ptr<Shader> shader_object) noexcept {
+    this->shader = shader_object;
   }
 
-  const unsigned int Renderable::getShaderBinding() const noexcept {
-    return shader_object;
+  const std::shared_ptr<Shader> Renderable::getShader() const noexcept {
+    return shader;
   }
   
   const unsigned int Renderable::getVertexArrayBinding() const noexcept {
@@ -154,6 +183,8 @@ namespace Graphics {
     glDeleteVertexArrays(1, &vertex_array_object);
     initialized = false;
     active = false;
+    //not this one's job to destroy shader
+    shader = nullptr;
   }
 
   const bool Renderable::onUpdate(const double delta) {
@@ -162,15 +193,19 @@ namespace Graphics {
 
   const bool Renderable::onRender() {
     if(active) {
-      if(!glIsProgram(shader_object)) {
-        throw Exceptions::InvalidShaderObjectException(shader_object);
-      }
       if(!glIsVertexArray(vertex_array_object)) {
         throw Exceptions::InvalidVertexArrayException(vertex_array_object);
       }
 
-      glUseProgram(shader_object);
       glBindVertexArray(vertex_array_object);
+
+      if(shader != nullptr) {
+        shader->useProgram();
+      }
+      else {
+        LOG(WARNING)<<"Trying to render renderable with nullptr shader";
+      }
+
       if(vertex_data.getIndexCount() > 0) {
         glDrawElements(GL_TRIANGLES, vertex_data.getIndexCount(), GL_UNSIGNED_INT, 0);
       }

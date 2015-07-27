@@ -10,6 +10,7 @@ namespace Graphics {
       Shader(const unsigned int vertex_program, const unsigned int fragment_program);
 
       const unsigned int getHandle() const noexcept;
+      void useProgram() const;
   };
 }
 

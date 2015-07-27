@@ -2,8 +2,10 @@
 #define RENDERABLE_H
 #include <glm/vec3.hpp>
 #include <map>
+#include <memory>
 #include "component.h"
 #include "vertex_data.h"
+#include "shader.h"
 #include "renderable_attribute_trait.h"
 #include "tile_attribute_trait.h"
 
@@ -17,14 +19,22 @@ namespace Graphics {
       unsigned int num_of_vertex_buffers;
       unsigned int* vertex_buffer_objects;
       unsigned int index_buffer_object;
-      unsigned int shader_object;
+      std::shared_ptr<Shader> shader;
 
       VertexData vertex_data;
-      RenderableAttributeTrait* trait;
+      std::unique_ptr<RenderableAttributeTrait> trait;
     public:
 
       Renderable() = delete;
-      Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, RenderableAttributeTrait* trait = new TileAttributeTrait());
+      Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, 
+                 RenderableAttributeTrait* trait = new TileAttributeTrait());
+      //Remove copy constructor and assignment
+      Renderable(const Renderable&) = delete;
+      Renderable operator=(Renderable&) = delete;
+
+      Renderable(Renderable&& renderable);
+      Renderable& operator=(Renderable&& renderable);
+
       ~Renderable();
       
       void initialize();
@@ -34,8 +44,8 @@ namespace Graphics {
       void setInactive() noexcept;
       const bool isActive() const noexcept;
 
-      void setShader(const unsigned int shader_object);
-      const unsigned int getShaderBinding() const noexcept;
+      void setShader(std::shared_ptr<Shader> shader_object) noexcept;
+      const std::shared_ptr<Shader> getShader() const noexcept;
 
       const unsigned int getVertexArrayBinding() const noexcept;
       const unsigned int getVertexBufferBinding(const VertexData::DATA_TYPE& data_type);

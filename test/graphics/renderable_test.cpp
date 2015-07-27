@@ -7,6 +7,7 @@
 #include <cstring>
 #include "graphics/renderable.h"
 #include "graphics/vertex_data.h"
+#include "graphics/shader.h"
 #include "graphics/renderable_attribute_trait.h"
 #include "exceptions/invalid_vertex_array_exception.h"
 #include "exceptions/invalid_shader_object_exception.h"
@@ -49,7 +50,7 @@ Graphics::Renderable setup_renderable() {
   glBindVertexArray(good_binding);
   glBindVertexArray(0);
 
-  Graphics::Renderable renderable(good_binding, Graphics::VertexData(GL_TRIANGLES), new TestAttributeTrait());
+  Graphics::Renderable renderable(good_binding, Graphics::VertexData(GL_TRIANGLES), new TestAttributeTrait);
   return renderable;
 }
 
@@ -81,10 +82,9 @@ std::vector<unsigned int> setup_random_index_data(const int indices, const int m
   return index_vec;
 }
 
-const unsigned int setup_shader() {
+std::shared_ptr<Graphics::Shader> setup_shader() {
   auto vertex_shader = glCreateShader(GL_VERTEX_SHADER);
   auto fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-  auto program_object = glCreateProgram();
   
   std::string vertex_code = std::string(R"(
     #version 330
@@ -115,15 +115,12 @@ const unsigned int setup_shader() {
   glCompileShader(fragment_shader);
   GLint is_frag_compiled = 0;
   glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &is_frag_compiled);
-  glAttachShader(program_object, vertex_shader);
-  glAttachShader(program_object, fragment_shader);
-  glLinkProgram(program_object);
-  GLint is_linked = 0;
-  glGetProgramiv(program_object, GL_LINK_STATUS, (int *)&is_linked);
+
+  auto shader = std::make_shared<Graphics::Shader>(vertex_shader, fragment_shader);
 
   LOG(INFO)<<"Test shader created!";
   
-  return program_object;
+  return shader;
 }
 
 Graphics::Renderable setup_renderable_with_data(bool multiple_vertex_data, bool use_index) {
@@ -149,7 +146,7 @@ Graphics::Renderable setup_renderable_with_data(bool multiple_vertex_data, bool 
     vertex_data.addIndices(setup_random_index_data(num_indices, max));
   }
 
-  Graphics::Renderable renderable = Graphics::Renderable(good_binding, vertex_data, new TestAttributeTrait());
+  Graphics::Renderable renderable = std::move(Graphics::Renderable(good_binding, vertex_data, new TestAttributeTrait));
   renderable.setActive();
   return renderable;
 }
@@ -168,7 +165,7 @@ SCENARIO("A renderable can't be constructed with an invalid vertex array object"
     WHEN("a renderable is constructed with it") {
       THEN("an invalid vertex array exception is thrown") {
         //gotta lambda that motherfucker
-        auto construct = [&]() {Graphics::Renderable renderable(shit_binding, Graphics::VertexData(GL_TRIANGLES), new TestAttributeTrait());};
+        auto construct = [&]() {Graphics::Renderable renderable(shit_binding, Graphics::VertexData(GL_TRIANGLES), new TestAttributeTrait);};
         REQUIRE_THROWS_AS(construct(), Exceptions::InvalidVertexArrayException);
       }
       THEN("there should be no opengl error") {
@@ -187,7 +184,7 @@ SCENARIO("A renderable can be constructed with a valid vertex array object", "[r
     glBindVertexArray(good_binding);
     glBindVertexArray(0);
     WHEN("a renderable is constructed with it") {
-      Graphics::Renderable renderable(good_binding, GL_TRIANGLES, new TestAttributeTrait());
+      Graphics::Renderable renderable(good_binding, GL_TRIANGLES, new TestAttributeTrait);
       THEN("the renderable is successfully created, and has the correct vertex array object handle") {
         REQUIRE(renderable.getVertexArrayBinding() == good_binding);
       }
@@ -308,24 +305,10 @@ SCENARIO("A renderable can be given a valid shader object handle") {
   GIVEN("A constructed renderable") {
     Graphics::Renderable renderable = setup_renderable();
     WHEN("setShader is called with a completely valid shader object") {
-      unsigned int shader_object = setup_shader();
+      auto shader_object = setup_shader();
       renderable.setShader(shader_object);
-      THEN("the renderable should contain the shader object as it was passed") {
-        REQUIRE(renderable.getShaderBinding() == shader_object);
-      }
-    }
-  }
-  destroy_opengl();
-}
-
-SCENARIO("A renderable cannot be given an invalid shader object handle") {
-  setup_opengl();
-  GIVEN("A constructed renderable") {
-    Graphics::Renderable renderable = setup_renderable();
-    unsigned int shader_object = 840399;
-    WHEN("setShader is called with an invalid shader object") {
-      THEN("it should throw a InvalidShaderObject exception") {
-        REQUIRE_THROWS_AS(renderable.setShader(shader_object), Exceptions::InvalidShaderObjectException);
+      THEN("the renderable's shader should be a valid program object") {
+        REQUIRE(glIsProgram(renderable.getShader()->getHandle()));
       }
     }
   }

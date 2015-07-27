@@ -80,6 +80,10 @@ namespace Graphics {
       
       VertexData() = delete;
       VertexData(const GLenum primitive_type);
+
+      VertexData(const VertexData& vertex_data);
+      VertexData operator=(const VertexData& vertex_data);
+      
       ~VertexData();
 
       void addIndices(const std::vector<unsigned int>& indices);

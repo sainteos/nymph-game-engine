@@ -6,6 +6,53 @@ namespace Graphics {
   VertexData::VertexData(GLenum primitive_type) : index_count(0), vertex_count(0), primitive_type(primitive_type) {
 
   }
+
+
+  VertexData::VertexData(const VertexData& vertex_data) {
+    float_vector1s = vertex_data.float_vector1s;
+    float_vector2s = vertex_data.float_vector2s;
+    float_vector3s = vertex_data.float_vector3s;
+    float_vector4s = vertex_data.float_vector4s;
+    double_vector1s = vertex_data.double_vector1s;
+    double_vector2s = vertex_data.double_vector2s;
+    double_vector3s = vertex_data.double_vector3s;
+    double_vector4s = vertex_data.double_vector4s;
+    int_vector1s = vertex_data.int_vector1s;
+    int_vector2s = vertex_data.int_vector2s;
+    int_vector3s = vertex_data.int_vector3s;
+    int_vector4s = vertex_data.int_vector4s;
+    unsigned_int_vector1s = vertex_data.unsigned_int_vector1s;
+    unsigned_int_vector2s = vertex_data.unsigned_int_vector2s;
+    unsigned_int_vector3s = vertex_data.unsigned_int_vector3s;
+    unsigned_int_vector4s = vertex_data.unsigned_int_vector4s;
+    indices = vertex_data.indices;
+    index_count = vertex_data.index_count;
+    primitive_type = vertex_data.primitive_type;
+  }
+
+  VertexData VertexData::operator=(const VertexData& vertex_data) {
+    float_vector1s = vertex_data.float_vector1s;
+    float_vector2s = vertex_data.float_vector2s;
+    float_vector3s = vertex_data.float_vector3s;
+    float_vector4s = vertex_data.float_vector4s;
+    double_vector1s = vertex_data.double_vector1s;
+    double_vector2s = vertex_data.double_vector2s;
+    double_vector3s = vertex_data.double_vector3s;
+    double_vector4s = vertex_data.double_vector4s;
+    int_vector1s = vertex_data.int_vector1s;
+    int_vector2s = vertex_data.int_vector2s;
+    int_vector3s = vertex_data.int_vector3s;
+    int_vector4s = vertex_data.int_vector4s;
+    unsigned_int_vector1s = vertex_data.unsigned_int_vector1s;
+    unsigned_int_vector2s = vertex_data.unsigned_int_vector2s;
+    unsigned_int_vector3s = vertex_data.unsigned_int_vector3s;
+    unsigned_int_vector4s = vertex_data.unsigned_int_vector4s;
+    indices = vertex_data.indices;
+    index_count = vertex_data.index_count;
+    primitive_type = vertex_data.primitive_type;
+    return *this;
+  }
+
   VertexData::~VertexData() {
   }
   //initialize the datawidth

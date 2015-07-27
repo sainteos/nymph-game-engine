@@ -8,6 +8,7 @@
 #include "graphics/renderable.h"
 #include "graphics/vertex_data.h"
 #include "graphics/window_exit_functor.h"
+#include "graphics/tile_attribute_trait.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
