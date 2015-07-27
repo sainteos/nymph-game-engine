@@ -86,6 +86,8 @@ namespace Graphics {
       
       ~VertexData();
 
+      //if indices are added first, then they are used for min and divisibility validation
+      //otherwise, vertices added are used for min and divisibility validation
       void addIndices(const std::vector<unsigned int>& indices);
 
       template<typename T>

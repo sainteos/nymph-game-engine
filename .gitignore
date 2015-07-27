@@ -7,3 +7,4 @@ Makefile
 *.make
 *.out
 .DS_Store
+*.trace

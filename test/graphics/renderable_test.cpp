@@ -329,6 +329,9 @@ SCENARIO("A renderable with one set of vertex data and no index data can be rend
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vertex_array_binding);
         REQUIRE(vertex_array_binding == renderable.getVertexArrayBinding());
       }
+      THEN("the current shader program binding is the same as the renderable's") {
+        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable.getShader()->getHandle());
+      }
     }
   }
   destroy_opengl();
@@ -347,6 +350,9 @@ SCENARIO("A renderable with multiple sets of vertex data and no index data can b
         int vertex_array_binding;
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vertex_array_binding);
         REQUIRE(vertex_array_binding == renderable.getVertexArrayBinding());
+      }
+      THEN("the current shader program binding is the same as the renderable's") {
+        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable.getShader()->getHandle());
       }
     }
   }
@@ -367,6 +373,9 @@ SCENARIO("A renderable with one set of vertex data and index data can be rendere
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vertex_array_binding);
         REQUIRE(vertex_array_binding == renderable.getVertexArrayBinding());
       }
+      THEN("the current shader program binding is the same as the renderable's") {
+        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable.getShader()->getHandle());
+      }
     }
   }
   destroy_opengl();
@@ -385,6 +394,9 @@ SCENARIO("A renderable with multiple sets of vertex data and index data can be r
         int vertex_array_binding;
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vertex_array_binding);
         REQUIRE(vertex_array_binding == renderable.getVertexArrayBinding());
+      }
+      THEN("the current shader program binding is the same as the renderable's") {
+        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable.getShader()->getHandle());
       }
     }
   }
