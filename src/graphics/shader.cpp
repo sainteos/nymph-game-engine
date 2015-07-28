@@ -5,21 +5,28 @@
 #include "shader.h"
 #include "exceptions/invalid_vertex_shader_exception.h"
 #include "exceptions/invalid_fragment_shader_exception.h"
+#include "exceptions/invalid_geometry_shader_exception.h"
 #include "exceptions/invalid_shader_program_exception.h"
 #include "exceptions/invalid_uniform_name_exception.h"
 
 namespace Graphics {
-  Shader::Shader(const unsigned int vertex_program, const unsigned int fragment_program) {
+  Shader::Shader(const unsigned int vertex_program, const unsigned int fragment_program, const unsigned int geometry_program) {
     if(!glIsShader(vertex_program)) {
       throw Exceptions::InvalidVertexShaderException(vertex_program);
     }
     if(!glIsShader(fragment_program)) {
       throw Exceptions::InvalidFragmentShaderException(fragment_program);
     }
+    if(geometry_program != 0 && !glIsShader(geometry_program)) {
+      throw Exceptions::InvalidGeometryShaderException(geometry_program);
+    }
     
     program_object = glCreateProgram();
     glAttachShader(program_object, vertex_program);
     glAttachShader(program_object, fragment_program);
+    if(geometry_program != 0)
+      glAttachShader(program_object, geometry_program);
+    
     glLinkProgram(program_object);
     if(!glIsProgram(program_object)) {
       throw Exceptions::InvalidShaderProgramException(program_object);

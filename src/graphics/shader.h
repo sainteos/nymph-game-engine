@@ -11,7 +11,7 @@ namespace Graphics {
       std::map<std::string, GLenum> name_to_type;
     public:
       Shader() = delete;
-      Shader(const unsigned int vertex_program, const unsigned int fragment_program);
+      Shader(const unsigned int vertex_program, const unsigned int fragment_program, const unsigned int geometry_program = 0);
 
       const unsigned int getHandle() const noexcept;
       void useProgram() const;
