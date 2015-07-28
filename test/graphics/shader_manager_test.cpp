@@ -1,6 +1,8 @@
 #include <catch.hpp>
 #include "opengl_setup.h"
 #include "graphics/shader_manager.h"
+#include "exceptions/invalid_filename_exception.h"
+#include "exceptions/invalid_shader_name_exception.h"
 
 SCENARIO("One shader can be loaded") {
   setup_opengl();
@@ -20,6 +22,14 @@ SCENARIO("One shader can be loaded") {
         REQUIRE_NOTHROW(manager["test_shader"]);
       }
     }
+  }
+  destroy_opengl();
+}
+
+SCENARIO("Two shaders can be loaded") {
+  setup_opengl();
+  GIVEN("A constructed shader manager") {
+    Graphics::ShaderManager manager;
     WHEN("loadShader is called with valid shader filenames") {
       bool success1 = manager.loadShader("test_shader", "test_shader.vert", "test_shader.frag", "test_shader.geom");
       bool success2 = manager.loadShader("test_shader2", "test_shader2.vert", "test_shader2.frag", "");
@@ -44,30 +54,13 @@ SCENARIO("One shader can be loaded") {
   destroy_opengl();
 }
 
-SCENARIO("Two shaders can be loaded") {
-  setup_opengl();
-  GIVEN("A constructed shader manager") {
-    WHEN("loadShader is called with two valid names") {
-      THEN("it should return true for sucess") {
-
-      }
-      THEN("it should be able to be gotten by square brackets") {
-
-      }
-      THEN("it should be able to be gotten by getShader") {
-
-      }
-    }
-  }
-  destroy_opengl();
-}
-
 SCENARIO("loadShader can't be called with invalid filenames") {
   setup_opengl();
   GIVEN("A constructed shader manager") {
+    Graphics::ShaderManager manager;
     WHEN("loadShader is called with an invalid name") {
       THEN("it should throw an InvalidFilename exception") {
-
+        REQUIRE_THROWS_AS(manager.loadShader("asdfasdfasdf"), Exceptions::InvalidFilenameException);
       }
     }
   }
@@ -77,9 +70,15 @@ SCENARIO("loadShader can't be called with invalid filenames") {
 SCENARIO("getShader and [] brackets with an invalid name") {
   setup_opengl();
   GIVEN("A constructed shader manager") {
+    Graphics::ShaderManager manager;
     WHEN("getShader is called with a name") {
       THEN("it should throw an InvalidShaderName exception") {
-
+        REQUIRE_THROWS_AS(manager.getShader("asdfasdfasdf"), Exceptions::InvalidShaderNameException);
+      }
+    }
+    WHEN("[] is called with a name") {
+      THEN("it should throw an InvalidShaderName exception") {
+        REQUIRE_THROWS_AS(manager.getShader("asdfasdfasdf"), Exceptions::InvalidShaderNameException);
       }
     }
   }
