@@ -5,6 +5,8 @@
 {\ttfamily \#include $<$exception$>$}\\*
 {\ttfamily \#include $<$stdexcept$>$}\\*
 {\ttfamily \#include $<$system\+\_\+error$>$}\\*
+{\ttfamily \#include $<$chrono$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
 {\ttfamily \#include \char`\"{}exceptions/system\+\_\+already\+\_\+initialized\+\_\+exception.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}exceptions/system\+\_\+not\+\_\+initialized\+\_\+exception.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}exceptions/system\+\_\+already\+\_\+running\+\_\+exception.\+h\char`\"{}}\\*
@@ -13,4 +15,11 @@
 \begin{DoxyCompactItemize}
 \item 
  \hyperlink{namespace_graphics}{Graphics}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{namespace_graphics_a635a9370417d23abc14af575c8ebe3e1}{Graphics\+::clock} = std\+::chrono\+::high\+\_\+resolution\+\_\+clock
+\item 
+using \hyperlink{namespace_graphics_ad7dba8f38ef1196be8cd743df4e2407c}{Graphics\+::microseconds} = std\+::chrono\+::microseconds
 \end{DoxyCompactItemize}

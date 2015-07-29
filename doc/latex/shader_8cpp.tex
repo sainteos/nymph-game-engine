@@ -1,0 +1,62 @@
+\hypertarget{shader_8cpp}{}\section{src/graphics/shader.cpp File Reference}
+\label{shader_8cpp}\index{src/graphics/shader.\+cpp@{src/graphics/shader.\+cpp}}
+{\ttfamily \#include $<$easylogging++.\+h$>$}\\*
+{\ttfamily \#include $<$Open\+G\+L/gl3.\+h$>$}\\*
+{\ttfamily \#include $<$glm/glm.\+hpp$>$}\\*
+{\ttfamily \#include $<$glm/gtc/type\+\_\+ptr.\+hpp$>$}\\*
+{\ttfamily \#include \char`\"{}shader.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/invalid\+\_\+vertex\+\_\+shader\+\_\+exception.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/invalid\+\_\+fragment\+\_\+shader\+\_\+exception.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/invalid\+\_\+geometry\+\_\+shader\+\_\+exception.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/invalid\+\_\+shader\+\_\+program\+\_\+exception.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/invalid\+\_\+uniform\+\_\+name\+\_\+exception.\+h\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespace_graphics}{Graphics}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_af654388f40d262319daa5a8225797dfd}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::vec2 $>$} (const std\+::string \&name, const glm\+::vec2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_aab1ffbb4d50f91f85d85e5121d639836}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::vec3 $>$} (const std\+::string \&name, const glm\+::vec3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a6578817bc4a214e7ae41ef8da2dcf791}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::vec4 $>$} (const std\+::string \&name, const glm\+::vec4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a61e4cb878defa0a77abbaeb2a330dfae}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::ivec2 $>$} (const std\+::string \&name, const glm\+::ivec2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_ab0f03955199219200abc2888a7c2bb6c}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::ivec3 $>$} (const std\+::string \&name, const glm\+::ivec3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a6907be695f98fa9dbf9f9f26c78f612b}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::ivec4 $>$} (const std\+::string \&name, const glm\+::ivec4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a3acfc53c36e7e856565d7c37e011368f}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::uvec2 $>$} (const std\+::string \&name, const glm\+::uvec2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a05a5218a49daf5984b1f52776318c402}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::uvec3 $>$} (const std\+::string \&name, const glm\+::uvec3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a3529c65e26aad587f61d342ae1272bab}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::uvec4 $>$} (const std\+::string \&name, const glm\+::uvec4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a99a2818818bf096f15647e6cb9fbebb7}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::bvec2 $>$} (const std\+::string \&name, const glm\+::bvec2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a467fa2192f8d4e2c4903c67d8b5e5d30}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::bvec3 $>$} (const std\+::string \&name, const glm\+::bvec3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_ae6eb1dca41798b9c77f3fd47b53a84cb}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::bvec4 $>$} (const std\+::string \&name, const glm\+::bvec4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_acb3a4f16a80727909d8a6a0c926be28c}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::mat2 $>$} (const std\+::string \&name, const glm\+::mat2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a3574d53c9806d0d059c7b6165318357a}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::mat3 $>$} (const std\+::string \&name, const glm\+::mat3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a64cdb46ea0bfcd3896a199ca6a27d443}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::mat4 $>$} (const std\+::string \&name, const glm\+::mat4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a848bdc81e9aa80ffaaf4b053045a3f0d}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::mat2x3 $>$} (const std\+::string \&name, const glm\+::mat2x3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a073d2a598a97005055e83c1c80ebeaf5}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::mat3x2 $>$} (const std\+::string \&name, const glm\+::mat3x2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a851e410c469dd50236635961129f1fe4}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::mat2x4 $>$} (const std\+::string \&name, const glm\+::mat2x4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_aa3b2c82914230d2dbdfadd65c5d7868c}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::mat4x2 $>$} (const std\+::string \&name, const glm\+::mat4x2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_aef1271c06e280a7e49a6047768dfa8cf}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::mat3x4 $>$} (const std\+::string \&name, const glm\+::mat3x4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_acb38f27a0c7604ee6c2aff30e8ac0af4}{Graphics\+::\+Shader\+::set\+Uniform$<$ glm\+::mat4x3 $>$} (const std\+::string \&name, const glm\+::mat4x3 \&data)
+\end{DoxyCompactItemize}

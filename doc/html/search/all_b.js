@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['_7egraphicssystem',['~GraphicsSystem',['../class_graphics_1_1_graphics_system.html#a6504df337bfae3a08abc8a63deb6df37',1,'Graphics::GraphicsSystem']]]
+  ['project_2dspero_2dassets',['project-spero-assets',['../md_project-spero-assets__r_e_a_d_m_e.html',1,'']]],
+  ['primitive_5ftype',['primitive_type',['../class_graphics_1_1_vertex_data.html#a3940832a3699c42ea2d9f4e0943653aa',1,'Graphics::VertexData']]],
+  ['program_5fobject',['program_object',['../class_graphics_1_1_shader.html#a8e40ca5eb9880e84c29366dbe626c081',1,'Graphics::Shader']]]
 ];

@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -87,26 +88,88 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">main.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;easylogging++.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;easylogging++.h&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;glm/vec3.hpp&gt;</code><br />
+<code>#include &lt;OpenGL/gl3.h&gt;</code><br />
+<code>#include &lt;glfw3.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="graphics__system_8h_source.html">graphics/graphics_system.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="renderable_8h_source.html">graphics/renderable.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="vertex__data_8h_source.html">graphics/vertex_data.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="window__exit__functor_8h_source.html">graphics/window_exit_functor.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tile__attribute__trait_8h_source.html">graphics/tile_attribute_trait.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="shader_8h_source.html">graphics/shader.h</a>&quot;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a2e25352eed9ac9fe7758aaf000575577"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a2e25352eed9ac9fe7758aaf000575577">ELPP_THREAD_SAFE</a></td></tr>
+<tr class="separator:a2e25352eed9ac9fe7758aaf000575577"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa071bd133dc40465b43d564673b3e714"><td class="memItemLeft" align="right" valign="top">INITIALIZE_EASYLOGGINGPP int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#aa071bd133dc40465b43d564673b3e714">main</a> (int argc, char **argv)</td></tr>
-<tr class="separator:aa071bd133dc40465b43d564673b3e714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeacc9dbd3a3374fd4e0856a3ecf7224d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#aeacc9dbd3a3374fd4e0856a3ecf7224d">generate_valid_fragment</a> ()</td></tr>
+<tr class="separator:aeacc9dbd3a3374fd4e0856a3ecf7224d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17049b22143dc4bbb930c2263ff88541"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a17049b22143dc4bbb930c2263ff88541">generate_valid_vertex</a> ()</td></tr>
+<tr class="separator:a17049b22143dc4bbb930c2263ff88541"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
+<tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aa071bd133dc40465b43d564673b3e714"></a>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a2e25352eed9ac9fe7758aaf000575577"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">INITIALIZE_EASYLOGGINGPP int main </td>
+          <td class="memname">#define ELPP_THREAD_SAFE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="aeacc9dbd3a3374fd4e0856a3ecf7224d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int generate_valid_fragment </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a17049b22143dc4bbb930c2263ff88541"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int generate_valid_vertex </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3c04138a5bfe5d72780bb7e82a18e627"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int main </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
@@ -130,7 +193,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 4 2015 16:42:42 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 16:54:53 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

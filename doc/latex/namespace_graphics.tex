@@ -4,4 +4,370 @@
 \begin{DoxyCompactItemize}
 \item 
 class \hyperlink{class_graphics_1_1_graphics_system}{Graphics\+System}
+\item 
+class \hyperlink{class_graphics_1_1_renderable}{Renderable}
+\item 
+class \hyperlink{class_graphics_1_1_renderable_attribute_trait}{Renderable\+Attribute\+Trait}
+\item 
+class \hyperlink{class_graphics_1_1_shader}{Shader}
+\item 
+class \hyperlink{class_graphics_1_1_shader_manager}{Shader\+Manager}
+\item 
+class \hyperlink{class_graphics_1_1_tile_attribute_trait}{Tile\+Attribute\+Trait}
+\item 
+class \hyperlink{class_graphics_1_1_vertex_data}{Vertex\+Data}
+\item 
+class \hyperlink{class_graphics_1_1_window_exit_functor}{Window\+Exit\+Functor}
 \end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{namespace_graphics_a635a9370417d23abc14af575c8ebe3e1}{clock} = std\+::chrono\+::high\+\_\+resolution\+\_\+clock
+\item 
+using \hyperlink{namespace_graphics_ad7dba8f38ef1196be8cd743df4e2407c}{microseconds} = std\+::chrono\+::microseconds
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_af654388f40d262319daa5a8225797dfd}{Shader\+::set\+Uniform$<$ glm\+::vec2 $>$} (const std\+::string \&name, const glm\+::vec2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_aab1ffbb4d50f91f85d85e5121d639836}{Shader\+::set\+Uniform$<$ glm\+::vec3 $>$} (const std\+::string \&name, const glm\+::vec3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a6578817bc4a214e7ae41ef8da2dcf791}{Shader\+::set\+Uniform$<$ glm\+::vec4 $>$} (const std\+::string \&name, const glm\+::vec4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a61e4cb878defa0a77abbaeb2a330dfae}{Shader\+::set\+Uniform$<$ glm\+::ivec2 $>$} (const std\+::string \&name, const glm\+::ivec2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_ab0f03955199219200abc2888a7c2bb6c}{Shader\+::set\+Uniform$<$ glm\+::ivec3 $>$} (const std\+::string \&name, const glm\+::ivec3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a6907be695f98fa9dbf9f9f26c78f612b}{Shader\+::set\+Uniform$<$ glm\+::ivec4 $>$} (const std\+::string \&name, const glm\+::ivec4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a3acfc53c36e7e856565d7c37e011368f}{Shader\+::set\+Uniform$<$ glm\+::uvec2 $>$} (const std\+::string \&name, const glm\+::uvec2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a05a5218a49daf5984b1f52776318c402}{Shader\+::set\+Uniform$<$ glm\+::uvec3 $>$} (const std\+::string \&name, const glm\+::uvec3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a3529c65e26aad587f61d342ae1272bab}{Shader\+::set\+Uniform$<$ glm\+::uvec4 $>$} (const std\+::string \&name, const glm\+::uvec4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a99a2818818bf096f15647e6cb9fbebb7}{Shader\+::set\+Uniform$<$ glm\+::bvec2 $>$} (const std\+::string \&name, const glm\+::bvec2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a467fa2192f8d4e2c4903c67d8b5e5d30}{Shader\+::set\+Uniform$<$ glm\+::bvec3 $>$} (const std\+::string \&name, const glm\+::bvec3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_ae6eb1dca41798b9c77f3fd47b53a84cb}{Shader\+::set\+Uniform$<$ glm\+::bvec4 $>$} (const std\+::string \&name, const glm\+::bvec4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_acb3a4f16a80727909d8a6a0c926be28c}{Shader\+::set\+Uniform$<$ glm\+::mat2 $>$} (const std\+::string \&name, const glm\+::mat2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a3574d53c9806d0d059c7b6165318357a}{Shader\+::set\+Uniform$<$ glm\+::mat3 $>$} (const std\+::string \&name, const glm\+::mat3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a64cdb46ea0bfcd3896a199ca6a27d443}{Shader\+::set\+Uniform$<$ glm\+::mat4 $>$} (const std\+::string \&name, const glm\+::mat4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a848bdc81e9aa80ffaaf4b053045a3f0d}{Shader\+::set\+Uniform$<$ glm\+::mat2x3 $>$} (const std\+::string \&name, const glm\+::mat2x3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a073d2a598a97005055e83c1c80ebeaf5}{Shader\+::set\+Uniform$<$ glm\+::mat3x2 $>$} (const std\+::string \&name, const glm\+::mat3x2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a851e410c469dd50236635961129f1fe4}{Shader\+::set\+Uniform$<$ glm\+::mat2x4 $>$} (const std\+::string \&name, const glm\+::mat2x4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_aa3b2c82914230d2dbdfadd65c5d7868c}{Shader\+::set\+Uniform$<$ glm\+::mat4x2 $>$} (const std\+::string \&name, const glm\+::mat4x2 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_aef1271c06e280a7e49a6047768dfa8cf}{Shader\+::set\+Uniform$<$ glm\+::mat3x4 $>$} (const std\+::string \&name, const glm\+::mat3x4 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_acb38f27a0c7604ee6c2aff30e8ac0af4}{Shader\+::set\+Uniform$<$ glm\+::mat4x3 $>$} (const std\+::string \&name, const glm\+::mat4x3 \&data)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a0b86c5945c56648758211fda30968b2e}{Vertex\+Data\+::add\+Vec$<$ glm\+::vec2 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::vec2 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a8956dc0cb691a72b51183671afc823e4}{Vertex\+Data\+::add\+Vec$<$ glm\+::vec3 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::vec3 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a44d4cb98e2159aabbf6a2745c4d1d70c}{Vertex\+Data\+::add\+Vec$<$ glm\+::vec4 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::vec4 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_aafa0ab9cb29bd02627c38261f9616815}{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec2 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::dvec2 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a17f019729a88fee51283bfac3e389d8c}{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec3 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::dvec3 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a49036388178e150a368a51224af14bf0}{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec4 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::dvec4 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_ae74009723a975e3c513caabed1179510}{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec2 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::ivec2 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a728451ca83bc1512de4a643a8a15f660}{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec3 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::ivec3 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_aac489b10c9c03300de07e4c8ad96199a}{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec4 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::ivec4 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a8e0e10ff44b8eb872a4de0d015f759b9}{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec2 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::uvec2 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a5dfa8775c3d6f76682cb395a554320f3}{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec3 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::uvec3 $>$ \&vec)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{namespace_graphics_a81860678084194869dbef9aaa3c085e1}{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec4 $>$} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ glm\+::uvec4 $>$ \&vec)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{namespace_graphics_a635a9370417d23abc14af575c8ebe3e1}{}\index{Graphics@{Graphics}!clock@{clock}}
+\index{clock@{clock}!Graphics@{Graphics}}
+\subsubsection[{clock}]{\setlength{\rightskip}{0pt plus 5cm}using {\bf Graphics\+::clock} = typedef std\+::chrono\+::high\+\_\+resolution\+\_\+clock}\label{namespace_graphics_a635a9370417d23abc14af575c8ebe3e1}
+\hypertarget{namespace_graphics_ad7dba8f38ef1196be8cd743df4e2407c}{}\index{Graphics@{Graphics}!microseconds@{microseconds}}
+\index{microseconds@{microseconds}!Graphics@{Graphics}}
+\subsubsection[{microseconds}]{\setlength{\rightskip}{0pt plus 5cm}using {\bf Graphics\+::microseconds} = typedef std\+::chrono\+::microseconds}\label{namespace_graphics_ad7dba8f38ef1196be8cd743df4e2407c}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespace_graphics_a99a2818818bf096f15647e6cb9fbebb7}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::bvec2 $>$@{Shader\+::set\+Uniform$<$ glm\+::bvec2 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::bvec2 $>$@{Shader\+::set\+Uniform$<$ glm\+::bvec2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::bvec2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::bvec2 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::bvec2 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a99a2818818bf096f15647e6cb9fbebb7}
+\hypertarget{namespace_graphics_a467fa2192f8d4e2c4903c67d8b5e5d30}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::bvec3 $>$@{Shader\+::set\+Uniform$<$ glm\+::bvec3 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::bvec3 $>$@{Shader\+::set\+Uniform$<$ glm\+::bvec3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::bvec3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::bvec3 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::bvec3 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a467fa2192f8d4e2c4903c67d8b5e5d30}
+\hypertarget{namespace_graphics_ae6eb1dca41798b9c77f3fd47b53a84cb}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::bvec4 $>$@{Shader\+::set\+Uniform$<$ glm\+::bvec4 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::bvec4 $>$@{Shader\+::set\+Uniform$<$ glm\+::bvec4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::bvec4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::bvec4 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::bvec4 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_ae6eb1dca41798b9c77f3fd47b53a84cb}
+\hypertarget{namespace_graphics_a61e4cb878defa0a77abbaeb2a330dfae}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::ivec2 $>$@{Shader\+::set\+Uniform$<$ glm\+::ivec2 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::ivec2 $>$@{Shader\+::set\+Uniform$<$ glm\+::ivec2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::ivec2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::ivec2 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::ivec2 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a61e4cb878defa0a77abbaeb2a330dfae}
+\hypertarget{namespace_graphics_ab0f03955199219200abc2888a7c2bb6c}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::ivec3 $>$@{Shader\+::set\+Uniform$<$ glm\+::ivec3 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::ivec3 $>$@{Shader\+::set\+Uniform$<$ glm\+::ivec3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::ivec3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::ivec3 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::ivec3 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_ab0f03955199219200abc2888a7c2bb6c}
+\hypertarget{namespace_graphics_a6907be695f98fa9dbf9f9f26c78f612b}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::ivec4 $>$@{Shader\+::set\+Uniform$<$ glm\+::ivec4 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::ivec4 $>$@{Shader\+::set\+Uniform$<$ glm\+::ivec4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::ivec4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::ivec4 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::ivec4 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a6907be695f98fa9dbf9f9f26c78f612b}
+\hypertarget{namespace_graphics_acb3a4f16a80727909d8a6a0c926be28c}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::mat2 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat2 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::mat2 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::mat2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::mat2 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::mat2 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_acb3a4f16a80727909d8a6a0c926be28c}
+\hypertarget{namespace_graphics_a848bdc81e9aa80ffaaf4b053045a3f0d}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::mat2x3 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat2x3 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::mat2x3 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat2x3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::mat2x3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::mat2x3 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::mat2x3 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a848bdc81e9aa80ffaaf4b053045a3f0d}
+\hypertarget{namespace_graphics_a851e410c469dd50236635961129f1fe4}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::mat2x4 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat2x4 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::mat2x4 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat2x4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::mat2x4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::mat2x4 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::mat2x4 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a851e410c469dd50236635961129f1fe4}
+\hypertarget{namespace_graphics_a3574d53c9806d0d059c7b6165318357a}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::mat3 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat3 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::mat3 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::mat3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::mat3 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::mat3 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a3574d53c9806d0d059c7b6165318357a}
+\hypertarget{namespace_graphics_a073d2a598a97005055e83c1c80ebeaf5}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::mat3x2 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat3x2 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::mat3x2 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat3x2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::mat3x2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::mat3x2 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::mat3x2 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a073d2a598a97005055e83c1c80ebeaf5}
+\hypertarget{namespace_graphics_aef1271c06e280a7e49a6047768dfa8cf}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::mat3x4 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat3x4 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::mat3x4 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat3x4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::mat3x4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::mat3x4 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::mat3x4 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_aef1271c06e280a7e49a6047768dfa8cf}
+\hypertarget{namespace_graphics_a64cdb46ea0bfcd3896a199ca6a27d443}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::mat4 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat4 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::mat4 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::mat4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::mat4 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::mat4 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a64cdb46ea0bfcd3896a199ca6a27d443}
+\hypertarget{namespace_graphics_aa3b2c82914230d2dbdfadd65c5d7868c}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::mat4x2 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat4x2 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::mat4x2 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat4x2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::mat4x2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::mat4x2 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::mat4x2 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_aa3b2c82914230d2dbdfadd65c5d7868c}
+\hypertarget{namespace_graphics_acb38f27a0c7604ee6c2aff30e8ac0af4}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::mat4x3 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat4x3 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::mat4x3 $>$@{Shader\+::set\+Uniform$<$ glm\+::mat4x3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::mat4x3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::mat4x3 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::mat4x3 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_acb38f27a0c7604ee6c2aff30e8ac0af4}
+\hypertarget{namespace_graphics_a3acfc53c36e7e856565d7c37e011368f}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::uvec2 $>$@{Shader\+::set\+Uniform$<$ glm\+::uvec2 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::uvec2 $>$@{Shader\+::set\+Uniform$<$ glm\+::uvec2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::uvec2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::uvec2 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::uvec2 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a3acfc53c36e7e856565d7c37e011368f}
+\hypertarget{namespace_graphics_a05a5218a49daf5984b1f52776318c402}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::uvec3 $>$@{Shader\+::set\+Uniform$<$ glm\+::uvec3 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::uvec3 $>$@{Shader\+::set\+Uniform$<$ glm\+::uvec3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::uvec3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::uvec3 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::uvec3 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a05a5218a49daf5984b1f52776318c402}
+\hypertarget{namespace_graphics_a3529c65e26aad587f61d342ae1272bab}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::uvec4 $>$@{Shader\+::set\+Uniform$<$ glm\+::uvec4 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::uvec4 $>$@{Shader\+::set\+Uniform$<$ glm\+::uvec4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::uvec4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::uvec4 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::uvec4 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a3529c65e26aad587f61d342ae1272bab}
+\hypertarget{namespace_graphics_af654388f40d262319daa5a8225797dfd}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::vec2 $>$@{Shader\+::set\+Uniform$<$ glm\+::vec2 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::vec2 $>$@{Shader\+::set\+Uniform$<$ glm\+::vec2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::vec2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::vec2 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::vec2 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_af654388f40d262319daa5a8225797dfd}
+\hypertarget{namespace_graphics_aab1ffbb4d50f91f85d85e5121d639836}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::vec3 $>$@{Shader\+::set\+Uniform$<$ glm\+::vec3 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::vec3 $>$@{Shader\+::set\+Uniform$<$ glm\+::vec3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::vec3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::vec3 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::vec3 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_aab1ffbb4d50f91f85d85e5121d639836}
+\hypertarget{namespace_graphics_a6578817bc4a214e7ae41ef8da2dcf791}{}\index{Graphics@{Graphics}!Shader\+::set\+Uniform$<$ glm\+::vec4 $>$@{Shader\+::set\+Uniform$<$ glm\+::vec4 $>$}}
+\index{Shader\+::set\+Uniform$<$ glm\+::vec4 $>$@{Shader\+::set\+Uniform$<$ glm\+::vec4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Shader\+::set\+Uniform$<$ glm\+::vec4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Shader\+::set\+Uniform}$<$ glm\+::vec4 $>$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const glm\+::vec4 \&}]{data}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a6578817bc4a214e7ae41ef8da2dcf791}
+\hypertarget{namespace_graphics_aafa0ab9cb29bd02627c38261f9616815}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::dvec2 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec2 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec2 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::dvec2 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::dvec2 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_aafa0ab9cb29bd02627c38261f9616815}
+\hypertarget{namespace_graphics_a17f019729a88fee51283bfac3e389d8c}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::dvec3 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec3 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec3 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::dvec3 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::dvec3 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a17f019729a88fee51283bfac3e389d8c}
+\hypertarget{namespace_graphics_a49036388178e150a368a51224af14bf0}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::dvec4 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec4 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec4 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::dvec4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::dvec4 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::dvec4 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a49036388178e150a368a51224af14bf0}
+\hypertarget{namespace_graphics_ae74009723a975e3c513caabed1179510}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::ivec2 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec2 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec2 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::ivec2 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::ivec2 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_ae74009723a975e3c513caabed1179510}
+\hypertarget{namespace_graphics_a728451ca83bc1512de4a643a8a15f660}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::ivec3 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec3 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec3 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::ivec3 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::ivec3 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a728451ca83bc1512de4a643a8a15f660}
+\hypertarget{namespace_graphics_aac489b10c9c03300de07e4c8ad96199a}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::ivec4 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec4 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec4 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::ivec4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::ivec4 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::ivec4 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_aac489b10c9c03300de07e4c8ad96199a}
+\hypertarget{namespace_graphics_a8e0e10ff44b8eb872a4de0d015f759b9}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::uvec2 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec2 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec2 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::uvec2 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::uvec2 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a8e0e10ff44b8eb872a4de0d015f759b9}
+\hypertarget{namespace_graphics_a5dfa8775c3d6f76682cb395a554320f3}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::uvec3 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec3 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec3 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::uvec3 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::uvec3 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a5dfa8775c3d6f76682cb395a554320f3}
+\hypertarget{namespace_graphics_a81860678084194869dbef9aaa3c085e1}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::uvec4 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec4 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec4 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::uvec4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::uvec4 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::uvec4 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a81860678084194869dbef9aaa3c085e1}
+\hypertarget{namespace_graphics_a0b86c5945c56648758211fda30968b2e}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::vec2 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::vec2 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::vec2 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::vec2 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::vec2 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::vec2 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::vec2 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a0b86c5945c56648758211fda30968b2e}
+\hypertarget{namespace_graphics_a8956dc0cb691a72b51183671afc823e4}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::vec3 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::vec3 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::vec3 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::vec3 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::vec3 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::vec3 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::vec3 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a8956dc0cb691a72b51183671afc823e4}
+\hypertarget{namespace_graphics_a44d4cb98e2159aabbf6a2745c4d1d70c}{}\index{Graphics@{Graphics}!Vertex\+Data\+::add\+Vec$<$ glm\+::vec4 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::vec4 $>$}}
+\index{Vertex\+Data\+::add\+Vec$<$ glm\+::vec4 $>$@{Vertex\+Data\+::add\+Vec$<$ glm\+::vec4 $>$}!Graphics@{Graphics}}
+\subsubsection[{Vertex\+Data\+::add\+Vec$<$ glm\+::vec4 $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Graphics\+::\+Vertex\+Data\+::add\+Vec}$<$ glm\+::vec4 $>$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}}]{data\+\_\+type, }
+\item[{const std\+::vector$<$ glm\+::vec4 $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)}\label{namespace_graphics_a44d4cb98e2159aabbf6a2745c4d1d70c}

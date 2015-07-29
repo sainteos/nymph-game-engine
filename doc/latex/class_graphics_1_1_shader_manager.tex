@@ -1,0 +1,113 @@
+\hypertarget{class_graphics_1_1_shader_manager}{}\section{Graphics\+:\+:Shader\+Manager Class Reference}
+\label{class_graphics_1_1_shader_manager}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+
+
+{\ttfamily \#include $<$shader\+\_\+manager.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_graphics_1_1_shader_manager_ac5f14e07d3b7bffa4b4cf63d9c4fb3a7}{Shader\+Manager} ()
+\item 
+\hyperlink{class_graphics_1_1_shader_manager_a1846632f26cfcb4907844716f23e0540}{$\sim$\+Shader\+Manager} ()
+\item 
+const bool \hyperlink{class_graphics_1_1_shader_manager_a29234192f964ad1d9da812e8ceab008f}{load\+Shader} (const std\+::string \&name, const bool geometry\+\_\+shader=false)
+\item 
+const bool \hyperlink{class_graphics_1_1_shader_manager_a0cd014938152e36fd81717dadd7e390a}{load\+Shader} (const std\+::string \&name, const std\+::string \&vertex\+\_\+filename, const std\+::string \&fragment\+\_\+filename, const std\+::string \&geometry\+\_\+filename)
+\item 
+const std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_shader}{Shader} $>$ \hyperlink{class_graphics_1_1_shader_manager_a4a3c0f369be06a34a8e44ad8a41862a4}{operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&name) const 
+\item 
+const std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_shader}{Shader} $>$ \hyperlink{class_graphics_1_1_shader_manager_a8c82c5f8d73dbb9ec3038b2db71add41}{get\+Shader} (const std\+::string \&name) const 
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static char const $\ast$ \hyperlink{class_graphics_1_1_shader_manager_abb954de5b5b6bc56d568e20b478f0712}{V\+E\+R\+T\+E\+X\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N} = \char`\"{}.vert\char`\"{}
+\item 
+static char const $\ast$ \hyperlink{class_graphics_1_1_shader_manager_aa3ad06b558229fe4d4d4ebbabfe9ca48}{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N} = \char`\"{}.frag\char`\"{}
+\item 
+static char const $\ast$ \hyperlink{class_graphics_1_1_shader_manager_a66cf54024f2f1e51db6f5afccbcba67e}{G\+E\+O\+M\+E\+T\+R\+Y\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N} = \char`\"{}.geom\char`\"{}
+\item 
+static char const $\ast$ \hyperlink{class_graphics_1_1_shader_manager_ad3cef3602a2a0205064bdff0ac9437a8}{S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+R\+Y} = \char`\"{}./shaders/\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ std\+::string, std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_shader}{Shader} $>$ $>$ \hyperlink{class_graphics_1_1_shader_manager_a5cada9e001d0b2ead2bfb7a0ef37be66}{shaders\+\_\+to\+\_\+names}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_graphics_1_1_shader_manager_ac5f14e07d3b7bffa4b4cf63d9c4fb3a7}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!Shader\+Manager@{Shader\+Manager}}
+\index{Shader\+Manager@{Shader\+Manager}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{Shader\+Manager}]{\setlength{\rightskip}{0pt plus 5cm}Graphics\+::\+Shader\+Manager\+::\+Shader\+Manager (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_shader_manager_ac5f14e07d3b7bffa4b4cf63d9c4fb3a7}
+\hypertarget{class_graphics_1_1_shader_manager_a1846632f26cfcb4907844716f23e0540}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!````~Shader\+Manager@{$\sim$\+Shader\+Manager}}
+\index{````~Shader\+Manager@{$\sim$\+Shader\+Manager}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{$\sim$\+Shader\+Manager}]{\setlength{\rightskip}{0pt plus 5cm}Graphics\+::\+Shader\+Manager\+::$\sim$\+Shader\+Manager (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_shader_manager_a1846632f26cfcb4907844716f23e0540}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_graphics_1_1_shader_manager_a8c82c5f8d73dbb9ec3038b2db71add41}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!get\+Shader@{get\+Shader}}
+\index{get\+Shader@{get\+Shader}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{get\+Shader}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::shared\+\_\+ptr$<$ {\bf Shader} $>$ Graphics\+::\+Shader\+Manager\+::get\+Shader (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+) const}\label{class_graphics_1_1_shader_manager_a8c82c5f8d73dbb9ec3038b2db71add41}
+\hypertarget{class_graphics_1_1_shader_manager_a29234192f964ad1d9da812e8ceab008f}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!load\+Shader@{load\+Shader}}
+\index{load\+Shader@{load\+Shader}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{load\+Shader}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Shader\+Manager\+::load\+Shader (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const bool}]{geometry\+\_\+shader = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_shader_manager_a29234192f964ad1d9da812e8ceab008f}
+\hypertarget{class_graphics_1_1_shader_manager_a0cd014938152e36fd81717dadd7e390a}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!load\+Shader@{load\+Shader}}
+\index{load\+Shader@{load\+Shader}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{load\+Shader}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Shader\+Manager\+::load\+Shader (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{vertex\+\_\+filename, }
+\item[{const std\+::string \&}]{fragment\+\_\+filename, }
+\item[{const std\+::string \&}]{geometry\+\_\+filename}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_shader_manager_a0cd014938152e36fd81717dadd7e390a}
+\hypertarget{class_graphics_1_1_shader_manager_a4a3c0f369be06a34a8e44ad8a41862a4}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::shared\+\_\+ptr$<$ {\bf Shader} $>$ Graphics\+::\+Shader\+Manager\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+) const}\label{class_graphics_1_1_shader_manager_a4a3c0f369be06a34a8e44ad8a41862a4}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_graphics_1_1_shader_manager_aa3ad06b558229fe4d4d4ebbabfe9ca48}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N@{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N}}
+\index{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N@{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N}]{\setlength{\rightskip}{0pt plus 5cm}char const $\ast$ Graphics\+::\+Shader\+Manager\+::\+F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N = \char`\"{}.frag\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}\label{class_graphics_1_1_shader_manager_aa3ad06b558229fe4d4d4ebbabfe9ca48}
+\hypertarget{class_graphics_1_1_shader_manager_a66cf54024f2f1e51db6f5afccbcba67e}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!G\+E\+O\+M\+E\+T\+R\+Y\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N@{G\+E\+O\+M\+E\+T\+R\+Y\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N}}
+\index{G\+E\+O\+M\+E\+T\+R\+Y\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N@{G\+E\+O\+M\+E\+T\+R\+Y\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{G\+E\+O\+M\+E\+T\+R\+Y\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N}]{\setlength{\rightskip}{0pt plus 5cm}char const $\ast$ Graphics\+::\+Shader\+Manager\+::\+G\+E\+O\+M\+E\+T\+R\+Y\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N = \char`\"{}.geom\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}\label{class_graphics_1_1_shader_manager_a66cf54024f2f1e51db6f5afccbcba67e}
+\hypertarget{class_graphics_1_1_shader_manager_ad3cef3602a2a0205064bdff0ac9437a8}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+R\+Y@{S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+R\+Y}}
+\index{S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+R\+Y@{S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+R\+Y}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+R\+Y}]{\setlength{\rightskip}{0pt plus 5cm}char const $\ast$ Graphics\+::\+Shader\+Manager\+::\+S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+R\+Y = \char`\"{}./shaders/\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}\label{class_graphics_1_1_shader_manager_ad3cef3602a2a0205064bdff0ac9437a8}
+\hypertarget{class_graphics_1_1_shader_manager_a5cada9e001d0b2ead2bfb7a0ef37be66}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!shaders\+\_\+to\+\_\+names@{shaders\+\_\+to\+\_\+names}}
+\index{shaders\+\_\+to\+\_\+names@{shaders\+\_\+to\+\_\+names}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{shaders\+\_\+to\+\_\+names}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$std\+::string, std\+::shared\+\_\+ptr$<${\bf Shader}$>$ $>$ Graphics\+::\+Shader\+Manager\+::shaders\+\_\+to\+\_\+names\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_shader_manager_a5cada9e001d0b2ead2bfb7a0ef37be66}
+\hypertarget{class_graphics_1_1_shader_manager_abb954de5b5b6bc56d568e20b478f0712}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!V\+E\+R\+T\+E\+X\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N@{V\+E\+R\+T\+E\+X\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N}}
+\index{V\+E\+R\+T\+E\+X\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N@{V\+E\+R\+T\+E\+X\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{V\+E\+R\+T\+E\+X\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N}]{\setlength{\rightskip}{0pt plus 5cm}char const $\ast$ Graphics\+::\+Shader\+Manager\+::\+V\+E\+R\+T\+E\+X\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N = \char`\"{}.vert\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}\label{class_graphics_1_1_shader_manager_abb954de5b5b6bc56d568e20b478f0712}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/graphics/\hyperlink{shader__manager_8h}{shader\+\_\+manager.\+h}\item 
+src/graphics/\hyperlink{shader__manager_8cpp}{shader\+\_\+manager.\+cpp}\end{DoxyCompactItemize}

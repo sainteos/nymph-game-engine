@@ -1,20 +1,58 @@
 \hypertarget{main_8cpp}{}\section{src/main.cpp File Reference}
 \label{main_8cpp}\index{src/main.\+cpp@{src/main.\+cpp}}
-{\ttfamily \#include $<$iostream$>$}\\*
 {\ttfamily \#include $<$easylogging++.\+h$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$glm/vec3.\+hpp$>$}\\*
+{\ttfamily \#include $<$Open\+G\+L/gl3.\+h$>$}\\*
+{\ttfamily \#include $<$glfw3.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}graphics/graphics\+\_\+system.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}graphics/renderable.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}graphics/vertex\+\_\+data.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}graphics/window\+\_\+exit\+\_\+functor.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}graphics/tile\+\_\+attribute\+\_\+trait.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}graphics/shader.\+h\char`\"{}}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{main_8cpp_a2e25352eed9ac9fe7758aaf000575577}{E\+L\+P\+P\+\_\+\+T\+H\+R\+E\+A\+D\+\_\+\+S\+A\+F\+E}
+\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-I\+N\+I\+T\+I\+A\+L\+I\+Z\+E\+\_\+\+E\+A\+S\+Y\+L\+O\+G\+G\+I\+N\+G\+P\+P int \hyperlink{main_8cpp_aa071bd133dc40465b43d564673b3e714}{main} (int argc, char $\ast$$\ast$argv)
+unsigned int \hyperlink{main_8cpp_aeacc9dbd3a3374fd4e0856a3ecf7224d}{generate\+\_\+valid\+\_\+fragment} ()
+\item 
+unsigned int \hyperlink{main_8cpp_a17049b22143dc4bbb930c2263ff88541}{generate\+\_\+valid\+\_\+vertex} ()
+\item 
+int \hyperlink{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
 \end{DoxyCompactItemize}
 
 
+\subsection{Macro Definition Documentation}
+\hypertarget{main_8cpp_a2e25352eed9ac9fe7758aaf000575577}{}\index{main.\+cpp@{main.\+cpp}!E\+L\+P\+P\+\_\+\+T\+H\+R\+E\+A\+D\+\_\+\+S\+A\+F\+E@{E\+L\+P\+P\+\_\+\+T\+H\+R\+E\+A\+D\+\_\+\+S\+A\+F\+E}}
+\index{E\+L\+P\+P\+\_\+\+T\+H\+R\+E\+A\+D\+\_\+\+S\+A\+F\+E@{E\+L\+P\+P\+\_\+\+T\+H\+R\+E\+A\+D\+\_\+\+S\+A\+F\+E}!main.\+cpp@{main.\+cpp}}
+\subsubsection[{E\+L\+P\+P\+\_\+\+T\+H\+R\+E\+A\+D\+\_\+\+S\+A\+F\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\+L\+P\+P\+\_\+\+T\+H\+R\+E\+A\+D\+\_\+\+S\+A\+F\+E}\label{main_8cpp_a2e25352eed9ac9fe7758aaf000575577}
+
+
 \subsection{Function Documentation}
-\hypertarget{main_8cpp_aa071bd133dc40465b43d564673b3e714}{}\index{main.\+cpp@{main.\+cpp}!main@{main}}
+\hypertarget{main_8cpp_aeacc9dbd3a3374fd4e0856a3ecf7224d}{}\index{main.\+cpp@{main.\+cpp}!generate\+\_\+valid\+\_\+fragment@{generate\+\_\+valid\+\_\+fragment}}
+\index{generate\+\_\+valid\+\_\+fragment@{generate\+\_\+valid\+\_\+fragment}!main.\+cpp@{main.\+cpp}}
+\subsubsection[{generate\+\_\+valid\+\_\+fragment}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int generate\+\_\+valid\+\_\+fragment (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{main_8cpp_aeacc9dbd3a3374fd4e0856a3ecf7224d}
+\hypertarget{main_8cpp_a17049b22143dc4bbb930c2263ff88541}{}\index{main.\+cpp@{main.\+cpp}!generate\+\_\+valid\+\_\+vertex@{generate\+\_\+valid\+\_\+vertex}}
+\index{generate\+\_\+valid\+\_\+vertex@{generate\+\_\+valid\+\_\+vertex}!main.\+cpp@{main.\+cpp}}
+\subsubsection[{generate\+\_\+valid\+\_\+vertex}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int generate\+\_\+valid\+\_\+vertex (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{main_8cpp_a17049b22143dc4bbb930c2263ff88541}
+\hypertarget{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{}\index{main.\+cpp@{main.\+cpp}!main@{main}}
 \index{main@{main}!main.\+cpp@{main.\+cpp}}
-\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}I\+N\+I\+T\+I\+A\+L\+I\+Z\+E\+\_\+\+E\+A\+S\+Y\+L\+O\+G\+G\+I\+N\+G\+P\+P int main (
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
 \begin{DoxyParamCaption}
 \item[{int}]{argc, }
 \item[{char $\ast$$\ast$}]{argv}
 \end{DoxyParamCaption}
-)}\label{main_8cpp_aa071bd133dc40465b43d564673b3e714}
+)}\label{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}

@@ -1,0 +1,70 @@
+\hypertarget{shader__test_8cpp}{}\section{test/graphics/shader\+\_\+test.cpp File Reference}
+\label{shader__test_8cpp}\index{test/graphics/shader\+\_\+test.\+cpp@{test/graphics/shader\+\_\+test.\+cpp}}
+{\ttfamily \#include $<$easylogging++.\+h$>$}\\*
+{\ttfamily \#include $<$catch.\+hpp$>$}\\*
+{\ttfamily \#include $<$Open\+G\+L/gl3.\+h$>$}\\*
+{\ttfamily \#include $<$glfw3.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}graphics/shader.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/invalid\+\_\+fragment\+\_\+shader\+\_\+exception.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}exceptions/invalid\+\_\+vertex\+\_\+shader\+\_\+exception.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}opengl\+\_\+setup.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \hyperlink{shader__test_8cpp_aeacc9dbd3a3374fd4e0856a3ecf7224d}{generate\+\_\+valid\+\_\+fragment} ()
+\item 
+unsigned int \hyperlink{shader__test_8cpp_a17049b22143dc4bbb930c2263ff88541}{generate\+\_\+valid\+\_\+vertex} ()
+\item 
+\hyperlink{shader__test_8cpp_a4684447656d51e5d220545d6f1e06c20}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}Shader can be created with a valid fragment and valid vertex shader\char`\"{})
+\item 
+\hyperlink{shader__test_8cpp_af216ced1b637c7d33554ab3179f8951b}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}Shader can\textquotesingle{}t be created with an invalid fragment and valid vertex shader\char`\"{})
+\item 
+\hyperlink{shader__test_8cpp_a94ea0dd37c6622dace7915e13a81c14a}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}Shader can\textquotesingle{}t be created with a valid fragment and invalid vertex shader\char`\"{})
+\item 
+\hyperlink{shader__test_8cpp_a4276b43c55c7ed685590c38639b5432d}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}Valid shader can be bound\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{shader__test_8cpp_aeacc9dbd3a3374fd4e0856a3ecf7224d}{}\index{shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}!generate\+\_\+valid\+\_\+fragment@{generate\+\_\+valid\+\_\+fragment}}
+\index{generate\+\_\+valid\+\_\+fragment@{generate\+\_\+valid\+\_\+fragment}!shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}}
+\subsubsection[{generate\+\_\+valid\+\_\+fragment}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int generate\+\_\+valid\+\_\+fragment (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{shader__test_8cpp_aeacc9dbd3a3374fd4e0856a3ecf7224d}
+\hypertarget{shader__test_8cpp_a17049b22143dc4bbb930c2263ff88541}{}\index{shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}!generate\+\_\+valid\+\_\+vertex@{generate\+\_\+valid\+\_\+vertex}}
+\index{generate\+\_\+valid\+\_\+vertex@{generate\+\_\+valid\+\_\+vertex}!shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}}
+\subsubsection[{generate\+\_\+valid\+\_\+vertex}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int generate\+\_\+valid\+\_\+vertex (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{shader__test_8cpp_a17049b22143dc4bbb930c2263ff88541}
+\hypertarget{shader__test_8cpp_a4684447656d51e5d220545d6f1e06c20}{}\index{shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}Shader can be created with a valid fragment and valid vertex shader\char`\"{}}]{}
+\end{DoxyParamCaption}
+)}\label{shader__test_8cpp_a4684447656d51e5d220545d6f1e06c20}
+\hypertarget{shader__test_8cpp_af216ced1b637c7d33554ab3179f8951b}{}\index{shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}Shader can\textquotesingle{}t be created with an invalid fragment and valid vertex shader\char`\"{}}]{}
+\end{DoxyParamCaption}
+)}\label{shader__test_8cpp_af216ced1b637c7d33554ab3179f8951b}
+\hypertarget{shader__test_8cpp_a94ea0dd37c6622dace7915e13a81c14a}{}\index{shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}Shader can\textquotesingle{}t be created with a valid fragment and invalid vertex shader\char`\"{}}]{}
+\end{DoxyParamCaption}
+)}\label{shader__test_8cpp_a94ea0dd37c6622dace7915e13a81c14a}
+\hypertarget{shader__test_8cpp_a4276b43c55c7ed685590c38639b5432d}{}\index{shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
+\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!shader\+\_\+test.\+cpp@{shader\+\_\+test.\+cpp}}
+\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}Valid shader can be bound\char`\"{}}]{}
+\end{DoxyParamCaption}
+)}\label{shader__test_8cpp_a4276b43c55c7ed685590c38639b5432d}

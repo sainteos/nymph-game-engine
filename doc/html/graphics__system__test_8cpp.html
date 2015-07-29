@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -87,29 +88,42 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">graphics_system_test.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;catch.hpp&gt;</code><br />
+<div class="textblock"><code>#include &lt;easylogging++.h&gt;</code><br />
+<code>#include &lt;catch.hpp&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;random&gt;</code><br />
 <code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;OpenGL/gl3.h&gt;</code><br />
+<code>#include &lt;glfw3.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="graphics__system_8h_source.html">graphics/graphics_system.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="renderable_8h_source.html">graphics/renderable.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="vertex__data_8h_source.html">graphics/vertex_data.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="window__exit__functor_8h_source.html">graphics/window_exit_functor.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tile__attribute__trait_8h_source.html">graphics/tile_attribute_trait.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="system__already__initialized__exception_8h_source.html">exceptions/system_already_initialized_exception.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="system__not__initialized__exception_8h_source.html">exceptions/system_not_initialized_exception.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="system__already__running__exception_8h_source.html">exceptions/system_already_running_exception.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="system__not__running__exception_8h_source.html">exceptions/system_not_running_exception.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="invalid__vertex__array__exception_8h_source.html">exceptions/invalid_vertex_array_exception.h</a>&quot;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:abf7941403e8dd3db88bd66f0d775555a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphics__system__test_8cpp.html#abf7941403e8dd3db88bd66f0d775555a">RenderablePtr</a> = std::shared_ptr&lt; <a class="el" href="class_graphics_1_1_renderable.html">Graphics::Renderable</a> &gt;</td></tr>
+<tr class="separator:abf7941403e8dd3db88bd66f0d775555a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:afeb3ce1ce648dadcf4c64857a658a388"><td class="memItemLeft" align="right" valign="top"><a class="el" href="graphics__system__test_8cpp.html#abf7941403e8dd3db88bd66f0d775555a">RenderablePtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphics__system__test_8cpp.html#afeb3ce1ce648dadcf4c64857a658a388">constructRenderable</a> ()</td></tr>
+<tr class="separator:afeb3ce1ce648dadcf4c64857a658a388"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb8214ec493a3617eff027e38c555270"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphics__system__test_8cpp.html#acb8214ec493a3617eff027e38c555270">SCENARIO</a> (&quot;the graphics system can be initialized&quot;,&quot;[graphics]&quot;)</td></tr>
 <tr class="separator:acb8214ec493a3617eff027e38c555270"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a619d22d7ee59d4dd8aa92242138a0fc9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphics__system__test_8cpp.html#a619d22d7ee59d4dd8aa92242138a0fc9">SCENARIO</a> (&quot;the graphics system can be started&quot;,&quot;[graphics]&quot;)</td></tr>
-<tr class="separator:a619d22d7ee59d4dd8aa92242138a0fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b892292334b40f1188cee0306e28bf3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphics__system__test_8cpp.html#a0b892292334b40f1188cee0306e28bf3">SCENARIO</a> (&quot;the graphics system can be stopped&quot;,&quot;[graphics]&quot;)</td></tr>
-<tr class="separator:a0b892292334b40f1188cee0306e28bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac224d651330e1a5717d34b10b27ad273"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphics__system__test_8cpp.html#ac224d651330e1a5717d34b10b27ad273">SCENARIO</a> (&quot;the graphics system can be destroyed&quot;,&quot;[graphics]&quot;)</td></tr>
 <tr class="separator:ac224d651330e1a5717d34b10b27ad273"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2199b10682bd556118f1ae71ce7c743"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphics__system__test_8cpp.html#ac2199b10682bd556118f1ae71ce7c743">SCENARIO</a> (&quot;the graphics system can have objects for rendering added to it&quot;,&quot;[graphics]&quot;)</td></tr>
@@ -119,7 +133,35 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e4a8d64e1fca8af44728f0e3c6a5d59"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphics__system__test_8cpp.html#a7e4a8d64e1fca8af44728f0e3c6a5d59">SCENARIO</a> (&quot;the window's width and height can be retrieved&quot;)</td></tr>
 <tr class="separator:a7e4a8d64e1fca8af44728f0e3c6a5d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="abf7941403e8dd3db88bd66f0d775555a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="graphics__system__test_8cpp.html#abf7941403e8dd3db88bd66f0d775555a">RenderablePtr</a> =  std::shared_ptr&lt;<a class="el" href="class_graphics_1_1_renderable.html">Graphics::Renderable</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="afeb3ce1ce648dadcf4c64857a658a388"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="graphics__system__test_8cpp.html#abf7941403e8dd3db88bd66f0d775555a">RenderablePtr</a> constructRenderable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="acb8214ec493a3617eff027e38c555270"></a>
 <div class="memitem">
 <div class="memproto">
@@ -128,58 +170,6 @@ Functions</h2></td></tr>
           <td class="memname">SCENARIO </td>
           <td>(</td>
           <td class="paramtype">&quot;the graphics system can be initialized&quot;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&quot;&quot;&#160;</td>
-          <td class="paramname">[graphics]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a619d22d7ee59d4dd8aa92242138a0fc9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">SCENARIO </td>
-          <td>(</td>
-          <td class="paramtype">&quot;the graphics system can be started&quot;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&quot;&quot;&#160;</td>
-          <td class="paramname">[graphics]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a0b892292334b40f1188cee0306e28bf3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">SCENARIO </td>
-          <td>(</td>
-          <td class="paramtype">&quot;the graphics system can be stopped&quot;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -295,7 +285,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 4 2015 16:42:42 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 16:54:53 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

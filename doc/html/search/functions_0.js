@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['destroy',['destroy',['../class_graphics_1_1_graphics_system.html#a629d2fe80f761f4f4004ba74ad458e3f',1,'Graphics::GraphicsSystem']]]
+  ['addindices',['addIndices',['../class_graphics_1_1_vertex_data.html#a9d7dfbf44faa4ebeeb052d9a49ec72c4',1,'Graphics::VertexData']]],
+  ['addrenderable',['addRenderable',['../class_graphics_1_1_graphics_system.html#ac35c2d3d32e1264b8daad6d59c3aba57',1,'Graphics::GraphicsSystem']]],
+  ['addvec',['addVec',['../class_graphics_1_1_vertex_data.html#a1432af05a48b67a06c711910bb495c6e',1,'Graphics::VertexData::addVec(DATA_TYPE data_type, const std::vector&lt; T &gt; &amp;vec)'],['../class_graphics_1_1_vertex_data.html#a3c16815abdf03faa1789af508f378b4a',1,'Graphics::VertexData::addVec(VertexData::DATA_TYPE data_type, const std::vector&lt; float &gt; &amp;vec)'],['../class_graphics_1_1_vertex_data.html#a718710cb36c77da3ce7202fbf78f9dcf',1,'Graphics::VertexData::addVec(VertexData::DATA_TYPE data_type, const std::vector&lt; double &gt; &amp;vec)'],['../class_graphics_1_1_vertex_data.html#addc04a692143dbd59ef3eb1b9107afc9',1,'Graphics::VertexData::addVec(VertexData::DATA_TYPE data_type, const std::vector&lt; int &gt; &amp;vec)'],['../class_graphics_1_1_vertex_data.html#ad5b58302a2e592db88a896f8e8cbd83d',1,'Graphics::VertexData::addVec(VertexData::DATA_TYPE data_type, const std::vector&lt; unsigned int &gt; &amp;vec)']]]
 ];

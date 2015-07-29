@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['initialize',['initialize',['../class_graphics_1_1_graphics_system.html#aab302ea4f5ee819d582d4eba5c17787b',1,'Graphics::GraphicsSystem']]],
-  ['isinitialized',['isInitialized',['../class_graphics_1_1_graphics_system.html#a1bd027633e66df5a65f2df33952d1dbd',1,'Graphics::GraphicsSystem']]],
-  ['isrunning',['isRunning',['../class_graphics_1_1_graphics_system.html#a44c11ee970c78093a60cb2c3125a7764',1,'Graphics::GraphicsSystem']]]
+  ['destroy',['destroy',['../class_graphics_1_1_graphics_system.html#a629d2fe80f761f4f4004ba74ad458e3f',1,'Graphics::GraphicsSystem::destroy()'],['../class_graphics_1_1_renderable.html#af1b5b7707b67d9224e67604c4368b527',1,'Graphics::Renderable::destroy()']]],
+  ['destroy_5fopengl',['destroy_opengl',['../opengl__setup_8cpp.html#a50d817bbbc4aa77b5337735cf5130013',1,'destroy_opengl():&#160;opengl_setup.cpp'],['../opengl__setup_8h.html#a50d817bbbc4aa77b5337735cf5130013',1,'destroy_opengl():&#160;opengl_setup.cpp']]]
 ];
