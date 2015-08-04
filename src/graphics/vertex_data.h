@@ -76,7 +76,7 @@ namespace Graphics {
       void checkMinimum(const unsigned int size);
       void clearDataType(const DATA_TYPE& type);
     public:
-      static const std::map<DATA_TYPE, unsigned char> DataWidth;
+      static const std::map<DATA_TYPE, unsigned int> DataWidth;
       
       VertexData() = delete;
       VertexData(const GLenum primitive_type);

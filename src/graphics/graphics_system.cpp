@@ -5,6 +5,7 @@
 #include <system_error>
 #include <chrono>
 #include <string>
+#include <IL/il.h>
 #include "exceptions/system_already_initialized_exception.h"
 #include "exceptions/system_not_initialized_exception.h"
 #include "exceptions/system_already_running_exception.h"
@@ -54,6 +55,13 @@ namespace Graphics {
     this->max_fps = max_fps;
 
     glfwMakeContextCurrent(window);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glClearDepth(0.0f);
+    ilInit();
 
     initialized = true;
     LOG(INFO)<<"Graphics system initialized!";
@@ -139,7 +147,7 @@ namespace Graphics {
     std::chrono::time_point<std::chrono::high_resolution_clock> last_time = clock::now();
     auto current_time = clock::now();
     auto delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0, 0.0, 1.0, 1.0);
     while(running) {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       renderables_mutex.lock();
@@ -158,7 +166,6 @@ namespace Graphics {
           std::this_thread::sleep_for(microseconds(1));
         }
       }
-      glFlush();
       glfwSwapBuffers(window);
       //update the current fps
       current_time = clock::now();

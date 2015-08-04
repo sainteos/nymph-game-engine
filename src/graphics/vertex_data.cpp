@@ -56,7 +56,7 @@ namespace Graphics {
   VertexData::~VertexData() {
   }
   //initialize the datawidth
-  const std::map<Graphics::VertexData::DATA_TYPE, unsigned char> VertexData::DataWidth = std::map<Graphics::VertexData::DATA_TYPE, unsigned char>  {
+  const std::map<Graphics::VertexData::DATA_TYPE, unsigned int> VertexData::DataWidth = std::map<Graphics::VertexData::DATA_TYPE, unsigned int>  {
         {Graphics::VertexData::DATA_TYPE::GEOMETRY, 3},
         {Graphics::VertexData::DATA_TYPE::TEX_COORDS, 2},
         {Graphics::VertexData::DATA_TYPE::NORMAL_COORDS, 3},

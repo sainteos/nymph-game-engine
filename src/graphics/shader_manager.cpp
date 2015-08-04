@@ -4,6 +4,7 @@
 #include "shader_manager.h"
 #include "exceptions/invalid_filename_exception.h"
 #include "exceptions/invalid_shader_name_exception.h"
+#include "exceptions/shader_compilation_exception.h"
 
 namespace Graphics {
   char const* ShaderManager::VERTEX_EXTENSION = ".vert";
@@ -64,13 +65,18 @@ namespace Graphics {
 
       glShaderSource(vertex_shader, 1, &vc_str, new int[1] {(int)vertex_string.size()});
       glCompileShader(vertex_shader);
+      
+      if(!checkCompilation(vertex_shader)) {
+        logShaderInfoLog(vertex_shader);
+        throw Exceptions::ShaderCompilationException(vertex_filename);
+      }
     }
     if(fragment_filename != "" && !fragment_file.is_open()) {
       throw Exceptions::InvalidFilenameException(fragment_filename);
     }
     else if(fragment_filename != "" && fragment_file.is_open()) {
       LOG(INFO)<<fragment_filename<<" shader file loaded.";
-      fragment_shader = glCreateShader(GL_VERTEX_SHADER);
+      fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
       const char *fc_str;
       std::string fragment_string;
       fragment_file.seekg(0, std::ios::end);   
@@ -85,6 +91,10 @@ namespace Graphics {
 
       glShaderSource(fragment_shader, 1, &fc_str, new int[1] {(int)fragment_string.size()});
       glCompileShader(fragment_shader);
+      if(!checkCompilation(fragment_shader)) {
+        logShaderInfoLog(fragment_shader);
+        throw Exceptions::ShaderCompilationException(fragment_filename);
+      }
     }
     if(geometry_filename != "" && !geometry_file.is_open()) {
       throw Exceptions::InvalidFilenameException(geometry_filename);
@@ -106,6 +116,10 @@ namespace Graphics {
 
       glShaderSource(geometry_shader, 1, &gc_str, new int[1] {(int)geometry_string.size()});
       glCompileShader(geometry_shader);
+      if(!checkCompilation(geometry_shader)) {
+        logShaderInfoLog(geometry_shader);
+        throw Exceptions::ShaderCompilationException(geometry_filename);
+      }
     }
 
     try {
@@ -128,6 +142,21 @@ namespace Graphics {
       throw Exceptions::InvalidShaderNameException(name);
     } 
     return shaders_to_names.at(name);
+  }
+
+  const bool ShaderManager::checkCompilation(const unsigned int& shader_object) {
+    int status = 0;
+    glGetShaderiv(shader_object, GL_COMPILE_STATUS, &status);
+    return (bool)status;
+  }
+
+  void ShaderManager::logShaderInfoLog(const unsigned int& shader_object) {
+    int max_length = 0;
+    glGetShaderiv(shader_object, GL_INFO_LOG_LENGTH, &max_length);
+    std::vector<char> info_log(max_length);
+    glGetShaderInfoLog(shader_object, max_length, &max_length, &info_log[0]);
+    std::string output(info_log.begin(), info_log.end());
+    LOG(INFO)<<output;
   }
 
 }

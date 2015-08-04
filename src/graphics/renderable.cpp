@@ -1,8 +1,10 @@
 #include <easylogging++.h>
 #include <OpenGL/gl3.h>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/ext.hpp>
 #include "exceptions/invalid_vertex_array_exception.h"
 #include "exceptions/renderable_not_initialized_exception.h"
 #include "exceptions/invalid_shader_object_exception.h"
@@ -58,7 +60,6 @@ namespace Graphics {
 
   void Renderable::initialize() {
     LOG(INFO)<<"Renderable initializing...";
-    glBindVertexArray(vertex_array_object);
 
     auto float_data = vertex_data.getCollapsedVectors<float>();
     auto double_data = vertex_data.getCollapsedVectors<double>();
@@ -81,8 +82,6 @@ namespace Graphics {
       if((*trait)().count(i.first) > 0) {
         glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
         glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(float), &(i.second)[0], GL_STATIC_DRAW);
-        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray((*trait)().at(i.first));
       }
       else {
         LOG(WARNING)<<"Float data trying to be added that doesn't conform to trait.";
@@ -93,8 +92,6 @@ namespace Graphics {
       if((*trait)().count(i.first) > 0) {
         glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
         glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(double), &(i.second)[0], GL_STATIC_DRAW);
-        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_DOUBLE, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray((*trait)().at(i.first));
       }
       else {
         LOG(WARNING)<<"Double data trying to be added that doesn't conform to trait.";
@@ -105,8 +102,6 @@ namespace Graphics {
       if((*trait)().count(i.first) > 0) {
         glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
         glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(int), &(i.second)[0], GL_STATIC_DRAW);
-        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_INT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray((*trait)().at(i.first));
       }
       else {
         LOG(WARNING)<<"Int Data trying to be added that doesn't conform to trait.";
@@ -117,17 +112,47 @@ namespace Graphics {
       if((*trait)().count(i.first) > 0) {
         glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
         glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(unsigned int), &(i.second)[0], GL_STATIC_DRAW);
-        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_UNSIGNED_INT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray((*trait)().at(i.first));
       }
       else {
         LOG(WARNING)<<"Unsigned int Data trying to be added that doesn't conform to trait.";
       }
     }
-
-    glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    glBindVertexArray(vertex_array_object);
+    for(auto i : float_data) {
+      if((*trait)().count(i.first) > 0) {
+        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
+        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray((*trait)().at(i.first));
+      }
+    }
+    for(auto i : double_data) {
+      if((*trait)().count(i.first) > 0) {
+        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
+        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_DOUBLE, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray((*trait)().at(i.first));
+      }
+    }
+    for(auto i : int_data) {
+      if((*trait)().count(i.first) > 0) {
+        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
+        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_INT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray((*trait)().at(i.first));
+      }
+    }
+    for(auto i : unsigned_int_data) {
+      if((*trait)().count(i.first) > 0) {
+        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
+        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_UNSIGNED_INT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray((*trait)().at(i.first));
+      }
+    }
+    if(vertex_data.getIndices().size() > 0) {
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
+    }
+    glBindVertexArray(0);
 
     initialized = true;
     LOG(INFO)<<"Renderable initialized!";
@@ -155,6 +180,14 @@ namespace Graphics {
 
   const std::shared_ptr<Shader> Renderable::getShader() const noexcept {
     return shader;
+  }
+
+  void Renderable::addTexture(std::shared_ptr<BaseTexture> texture_object) noexcept {
+    textures.push_back(texture_object);
+  }
+
+  const std::vector<std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
+    return textures;
   }
   
   const unsigned int Renderable::getVertexArrayBinding() const noexcept {
@@ -196,11 +229,14 @@ namespace Graphics {
       if(!glIsVertexArray(vertex_array_object)) {
         throw Exceptions::InvalidVertexArrayException(vertex_array_object);
       }
-
       glBindVertexArray(vertex_array_object);
 
       if(shader != nullptr) {
         shader->useProgram();
+        for(auto& texture : textures) {
+          shader->setUniform<int>(texture->getName(), texture->getTextureUnit());
+          texture->bind();
+        }
       }
       else {
         LOG(WARNING)<<"Trying to render renderable with nullptr shader";

@@ -28,6 +28,20 @@ namespace Graphics {
       glAttachShader(program_object, geometry_program);
     
     glLinkProgram(program_object);
+    int is_linked = 0;
+    glGetProgramiv(program_object, GL_LINK_STATUS, &is_linked);
+    if(!is_linked)
+    {
+      int max_length = 0;
+      glGetProgramiv(program_object, GL_INFO_LOG_LENGTH, &max_length);
+      std::vector<char> info_log(max_length);
+      glGetProgramInfoLog(program_object, max_length, &max_length, &info_log[0]);
+      std::string output(info_log.begin(), info_log.end());
+      LOG(ERROR)<<output;
+      glDeleteProgram(program_object);
+
+      throw Exceptions::InvalidShaderProgramException(program_object);
+    }
     if(!glIsProgram(program_object)) {
       throw Exceptions::InvalidShaderProgramException(program_object);
     }
@@ -43,6 +57,7 @@ namespace Graphics {
       int location = glGetUniformLocation(program_object, name);
       name_to_location[std::string(name)] = location;
       name_to_type[std::string(name)] = type;
+      LOG(INFO)<<"Uniform found: "<<name;
     }
   }
 

@@ -6,6 +6,7 @@
 #include "component.h"
 #include "vertex_data.h"
 #include "shader.h"
+#include "base_texture.h"
 #include "renderable_attribute_trait.h"
 #include "tile_attribute_trait.h"
 
@@ -20,9 +21,14 @@ namespace Graphics {
       unsigned int* vertex_buffer_objects;
       unsigned int index_buffer_object;
       std::shared_ptr<Shader> shader;
+      std::vector<std::shared_ptr<BaseTexture>> textures;
 
       VertexData vertex_data;
       std::unique_ptr<RenderableAttributeTrait> trait;
+
+      //binds the texture
+      //sets the texture sampler on the shader (don't forget to do this)
+      void bindTextures();
     public:
 
       Renderable() = delete;
@@ -46,6 +52,9 @@ namespace Graphics {
 
       void setShader(std::shared_ptr<Shader> shader_object) noexcept;
       const std::shared_ptr<Shader> getShader() const noexcept;
+
+      void addTexture(std::shared_ptr<BaseTexture> texture_object) noexcept;
+      const std::vector<std::shared_ptr<BaseTexture>> getTextures() const noexcept;
 
       const unsigned int getVertexArrayBinding() const noexcept;
       const unsigned int getVertexBufferBinding(const VertexData::DATA_TYPE& data_type);

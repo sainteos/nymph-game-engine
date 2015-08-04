@@ -8,6 +8,8 @@ namespace Graphics {
   class ShaderManager {
     private:
       std::map<std::string, std::shared_ptr<Shader>> shaders_to_names;
+      const bool checkCompilation(const unsigned int& shader_object);
+      void logShaderInfoLog(const unsigned int& shader_object);
     public:
       static char const* VERTEX_EXTENSION;
       static char const* FRAGMENT_EXTENSION;
