@@ -1,6 +1,6 @@
 #ifndef RENDERABLE_H
 #define RENDERABLE_H
-#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
 #include <map>
 #include <memory>
 #include "component.h"
@@ -25,6 +25,8 @@ namespace Graphics {
 
       VertexData vertex_data;
       std::unique_ptr<RenderableAttributeTrait> trait;
+
+      glm::mat4 transform;
 
       //binds the texture
       //sets the texture sampler on the shader (don't forget to do this)
@@ -59,6 +61,9 @@ namespace Graphics {
       const unsigned int getVertexArrayBinding() const noexcept;
       const unsigned int getVertexBufferBinding(const VertexData::DATA_TYPE& data_type);
       const unsigned int getIndexBufferBinding() const noexcept;
+
+      void setTransform(const glm::mat4& transformation_matrix) noexcept;
+      const glm::mat4 getTransform() const noexcept;
       
       void destroy();
       /**

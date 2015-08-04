@@ -2,6 +2,7 @@
 #include <easylogging++.h>
 #include <iostream>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <OpenGL/gl3.h>
 #include <glfw3.h>
 #include "graphics/graphics_system.h"
@@ -66,6 +67,7 @@ int main(int argc, char** argv) {
   renderable_ptr->initialize();
   renderable_ptr->setActive();
   graphics.addRenderable(renderable_ptr);
+  renderable_ptr->setTransform(glm::translate(glm::mat4(1.0), glm::vec3(0.3, -0.3, 0.0)));
   glViewport(0, 0, 800, 800);
   graphics.renderLoop();
   graphics.destroy();

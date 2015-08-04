@@ -11,7 +11,7 @@
 #include "renderable.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, RenderableAttributeTrait* ra_trait) : initialized(false), vertex_data(vertex_data), trait(std::unique_ptr<RenderableAttributeTrait>(std::move(ra_trait))), shader(nullptr) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, RenderableAttributeTrait* ra_trait) : initialized(false), vertex_data(vertex_data), trait(std::unique_ptr<RenderableAttributeTrait>(std::move(ra_trait))), shader(nullptr), transform(glm::mat4(1.0)) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
     }
@@ -30,6 +30,7 @@ namespace Graphics {
     index_buffer_object = std::move(renderable.index_buffer_object);
     shader = renderable.shader;
     trait.reset(std::move(renderable.trait.release()));
+    transform = std::move(renderable.transform);
     if(trait == nullptr) {
       throw std::invalid_argument("Move constructor: Can't pass a nullptr as a trait, this argument is required");
     }
@@ -45,6 +46,7 @@ namespace Graphics {
     shader = renderable.shader;
     vertex_data = renderable.vertex_data;
     trait.reset(std::move(renderable.trait.release()));
+    transform = std::move(renderable.transform);
     if(trait == nullptr) {
       throw std::invalid_argument("Move assignment: Can't pass a nullptr as a trait, this argument is required");
     }
@@ -205,6 +207,14 @@ namespace Graphics {
     return index_buffer_object;
   }
 
+  void Renderable::setTransform(const glm::mat4& transformation_matrix) noexcept {
+    transform = transformation_matrix;
+  }
+
+  const glm::mat4 Renderable::getTransform() const noexcept {
+    return transform;
+  }
+
   void Renderable::destroy() {
     if(!initialized) {
       throw Exceptions::RenderableNotInitializedException();
@@ -233,6 +243,7 @@ namespace Graphics {
 
       if(shader != nullptr) {
         shader->useProgram();
+        shader->setUniform<glm::mat4>("transform", transform);
         for(auto& texture : textures) {
           shader->setUniform<int>(texture->getName(), texture->getTextureUnit());
           texture->bind();
