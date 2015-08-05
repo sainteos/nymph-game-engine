@@ -65,7 +65,7 @@ namespace Graphics {
       void setTransform(const glm::mat4& transformation_matrix) noexcept;
       const glm::mat4 getTransform() const noexcept;
       
-      void destroy();
+      virtual void destroy() override;
       /**
        * @brief [brief description]
        * @details [long description]
