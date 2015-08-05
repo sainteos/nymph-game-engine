@@ -3,6 +3,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/ext.hpp>
 #include <OpenGL/gl3.h>
 #include <glfw3.h>
 #include "graphics/graphics_system.h"
@@ -13,6 +14,7 @@
 #include "graphics/shader.h"
 #include "graphics/base_texture.h"
 #include "graphics/shader_manager.h"
+#include "transform.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -56,18 +58,32 @@ int main(int argc, char** argv) {
   std::shared_ptr<BaseTexture> texture_ptr = std::make_shared<BaseTexture>("sample", GL_TEXTURE_2D, 0);
   texture_ptr->load("./test/textures/test1.png");
   std::shared_ptr<Renderable> renderable_ptr(new Renderable(good_binding, vert_data));
+  std::shared_ptr<Renderable> child_renderable = std::make_shared<Renderable>(good_binding, vert_data);
   try {
     renderable_ptr->setShader(shader_manager["simple_texture"]);
+    child_renderable->setShader(shader_manager["simple_texture"]);
   }
   catch(std::exception& e) {
     LOG(ERROR)<<e.what();
     return 0;
   }
+  child_renderable->addTexture(texture_ptr);
   renderable_ptr->addTexture(texture_ptr);
+  child_renderable->initialize();
   renderable_ptr->initialize();
+  child_renderable->setActive();
   renderable_ptr->setActive();
   graphics.addRenderable(renderable_ptr);
-  renderable_ptr->setTransform(glm::translate(glm::mat4(1.0), glm::vec3(0.3, -0.3, 0.0)));
+  graphics.addRenderable(child_renderable);
+  std::shared_ptr<Transform> transform = std::make_shared<Transform>();
+  transform->rotate(45., glm::vec3(0.0, 0.0, 1.0));
+  transform->translate(glm::vec3(-0.3, 0.3, 0.0));
+  transform->scale(glm::vec2(0.3, 1.3));
+  std::shared_ptr<Transform> child = std::make_shared<Transform>();
+  transform->addChild(child);
+  child->translate(glm::vec3(0.3, -0.3, 0.0));
+  renderable_ptr->setTransform(transform->getAbsoluteTransformationMatrix());
+  child_renderable->setTransform(child->getAbsoluteTransformationMatrix());
   glViewport(0, 0, 800, 800);
   graphics.renderLoop();
   graphics.destroy();

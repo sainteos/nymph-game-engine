@@ -12,7 +12,6 @@ class Transform : public Component, public std::enable_shared_from_this<Transfor
     std::shared_ptr<Transform> parent;
     std::list<std::shared_ptr<Transform>> children;
 
-    glm::mat4 local_matrix;
     glm::mat4 absolute_matrix;
 
     glm::vec3 local_translation;
