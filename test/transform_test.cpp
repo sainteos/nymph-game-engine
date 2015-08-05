@@ -60,7 +60,7 @@ SCENARIO("transform with child transform will propogate transformations to child
     WHEN("rotate is called") {
       transform->rotate(57.0, glm::vec3(0.0, 1.0, 0.0));
       THEN("the child is also rotated this amount") {
-        REQUIRE(child->getAbsoluteRotation() == glm::quat(57.0f, glm::vec3(0.0, 1.0, 0.0)));
+        REQUIRE(child->getAbsoluteRotation() == glm::angleAxis(57.0f, glm::vec3(0.0, 1.0, 0.0)));
       }
     }
     WHEN("scale is called") {
@@ -90,7 +90,7 @@ SCENARIO("transform with child transform will propogate transformations to child
       transform->rotate(44.0, glm::vec3(1.0, 1.0, 0.0));
       THEN("the children are also rotated this amount") {
         for(auto& child : children) {
-          REQUIRE(child->getAbsoluteRotation() == glm::quat(44.0f, glm::vec3(1.0, 1.0, 0.0)));
+          REQUIRE(child->getAbsoluteRotation() == glm::angleAxis(44.0f, glm::vec3(1.0, 1.0, 0.0)));
         }
       }
     }
