@@ -11,7 +11,7 @@
 #include "renderable.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, RenderableAttributeTrait* ra_trait) : initialized(false), vertex_data(vertex_data), trait(std::unique_ptr<RenderableAttributeTrait>(std::move(ra_trait))), shader(nullptr), transform(glm::mat4(1.0)) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : initialized(false), vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr), transform(std::make_shared<Transform>()) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
     }
@@ -30,7 +30,8 @@ namespace Graphics {
     index_buffer_object = std::move(renderable.index_buffer_object);
     shader = renderable.shader;
     trait.reset(std::move(renderable.trait.release()));
-    transform = std::move(renderable.transform);
+    transform = renderable.transform;
+    renderable.transform.reset();
     if(trait == nullptr) {
       throw std::invalid_argument("Move constructor: Can't pass a nullptr as a trait, this argument is required");
     }
@@ -46,7 +47,8 @@ namespace Graphics {
     shader = renderable.shader;
     vertex_data = renderable.vertex_data;
     trait.reset(std::move(renderable.trait.release()));
-    transform = std::move(renderable.transform);
+    transform = renderable.transform;
+    renderable.transform.reset();
     if(trait == nullptr) {
       throw std::invalid_argument("Move assignment: Can't pass a nullptr as a trait, this argument is required");
     }
@@ -207,11 +209,11 @@ namespace Graphics {
     return index_buffer_object;
   }
 
-  void Renderable::setTransform(const glm::mat4& transformation_matrix) noexcept {
+  void Renderable::setTransform(std::shared_ptr<Transform> transformation_matrix) noexcept {
     transform = transformation_matrix;
   }
 
-  const glm::mat4 Renderable::getTransform() const noexcept {
+  const std::shared_ptr<Transform> Renderable::getTransform() const noexcept {
     return transform;
   }
 
@@ -223,11 +225,12 @@ namespace Graphics {
     glDeleteBuffers(num_of_vertex_buffers, vertex_buffer_objects);
     glDeleteBuffers(1, &index_buffer_object);
     glBindVertexArray(0);
-    glDeleteVertexArrays(1, &vertex_array_object);
     initialized = false;
     active = false;
     //not this one's job to destroy shader
     shader = nullptr;
+    textures.clear();
+    trait.reset();
   }
 
   const bool Renderable::onUpdate(const double delta) {
@@ -243,7 +246,7 @@ namespace Graphics {
 
       if(shader != nullptr) {
         shader->useProgram();
-        shader->setUniform<glm::mat4>("transform", transform);
+        shader->setUniform<glm::mat4>("transform", transform->getAbsoluteTransformationMatrix());
         for(auto& texture : textures) {
           shader->setUniform<int>(texture->getName(), texture->getTextureUnit());
           texture->bind();

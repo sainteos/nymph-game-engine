@@ -1,11 +1,11 @@
 #ifndef TILE_ATTRIBUTE_TRAIT
 #define TILE_ATTRIBUTE_TRAIT
 #include <map>
-#include "graphics/renderable_attribute_trait.h"
+#include "graphics/base_attribute_trait.h"
 #include "graphics/vertex_data.h"
 
 namespace Graphics {
-  class TileAttributeTrait : public RenderableAttributeTrait {
+  class TileAttributeTrait : public BaseAttributeTrait {
     private:
       std::map<VertexData::DATA_TYPE, unsigned int> trait;
     public:

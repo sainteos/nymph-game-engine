@@ -7,8 +7,9 @@
 #include "vertex_data.h"
 #include "shader.h"
 #include "base_texture.h"
+#include "base_attribute_trait.h"
 #include "renderable_attribute_trait.h"
-#include "tile_attribute_trait.h"
+#include "transform.h"
 
 namespace Graphics {
   class Renderable : Component {
@@ -24,18 +25,15 @@ namespace Graphics {
       std::vector<std::shared_ptr<BaseTexture>> textures;
 
       VertexData vertex_data;
-      std::unique_ptr<RenderableAttributeTrait> trait;
+      std::unique_ptr<BaseAttributeTrait> trait;
 
-      glm::mat4 transform;
+      std::shared_ptr<Transform> transform;
 
-      //binds the texture
-      //sets the texture sampler on the shader (don't forget to do this)
-      void bindTextures();
     public:
 
       Renderable() = delete;
       Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, 
-                 RenderableAttributeTrait* trait = new TileAttributeTrait());
+                 BaseAttributeTrait* trait = new RenderableAttributeTrait());
       //Remove copy constructor and assignment
       Renderable(const Renderable&) = delete;
       Renderable operator=(Renderable&) = delete;
@@ -43,7 +41,7 @@ namespace Graphics {
       Renderable(Renderable&& renderable);
       Renderable& operator=(Renderable&& renderable);
 
-      ~Renderable();
+      virtual ~Renderable();
       
       void initialize();
       const bool isInitialized() const noexcept;
@@ -62,8 +60,8 @@ namespace Graphics {
       const unsigned int getVertexBufferBinding(const VertexData::DATA_TYPE& data_type);
       const unsigned int getIndexBufferBinding() const noexcept;
 
-      void setTransform(const glm::mat4& transformation_matrix) noexcept;
-      const glm::mat4 getTransform() const noexcept;
+      void setTransform(std::shared_ptr<Transform> transform) noexcept;
+      const std::shared_ptr<Transform> getTransform() const noexcept;
       
       virtual void destroy() override;
       /**
