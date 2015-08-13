@@ -64,6 +64,7 @@ namespace Graphics {
       const std::shared_ptr<Transform> getTransform() const noexcept;
       
       virtual void destroy() override;
+      virtual void onStart() override;
       /**
        * @brief [brief description]
        * @details [long description]

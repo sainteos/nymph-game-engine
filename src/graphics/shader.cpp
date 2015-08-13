@@ -74,181 +74,331 @@ namespace Graphics {
 
   template<>
   void Shader::setUniform<float>(const std::string& name, const float& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform1f(name_to_location[name], data);
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::vec2>(const std::string& name, const glm::vec2& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform2fv(name_to_location[name], 1, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::vec3>(const std::string& name, const glm::vec3& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform3fv(name_to_location[name], 1, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::vec4>(const std::string& name, const glm::vec4& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform4fv(name_to_location[name], 1, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
 
   template<>
   void Shader::setUniform<int>(const std::string& name, const int& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform1i(name_to_location[name], data);
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::ivec2>(const std::string& name, const glm::ivec2& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform2iv(name_to_location[name], 1, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::ivec3>(const std::string& name, const glm::ivec3& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform3iv(name_to_location[name], 1, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::ivec4>(const std::string& name, const glm::ivec4& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform4iv(name_to_location[name], 1, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
 
   template<>
   void Shader::setUniform<unsigned int>(const std::string& name, const unsigned int& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform1ui(name_to_location[name], data);
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::uvec2>(const std::string& name, const glm::uvec2& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform2uiv(name_to_location[name], 1, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::uvec3>(const std::string& name, const glm::uvec3& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform3uiv(name_to_location[name], 1, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::uvec4>(const std::string& name, const glm::uvec4& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform4uiv(name_to_location[name], 1, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
 
   template<>
   void Shader::setUniform<bool>(const std::string& name, const bool& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform1i(name_to_location[name], data);
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::bvec2>(const std::string& name, const glm::bvec2& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform2iv(name_to_location[name], 1, glm::value_ptr(glm::ivec2(data)));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::bvec3>(const std::string& name, const glm::bvec3& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform3iv(name_to_location[name], 1, glm::value_ptr(glm::ivec3(data)));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::bvec4>(const std::string& name, const glm::bvec4& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniform4iv(name_to_location[name], 1, glm::value_ptr(glm::ivec4(data)));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
 
   template<>
   void Shader::setUniform<glm::mat2>(const std::string& name, const glm::mat2& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniformMatrix2fv(name_to_location[name], 1, false, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::mat3>(const std::string& name, const glm::mat3& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniformMatrix3fv(name_to_location[name], 1, false, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::mat4>(const std::string& name, const glm::mat4& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniformMatrix4fv(name_to_location[name], 1, false, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::mat2x3>(const std::string& name, const glm::mat2x3& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniformMatrix2x3fv(name_to_location[name], 1, false, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::mat3x2>(const std::string& name, const glm::mat3x2& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniformMatrix3x2fv(name_to_location[name], 1, false, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::mat2x4>(const std::string& name, const glm::mat2x4& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniformMatrix2x4fv(name_to_location[name], 1, false, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::mat4x2>(const std::string& name, const glm::mat4x2& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniformMatrix4x2fv(name_to_location[name], 1, false, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::mat3x4>(const std::string& name, const glm::mat3x4& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniformMatrix3x4fv(name_to_location[name], 1, false, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
   template<>
   void Shader::setUniform<glm::mat4x3>(const std::string& name, const glm::mat4x3& data) {
+    int prev_bound_program;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prev_bound_program);
     if(name_to_location.count(name) == 0) {
       throw Exceptions::InvalidUniformNameException(name);
     }
+    if(prev_bound_program != program_object)
+      useProgram();
     glUniformMatrix4x3fv(name_to_location[name], 1, false, glm::value_ptr(data));
+    if(prev_bound_program != program_object)
+      glUseProgram(prev_bound_program);
   }
 }

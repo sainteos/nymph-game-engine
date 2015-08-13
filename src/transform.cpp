@@ -205,6 +205,9 @@ const glm::mat4 Transform::getLocalTransformationMatrix() const noexcept {
   return out;
 }
 
+void Transform::onStart() {
+}
+
 const bool Transform::onUpdate(const double delta) {
   return true;
 }

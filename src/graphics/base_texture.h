@@ -13,10 +13,16 @@ namespace Graphics {
       std::shared_ptr<BaseSampler> sampler;
       bool loaded;
       std::string name;
+      unsigned int width;
+      unsigned int height;
     public:
       BaseTexture() = delete;
       BaseTexture(const std::string& name, const GLenum texture_type, const unsigned int unit);
       ~BaseTexture();
+
+      const unsigned int getWidth() const noexcept;
+      const unsigned int getHeight() const noexcept;
+      
       virtual const bool load(const std::string& filename);
       virtual void setSampler(const std::shared_ptr<BaseSampler> sampler);
       virtual void bind();

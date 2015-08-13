@@ -5,12 +5,20 @@
 #include "exceptions/texture_not_loaded_exception.h"
 
 namespace Graphics {
-  BaseTexture::BaseTexture(const std::string& name, const GLenum texture_type, const unsigned int unit) : name(name), loaded(false), texture_unit(unit), texture_object(0), texture_type(texture_type), sampler(nullptr) {
+  BaseTexture::BaseTexture(const std::string& name, const GLenum texture_type, const unsigned int unit) : name(name), loaded(false), texture_unit(unit), texture_object(0), texture_type(texture_type), sampler(nullptr), width(0), height(0) {
 
   }
 
   BaseTexture::~BaseTexture() {
     glDeleteTextures(1, &texture_object);
+  }
+  
+  const unsigned int BaseTexture::getWidth() const noexcept {
+    return width;
+  }
+
+  const unsigned int BaseTexture::getHeight() const noexcept {
+    return height;
   }
 
   const bool BaseTexture::load(const std::string& filename) {
@@ -24,15 +32,19 @@ namespace Graphics {
       glGenTextures(1, &texture_object);
       glActiveTexture(GL_TEXTURE0 + texture_unit);
       glBindTexture(texture_type, texture_object);
+      width = ilGetInteger(IL_IMAGE_WIDTH);
+      height = ilGetInteger(IL_IMAGE_HEIGHT);
         
       if(ilGetInteger(IL_IMAGE_FORMAT) == IL_RGBA)
-        glTexImage2D(texture_type, 0, GL_RGBA8, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
+        glTexImage2D(texture_type, 0, GL_RGBA8, width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
       else
-        glTexImage2D(texture_type, 0, GL_RGB8, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
-
+        glTexImage2D(texture_type, 0, GL_RGB8, width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
+ 
       glGenerateMipmap(texture_type);
-      glTexParameteri(texture_type, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-      glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri(texture_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+      glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameteri(texture_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
       glBindTexture(texture_type, 0);
       loaded = true;
       LOG(INFO)<<"Texture file: "<<filename<<" loaded!";

@@ -146,10 +146,17 @@ namespace Graphics {
     bool running = true;
     std::chrono::time_point<std::chrono::high_resolution_clock> last_time = clock::now();
     auto current_time = clock::now();
+    glClearColor(0.0, 1.0, 0.0, 1.0);
+
+    for(auto& renderables_iter : renderables_map) {
+      if(renderables_iter.second->isActive())
+        renderables_iter.second->onStart();
+    }
     auto delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+
     while(running) {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
       renderables_mutex.lock();
       for(auto& renderables_iter : renderables_map) {
         if(renderables_iter.second->isActive() && renderables_iter.second->onUpdate(delta)) {
@@ -171,6 +178,7 @@ namespace Graphics {
       current_time = clock::now();
       current_fps.store(1.0 / (std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000000.0));
       //set last time to the now time
+      delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
       last_time = current_time;
       running = !window_exit(window);
     }

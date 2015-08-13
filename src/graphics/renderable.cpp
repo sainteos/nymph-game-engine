@@ -233,6 +233,10 @@ namespace Graphics {
     trait.reset();
   }
 
+  void Renderable::onStart() {
+    
+  }
+
   const bool Renderable::onUpdate(const double delta) {
     return true;
   }

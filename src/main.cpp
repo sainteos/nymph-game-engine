@@ -15,7 +15,7 @@
 #include "graphics/base_texture.h"
 #include "graphics/shader_manager.h"
 #include "graphics/renderable_factory.h"
-#include "graphics/tile.h"
+#include "graphics/animated_tile.h"
 #include "transform.h"
 
 INITIALIZE_EASYLOGGINGPP
@@ -30,63 +30,41 @@ int main(int argc, char** argv) {
   GraphicsSystem graphics;
   graphics.initialize(800, 800, "Dick Butts (tm)", Graphics::WindowExitFunctor(), 60.0);
 
-  /*std::vector<glm::vec3> verts {
-    glm::vec3(-0.5, -0.5, -1.0),
-    glm::vec3(-0.5, 0.5, -1.0),
-    glm::vec3(0.5, 0.5, -1.0),
-    glm::vec3(0.5, -0.5, -1.0)
-  };
-  std::vector<glm::vec2> texs {
-    glm::vec2(0.0, 0.0),
-    glm::vec2(0.0, 1.0),
-    glm::vec2(1.0, 1.0),
-    glm::vec2(1.0, 0.0)
-  };
-  std::vector<unsigned int> indices {
-    0, 1, 2, 0, 2, 3
-  };
-  VertexData vert_data(GL_TRIANGLES);
-  vert_data.addIndices(indices);
-  vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
-  vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
-
-  unsigned int good_binding;
-  glGenVertexArrays(1, &good_binding); 
-  glBindVertexArray(good_binding);
-  glBindVertexArray(0);*/
   RenderableFactory renderable_factory;
 
   ShaderManager shader_manager;
   shader_manager.loadShader("simple_texture");
-  std::shared_ptr<BaseTexture> texture_ptr = std::make_shared<BaseTexture>("sample", GL_TEXTURE_2D, 0);
-  texture_ptr->load("./test/textures/test1.png");
-  auto renderable_ptr = renderable_factory.create<Tile>();
-  auto child_renderable = renderable_factory.create<Tile>();
+  shader_manager.loadShader("tile_animation");
+  std::shared_ptr<BaseTexture> texture_ptr = std::make_shared<BaseTexture>("tileset", GL_TEXTURE_2D, 0);
+  texture_ptr->load("./project-spero-assets/sprites/Leon2.png");
+  auto animated_tile_ptr = renderable_factory.create<AnimatedTile>();
+  auto tile_ptr = renderable_factory.create<Tile>();
   try {
-    renderable_ptr->setShader(shader_manager["simple_texture"]);
-    child_renderable->setShader(shader_manager["simple_texture"]);
+    animated_tile_ptr->setShader(shader_manager["tile_animation"]);
+    tile_ptr->setShader(shader_manager["simple_texture"]);
   }
   catch(std::exception& e) {
     LOG(ERROR)<<e.what();
     return 0;
   }
-  child_renderable->setTexture(texture_ptr);
-  renderable_ptr->setTexture(texture_ptr);
-  child_renderable->initialize();
-  renderable_ptr->initialize();
-  child_renderable->setActive();
-  renderable_ptr->setActive();
-  graphics.addRenderable(renderable_ptr);
-  graphics.addRenderable(child_renderable);
-  std::shared_ptr<Transform> transform = std::make_shared<Transform>();
-  transform->rotate(45., glm::vec3(0.0, 0.0, 1.0));
-  transform->translate(glm::vec3(-0.3, 0.3, 0.0));
-  transform->scale(glm::vec2(0.3, 1.3));
-  std::shared_ptr<Transform> child = std::make_shared<Transform>();
-  transform->addChild(child);
-  child->translate(glm::vec3(0.3, -0.3, 0.0));
-  renderable_ptr->setTransform(transform);
-  child_renderable->setTransform(child);
+  animated_tile_ptr->setSizeInPixels(32);
+  animated_tile_ptr->addFrameBack(glm::ivec2(0, 3), 400);
+  animated_tile_ptr->addFrameBack(glm::ivec2(1, 3), 400);
+  animated_tile_ptr->addFrameBack(glm::ivec2(2, 3), 400);
+  animated_tile_ptr->addFrameBack(glm::ivec2(1, 3), 400);
+  animated_tile_ptr->setTexture(texture_ptr);
+  tile_ptr->setTexture(texture_ptr);
+  animated_tile_ptr->initialize();
+  tile_ptr->initialize();
+  animated_tile_ptr->setActive();
+  tile_ptr->setActive();
+  graphics.addRenderable(animated_tile_ptr);
+  //graphics.addRenderable(tile_ptr);
+  //std::shared_ptr<Transform> transform = std::make_shared<Transform>();
+  //transform->rotate(45., glm::vec3(0.0, 0.0, 1.0));
+  //transform->translate(glm::vec3(-0.3, 0.3, 0.0));
+  //transform->scale(glm::vec2(0.3, 1.3));
+  //animated_tile_ptr->setTransform(transform);
   glViewport(0, 0, 800, 800);
   graphics.renderLoop();
   graphics.destroy();
