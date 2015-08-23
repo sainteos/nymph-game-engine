@@ -5,7 +5,7 @@
 #include "exceptions/texture_not_loaded_exception.h"
 
 namespace Graphics {
-  BaseTexture::BaseTexture(const std::string& name, const GLenum texture_type, const unsigned int unit) : name(name), loaded(false), texture_unit(unit), texture_object(0), texture_type(texture_type), sampler(nullptr), width(0), height(0) {
+  BaseTexture::BaseTexture(const std::string& texture_uniform_name, const GLenum texture_type, const unsigned int unit) : texture_uniform_name(texture_uniform_name), loaded(false), texture_unit(unit), texture_object(0), texture_type(texture_type), sampler(nullptr), width(0), height(0) {
 
   }
 
@@ -19,6 +19,10 @@ namespace Graphics {
 
   const unsigned int BaseTexture::getHeight() const noexcept {
     return height;
+  }
+
+  const std::string BaseTexture::getTextureUniformName() const noexcept {
+    return texture_uniform_name;
   }
 
   const bool BaseTexture::load(const std::string& filename) {
@@ -84,9 +88,5 @@ namespace Graphics {
 
   const bool BaseTexture::isLoaded() const noexcept {
     return loaded;
-  }
-
-  const std::string BaseTexture::getName() const noexcept {
-    return name;
   }
 }

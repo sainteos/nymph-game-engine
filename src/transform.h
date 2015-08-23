@@ -12,21 +12,9 @@ class Transform : public Component, public std::enable_shared_from_this<Transfor
     std::shared_ptr<Transform> parent;
     std::list<std::shared_ptr<Transform>> children;
 
-    glm::mat4 absolute_matrix;
-
     glm::vec3 local_translation;
-    glm::vec3 absolute_translation;
-
     glm::quat local_rotation;
-    glm::quat absolute_rotation;
-
     glm::vec3 local_scale;
-    glm::vec3 absolute_scale;
-
-    
-    void translate_absolute(const glm::vec3& translation);
-    void rotate_absolute(const glm::quat& rotation);
-    void scale_absolute(const glm::vec3& scale);
   public:
     Transform();
     ~Transform();

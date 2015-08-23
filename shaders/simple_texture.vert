@@ -7,9 +7,10 @@ layout(location = 1)in vec2 tex;
 out vec2 uv;
 
 uniform mat4 transform;
+uniform mat4 projection_matrix;
 
 void main()
 {
-  gl_Position = transform * vec4(vert, 1.0);
+  gl_Position = (projection_matrix * transform) * vec4(vert, 1.0);
   uv = tex;
 }

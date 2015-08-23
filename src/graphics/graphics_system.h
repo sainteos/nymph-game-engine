@@ -8,6 +8,7 @@
 #include <chrono>
 #include <mutex>
 #include <glfw3.h>
+#include <glm/glm.hpp>
 #include "graphics/renderable.h"
 #include "graphics/window_exit_functor.h"
 
@@ -27,6 +28,8 @@ namespace Graphics {
 
       double max_fps;
       std::atomic<double> current_fps;
+
+      glm::mat4 projection_matrix;
       
       static void errorCallback(int error, const char* description);
 

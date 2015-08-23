@@ -8,6 +8,7 @@ namespace Graphics {
   class AnimatedTile : public Tile {
     private:
       std::list<std::pair<glm::ivec2, unsigned int>> tile_to_time;
+      glm::vec2 multiplier;
       //in ms
       float frame_time_accumulator;
     public:
@@ -21,6 +22,7 @@ namespace Graphics {
 
       virtual void onStart() override;
       virtual const bool onUpdate(const double delta) override;
+      virtual const bool onRender() override;
       virtual void destroy() override;
   };
 }

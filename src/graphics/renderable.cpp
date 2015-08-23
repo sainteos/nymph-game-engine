@@ -217,6 +217,10 @@ namespace Graphics {
     return transform;
   }
 
+  const VertexData Renderable::getVertexData() const noexcept {
+    return vertex_data;
+  }
+
   void Renderable::destroy() {
     if(!initialized) {
       throw Exceptions::RenderableNotInitializedException();
@@ -252,7 +256,7 @@ namespace Graphics {
         shader->useProgram();
         shader->setUniform<glm::mat4>("transform", transform->getAbsoluteTransformationMatrix());
         for(auto& texture : textures) {
-          shader->setUniform<int>(texture->getName(), texture->getTextureUnit());
+          shader->setUniform<int>(texture->getTextureUniformName(), texture->getTextureUnit());
           texture->bind();
         }
       }

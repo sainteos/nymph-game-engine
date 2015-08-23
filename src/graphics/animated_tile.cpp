@@ -36,16 +36,12 @@ namespace Graphics {
   void AnimatedTile::onStart() {
     frame_time_accumulator = 0.0;
 
-    if(tile_to_time.size() == 0) {
-      LOG(WARNING)<<"Trying to start an AnimatedTile without any frames!";
-    }
-    else if(getShader() != nullptr) {
+    if(tile_to_time.size() > 0 && getShader() != nullptr) {
       getShader()->setUniform("tile_coord", tile_to_time.front().first);
 
       float normalized_width = float(sizeInPixels()) / float(getTexture()->getWidth());
       float normalized_height = float(sizeInPixels()) / float(getTexture()->getHeight());
-
-      glm::vec2 multiplier = glm::vec2(normalized_width, normalized_height);
+      multiplier = glm::vec2(normalized_width, normalized_height);
 
       getShader()->setUniform("tile_coord_multiplier", multiplier);
     }
@@ -60,13 +56,6 @@ namespace Graphics {
       if(frame_time_accumulator > tile_to_time.front().second) {
         tile_to_time.push_back(tile_to_time.front());
         tile_to_time.pop_front();
-        
-        if(getShader() != nullptr) {
-          getShader()->setUniform("tile_coord", tile_to_time.front().first);
-        }
-        else {
-          LOG(WARNING)<<"Trying to update animated tile without shader!";
-        }
         frame_time_accumulator = 0.0;
       }
       return true;
@@ -75,6 +64,17 @@ namespace Graphics {
       LOG(WARNING)<<"Trying to update animated tile without frames!";
       return false;
     }
+  }
+
+  const bool AnimatedTile::onRender() {        
+    if(getShader() != nullptr) {
+      getShader()->setUniform("tile_coord_multiplier", multiplier);
+      getShader()->setUniform("tile_coord", tile_to_time.front().first);
+    }
+    else {
+      LOG(WARNING)<<"Trying to update animated tile without shader!";
+    }
+    Tile::onRender();
   }
 
   void AnimatedTile::destroy() {
