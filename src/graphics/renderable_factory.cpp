@@ -223,7 +223,7 @@ namespace Graphics {
     for(int i = 0; i < 4; i++) {
       texs[i] = texs[i] + glm::vec2(0.5, 0.5);
     }
-    
+
     auto tile_width = layer->mapGetMap()->GetTileWidth();
     auto tile_height = layer->mapGetMap()->GetTileHeight();
 
@@ -377,7 +377,7 @@ namespace Graphics {
               auto frames = tile->GetFrames();
 
               animated_renderable->setTexture(texture);
-              animated_renderable->setSizeInPixels(map.GetTileWidth());
+              animated_renderable->setSizeInPixels(tileset->GetTileWidth());
               
               for(auto frame : frames) {
                 auto id = frame.GetTileID();
