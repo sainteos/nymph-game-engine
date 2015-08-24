@@ -9,8 +9,10 @@
 namespace Graphics {
   class RenderableFactory {
     private:
+      unsigned int animated_tile_vao;
       const VertexData generateCube();
       const VertexData generateTile();
+      unsigned int generateVertexArrayObject(VertexData vertex_data);
     public:
       RenderableFactory();
       ~RenderableFactory();

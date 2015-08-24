@@ -1,5 +1,6 @@
 #include <easylogging++.h>
 #include <glm/ext.hpp>
+#include <OpenGL/gl3.h>
 #include "graphics/renderable_factory.h"
 #include "graphics/renderable.h"
 #include "graphics/tile.h"
@@ -68,6 +69,77 @@ namespace Graphics {
     return vert_data;
   }
 
+  unsigned int RenderableFactory::generateVertexArrayObject(VertexData vertex_data) {
+    LOG(INFO)<<"Renderable initializing...";
+
+    unsigned int vertex_array_object = 0;
+    glGenVertexArrays(1, &vertex_array_object);
+    glBindVertexArray(vertex_array_object);
+
+    auto float_data = vertex_data.getCollapsedVectors<float>();
+    auto double_data = vertex_data.getCollapsedVectors<double>();
+    auto int_data = vertex_data.getCollapsedVectors<int>();
+    auto unsigned_int_data = vertex_data.getCollapsedVectors<unsigned int>();
+    
+    unsigned int num_of_vertex_buffers = vertex_data.numberVertexBufferObjects();
+    unsigned int* vertex_buffer_objects = new unsigned int[num_of_vertex_buffers];
+    unsigned int index_buffer_object = 0;
+
+    std::vector<std::pair<VertexData::DATA_TYPE, GLenum>> data_types;
+    glGenBuffers(num_of_vertex_buffers, vertex_buffer_objects);
+
+    unsigned int current_buffer = 0;
+    
+    //Do this if we actually have indices
+    if(vertex_data.getIndices().size() > 0) {
+      glGenBuffers(1, &index_buffer_object);
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
+      glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertex_data.getIndices().size() * sizeof(unsigned int), &(vertex_data.getIndices())[0], GL_STATIC_DRAW);
+    }
+
+    for(auto i : float_data) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
+      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(float), &(i.second)[0], GL_STATIC_DRAW);
+      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_FLOAT));
+    }
+
+    for(auto i : double_data) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
+      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(double), &(i.second)[0], GL_STATIC_DRAW);
+      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_DOUBLE));
+    }
+
+    for(auto i : int_data) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
+      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(int), &(i.second)[0], GL_STATIC_DRAW);
+      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_INT));
+    }
+
+    for(auto i : unsigned_int_data) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
+      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(unsigned int), &(i.second)[0], GL_STATIC_DRAW);
+      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_UNSIGNED_INT));
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    glBindVertexArray(vertex_array_object);
+
+    for(int i = 0; i < num_of_vertex_buffers; i++) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[i]);
+      glVertexAttribPointer(data_types[i].first, VertexData::DataWidth.at(data_types[i].first), data_types[i].second, GL_FALSE, 0, 0);
+      glEnableVertexAttribArray(data_types[i].first);
+
+    }
+    
+    if(vertex_data.getIndices().size() > 0) {
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
+    }
+    glBindVertexArray(0);
+
+    return vertex_array_object;
+  }
+
   template<>
   std::shared_ptr<Renderable> RenderableFactory::create() {
     unsigned int new_binding = 0;
@@ -88,41 +160,29 @@ namespace Graphics {
 
   template<>
   std::shared_ptr<AnimatedTile> RenderableFactory::create() {
-    unsigned int new_binding = 0;
-    glGenVertexArrays(1, &new_binding);
-    glBindVertexArray(new_binding);
-    glBindVertexArray(0);
-    return std::make_shared<AnimatedTile>(new_binding, generateTile());
+    if(!glIsVertexArray(animated_tile_vao)) {
+      animated_tile_vao = generateVertexArrayObject(generateTile());
+    }
+    return std::make_shared<AnimatedTile>(animated_tile_vao, generateTile());
   }
 
   template<>
   std::shared_ptr<Renderable> RenderableFactory::create(const VertexData& vertex_data) {
-    unsigned int new_binding = 0;
-    glGenVertexArrays(1, &new_binding);
-    glBindVertexArray(new_binding);
-    glBindVertexArray(0);
-    return std::make_shared<Renderable>(new_binding, vertex_data);
+    return std::make_shared<Renderable>(generateVertexArrayObject(vertex_data), vertex_data);
   }
 
   template<>
   std::shared_ptr<Tile> RenderableFactory::create(const VertexData& vertex_data) {
-    unsigned int new_binding = 0;
-    glGenVertexArrays(1, &new_binding);
-    glBindVertexArray(new_binding);
-    glBindVertexArray(0);
-    return std::make_shared<Tile>(new_binding, vertex_data);
+    return std::make_shared<Tile>(generateVertexArrayObject(vertex_data), vertex_data);
   }
 
   template<>
   std::shared_ptr<AnimatedTile> RenderableFactory::create(const VertexData& vertex_data) {
-    unsigned int new_binding = 0;
-    glGenVertexArrays(1, &new_binding);
-    glBindVertexArray(new_binding);
-    glBindVertexArray(0);
-    return std::make_shared<AnimatedTile>(new_binding, vertex_data);
+    return std::make_shared<AnimatedTile>(generateVertexArrayObject(vertex_data), vertex_data);
   }
 
   std::vector<std::shared_ptr<Renderable>> RenderableFactory::createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const ShaderManager& shader_manager) {
+    std::map<unsigned int, unsigned int> gid_to_vao;
     std::vector<std::shared_ptr<Renderable>> renderables;
     auto layers = map.GetTileLayers();
     auto tilesets = map.GetTilesets();
@@ -147,6 +207,10 @@ namespace Graphics {
     for(auto layer : layers) {
       for(int y = 0; y < layer->GetHeight(); y++) {
         for(int x = 0; x < layer->GetWidth(); x++) {
+          //We already created this tile, move along
+          if(gid_to_vao.count(layer->GetTileGid(x, y)) > 0)
+            continue;
+
           if(layer->GetTileTilesetIndex(x, y) >= 0) {
             auto tileset = tilesets[layer->GetTileTilesetIndex(x, y)];
 
@@ -259,7 +323,9 @@ namespace Graphics {
               vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
               vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
 
-              auto renderable = create<Tile>(vert_data);
+              auto vertex_array_object = generateVertexArrayObject(vert_data);
+
+              std::shared_ptr<Tile> renderable = std::make_shared<Tile>(vertex_array_object, vert_data);
               renderable->setTexture(texture);
               renderable->setSizeInPixels(map.GetTileWidth());
               renderable->setShader(shader_manager["simple_texture"]);

@@ -15,12 +15,8 @@ namespace Graphics {
   class Renderable : Component {
     private:
       bool active;
-      bool initialized;
 
       unsigned int vertex_array_object;
-      unsigned int num_of_vertex_buffers;
-      unsigned int* vertex_buffer_objects;
-      unsigned int index_buffer_object;
       std::shared_ptr<Shader> shader;
       std::vector<std::shared_ptr<BaseTexture>> textures;
 
@@ -42,9 +38,6 @@ namespace Graphics {
       Renderable& operator=(Renderable&& renderable);
 
       virtual ~Renderable();
-      
-      void initialize();
-      const bool isInitialized() const noexcept;
 
       void setActive() noexcept;
       void setInactive() noexcept;
@@ -57,8 +50,6 @@ namespace Graphics {
       const std::vector<std::shared_ptr<BaseTexture>> getTextures() const noexcept;
 
       const unsigned int getVertexArrayBinding() const noexcept;
-      const unsigned int getVertexBufferBinding(const VertexData::DATA_TYPE& data_type);
-      const unsigned int getIndexBufferBinding() const noexcept;
 
       void setTransform(std::shared_ptr<Transform> transform) noexcept;
       const std::shared_ptr<Transform> getTransform() const noexcept;

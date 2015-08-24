@@ -1,5 +1,6 @@
 #include <easylogging++.h>
 #include <exception>
+#include <utility>
 #include "vertex_data.h"
 
 namespace Graphics {
@@ -27,6 +28,7 @@ namespace Graphics {
     unsigned_int_vector4s = vertex_data.unsigned_int_vector4s;
     indices = vertex_data.indices;
     index_count = vertex_data.index_count;
+    vertex_count = vertex_data.vertex_count;
     primitive_type = vertex_data.primitive_type;
   }
 
@@ -49,12 +51,14 @@ namespace Graphics {
     unsigned_int_vector4s = vertex_data.unsigned_int_vector4s;
     indices = vertex_data.indices;
     index_count = vertex_data.index_count;
+    vertex_count = vertex_data.vertex_count;
     primitive_type = vertex_data.primitive_type;
     return *this;
   }
 
   VertexData::~VertexData() {
   }
+
   //initialize the datawidth
   const std::map<Graphics::VertexData::DATA_TYPE, unsigned int> VertexData::DataWidth = std::map<Graphics::VertexData::DATA_TYPE, unsigned int>  {
         {Graphics::VertexData::DATA_TYPE::GEOMETRY, 3},
@@ -74,6 +78,50 @@ namespace Graphics {
         {Graphics::VertexData::DATA_TYPE::THREE_WIDE, 3},
         {Graphics::VertexData::DATA_TYPE::FOUR_WIDE, 4}
   };
+
+  const bool VertexData::operator==(const VertexData& other) {
+    return float_vector1s.size() == other.float_vector1s.size() &&
+           float_vector2s.size() == other.float_vector2s.size() &&
+           float_vector3s.size() == other.float_vector3s.size() &&
+           float_vector4s.size() == other.float_vector4s.size() &&
+           double_vector1s.size() == other.double_vector1s.size() &&
+           double_vector2s.size() == other.double_vector2s.size() &&
+           double_vector3s.size() == other.double_vector3s.size() &&
+           double_vector4s.size() == other.double_vector4s.size() &&
+           int_vector1s.size() == other.int_vector1s.size() &&
+           int_vector2s.size() == other.int_vector2s.size() &&
+           int_vector3s.size() == other.int_vector3s.size() &&
+           int_vector4s.size() == other.int_vector4s.size() &&
+           unsigned_int_vector1s.size() == other.unsigned_int_vector1s.size() &&
+           unsigned_int_vector2s.size() == other.unsigned_int_vector2s.size() &&
+           unsigned_int_vector3s.size() == other.unsigned_int_vector3s.size() &&
+           unsigned_int_vector4s.size() == other.unsigned_int_vector4s.size() &&
+           indices.size() == other.indices.size() &&
+           index_count == other.index_count &&
+           vertex_count == other.vertex_count &&
+           primitive_type == other.primitive_type &&
+           mapCompare(float_vector1s, other.float_vector1s) &&
+           mapCompare(float_vector2s, other.float_vector2s) &&
+           mapCompare(float_vector3s, other.float_vector3s) &&
+           mapCompare(float_vector4s, other.float_vector4s) &&
+           mapCompare(double_vector1s, other.double_vector1s) &&
+           mapCompare(double_vector2s, other.double_vector2s) &&
+           mapCompare(double_vector3s, other.double_vector3s) &&
+           mapCompare(double_vector4s, other.double_vector4s) &&
+           mapCompare(int_vector1s, other.int_vector1s) &&
+           mapCompare(int_vector2s, other.int_vector2s) &&
+           mapCompare(int_vector3s, other.int_vector3s) &&
+           mapCompare(int_vector4s, other.int_vector4s) &&
+           mapCompare(unsigned_int_vector1s, other.unsigned_int_vector1s) &&
+           mapCompare(unsigned_int_vector2s, other.unsigned_int_vector2s) &&
+           mapCompare(unsigned_int_vector3s, other.unsigned_int_vector3s) &&
+           mapCompare(unsigned_int_vector4s, other.unsigned_int_vector4s) &&
+           indices == other.indices;
+  }
+
+  const bool VertexData::operator!=(const VertexData& other) {
+    return !(*this == other);
+  }
 
   void VertexData::checkDivisibility(const unsigned int size) {
     if(divisibility.at(primitive_type) != ANY && size%divisibility.at(primitive_type) != 0)
@@ -118,6 +166,12 @@ namespace Graphics {
       unsigned_int_vector3s.erase(type);
     if(unsigned_int_vector4s.count(type) > 0)
       unsigned_int_vector4s.erase(type);
+  }
+
+  template<class T>
+  const bool VertexData::mapCompare(const std::map<DATA_TYPE, std::vector<T>> lhs, const std::map<DATA_TYPE, std::vector<T>> rhs) {
+    return lhs.size() == rhs.size() &&
+           std::equal(lhs.begin(), lhs.end(), rhs.begin());
   }
 
   void VertexData::addIndices(const std::vector<unsigned int>& indices) {
@@ -570,4 +624,11 @@ namespace Graphics {
     }
     return out_map;
   } 
+
+  unsigned int VertexData::numberVertexBufferObjects() const noexcept {
+    return float_vector1s.size() + float_vector2s.size() + float_vector3s.size() + float_vector4s.size() + 
+           double_vector1s.size() + double_vector2s.size() + double_vector3s.size() + double_vector4s.size() +
+           int_vector1s.size() + int_vector2s.size() + int_vector3s.size() + int_vector4s.size() +
+           unsigned_int_vector1s.size() + unsigned_int_vector2s.size() + unsigned_int_vector3s.size() + unsigned_int_vector4s.size();
+  }
 }

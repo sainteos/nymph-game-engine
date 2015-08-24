@@ -8,6 +8,8 @@
 #include "graphics/renderable.h"
 #include "graphics/vertex_data.h"
 #include "graphics/shader.h"
+#include "graphics/shader_manager.h"
+#include "graphics/renderable_factory.h"
 #include "graphics/renderable_attribute_trait.h"
 #include "exceptions/invalid_vertex_array_exception.h"
 #include "exceptions/invalid_shader_object_exception.h"
@@ -44,38 +46,38 @@ class TestAttributeTrait : public Graphics::RenderableAttributeTrait {
 
 };
 
-Graphics::Renderable setup_renderable() {
+std::shared_ptr<Graphics::Renderable> setup_renderable() {
   unsigned int good_binding;
   glGenVertexArrays(1, &good_binding); 
   glBindVertexArray(good_binding);
   glBindVertexArray(0);
 
-  Graphics::Renderable renderable(good_binding, Graphics::VertexData(GL_TRIANGLES), new TestAttributeTrait);
+  std::shared_ptr<Graphics::Renderable> renderable = std::make_shared<Graphics::Renderable>(good_binding, Graphics::VertexData(GL_TRIANGLES), new TestAttributeTrait);
   return renderable;
 }
 
-std::vector<glm::vec3> setup_random_vertex_data(const int indices) {
+std::vector<glm::vec3> setup_random_vertex_data(const int size) {
   //rand this mofo
   std::random_device rd;
   std::mt19937 mt(rd());
   std::uniform_real_distribution<float> dist(-1.0, 1.0);
 
   std::vector<glm::vec3> out_vec;
-  for(int i = 0; i < indices; i++) {
+  for(int i = 0; i < size; i++) {
     out_vec.push_back(glm::vec3(dist(mt), dist(mt), 0.0));
   }
 
   return out_vec;
 }
 
-std::vector<unsigned int> setup_random_index_data(const int indices, const int max) {
+std::vector<unsigned int> setup_random_index_data(const int num_indices, const int max) {
   //rand this mofo
   std::random_device rd;
   std::mt19937 mt(rd());
-  std::uniform_int_distribution<unsigned int> dist(0, max);
+  std::uniform_int_distribution<unsigned int> dist(0, max - 1);
 
   std::vector<unsigned int> index_vec;
-  for(int i = 0; i < indices; i++) {
+  for(int i = 0; i < num_indices; i++) {
     index_vec.push_back(dist(mt));
   }
 
@@ -83,79 +85,39 @@ std::vector<unsigned int> setup_random_index_data(const int indices, const int m
 }
 
 std::shared_ptr<Graphics::Shader> setup_shader() {
-  auto vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-  auto fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-  
-  std::string vertex_code = std::string(R"(
-    #version 330
-
-    layout(location = 0)in vec3 vert;
-    uniform mat4 transform;
-
-    void main()
-    {
-        gl_Position = transform * vec4(vert, 1.0);
-    })");
-
-   std::string fragment_code = std::string(R"(
-    #version 330
-
-    out vec4 fragColor;
-
-    void main()
-    {
-        fragColor = vec4(1.0, 0.0, 0.0, 1.0);
-    })");
-  const char *vc_str = vertex_code.c_str();
-  const char *fc_str = fragment_code.c_str();
-  glShaderSource(vertex_shader, 1, &vc_str, new int[1] {(int)vertex_code.size()});
-  glShaderSource(fragment_shader, 1, &fc_str, new int[1] {(int)fragment_code.size()});
-  glCompileShader(vertex_shader);
-  GLint is_vert_compiled = 0;
-  glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &is_vert_compiled);
-  glCompileShader(fragment_shader);
-  GLint is_frag_compiled = 0;
-  glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &is_frag_compiled);
-
-  auto shader = std::make_shared<Graphics::Shader>(vertex_shader, fragment_shader);
-
-  LOG(INFO)<<"Test shader created!";
-  
-  return shader;
+  Graphics::ShaderManager manager;
+  manager.loadShader("test_shader");
+  return manager["test_shader"];
 }
 
-Graphics::Renderable setup_renderable_with_data(bool multiple_vertex_data, bool use_index) {
-  unsigned int good_binding;
-  glGenVertexArrays(1, &good_binding); 
-  glBindVertexArray(good_binding);
-  glBindVertexArray(0);
+std::shared_ptr<Graphics::Renderable> setup_renderable_with_data(bool multiple_vertex_data, bool use_index) {
+  Graphics::RenderableFactory factory;
 
   Graphics::VertexData vertex_data(GL_TRIANGLES);
   std::vector<unsigned int> index_data;
-  int num_indices = 12;
-  int max = 6;
+  int num_indices = 6;
+  int num_vertices = 6;
+  if(use_index) {
+    vertex_data.addIndices(setup_random_index_data(num_indices, num_vertices));
+  }
   if(multiple_vertex_data) {
-    vertex_data.addVec<glm::vec3>(Graphics::VertexData::DATA_TYPE::GEOMETRY, setup_random_vertex_data(max));
+    vertex_data.addVec<glm::vec3>(Graphics::VertexData::DATA_TYPE::GEOMETRY, setup_random_vertex_data(num_vertices));
     for(int i=0; i<9; i++) {
-      vertex_data.addVec<glm::vec3>((Graphics::VertexData::DATA_TYPE)(Graphics::VertexData::DATA_TYPE::RESERVED1 + i), setup_random_vertex_data(max));
+      vertex_data.addVec<glm::vec3>((Graphics::VertexData::DATA_TYPE)(Graphics::VertexData::DATA_TYPE::RESERVED1 + i), setup_random_vertex_data(num_vertices));
     }
   } 
   else {
-    vertex_data.addVec<glm::vec3>(Graphics::VertexData::DATA_TYPE::GEOMETRY, setup_random_vertex_data(max));
-  }
-  if(use_index) {
-    vertex_data.addIndices(setup_random_index_data(num_indices, max));
+    vertex_data.addVec<glm::vec3>(Graphics::VertexData::DATA_TYPE::GEOMETRY, setup_random_vertex_data(num_vertices));
   }
 
-  Graphics::Renderable renderable = std::move(Graphics::Renderable(good_binding, vertex_data, new TestAttributeTrait));
-  renderable.setActive();
+  std::shared_ptr<Graphics::Renderable> renderable = factory.create<Graphics::Renderable>(vertex_data);
+  renderable->setActive();
   return renderable;
 }
 
-Graphics::Renderable setup_initialized_renderable(bool multiple_vertex_data, bool use_index) {
-  Graphics::Renderable renderable = setup_renderable_with_data(multiple_vertex_data, use_index);
-  renderable.setShader(setup_shader());
-  renderable.initialize();
+std::shared_ptr<Graphics::Renderable> setup_initialized_renderable(bool multiple_vertex_data, bool use_index) {
+  std::shared_ptr<Graphics::Renderable> renderable = setup_renderable_with_data(multiple_vertex_data, use_index);
+  renderable->setShader(setup_shader());
   return renderable;
 }
 
@@ -197,119 +159,15 @@ SCENARIO("A renderable can be constructed with a valid vertex array object", "[r
   destroy_opengl();
 }
 
-SCENARIO("A renderable can be initialized with one set of vertex data and no index data", "[renderable]") {
-  setup_opengl();
-  GIVEN("a renderable and well-formed vertex data") {
-    Graphics::Renderable renderable = setup_renderable_with_data(false, false);
-    WHEN("initialize is called") {
-      renderable.initialize();
-      THEN("isInitialized should return true") {
-        REQUIRE(renderable.isInitialized() == true);
-      }
-      THEN("the renderable should have a valid vertex buffer binding") {
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::GEOMETRY)));
-      }
-      THEN("there should be no opengl error") {
-        REQUIRE(glGetError() == GL_NO_ERROR);
-      }
-    }
-  }
-  destroy_opengl();
-}
-
-SCENARIO("A renderable can be initialized with multiple sets of vertex data and no index data", "[renderable]") {
-  setup_opengl();
-  GIVEN("a renderable and multiple sets of well-formed vertex data") {
-    Graphics::Renderable renderable = setup_renderable_with_data(true, false);
-    WHEN("initialize is called") {
-      renderable.initialize();
-      THEN("isInitialized should return true") {
-        REQUIRE(renderable.isInitialized() == true);
-      }
-      THEN("it should have valid vertex buffer bindings") {
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::GEOMETRY)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED1)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED2)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED3)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED4)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED5)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED6)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED7)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED8)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED9)));
-      }
-      THEN("there should be no opengl error") {
-        REQUIRE(glGetError() == GL_NO_ERROR);
-      }
-    }
-  }
-  destroy_opengl();
-}
-
-SCENARIO("A renderable can be initialized with index data and one set of vertex data", "[renderable]") {
-  setup_opengl();
-  GIVEN("a renderable and well-formed vertex data") {
-    Graphics::Renderable renderable = setup_renderable_with_data(false, true);
-    WHEN("initialize is called") {
-      renderable.initialize();
-      THEN("isInitialized should return true") {
-        REQUIRE(renderable.isInitialized() == true);
-      }
-      THEN("it should have a valid vertex buffer binding") {
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::GEOMETRY)));
-      }
-      THEN("it should have a valid index buffer binding") {
-        REQUIRE(glIsBuffer(renderable.getIndexBufferBinding()));
-      }
-      THEN("there should be no opengl error") {
-        REQUIRE(glGetError() == GL_NO_ERROR);
-      }
-    }
-  }
-  destroy_opengl();
-}
-
-SCENARIO("A renderable can be initialized with index data and multiple sets of vertex data", "[renderable]") {
-  setup_opengl();
-  GIVEN("a renderable and 2 sets of well-formed vertex data") {
-    Graphics::Renderable renderable = setup_renderable_with_data(true, true);
-    WHEN("initialize is called") {
-      renderable.initialize();
-      THEN("isInitialized should return true") {
-        REQUIRE(renderable.isInitialized() == true);
-      }
-      THEN("it should have valid vertex buffer bindings") {
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::GEOMETRY)));
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED1))); 
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED2))); 
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED3))); 
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED4))); 
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED5))); 
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED6))); 
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED7))); 
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED8))); 
-        REQUIRE(glIsBuffer(renderable.getVertexBufferBinding(Graphics::VertexData::DATA_TYPE::RESERVED9))); 
-      }
-      THEN("it should have a valid index buffer binding") {
-        REQUIRE(glIsBuffer(renderable.getIndexBufferBinding()));
-      }
-      THEN("there should be no opengl error") {
-        REQUIRE(glGetError() == GL_NO_ERROR);
-      }
-    }
-  }
-  destroy_opengl();
-}
-
 SCENARIO("A renderable can be given a valid shader object handle") {
   setup_opengl();
   GIVEN("A constructed renderable") {
-    Graphics::Renderable renderable = setup_renderable();
+    std::shared_ptr<Graphics::Renderable> renderable = setup_renderable();
     WHEN("setShader is called with a completely valid shader object") {
       auto shader_object = setup_shader();
-      renderable.setShader(shader_object);
+      renderable->setShader(shader_object);
       THEN("the renderable's shader should be a valid program object") {
-        REQUIRE(glIsProgram(renderable.getShader()->getHandle()));
+        REQUIRE(glIsProgram(renderable->getShader()->getHandle()));
       }
     }
   }
@@ -319,19 +177,19 @@ SCENARIO("A renderable can be given a valid shader object handle") {
 SCENARIO("A renderable with one set of vertex data and no index data can be rendered", "[renderable]") {
   setup_opengl();
   GIVEN("an initialized renderable with one set of vertex data and no index data") {
-    Graphics::Renderable renderable = setup_initialized_renderable(false, false);
+    std::shared_ptr<Graphics::Renderable> renderable = setup_initialized_renderable(false, false);
     WHEN("onRender is called") {
-      renderable.onRender();
+      renderable->onRender();
       THEN("there is no opengl error") {
         REQUIRE(glGetError() == GL_NO_ERROR);
       }
       THEN("the current verrex array object binding is the same as the renderable's") {
         int vertex_array_binding;
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vertex_array_binding);
-        REQUIRE(vertex_array_binding == renderable.getVertexArrayBinding());
+        REQUIRE(vertex_array_binding == renderable->getVertexArrayBinding());
       }
       THEN("the current shader program binding is the same as the renderable's") {
-        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable.getShader()->getHandle());
+        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable->getShader()->getHandle());
       }
     }
   }
@@ -341,19 +199,19 @@ SCENARIO("A renderable with one set of vertex data and no index data can be rend
 SCENARIO("A renderable with multiple sets of vertex data and no index data can be rendered", "[renderable]") {
   setup_opengl();
   GIVEN("an initialized renderable with multiple sets of vertex data and no index data") {
-    Graphics::Renderable renderable = setup_initialized_renderable(true, false);
+    std::shared_ptr<Graphics::Renderable> renderable = setup_initialized_renderable(true, false);
     WHEN("onRender is called") {
-      renderable.onRender();
+      renderable->onRender();
       THEN("there is no opengl error") {
         REQUIRE(glGetError() == GL_NO_ERROR);
       }
       THEN("the current verrex array object binding is the same as the renderable's") {
         int vertex_array_binding;
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vertex_array_binding);
-        REQUIRE(vertex_array_binding == renderable.getVertexArrayBinding());
+        REQUIRE(vertex_array_binding == renderable->getVertexArrayBinding());
       }
       THEN("the current shader program binding is the same as the renderable's") {
-        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable.getShader()->getHandle());
+        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable->getShader()->getHandle());
       }
     }
   }
@@ -363,19 +221,19 @@ SCENARIO("A renderable with multiple sets of vertex data and no index data can b
 SCENARIO("A renderable with one set of vertex data and index data can be rendered", "[renderable]") {
   setup_opengl();
   GIVEN("an initialized renderable with one set of vertex data and index data") {
-    Graphics::Renderable renderable = setup_initialized_renderable(false, true);
+    std::shared_ptr<Graphics::Renderable> renderable = setup_initialized_renderable(false, true);
     WHEN("onRender is called") {
-      renderable.onRender();
+      renderable->onRender();
       THEN("there is no opengl error") {
         REQUIRE(glGetError() == GL_NO_ERROR);
       }
       THEN("the current verrex array object binding is the same as the renderable's") {
         int vertex_array_binding;
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vertex_array_binding);
-        REQUIRE(vertex_array_binding == renderable.getVertexArrayBinding());
+        REQUIRE(vertex_array_binding == renderable->getVertexArrayBinding());
       }
       THEN("the current shader program binding is the same as the renderable's") {
-        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable.getShader()->getHandle());
+        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable->getShader()->getHandle());
       }
     }
   }
@@ -385,19 +243,19 @@ SCENARIO("A renderable with one set of vertex data and index data can be rendere
 SCENARIO("A renderable with multiple sets of vertex data and index data can be rendered", "[renderable]") {
   setup_opengl();
   GIVEN("an initialized renderable with multiple sets of vertex data and index data") {
-    Graphics::Renderable renderable = setup_initialized_renderable(true, true);
+    std::shared_ptr<Graphics::Renderable> renderable = setup_initialized_renderable(true, true);
     WHEN("onRender is called") {
-      renderable.onRender();
+      renderable->onRender();
       THEN("there is no opengl error") {
         REQUIRE(glGetError() == GL_NO_ERROR);
       }
       THEN("the current verrex array object binding is the same as the renderable's") {
         int vertex_array_binding;
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vertex_array_binding);
-        REQUIRE(vertex_array_binding == renderable.getVertexArrayBinding());
+        REQUIRE(vertex_array_binding == renderable->getVertexArrayBinding());
       }
       THEN("the current shader program binding is the same as the renderable's") {
-        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable.getShader()->getHandle());
+        REQUIRE([]() {int id; glGetIntegerv(GL_CURRENT_PROGRAM, &id); return id;}() == renderable->getShader()->getHandle());
       }
     }
   }

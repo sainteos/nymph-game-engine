@@ -11,7 +11,7 @@
 #include "renderable.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : initialized(false), vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr), transform(std::make_shared<Transform>()) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr), transform(std::make_shared<Transform>()) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
     }
@@ -23,11 +23,7 @@ namespace Graphics {
 
   Renderable::Renderable(Renderable&& renderable) : vertex_data(renderable.vertex_data) {
     active = std::move(renderable.active);
-    initialized = std::move(renderable.initialized);
     vertex_array_object = std::move(renderable.vertex_array_object);
-    num_of_vertex_buffers = std::move(renderable.num_of_vertex_buffers);
-    vertex_buffer_objects = std::move(renderable.vertex_buffer_objects);
-    index_buffer_object = std::move(renderable.index_buffer_object);
     shader = renderable.shader;
     trait.reset(std::move(renderable.trait.release()));
     transform = renderable.transform;
@@ -39,11 +35,7 @@ namespace Graphics {
 
   Renderable& Renderable::operator=(Renderable&& renderable) { 
     active = std::move(renderable.active);
-    initialized = std::move(renderable.initialized);
     vertex_array_object = std::move(renderable.vertex_array_object);
-    num_of_vertex_buffers = std::move(renderable.num_of_vertex_buffers);
-    vertex_buffer_objects = std::move(renderable.vertex_buffer_objects);
-    index_buffer_object = std::move(renderable.index_buffer_object);
     shader = renderable.shader;
     vertex_data = renderable.vertex_data;
     trait.reset(std::move(renderable.trait.release()));
@@ -57,113 +49,7 @@ namespace Graphics {
   }
 
   Renderable::~Renderable() {
-    if(initialized) {
-      destroy();
-    }
-  }
-
-  void Renderable::initialize() {
-    LOG(INFO)<<"Renderable initializing...";
-
-    auto float_data = vertex_data.getCollapsedVectors<float>();
-    auto double_data = vertex_data.getCollapsedVectors<double>();
-    auto int_data = vertex_data.getCollapsedVectors<int>();
-    auto unsigned_int_data = vertex_data.getCollapsedVectors<unsigned int>();
-    
-    num_of_vertex_buffers = (*trait)().size();
-    vertex_buffer_objects = new unsigned int[num_of_vertex_buffers];
-    glGenBuffers(num_of_vertex_buffers, vertex_buffer_objects);
-
-    
-    //Do this if we actually have indices
-    if(vertex_data.getIndices().size() > 0) {
-      glGenBuffers(1, &index_buffer_object);
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertex_data.getIndices().size() * sizeof(unsigned int), &(vertex_data.getIndices())[0], GL_STATIC_DRAW);
-    }
-
-    for(auto i : float_data) {
-      if((*trait)().count(i.first) > 0) {
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
-        glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(float), &(i.second)[0], GL_STATIC_DRAW);
-      }
-      else {
-        LOG(WARNING)<<"Float data trying to be added that doesn't conform to trait.";
-      }
-    }
-
-    for(auto i : double_data) {
-      if((*trait)().count(i.first) > 0) {
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
-        glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(double), &(i.second)[0], GL_STATIC_DRAW);
-      }
-      else {
-        LOG(WARNING)<<"Double data trying to be added that doesn't conform to trait.";
-      }
-    }
-
-    for(auto i : int_data) {
-      if((*trait)().count(i.first) > 0) {
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
-        glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(int), &(i.second)[0], GL_STATIC_DRAW);
-      }
-      else {
-        LOG(WARNING)<<"Int Data trying to be added that doesn't conform to trait.";
-      }
-    }
-
-    for(auto i : unsigned_int_data) {
-      if((*trait)().count(i.first) > 0) {
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
-        glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(unsigned int), &(i.second)[0], GL_STATIC_DRAW);
-      }
-      else {
-        LOG(WARNING)<<"Unsigned int Data trying to be added that doesn't conform to trait.";
-      }
-    }
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    glBindVertexArray(vertex_array_object);
-    for(auto i : float_data) {
-      if((*trait)().count(i.first) > 0) {
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
-        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray((*trait)().at(i.first));
-      }
-    }
-    for(auto i : double_data) {
-      if((*trait)().count(i.first) > 0) {
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
-        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_DOUBLE, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray((*trait)().at(i.first));
-      }
-    }
-    for(auto i : int_data) {
-      if((*trait)().count(i.first) > 0) {
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
-        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_INT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray((*trait)().at(i.first));
-      }
-    }
-    for(auto i : unsigned_int_data) {
-      if((*trait)().count(i.first) > 0) {
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[(*trait)().at(i.first)]);
-        glVertexAttribPointer((*trait)().at(i.first), VertexData::DataWidth.at(i.first), GL_UNSIGNED_INT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray((*trait)().at(i.first));
-      }
-    }
-    if(vertex_data.getIndices().size() > 0) {
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
-    }
-    glBindVertexArray(0);
-
-    initialized = true;
-    LOG(INFO)<<"Renderable initialized!";
-  }
-
-  const bool Renderable::isInitialized() const noexcept {
-    return initialized;
+    destroy();
   }
   
   void Renderable::setActive() noexcept {
@@ -198,17 +84,6 @@ namespace Graphics {
     return vertex_array_object;
   }
 
-  const unsigned int Renderable::getVertexBufferBinding(const VertexData::DATA_TYPE& data_type) {
-    if((*trait)().count(data_type) <= 0)
-      throw std::invalid_argument("Renderable does not have data for data type.");
-
-    return vertex_buffer_objects[(*trait)().at(data_type)];
-  }
-
-  const unsigned int Renderable::getIndexBufferBinding() const noexcept {
-    return index_buffer_object;
-  }
-
   void Renderable::setTransform(std::shared_ptr<Transform> transformation_matrix) noexcept {
     transform = transformation_matrix;
   }
@@ -222,14 +97,6 @@ namespace Graphics {
   }
 
   void Renderable::destroy() {
-    if(!initialized) {
-      throw Exceptions::RenderableNotInitializedException();
-    }
-    
-    glDeleteBuffers(num_of_vertex_buffers, vertex_buffer_objects);
-    glDeleteBuffers(1, &index_buffer_object);
-    glBindVertexArray(0);
-    initialized = false;
     active = false;
     //not this one's job to destroy shader
     shader = nullptr;
@@ -250,6 +117,7 @@ namespace Graphics {
       if(!glIsVertexArray(vertex_array_object)) {
         throw Exceptions::InvalidVertexArrayException(vertex_array_object);
       }
+
       glBindVertexArray(vertex_array_object);
 
       if(shader != nullptr) {
@@ -270,6 +138,7 @@ namespace Graphics {
       else {
         glDrawArrays(GL_TRIANGLES, 0, vertex_data.getVertexCount());
       }
+
       return true;
     }
     else {

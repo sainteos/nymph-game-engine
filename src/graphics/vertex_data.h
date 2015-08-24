@@ -75,6 +75,9 @@ namespace Graphics {
       void checkDivisibility(const unsigned int size);
       void checkMinimum(const unsigned int size);
       void clearDataType(const DATA_TYPE& type);
+
+      template<class T>
+      const bool mapCompare(std::map<DATA_TYPE, std::vector<T>> lhs, std::map<DATA_TYPE, std::vector<T>> rhs);
     public:
       static const std::map<DATA_TYPE, unsigned int> DataWidth;
       
@@ -85,6 +88,9 @@ namespace Graphics {
       VertexData operator=(const VertexData& vertex_data);
       
       ~VertexData();
+
+      const bool operator==(const VertexData& other);
+      const bool operator!=(const VertexData& other);
 
       //if indices are added first, then they are used for min and divisibility validation
       //otherwise, vertices added are used for min and divisibility validation
@@ -100,6 +106,8 @@ namespace Graphics {
       std::map<DATA_TYPE, std::vector<T>> getCollapsedVectors() const;
 
       std::vector<unsigned int> getIndices() const noexcept;
+
+      unsigned int numberVertexBufferObjects() const noexcept;
   };
 }
 

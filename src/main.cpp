@@ -50,7 +50,6 @@ int main(int argc, char** argv) {
 
   for(auto i : renderables) {
     transform->addChild(i->getTransform());
-    i->initialize();
     i->setActive();
     graphics.addRenderable(i);
   }
