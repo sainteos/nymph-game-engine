@@ -9,6 +9,15 @@
 namespace Graphics {
   class RenderableFactory {
     private:
+      struct RenderableInfo {
+        VertexData vertex_data;
+        unsigned int vertex_array_object;
+        unsigned int gid;
+        bool flip_horizontal;
+        bool flip_vertical;
+        bool flip_diagonal;
+      };
+
       unsigned int animated_tile_vao;
       const VertexData generateCube();
       const VertexData generateTile();

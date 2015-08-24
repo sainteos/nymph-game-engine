@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
     graphics.addRenderable(i);
   }
   LOG(INFO)<<"Done with renderables";
-  transform->translate(glm::vec2(-25 * 32.0, -25 * 32.0));
+  transform->translate(glm::vec2(-map->GetWidth() / 2.0 * 32.0, -map->GetHeight() / 2.0 * 32.0));
   transform->scale(glm::vec2(32.0, 32.0));
   glViewport(0, 0, 800, 800);
   graphics.renderLoop();

@@ -1,6 +1,7 @@
 #include <easylogging++.h>
 #include <glm/ext.hpp>
 #include <OpenGL/gl3.h>
+#include <algorithm>
 #include "graphics/renderable_factory.h"
 #include "graphics/renderable.h"
 #include "graphics/tile.h"
@@ -182,7 +183,7 @@ namespace Graphics {
   }
 
   std::vector<std::shared_ptr<Renderable>> RenderableFactory::createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const ShaderManager& shader_manager) {
-    std::map<unsigned int, unsigned int> gid_to_vao;
+    std::vector<RenderableInfo> gid_to_vao;
     std::vector<std::shared_ptr<Renderable>> renderables;
     auto layers = map.GetTileLayers();
     auto tilesets = map.GetTilesets();
@@ -207,9 +208,6 @@ namespace Graphics {
     for(auto layer : layers) {
       for(int y = 0; y < layer->GetHeight(); y++) {
         for(int x = 0; x < layer->GetWidth(); x++) {
-          //We already created this tile, move along
-          if(gid_to_vao.count(layer->GetTileGid(x, y)) > 0)
-            continue;
 
           if(layer->GetTileTilesetIndex(x, y) >= 0) {
             auto tileset = tilesets[layer->GetTileTilesetIndex(x, y)];
@@ -232,98 +230,119 @@ namespace Graphics {
             auto texture = texture_manager[texture_name];
             
             if(!tile) {
-              auto id = layer->GetTileId(x, y);
-              std::vector<glm::vec3> verts {
-                glm::vec3(0.0, 0.0, -1.0),
-                glm::vec3(0.0, 1.0, -1.0),
-                glm::vec3(1.0, 1.0, -1.0),
-                glm::vec3(1.0, 0.0, -1.0)
-              };
-
-              std::vector<glm::vec2> texs {
-                glm::vec2(-0.5, -0.5),
-                glm::vec2(-0.5, 0.5),
-                glm::vec2(0.5, 0.5),
-                glm::vec2(0.5, -0.5)
-              };
-              
-              //Tile flipping
-              if(layer->IsTileFlippedDiagonally(x, y) && layer->IsTileFlippedHorizontally(x, y) && layer->IsTileFlippedVertically(x, y)) {
-                for(int i = 0; i < 4; i++) {
-                  //Reflect across x=y
-                  texs[i] = texs[i] * glm::mat2(0.0, 1.0, 1.0, 0.0);
-                }
-              }
-              else if(layer->IsTileFlippedDiagonally(x, y) && layer->IsTileFlippedHorizontally(x, y) && !layer->IsTileFlippedVertically(x, y)) {
-                for(int i = 0; i < 4; i++) {
-                  //Rotate 90 Anticlockwise
-                  texs[i] = texs[i] * glm::mat2(0.0, -1.0, 1.0, 0.0);
-                }               
-              }
-              else if(layer->IsTileFlippedDiagonally(x, y) && !layer->IsTileFlippedHorizontally(x, y) && layer->IsTileFlippedVertically(x, y)) {
-                for(int i = 0; i < 4; i++) {
-                  //Rotate 90 Clockwise
-                  texs[i] = texs[i] * glm::mat2(0.0, 1.0, -1.0, 0.0);
-                }       
-              }
-              else if(!layer->IsTileFlippedDiagonally(x, y) && layer->IsTileFlippedHorizontally(x, y) && layer->IsTileFlippedVertically(x, y)) {
-                for(int i = 0; i < 4; i++) {
-                  //Rotate 180
-                  texs[i] = texs[i] * glm::mat2(-1.0, 0.0, 0.0, -1.0);
-                }       
-              }
-              else if(layer->IsTileFlippedDiagonally(x, y) && !layer->IsTileFlippedHorizontally(x, y) && !layer->IsTileFlippedVertically(x, y)) {
-                for(int i = 0; i < 4; i++) {
-                  //rotate anticlockwise 90, reflect across x
-                  texs[i] = texs[i] * glm::mat2(0.0, -1.0, 1.0, 0.0);
-                  texs[i] = texs[i] * glm::mat2(1.0, 0.0, 0.0, -1.0);
-                }       
-              }
-              else if(!layer->IsTileFlippedDiagonally(x, y) && !layer->IsTileFlippedHorizontally(x, y) && layer->IsTileFlippedVertically(x, y)) {
-                for(int i = 0; i < 4; i++) {
-                  //Reflect across x
-                  texs[i] = texs[i] * glm::mat2(1.0, 0.0, 0.0, -1.0);
-                }       
-              }
-              else if(!layer->IsTileFlippedDiagonally(x, y) && layer->IsTileFlippedHorizontally(x, y) && !layer->IsTileFlippedVertically(x, y)) {
-                for(int i = 0; i < 4; i++) {
-                  //Reflect across y
-                  texs[i] = texs[i] * glm::mat2(-1.0, 0.0, 0.0, 1.0);
-                }       
-              }
-              
-              //Translate to bottom left at 0,0
-              for(int i = 0; i < 4; i++) {
-                texs[i] = texs[i] + glm::vec2(0.5, 0.5);
-              }
-
-              float width = (float)tileset->GetTileWidth() / (float)tileset_image->GetWidth();
-              float height = (float)tileset->GetTileHeight() / (float)tileset_image->GetHeight();
-               
-              //scale by width/height
-              for(int i = 0; i < 4; i++) {
-                texs[i] = texs[i] * glm::vec2(width, height);
-              }
-
-              int width_in_tiles = tileset_image->GetWidth() / tileset->GetTileWidth();
-              int height_in_tiles = tileset_image->GetHeight() / tileset->GetTileHeight();
-              int x_pos = id % width_in_tiles;
-              int y_pos = height_in_tiles - 1 - id / width_in_tiles;
-
-              //translate by pos
-              for(int i = 0; i < 4; i++)  {
-                texs[i] += glm::vec2(x_pos * width, y_pos * height);
-              }
-
-              std::vector<unsigned int> indices {
-                0, 1, 2, 0, 2, 3
-              };
+              unsigned int vertex_array_object = 0;
               VertexData vert_data(GL_TRIANGLES);
-              vert_data.addIndices(indices);
-              vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
-              vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
 
-              auto vertex_array_object = generateVertexArrayObject(vert_data);
+              auto id = layer->GetTileId(x, y);
+
+              auto find_pred = [&](const RenderableInfo& info) { return layer->GetTileGid(x,y) == info.gid &&
+                                                                        layer->IsTileFlippedHorizontally(x, y) == info.flip_horizontal &&
+                                                                        layer->IsTileFlippedVertically(x, y) == info.flip_vertical &&
+                                                                        layer->IsTileFlippedDiagonally(x, y) == info.flip_diagonal; };
+              auto iter = std::find_if(gid_to_vao.begin(), gid_to_vao.end(), find_pred);
+
+              if(iter == gid_to_vao.end()) {
+                std::vector<glm::vec3> verts {
+                  glm::vec3(0.0, 0.0, -1.0),
+                  glm::vec3(0.0, 1.0, -1.0),
+                  glm::vec3(1.0, 1.0, -1.0),
+                  glm::vec3(1.0, 0.0, -1.0)
+                };
+
+                std::vector<glm::vec2> texs {
+                  glm::vec2(-0.5, -0.5),
+                  glm::vec2(-0.5, 0.5),
+                  glm::vec2(0.5, 0.5),
+                  glm::vec2(0.5, -0.5)
+                };
+                
+                //Tile flipping
+                if(layer->IsTileFlippedDiagonally(x, y) && layer->IsTileFlippedHorizontally(x, y) && layer->IsTileFlippedVertically(x, y)) {
+                  for(int i = 0; i < 4; i++) {
+                    //Reflect across x=y
+                    texs[i] = texs[i] * glm::mat2(0.0, 1.0, 1.0, 0.0);
+                  }
+                }
+                else if(layer->IsTileFlippedDiagonally(x, y) && layer->IsTileFlippedHorizontally(x, y) && !layer->IsTileFlippedVertically(x, y)) {
+                  for(int i = 0; i < 4; i++) {
+                    //Rotate 90 Anticlockwise
+                    texs[i] = texs[i] * glm::mat2(0.0, -1.0, 1.0, 0.0);
+                  }               
+                }
+                else if(layer->IsTileFlippedDiagonally(x, y) && !layer->IsTileFlippedHorizontally(x, y) && layer->IsTileFlippedVertically(x, y)) {
+                  for(int i = 0; i < 4; i++) {
+                    //Rotate 90 Clockwise
+                    texs[i] = texs[i] * glm::mat2(0.0, 1.0, -1.0, 0.0);
+                  }       
+                }
+                else if(!layer->IsTileFlippedDiagonally(x, y) && layer->IsTileFlippedHorizontally(x, y) && layer->IsTileFlippedVertically(x, y)) {
+                  for(int i = 0; i < 4; i++) {
+                    //Rotate 180
+                    texs[i] = texs[i] * glm::mat2(-1.0, 0.0, 0.0, -1.0);
+                  }       
+                }
+                else if(layer->IsTileFlippedDiagonally(x, y) && !layer->IsTileFlippedHorizontally(x, y) && !layer->IsTileFlippedVertically(x, y)) {
+                  for(int i = 0; i < 4; i++) {
+                    //rotate anticlockwise 90, reflect across x
+                    texs[i] = texs[i] * glm::mat2(0.0, -1.0, 1.0, 0.0);
+                    texs[i] = texs[i] * glm::mat2(1.0, 0.0, 0.0, -1.0);
+                  }       
+                }
+                else if(!layer->IsTileFlippedDiagonally(x, y) && !layer->IsTileFlippedHorizontally(x, y) && layer->IsTileFlippedVertically(x, y)) {
+                  for(int i = 0; i < 4; i++) {
+                    //Reflect across x
+                    texs[i] = texs[i] * glm::mat2(1.0, 0.0, 0.0, -1.0);
+                  }       
+                }
+                else if(!layer->IsTileFlippedDiagonally(x, y) && layer->IsTileFlippedHorizontally(x, y) && !layer->IsTileFlippedVertically(x, y)) {
+                  for(int i = 0; i < 4; i++) {
+                    //Reflect across y
+                    texs[i] = texs[i] * glm::mat2(-1.0, 0.0, 0.0, 1.0);
+                  }       
+                }
+                
+                //Translate to bottom left at 0,0
+                for(int i = 0; i < 4; i++) {
+                  texs[i] = texs[i] + glm::vec2(0.5, 0.5);
+                }
+
+                float width = (float)tileset->GetTileWidth() / (float)tileset_image->GetWidth();
+                float height = (float)tileset->GetTileHeight() / (float)tileset_image->GetHeight();
+                 
+                //scale by width/height
+                for(int i = 0; i < 4; i++) {
+                  texs[i] = texs[i] * glm::vec2(width, height);
+                }
+
+                int width_in_tiles = tileset_image->GetWidth() / tileset->GetTileWidth();
+                int height_in_tiles = tileset_image->GetHeight() / tileset->GetTileHeight();
+                int x_pos = id % width_in_tiles;
+                int y_pos = height_in_tiles - 1 - id / width_in_tiles;
+
+                //translate by pos
+                for(int i = 0; i < 4; i++)  {
+                  texs[i] += glm::vec2(x_pos * width, y_pos * height);
+                }
+
+                std::vector<unsigned int> indices {
+                  0, 1, 2, 0, 2, 3
+                };
+                vert_data.addIndices(indices);
+                vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
+                vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
+
+                vertex_array_object = generateVertexArrayObject(vert_data);
+
+                RenderableInfo info { vert_data, vertex_array_object, layer->GetTileGid(x, y) };
+                info.flip_horizontal = layer->IsTileFlippedHorizontally(x, y);
+                info.flip_vertical = layer->IsTileFlippedVertically(x, y);
+                info.flip_diagonal = layer->IsTileFlippedDiagonally(x, y);
+                gid_to_vao.push_back(info);
+              }
+              else {
+                vertex_array_object = iter->vertex_array_object;
+                vert_data = iter->vertex_data;
+              }
 
               std::shared_ptr<Tile> renderable = std::make_shared<Tile>(vertex_array_object, vert_data);
               renderable->setTexture(texture);
@@ -336,7 +355,6 @@ namespace Graphics {
               renderable->setTransform(transform);
 
               renderables.push_back(renderable);
-
             }
             else {
               auto animated_renderable = create<AnimatedTile>();
