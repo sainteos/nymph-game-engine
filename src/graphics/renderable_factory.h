@@ -22,6 +22,7 @@ namespace Graphics {
       const VertexData generateCube();
       const VertexData generateTile();
       unsigned int generateVertexArrayObject(VertexData vertex_data);
+      std::shared_ptr<BaseTexture> textureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name);
     public:
       RenderableFactory();
       ~RenderableFactory();

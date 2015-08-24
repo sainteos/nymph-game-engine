@@ -141,6 +141,31 @@ namespace Graphics {
     return vertex_array_object;
   }
 
+  std::shared_ptr<BaseTexture> RenderableFactory::textureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+    //Get out of the map directory
+    auto pos = path.find_last_of("/");
+    auto new_path = path.substr(0, pos);
+    pos = new_path.find_last_of("/");
+    new_path = new_path.substr(0, pos);
+
+    auto tileset_image = tileset->GetImage();
+
+    auto source = tileset_image->GetSource();
+    //add path to the image source
+    source.erase(0, 2);
+    source = new_path + source;
+
+    auto texture_name = TextureManager::getNameFromPath(source);
+
+    if(!texture_manager.textureExists(texture_name)) {
+      if(!texture_manager.loadTexture(source, uniform_name)) {
+        throw Exceptions::InvalidFilenameException(source);
+      }
+    }
+
+    return texture_manager[texture_name];
+  }
+
   template<>
   std::shared_ptr<Renderable> RenderableFactory::create() {
     unsigned int new_binding = 0;
@@ -198,12 +223,6 @@ namespace Graphics {
       if(max_z_order < layer->GetZOrder())
         max_z_order = layer->GetZOrder();
     }
-    
-    //Get out of the map directory
-    auto pos = path.find_last_of("/");
-    path = path.substr(0, pos);
-    pos = path.find_last_of("/");
-    path = path.substr(0, pos);
 
     for(auto layer : layers) {
       for(int y = 0; y < layer->GetHeight(); y++) {
@@ -213,21 +232,7 @@ namespace Graphics {
             auto tileset = tilesets[layer->GetTileTilesetIndex(x, y)];
 
             auto tile = tileset->GetTile(layer->GetTileId(x, y));
-            auto tileset_image = tileset->GetImage();
-
-            auto source = tileset_image->GetSource();
-            //add path to the image source
-            source.erase(0, 2);
-            source = path + source;
-
-            auto texture_name = TextureManager::getNameFromPath(source);
-
-            if(!texture_manager.textureExists(texture_name)) {
-              if(!texture_manager.loadTexture(source, "tileset")) {
-                throw Exceptions::InvalidFilenameException(source);
-              }
-            }
-            auto texture = texture_manager[texture_name];
+            auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
             
             if(!tile) {
               unsigned int vertex_array_object = 0;
@@ -306,16 +311,16 @@ namespace Graphics {
                   texs[i] = texs[i] + glm::vec2(0.5, 0.5);
                 }
 
-                float width = (float)tileset->GetTileWidth() / (float)tileset_image->GetWidth();
-                float height = (float)tileset->GetTileHeight() / (float)tileset_image->GetHeight();
+                float width = (float)tileset->GetTileWidth() / (float)texture->getWidth();
+                float height = (float)tileset->GetTileHeight() / (float)texture->getHeight();
                  
                 //scale by width/height
                 for(int i = 0; i < 4; i++) {
                   texs[i] = texs[i] * glm::vec2(width, height);
                 }
 
-                int width_in_tiles = tileset_image->GetWidth() / tileset->GetTileWidth();
-                int height_in_tiles = tileset_image->GetHeight() / tileset->GetTileHeight();
+                int width_in_tiles = texture->getWidth() / tileset->GetTileWidth();
+                int height_in_tiles = texture->getHeight() / tileset->GetTileHeight();
                 int x_pos = id % width_in_tiles;
                 int y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
