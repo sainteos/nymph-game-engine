@@ -66,11 +66,7 @@ namespace Graphics {
     glClearDepth(1.0f);
     ilInit();
     
-    float tile_width = 32.0;
-    float tile_height = 32.0;
-
-    float width_in_tiles = 21.0;
-    float height_in_tiles = 12.0;
+    glfwSetWindowTitle(window, window_title.c_str());
 
     initialized = true;
     LOG(INFO)<<"Graphics system initialized!";
@@ -176,11 +172,15 @@ namespace Graphics {
       }
     }
     auto delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
-
+    auto delta_accum = delta;
     while(running) {
       std::stringstream title;
-      title << window_title << "      FPS: " << getCurrentFPS();
-      glfwSetWindowTitle(window, title.str().c_str());
+      delta_accum += delta;
+      if(delta_accum > 1000.0) {
+        title << window_title << "      FPS: " << getCurrentFPS();
+        delta_accum = 0.0f;
+        glfwSetWindowTitle(window, title.str().c_str());
+      }
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       camera->onUpdate(delta);
 
