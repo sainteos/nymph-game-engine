@@ -291,7 +291,7 @@ namespace Graphics {
     return std::make_shared<AnimatedTile>(generateVertexArrayObject(vertex_data), vertex_data);
   }
 
-  std::vector<std::shared_ptr<Renderable>> RenderableFactory::createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const ShaderManager& shader_manager) {
+  std::vector<std::shared_ptr<Renderable>> RenderableFactory::createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
     std::vector<RenderableInfo> gid_to_vao;
     std::vector<std::shared_ptr<Renderable>> renderables;
     auto layers = map.GetTileLayers();
@@ -363,7 +363,7 @@ namespace Graphics {
               std::shared_ptr<Tile> renderable = std::make_shared<Tile>(vertex_array_object, vert_data);
               renderable->setTexture(texture);
               renderable->setSizeInPixels(map.GetTileWidth());
-              renderable->setShader(shader_manager["simple_texture"]);
+              renderable->setShader((*shader_manager)["simple_texture"]);
 
               auto transform = std::make_shared<Transform>();
               //subtract y from height and subtract 1 to normalize to 0
@@ -392,7 +392,7 @@ namespace Graphics {
                 animated_renderable->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
               }
 
-              animated_renderable->setShader(shader_manager["tile_animation"]);
+              animated_renderable->setShader((*shader_manager)["tile_animation"]);
               
               auto transform = std::make_shared<Transform>();
               //subtract y from layer height, and then subtract an additional 1 to normalize it to 0

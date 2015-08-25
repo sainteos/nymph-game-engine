@@ -25,7 +25,16 @@ namespace Graphics {
       const std::shared_ptr<Shader> operator[](const std::string& name) const;
       const std::shared_ptr<Shader> getShader(const std::string& name) const;
 
+      template<class T>
+      void setUniformForAllPrograms(const std::string& name, const T& data);
   };  
+  
+  template<class T>
+  void ShaderManager::setUniformForAllPrograms(const std::string& name, const T& data) {
+    for(auto& i : shaders_to_names) {
+      i.second->setUniform(name, data);
+    }
+  }
 }
 
 #endif

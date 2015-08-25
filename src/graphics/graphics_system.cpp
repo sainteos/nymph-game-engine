@@ -12,13 +12,14 @@
 #include "exceptions/system_not_initialized_exception.h"
 #include "exceptions/system_already_running_exception.h"
 #include "exceptions/system_not_running_exception.h"
+#include "exceptions/no_camera_attached_exception.h"
 
 namespace Graphics {
 
   using clock = std::chrono::high_resolution_clock;
   using microseconds = std::chrono::microseconds;
 
-  GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), next_id(1), projection_matrix(1.0) {
+  GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), next_id(1) {
   }
 
   GraphicsSystem::~GraphicsSystem() {
@@ -70,8 +71,6 @@ namespace Graphics {
 
     float width_in_tiles = 21.0;
     float height_in_tiles = 12.0;
-
-    projection_matrix = glm::ortho(tile_width * width_in_tiles / -2.0f, tile_width * width_in_tiles / 2.0f, tile_height * height_in_tiles / -2.0f, tile_height * height_in_tiles / 2.0f, 0.1f, 40.0f);
 
     initialized = true;
     LOG(INFO)<<"Graphics system initialized!";
@@ -136,6 +135,14 @@ namespace Graphics {
     return renderables_map.size();
   }
 
+  void GraphicsSystem::setCamera(const std::shared_ptr<Camera> camera) noexcept {
+    this->camera = camera;
+  }
+
+  std::shared_ptr<Camera> GraphicsSystem::getCamera() const noexcept {
+    return camera;
+  }
+
   const double GraphicsSystem::getMaxFPS() const noexcept {
     return max_fps;
   }
@@ -158,13 +165,14 @@ namespace Graphics {
     auto current_time = clock::now();
     glClearColor(0.0, 0.0, 0.0, 1.0);
 
+    if(camera == nullptr)
+      throw Exceptions::NoCameraAttachedException();
+
+    camera->onStart();
+
     for(auto& renderables_iter : renderables_map) {
       if(renderables_iter.second->isActive()) {
         renderables_iter.second->onStart();
-        
-        //this probably needs to be moved elsewhere
-        if(renderables_iter.second->getShader())
-          renderables_iter.second->getShader()->setUniform("projection_matrix", projection_matrix);
       }
     }
     auto delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
@@ -174,6 +182,7 @@ namespace Graphics {
       title << window_title << "      FPS: " << getCurrentFPS();
       glfwSetWindowTitle(window, title.str().c_str());
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      camera->onUpdate(delta);
 
       renderables_mutex.lock();
       for(auto& renderables_iter : renderables_map) {

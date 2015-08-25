@@ -1,4 +1,3 @@
-
 #include <easylogging++.h>
 #include <iostream>
 #include <glm/glm.hpp>
@@ -8,6 +7,7 @@
 #include <glfw3.h>
 #include <tmx/Tmx.h>
 #include <sstream>
+#include <cstdlib>
 #include "graphics/graphics_system.h"
 #include "graphics/renderable.h"
 #include "graphics/vertex_data.h"
@@ -19,16 +19,21 @@
 #include "graphics/renderable_factory.h"
 #include "graphics/animated_tile.h"
 #include "transform.h"
+#include "graphics/camera.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
 
 using namespace Graphics;
 
-int main(int argc, char** argv) {
-  START_EASYLOGGINGPP(argc, argv);
-  LOG(INFO)<<"Butts";
+int main(int argc, char** argv) { 
+  if(argc < 4) {
+    std::cout<<"USAGE:"<<std::endl;
+    std::cout<<"./TileEngine.out [map name with path] [camera x in tiles] [camera y in tiles]"<<std::endl;
+    return 0;
+  }
 
+  START_EASYLOGGINGPP(argc, argv);
 
   Tmx::Map *map = new Tmx::Map();
   map->ParseFile(std::string(argv[1]));
@@ -38,9 +43,16 @@ int main(int argc, char** argv) {
 
   RenderableFactory renderable_factory;
 
-  ShaderManager shader_manager;
-  shader_manager.loadShader("simple_texture");
-  shader_manager.loadShader("tile_animation");
+  std::shared_ptr<ShaderManager> shader_manager = std::make_shared<ShaderManager>();
+  shader_manager->loadShader("simple_texture");
+  shader_manager->loadShader("tile_animation");;
+
+  float viewport_tile_width = 21.0;
+  float viewport_tile_height = 12.0;
+
+  std::shared_ptr<Camera> camera = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, 0.1f, 40.0f);
+  graphics.setCamera(camera);
+  camera->getTransform()->translate(glm::vec2(atof(argv[2]), atof(argv[3])));
   TextureManager texture_manager;
   texture_manager.loadTexture("./project-spero-assets/sprites/Veldes.png", "tileset");
   
@@ -54,8 +66,8 @@ int main(int argc, char** argv) {
     graphics.addRenderable(i);
   }
   LOG(INFO)<<"Done with renderables";
-  transform->translate(glm::vec2(-map->GetWidth() / 2.0 * 32.0, -map->GetHeight() / 2.0 * 32.0));
-  transform->scale(glm::vec2(32.0, 32.0));
+  transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
+  //transform->scale(glm::vec2(32.0, 32.0));
   glViewport(0, 0, 800, 800);
   graphics.renderLoop();
   graphics.destroy();

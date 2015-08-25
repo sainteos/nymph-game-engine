@@ -32,7 +32,7 @@ namespace Graphics {
       template<class T>
       std::shared_ptr<T> create(const VertexData& vertex_data);
 
-      std::vector<std::shared_ptr<Renderable>> createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const ShaderManager& shader_manager);
+      std::vector<std::shared_ptr<Renderable>> createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager);
   };
 }
 

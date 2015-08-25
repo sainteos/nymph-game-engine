@@ -11,6 +11,7 @@
 #include <glm/glm.hpp>
 #include "graphics/renderable.h"
 #include "graphics/window_exit_functor.h"
+#include "graphics/camera.h"
 
 namespace Graphics {
   class GraphicsSystem {
@@ -28,13 +29,12 @@ namespace Graphics {
 
       double max_fps;
       std::atomic<double> current_fps;
-
-      glm::mat4 projection_matrix;
       
       static void errorCallback(int error, const char* description);
 
       WindowExitFunctor window_exit;
-
+      
+      std::shared_ptr<Camera> camera;
 
     public:
       GraphicsSystem();
@@ -106,6 +106,9 @@ namespace Graphics {
        * @return integer representing number of renderables in the system
        */
       const int renderablesCount();
+
+      void setCamera(const std::shared_ptr<Camera> camera) noexcept;
+      std::shared_ptr<Camera> getCamera() const noexcept;
 
       /**
        * @brief Returns the max FPS set on the graphics system
