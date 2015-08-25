@@ -5,6 +5,7 @@
 #include "component.h"
 #include "transform.h"
 #include "graphics/shader_manager.h"
+#include "graphics/renderable.h"
 
 namespace Graphics {
   class Camera : Component {
@@ -38,6 +39,8 @@ namespace Graphics {
       const float getNear() const noexcept;
       void setFar(const float far) noexcept;
       const float getFar() const noexcept;
+
+      const bool isRenderableWithin(std::shared_ptr<Renderable> renderable) const;
 
       void setTransform(const std::shared_ptr<Transform> transform) noexcept;
       std::shared_ptr<Transform> getTransform() const noexcept;

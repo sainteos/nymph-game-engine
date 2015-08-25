@@ -186,7 +186,7 @@ namespace Graphics {
 
       renderables_mutex.lock();
       for(auto& renderables_iter : renderables_map) {
-        if(renderables_iter.second->isActive() && renderables_iter.second->onUpdate(delta)) {
+        if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second) && renderables_iter.second->onUpdate(delta)) {
           //if renderable was updated, then render
           renderables_iter.second->onRender();
         }

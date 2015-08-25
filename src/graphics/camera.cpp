@@ -79,6 +79,21 @@ namespace Graphics {
     return transform;
   }
 
+  const bool Camera::isRenderableWithin(std::shared_ptr<Renderable> renderable) const {
+    auto translation = renderable->getTransform()->getAbsoluteTranslation();
+    auto camera_translation = transform->getAbsoluteTranslation();
+    
+    auto camera_bound_left = -(viewport_width + 1.0) / 2.0 + camera_translation.x;
+    auto camera_bound_right = (viewport_width + 1.0) / 2.0 + camera_translation.x;
+    auto camera_bound_bottom = -(viewport_height + 1.0) / 2.0 + camera_translation.y;
+    auto camera_bound_top = (viewport_height + 1.0) / 2.0 + camera_translation.y;
+
+    return camera_bound_left <= translation.x &&
+           camera_bound_right >= translation.x &&
+           camera_bound_bottom <= translation.y &&
+           camera_bound_top >= translation.y;
+  }
+
   Transform Camera::negateTransformForScreen(std::shared_ptr<Transform> trans) {
     //Gotta do this to make the camera move the opposite the renderables
     Transform negated_for_screen = *transform;
