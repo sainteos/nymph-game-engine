@@ -67,8 +67,6 @@ int main(int argc, char** argv) {
   }
   LOG(INFO)<<"Done with renderables";
   transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
-  //transform->scale(glm::vec2(32.0, 32.0));
-  glViewport(0, 0, 800, 800);
   graphics.renderLoop();
   graphics.destroy();
 
