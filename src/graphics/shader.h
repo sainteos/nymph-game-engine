@@ -1,6 +1,7 @@
 #ifndef SHADER_H
 #define SHADER_H
 #include <map>
+#include <string>
 #include <OpenGL/gl3.h>
 
 namespace Graphics {

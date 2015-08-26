@@ -2,6 +2,7 @@
 #define TEXTURE_MANAGER_H
 #include <map>
 #include <memory>
+#include <string>
 #include "graphics/base_texture.h"
 
 namespace Graphics {

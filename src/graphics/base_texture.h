@@ -2,6 +2,7 @@
 #define BASE_TEXTURE_H
 #include <memory>
 #include <OpenGL/gl3.h>
+#include <string>
 #include "graphics/base_sampler.h"
 
 namespace Graphics {

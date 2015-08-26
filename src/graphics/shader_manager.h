@@ -2,6 +2,7 @@
 #define SHADER_MANAGER_H
 #include <map>
 #include <memory>
+#include <string>
 #include "graphics/shader.h"
 
 namespace Graphics {

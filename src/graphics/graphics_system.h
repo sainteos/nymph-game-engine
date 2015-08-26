@@ -7,6 +7,7 @@
 #include <set>
 #include <chrono>
 #include <mutex>
+#include <string>
 #include <glfw3.h>
 #include <glm/glm.hpp>
 #include "graphics/renderable.h"
