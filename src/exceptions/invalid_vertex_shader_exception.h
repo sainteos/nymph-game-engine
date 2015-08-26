@@ -1,6 +1,7 @@
 #ifndef INVALID_VERTEX_SHADER_EXCEPTION_H
 #define INVALID_VERTEX_SHADER_EXCEPTION_H
 #include <exception>
+#include <sstream>
 
 namespace Exceptions {
   class InvalidVertexShaderException : public std::exception {
@@ -12,7 +13,9 @@ namespace Exceptions {
       }
 
       virtual const char* what() const throw() {
-        return "Invalid vertex shader object with binding: " + this->vertex_shader_binding;
+        std::stringstream s;
+        s << "Invalid vertex shader object with binding: " << this->vertex_shader_binding;
+        return s.str().c_str();
       }
   };
 }

@@ -1,6 +1,7 @@
 #ifndef INVALID_SHADER_OBJECT_EXCEPTION_H
 #define INVALID_SHADER_OBJECT_EXCEPTION_H
 #include <exception>
+#include <sstream>
 
 namespace Exceptions {
   class InvalidShaderObjectException : public std::exception {
@@ -12,7 +13,9 @@ namespace Exceptions {
       }
 
       virtual const char* what() const throw() {
-        return "Invalid shader object with binding: " + this->shader_object_binding;
+        std::stringstream s;
+        s << "Invalid shader object with binding: " << this->shader_object_binding;
+        return s.str().c_str();
       }
   };
 }

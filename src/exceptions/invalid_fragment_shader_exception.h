@@ -1,6 +1,7 @@
 #ifndef INVALID_FRAGMENT_SHADER_EXCEPTION_H
 #define INVALID_FRAGMENT_SHADER_EXCEPTION_H
 #include <exception>
+#include <sstream>
 
 namespace Exceptions {
   class InvalidFragmentShaderException : public std::exception {
@@ -12,7 +13,9 @@ namespace Exceptions {
       }
 
       virtual const char* what() const throw() {
-        return "Invalid fragment shader object with binding: " + this->fragment_shader_binding;
+        std::stringstream s;
+        s << "Invalid fragment shader object with binding: " << this->fragment_shader_binding;
+        return s.str().c_str();
       }
   };
 }

@@ -1,6 +1,7 @@
 #ifndef INVALID_SHADER_PROGRAM_EXCEPTION_H
 #define INVALID_SHADER_PROGRAM_EXCEPTION_H
 #include <exception>
+#include <sstream>
 
 namespace Exceptions {
   class InvalidShaderProgramException : public std::exception {
@@ -12,7 +13,9 @@ namespace Exceptions {
       }
 
       virtual const char* what() const throw() {
-        return "Invalid shader program with binding: " + this->shader_program;
+        std::stringstream s;
+        s << "Invalid shader program with binding: " << this->shader_program;
+        return s.str().c_str();
       }
   };
 }

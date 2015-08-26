@@ -30,11 +30,11 @@ namespace Graphics {
 
   const bool ShaderManager::loadShader(const std::string& name, const std::string& vertex_filename, const std::string& fragment_filename, const std::string& geometry_filename) {
     std::ifstream vertex_file;
-    if(vertex_file != "") {
+    if(vertex_filename != "") {
       vertex_file.open((SHADER_DIRECTORY + vertex_filename).c_str(), std::ios_base::binary);
     }
     std::ifstream fragment_file;
-    if(fragment_file != "") 
+    if(fragment_filename != "") 
       fragment_file.open((SHADER_DIRECTORY + fragment_filename).c_str(), std::ios_base::binary);
     std::ifstream geometry_file;
     if(geometry_filename != "") {

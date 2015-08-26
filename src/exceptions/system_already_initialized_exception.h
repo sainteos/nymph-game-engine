@@ -13,7 +13,7 @@ namespace Exceptions {
       }
 
       virtual const char* what() const throw() {
-        return this->system_name.c_str(); + " has already been initialized! Cannot reinitialize!";
+        return (this->system_name + std::string(" has already been initialized! Cannot reinitialize!")).c_str();
       }
   };
 }

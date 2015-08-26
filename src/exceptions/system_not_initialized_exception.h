@@ -13,7 +13,7 @@ namespace Exceptions {
       }
 
       virtual const char* what() const throw() {
-        return this->system_name.c_str(); + " hasn't been initialized yet!";
+        return (this->system_name + std::string(" hasn't been initialized yet!")).c_str();
       }
   };
 }

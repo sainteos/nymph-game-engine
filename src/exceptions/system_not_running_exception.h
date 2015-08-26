@@ -13,7 +13,7 @@ namespace Exceptions {
       }
 
       virtual const char* what() const throw() {
-        return this->system_name.c_str(); + " is not running!";
+        return (this->system_name + std::string(" is not running!")).c_str();
       }
   };
 }

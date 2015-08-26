@@ -1,6 +1,7 @@
 #ifndef INVALID_VERTEX_ARRAY_EXCEPTION_H
 #define INVALID_VERTEX_ARRAY_EXCEPTION_H
 #include <exception>
+#include <sstream>
 
 namespace Exceptions {
   class InvalidVertexArrayException : public std::exception {
@@ -12,7 +13,9 @@ namespace Exceptions {
       }
 
       virtual const char* what() const throw() {
-        return "Invalid vertex array with binding: " + this->vertex_array_binding;
+        std::stringstream s;
+        s << "Invalid vertex array with binding: " << this->vertex_array_binding;
+        return s.str().c_str();
       }
   };
 }
