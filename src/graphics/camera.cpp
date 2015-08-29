@@ -35,7 +35,7 @@ namespace Graphics {
     return true;
   }
 
-  void Camera::destroy() {
+  void Camera::onDestroy() {
     transform = std::make_shared<Transform>();
   }
 

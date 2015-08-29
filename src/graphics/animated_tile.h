@@ -23,7 +23,7 @@ namespace Graphics {
       virtual void onStart() override;
       virtual const bool onUpdate(const double delta) override;
       virtual const bool onRender() override;
-      virtual void destroy() override;
+      virtual void onDestroy() override;
   };
 }
 

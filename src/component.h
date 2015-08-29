@@ -5,7 +5,7 @@ class Component {
   public:
     virtual void onStart() = 0;
     virtual const bool onUpdate(const double delta) = 0;
-    virtual void destroy() = 0;
+    virtual void onDestroy() = 0;
     virtual ~Component() {}
 };
 #endif

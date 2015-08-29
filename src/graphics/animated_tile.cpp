@@ -73,12 +73,14 @@ namespace Graphics {
     }
     else {
       LOG(WARNING)<<"Trying to update animated tile without shader!";
+      return false;
     }
     Tile::onRender();
+    return true;
   }
 
-  void AnimatedTile::destroy() {
-    Tile::destroy();
+  void AnimatedTile::onDestroy() {
+    Tile::onDestroy();
     tile_to_time.clear();
   }
 }

@@ -76,6 +76,10 @@ namespace Graphics {
     return initialized;
   }
 
+  const bool GraphicsSystem::isRunning() noexcept {
+    return !window_exit(window);
+  }
+
   const int GraphicsSystem::windowWidth() {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
@@ -151,14 +155,11 @@ namespace Graphics {
     return window;
   }
 
-  void GraphicsSystem::renderLoop() {
+  void GraphicsSystem::startRender() {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
-
-    LOG(INFO)<<"Render loop started.";
-    bool running = true;
-    std::chrono::time_point<std::chrono::high_resolution_clock> last_time = clock::now();
-    auto current_time = clock::now();
+    last_time = clock::now();
+    current_time = clock::now();
     glClearColor(0.0, 0.0, 0.0, 1.0);
 
     if(camera == nullptr)
@@ -173,42 +174,45 @@ namespace Graphics {
     }
     auto delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
     auto delta_accum = delta;
-    while(running) {
-      std::stringstream title;
-      delta_accum += delta;
-      if(delta_accum > 1000.0) {
-        title << window_title << "      FPS: " << getCurrentFPS();
-        delta_accum = 0.0f;
-        glfwSetWindowTitle(window, title.str().c_str());
-      }
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      camera->onUpdate(delta);
 
-      renderables_mutex.lock();
-      for(auto& renderables_iter : renderables_map) {
-        if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second) && renderables_iter.second->onUpdate(delta)) {
-          //if renderable was updated, then render
-          renderables_iter.second->onRender();
-        }
-      }
-      renderables_mutex.unlock();
+  }
+  void GraphicsSystem::renderFrame() {
+    if(!initialized)
+      throw Exceptions::SystemNotInitializedException("Graphics");
 
-      //if we have a max fps
-      if(max_fps > 0.0) {
-        //keep sleeping until we hit the right time
-        while(std::chrono::duration_cast<microseconds>(clock::now() - last_time).count() / 1000.0 < 1.0 / (max_fps / 1000.0)) {
-          std::this_thread::sleep_for(microseconds(1));
-        }
-      }
-      glfwSwapBuffers(window);
-      //update the current fps
-      current_time = clock::now();
-      current_fps.store(1.0 / (std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000000.0));
-      //set last time to the now time
-      delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
-      last_time = current_time;
-      running = !window_exit(window);
+    std::stringstream title;
+    delta_accum += delta;
+    if(delta_accum > 1000.0) {
+      title << window_title << "      FPS: " << getCurrentFPS();
+      delta_accum = 0.0f;
+      glfwSetWindowTitle(window, title.str().c_str());
     }
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    camera->onUpdate(delta);
+
+    renderables_mutex.lock();
+    for(auto& renderables_iter : renderables_map) {
+      if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second) && renderables_iter.second->onUpdate(delta)) {
+        //if renderable was updated, then render
+        renderables_iter.second->onRender();
+      }
+    }
+    renderables_mutex.unlock();
+
+    //if we have a max fps
+    if(max_fps > 0.0) {
+      //keep sleeping until we hit the right time
+      while(std::chrono::duration_cast<microseconds>(clock::now() - last_time).count() / 1000.0 < 1.0 / (max_fps / 1000.0)) {
+        std::this_thread::sleep_for(microseconds(1));
+      }
+    }
+    glfwSwapBuffers(window);
+    //update the current fps
+    current_time = clock::now();
+    current_fps.store(1.0 / (std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000000.0));
+    //set last time to the now time
+    delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
+    last_time = current_time;
   }
 
   void GraphicsSystem::errorCallback(int error, const char* description) {

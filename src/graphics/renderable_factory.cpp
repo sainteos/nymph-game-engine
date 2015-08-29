@@ -291,9 +291,9 @@ namespace Graphics {
     return std::make_shared<AnimatedTile>(generateVertexArrayObject(vertex_data), vertex_data);
   }
 
-  std::vector<std::shared_ptr<Renderable>> RenderableFactory::createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+  MapRenderables RenderableFactory::createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
     std::vector<RenderableInfo> gid_to_vao;
-    std::vector<std::shared_ptr<Renderable>> renderables;
+    MapRenderables renderables;
     auto layers = map.GetTileLayers();
     auto tilesets = map.GetTilesets();
     auto path = map.GetFilepath();
@@ -370,7 +370,7 @@ namespace Graphics {
               transform->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder())));
               renderable->setTransform(transform);
 
-              renderables.push_back(renderable);
+              renderables.tiles.push_back(renderable);
             }
             else {
               auto animated_renderable = create<AnimatedTile>();
@@ -398,7 +398,7 @@ namespace Graphics {
               //subtract y from layer height, and then subtract an additional 1 to normalize it to 0
               transform->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder())));
               animated_renderable->setTransform(transform);
-              renderables.push_back(animated_renderable);
+              renderables.animated_tiles.push_back(animated_renderable);
             }
           }
         }

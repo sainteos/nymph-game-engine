@@ -12,7 +12,7 @@
 #include "transform.h"
 
 namespace Graphics {
-  class Renderable : Component {
+  class Renderable : public Component {
     private:
       bool active;
 
@@ -56,7 +56,7 @@ namespace Graphics {
 
       const VertexData getVertexData() const noexcept;
       
-      virtual void destroy() override;
+      virtual void onDestroy() override;
       virtual void onStart() override;
       /**
        * @brief [brief description]

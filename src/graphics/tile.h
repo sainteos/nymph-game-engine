@@ -11,7 +11,7 @@ namespace Graphics {
       Tile(const unsigned int vertex_array_object, const VertexData& data);
       virtual ~Tile();
 
-      virtual void destroy() override;
+      virtual void onDestroy() override;
       virtual const bool onUpdate(const double delta) override;
 
       void setSizeInPixels(const unsigned int size);

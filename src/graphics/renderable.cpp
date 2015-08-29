@@ -49,7 +49,7 @@ namespace Graphics {
   }
 
   Renderable::~Renderable() {
-    destroy();
+    onDestroy();
   }
   
   void Renderable::setActive() noexcept {
@@ -96,7 +96,7 @@ namespace Graphics {
     return vertex_data;
   }
 
-  void Renderable::destroy() {
+  void Renderable::onDestroy() {
     active = false;
     //not this one's job to destroy shader
     shader = nullptr;

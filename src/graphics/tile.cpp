@@ -10,8 +10,8 @@ namespace Graphics {
 
   }
 
-  void Tile::destroy() {
-    Renderable::destroy();
+  void Tile::onDestroy() {
+    Renderable::onDestroy();
   }
 
   const bool Tile::onUpdate(const double delta) {

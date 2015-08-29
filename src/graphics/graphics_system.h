@@ -19,6 +19,10 @@ namespace Graphics {
     private:
       GLFWwindow* window;
       bool initialized;
+      float delta;
+      float delta_accum;
+      std::chrono::time_point<std::chrono::high_resolution_clock> last_time;
+      std::chrono::time_point<std::chrono::high_resolution_clock> current_time;
 
       std::string window_title;
 
@@ -60,7 +64,11 @@ namespace Graphics {
        */
       const bool isInitialized() const noexcept;
 
-      void renderLoop();
+      const bool isRunning() noexcept;
+
+      void startRender();
+      void renderFrame();
+      void stopRender();
       /**
        * @brief Getter for the window width
        * @details This Pings GLFW to get the width of the window.

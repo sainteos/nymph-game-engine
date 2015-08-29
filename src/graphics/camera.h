@@ -29,7 +29,7 @@ namespace Graphics {
       Camera(const std::shared_ptr<ShaderManager> shader_manager, const float viewport_width, const float viewport_height, const float near = 0.1, const float far = 1.0);
       virtual void onStart() override;
       virtual const bool onUpdate(const double delta) override;
-      virtual void destroy() override;
+      virtual void onDestroy() override;
 
       void setWidth(const float width) noexcept;
       const float getWidth() const noexcept;

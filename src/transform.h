@@ -63,7 +63,7 @@ class Transform : public Component, public std::enable_shared_from_this<Transfor
 
     virtual void onStart() override;
     virtual const bool onUpdate(const double delta) override;
-    virtual void destroy() override;
+    virtual void onDestroy() override;
 };
 
 #endif

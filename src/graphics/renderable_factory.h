@@ -6,7 +6,15 @@
 #include "graphics/texture_manager.h"
 #include "graphics/shader_manager.h"
 #include "graphics/renderable.h"
+#include "graphics/tile.h"
+#include "graphics/animated_tile.h"
+
 namespace Graphics {
+  struct MapRenderables {
+    std::vector<std::shared_ptr<Tile>> tiles;
+    std::vector<std::shared_ptr<AnimatedTile>> animated_tiles;
+  };
+
   class RenderableFactory {
     private:
       struct RenderableInfo {
@@ -32,7 +40,7 @@ namespace Graphics {
       template<class T>
       std::shared_ptr<T> create(const VertexData& vertex_data);
 
-      std::vector<std::shared_ptr<Renderable>> createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager);
+      MapRenderables createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager);
   };
 }
 

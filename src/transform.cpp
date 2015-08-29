@@ -162,7 +162,7 @@ const bool Transform::onUpdate(const double delta) {
   return true;
 }
 
-void Transform::destroy() {
+void Transform::onDestroy() {
   if(parent != nullptr) {
     auto new_end = std::remove_if(parent->children.begin(), parent->children.end(), [&](const std::shared_ptr<Transform>& transform) { return this == transform.get();});
     parent->children.erase(new_end, parent->children.end());
@@ -175,7 +175,7 @@ void Transform::destroy() {
   
   for(auto& child : children) {
     child->parent = nullptr;
-    child->destroy();
+    child->onDestroy();
     child.reset(new Transform());
   }
   parent = nullptr;

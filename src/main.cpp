@@ -20,6 +20,7 @@
 #include "graphics/animated_tile.h"
 #include "transform.h"
 #include "graphics/camera.h"
+#include "sprite.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -54,20 +55,33 @@ int main(int argc, char** argv) {
   graphics.setCamera(camera);
   camera->getTransform()->translate(glm::vec2(atof(argv[2]), atof(argv[3])));
   TextureManager texture_manager;
-  texture_manager.loadTexture("./project-spero-assets/sprites/Veldes.png", "tileset");
   
   auto renderables = renderable_factory.createFromMap(*map, texture_manager, shader_manager);
   
   auto transform = std::make_shared<Transform>();
 
-  for(auto i : renderables) {
+  for(auto i : renderables.tiles) {
     transform->addChild(i->getTransform());
     i->setActive();
     graphics.addRenderable(i);
   }
-  LOG(INFO)<<"Done with renderables";
+
   transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
-  graphics.renderLoop();
+  graphics.addRenderable(renderables.animated_tiles.back());
+
+  std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
+  sprite->addTile("move up", renderables.animated_tiles.back());
+  sprite->setMovingSpeed(1.0);
+  transform->addChild(renderables.animated_tiles.back()->getTransform());
+
+  graphics.startRender();
+  
+  while(graphics.isRunning()) {
+    sprite->moveUp();
+    sprite->onUpdate(0.0);
+    graphics.renderFrame();
+  }
+
   graphics.destroy();
 
   return 0;
