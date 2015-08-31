@@ -8,5 +8,8 @@ uniform sampler2D tileset;
 
 void main()
 {
-  fragColor = texture(tileset, uv);
+  vec4 texel = texture(tileset, uv); 
+  if(texel.a < 0.1)
+    discard;
+  fragColor = texel;
 }

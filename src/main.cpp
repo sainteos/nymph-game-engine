@@ -21,6 +21,7 @@
 #include "transform.h"
 #include "graphics/camera.h"
 #include "sprite.h"
+#include "input/input_system.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -42,6 +43,8 @@ int main(int argc, char** argv) {
   GraphicsSystem graphics;
   graphics.initialize(1280, 720, "Dick Butts (tm)", Graphics::WindowExitFunctor(), 60.0);
 
+  Input::InputSystem input_system(graphics.getWindow());
+
   RenderableFactory renderable_factory;
 
   std::shared_ptr<ShaderManager> shader_manager = std::make_shared<ShaderManager>();
@@ -62,7 +65,6 @@ int main(int argc, char** argv) {
 
   for(auto i : renderables.tiles) {
     transform->addChild(i->getTransform());
-    i->setActive();
     graphics.addRenderable(i);
   }
 
@@ -70,16 +72,25 @@ int main(int argc, char** argv) {
   graphics.addRenderable(renderables.animated_tiles.back());
 
   std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
+  input_system.addObserver(sprite);
   sprite->addTile("move up", renderables.animated_tiles.back());
-  sprite->setMovingSpeed(1.0);
-  transform->addChild(renderables.animated_tiles.back()->getTransform());
+  sprite->addTile("move down", renderables.animated_tiles.back());
+  sprite->addTile("move left", renderables.animated_tiles.back());
+  sprite->addTile("move right", renderables.animated_tiles.back());
+  sprite->addTile("stop up", renderables.animated_tiles.back());
+  sprite->addTile("stop down", renderables.animated_tiles.back());
+  sprite->addTile("stop left", renderables.animated_tiles.back());
+  sprite->addTile("stop right", renderables.animated_tiles.back());
+  sprite->setMovingSpeed(2.0);
+  transform->addChild(sprite->getTransform());
 
+  sprite->onStart();
   graphics.startRender();
   
   while(graphics.isRunning()) {
-    sprite->moveUp();
     sprite->onUpdate(0.0);
     graphics.renderFrame();
+    input_system.pollForInput();
   }
 
   graphics.destroy();

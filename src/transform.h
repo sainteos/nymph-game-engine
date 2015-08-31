@@ -4,7 +4,6 @@
 #include <glm/gtc/quaternion.hpp>
 #include <memory>
 #include <list>
-
 #include "component.h"
 
 class Transform : public Component, public std::enable_shared_from_this<Transform> {
@@ -25,6 +24,7 @@ class Transform : public Component, public std::enable_shared_from_this<Transfor
     const bool operator!=(const Transform& other);
 
     void addChild(const std::shared_ptr<Transform>& transform);
+    void removeChild(const std::shared_ptr<Transform>& transform);
 
     std::list<std::shared_ptr<Transform>> getChildren() const;
 

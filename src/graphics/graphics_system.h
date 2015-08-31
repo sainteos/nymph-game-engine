@@ -69,6 +69,8 @@ namespace Graphics {
       void startRender();
       void renderFrame();
       void stopRender();
+
+      GLFWwindow* getWindow() const noexcept;
       /**
        * @brief Getter for the window width
        * @details This Pings GLFW to get the width of the window.

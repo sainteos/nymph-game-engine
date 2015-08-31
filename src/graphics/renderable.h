@@ -23,8 +23,6 @@ namespace Graphics {
       VertexData vertex_data;
       std::unique_ptr<BaseAttributeTrait> trait;
 
-      std::shared_ptr<Transform> transform;
-
     public:
 
       Renderable() = delete;
@@ -50,9 +48,6 @@ namespace Graphics {
       const std::vector<std::shared_ptr<BaseTexture>> getTextures() const noexcept;
 
       const unsigned int getVertexArrayBinding() const noexcept;
-
-      void setTransform(std::shared_ptr<Transform> transform) noexcept;
-      const std::shared_ptr<Transform> getTransform() const noexcept;
 
       const VertexData getVertexData() const noexcept;
       

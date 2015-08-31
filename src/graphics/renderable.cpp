@@ -11,7 +11,7 @@
 #include "renderable.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr), transform(std::make_shared<Transform>()) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
     }
@@ -82,14 +82,6 @@ namespace Graphics {
   
   const unsigned int Renderable::getVertexArrayBinding() const noexcept {
     return vertex_array_object;
-  }
-
-  void Renderable::setTransform(std::shared_ptr<Transform> transformation_matrix) noexcept {
-    transform = transformation_matrix;
-  }
-
-  const std::shared_ptr<Transform> Renderable::getTransform() const noexcept {
-    return transform;
   }
 
   const VertexData Renderable::getVertexData() const noexcept {

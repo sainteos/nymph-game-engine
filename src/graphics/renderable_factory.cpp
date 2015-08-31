@@ -369,7 +369,8 @@ namespace Graphics {
               //subtract y from height and subtract 1 to normalize to 0
               transform->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder())));
               renderable->setTransform(transform);
-
+              if(layer->IsVisible())
+                renderable->setActive();
               renderables.tiles.push_back(renderable);
             }
             else {

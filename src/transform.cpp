@@ -151,6 +151,11 @@ void Transform::addChild(const std::shared_ptr<Transform>& transform) {
   children.push_back(transform);
 }
 
+void Transform::removeChild(const std::shared_ptr<Transform>& transform) {
+  transform->parent = nullptr;
+  children.remove(transform);
+}
+
 std::list<std::shared_ptr<Transform>> Transform::getChildren() const {
   return children;
 }

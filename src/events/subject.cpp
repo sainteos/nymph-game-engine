@@ -9,7 +9,7 @@ namespace Events {
     observers.remove(observer);
   }
 
-  void Subject::notify(const Event& event) {
+  void Subject::notify(const Events::Event& event) {
     for(auto i : observers) {
       i->onNotify(event);
     }

@@ -8,7 +8,7 @@ namespace Events {
   class Observer {
     public:
       virtual ~Observer() {}
-      virtual void onNotify(const Event& event) = 0;
+      virtual void onNotify(const Events::Event& event) = 0;
   };
 }
 

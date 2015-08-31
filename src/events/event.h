@@ -1,7 +1,15 @@
 #ifndef EVENT_H
 #define EVENT_H
+#include "event_type.h"
 
-class Event {
-  
-};
+namespace Events {
+  class Event {
+    private:
+      EventType type;
+    public:
+      Event(const EventType& type) : type(type) {}
+      const EventType getEventCode() const { return type; }
+  };
+}
+
 #endif

@@ -215,6 +215,10 @@ namespace Graphics {
     last_time = current_time;
   }
 
+  GLFWwindow* GraphicsSystem::getWindow() const noexcept {
+    return window;
+  }
+
   void GraphicsSystem::errorCallback(int error, const char* description) {
     switch(error) {
       case GLFW_NOT_INITIALIZED:
