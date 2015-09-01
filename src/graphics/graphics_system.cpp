@@ -16,9 +16,6 @@
 
 namespace Graphics {
 
-  using clock = std::chrono::high_resolution_clock;
-  using microseconds = std::chrono::microseconds;
-
   GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), next_id(1) {
   }
 
@@ -28,7 +25,7 @@ namespace Graphics {
     }
   }
 
-  void GraphicsSystem::initialize(const int width, const int height, const std::string name, const WindowExitFunctor& window_exit, const double max_fps) {
+  void GraphicsSystem::initialize(const int width, const int height, const std::string name, const WindowExitFunctor& window_exit) {
     LOG(INFO)<<"Graphics System initializing...";
     if(initialized) {
       LOG(WARNING)<<"Can't reinitialize graphics system.";
@@ -54,8 +51,6 @@ namespace Graphics {
       LOG(ERROR)<<"Glfw window couldn't be created.";
       throw std::runtime_error("Glfw window couldn't be created.");
     }
-    
-    this->max_fps = max_fps;
 
     glfwMakeContextCurrent(window);
 
@@ -106,6 +101,10 @@ namespace Graphics {
     return window_title;
   }
 
+  void GraphicsSystem::setWindowName(const std::string& name) {
+    glfwSetWindowTitle(window, name.c_str());
+  }
+
   const int GraphicsSystem::addRenderable(std::shared_ptr<Graphics::Renderable> renderable) {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
@@ -143,14 +142,6 @@ namespace Graphics {
     return camera;
   }
 
-  const double GraphicsSystem::getMaxFPS() const noexcept {
-    return max_fps;
-  }
-
-  const double GraphicsSystem::getCurrentFPS() const noexcept {
-    return current_fps.load();
-  }
-
   GLFWwindow* GraphicsSystem::getCurrentWindow() noexcept {
     return window;
   }
@@ -158,8 +149,6 @@ namespace Graphics {
   void GraphicsSystem::startRender() {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
-    last_time = clock::now();
-    current_time = clock::now();
     glClearColor(0.0, 0.0, 0.0, 1.0);
 
     if(camera == nullptr)
@@ -172,21 +161,12 @@ namespace Graphics {
         renderables_iter.second->onStart();
       }
     }
-    auto delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
-    auto delta_accum = delta;
-
   }
-  void GraphicsSystem::renderFrame() {
+
+  void GraphicsSystem::renderFrame(const float delta) {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
 
-    std::stringstream title;
-    delta_accum += delta;
-    if(delta_accum > 1000.0) {
-      title << window_title << "      FPS: " << getCurrentFPS();
-      delta_accum = 0.0f;
-      glfwSetWindowTitle(window, title.str().c_str());
-    }
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     camera->onUpdate(delta);
 
@@ -199,20 +179,7 @@ namespace Graphics {
     }
     renderables_mutex.unlock();
 
-    //if we have a max fps
-    if(max_fps > 0.0) {
-      //keep sleeping until we hit the right time
-      while(std::chrono::duration_cast<microseconds>(clock::now() - last_time).count() / 1000.0 < 1.0 / (max_fps / 1000.0)) {
-        std::this_thread::sleep_for(microseconds(1));
-      }
-    }
     glfwSwapBuffers(window);
-    //update the current fps
-    current_time = clock::now();
-    current_fps.store(1.0 / (std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000000.0));
-    //set last time to the now time
-    delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0;
-    last_time = current_time;
   }
 
   GLFWwindow* GraphicsSystem::getWindow() const noexcept {

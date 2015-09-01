@@ -5,7 +5,6 @@
 #include <atomic>
 #include <map>
 #include <set>
-#include <chrono>
 #include <mutex>
 #include <string>
 #include <glfw3.h>
@@ -21,8 +20,6 @@ namespace Graphics {
       bool initialized;
       float delta;
       float delta_accum;
-      std::chrono::time_point<std::chrono::high_resolution_clock> last_time;
-      std::chrono::time_point<std::chrono::high_resolution_clock> current_time;
 
       std::string window_title;
 
@@ -31,9 +28,6 @@ namespace Graphics {
 
       //The next id for renderables
       int next_id;
-
-      double max_fps;
-      std::atomic<double> current_fps;
       
       static void errorCallback(int error, const char* description);
 
@@ -56,7 +50,7 @@ namespace Graphics {
        * @param name string containing the name of the window to be built
        * @param max_fps double containing the max allowed fps. Default 0.0.
        */
-      void initialize(const int width, const int height, std::string name, const WindowExitFunctor& window_exit, const double max_fps = 0.0);
+      void initialize(const int width, const int height, std::string name, const WindowExitFunctor& window_exit);
       /**
        * @brief Getter to see if system is initialized
        * @details Will return true after initialize() is called.
@@ -67,7 +61,7 @@ namespace Graphics {
       const bool isRunning() noexcept;
 
       void startRender();
-      void renderFrame();
+      void renderFrame(const float delta);
       void stopRender();
 
       GLFWwindow* getWindow() const noexcept;
@@ -90,6 +84,8 @@ namespace Graphics {
        * @return a string that is the name of the window
        */
       const std::string windowName() const noexcept;
+
+      void setWindowName(const std::string& name);
       
       /**
        * @brief Adds a renderable to the renderable pool 
@@ -120,22 +116,6 @@ namespace Graphics {
 
       void setCamera(const std::shared_ptr<Camera> camera) noexcept;
       std::shared_ptr<Camera> getCamera() const noexcept;
-
-      /**
-       * @brief Returns the max FPS set on the graphics system
-       * @details This is the highest frames per second the graphics system
-       *          can run at (to allow things like vsync)
-       * @return double containing the max fps
-       */
-      const double getMaxFPS() const noexcept;
-
-      /**
-       * @brief Returns the current running FPS on the graphics system
-       * @details This is the current fps that has been recorded as the
-       *          graphics system is running.
-       * @return double containing the current fps
-       */
-      const double getCurrentFPS() const noexcept;
 
       GLFWwindow* getCurrentWindow() noexcept;
 

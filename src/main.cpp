@@ -22,6 +22,7 @@
 #include "graphics/camera.h"
 #include "sprite.h"
 #include "input/input_system.h"
+#include "utility/fps_counter.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -41,7 +42,7 @@ int main(int argc, char** argv) {
   map->ParseFile(std::string(argv[1]));
 
   GraphicsSystem graphics;
-  graphics.initialize(1280, 720, "Dick Butts (tm)", Graphics::WindowExitFunctor(), 60.0);
+  graphics.initialize(1280, 720, "Dick Butts (tm)", Graphics::WindowExitFunctor());
 
   Input::InputSystem input_system(graphics.getWindow());
 
@@ -86,11 +87,23 @@ int main(int argc, char** argv) {
 
   sprite->onStart();
   graphics.startRender();
+
+  Utility::FPSCounter fps_counter(60.0f);
+  float delta = 0.0f;
+  float fps = fps_counter.getCurrentFPS();
   
   while(graphics.isRunning()) {
-    sprite->onUpdate(0.0);
-    graphics.renderFrame();
+    if(fps != fps_counter.getCurrentFPS()) {
+      std::stringstream window_name;
+      window_name << "Dick Butts(tm)"<<"        "<<fps_counter.getCurrentFPS();
+      graphics.setWindowName(window_name.str());
+      fps = fps_counter.getCurrentFPS();
+    }
+    
+    sprite->onUpdate(delta);
+    graphics.renderFrame(delta);
     input_system.pollForInput();
+    delta = fps_counter.assessCountAndGetDelta();
   }
 
   graphics.destroy();

@@ -41,22 +41,22 @@ void Sprite::onNotify(const Events::Event& event) {
     auto casted_event = static_cast<const Input::KeyUpEvent*>(&event);
     switch(casted_event->getKey()) {
       case GLFW_KEY_W:
-        if(moving_up)
+        if(up_down)
           stopMovingUp();
         break;
 
       case GLFW_KEY_S:
-        if(moving_down)
+        if(down_down)
           stopMovingDown();
         break;
 
       case GLFW_KEY_A:
-        if(moving_left)
+        if(left_down)
           stopMovingLeft();
         break;
 
       case GLFW_KEY_D:
-        if(moving_right)
+        if(right_down)
           stopMovingRight();
         break;
     }
@@ -68,47 +68,50 @@ void Sprite::onStart() {
   Entity::onStart();
 }
 
-//Fix to actually use delta
 void Sprite::onUpdate(const float delta) {
-  if(left_down && !moving_left) {
+  if(left_down && !moving_left && !moving_right && !moving_up && !moving_down) {
     moving_left = true;
     current_velocity = glm::vec2(-moving_speed, 0.0);
     next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
   }
-  else if(right_down && !moving_right) {
+  else if(right_down && !moving_right && !moving_left && !moving_up && !moving_down) {
     moving_right = true;
     current_velocity = glm::vec2(moving_speed, 0.0);
     next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
   } 
-  else if(up_down && !moving_up) {
+  else if(up_down && !moving_up && !moving_left && !moving_right && !moving_down) {
     moving_up = true;
     current_velocity = glm::vec2(0.0, moving_speed);
     next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
   }
-  else if(down_down && !moving_down) {
+  else if(down_down && !moving_down && !moving_left && !moving_right && !moving_up) {
     moving_down = true;
     current_velocity = glm::vec2(0.0, -moving_speed);
     next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
   }
 
   if(moving_left || moving_right || moving_up || moving_down) {
-    if(glm::distance(glm::vec2(getTransform()->getLocalTranslation()), next_position) < 1.0f / 1000.0f * 16.6f) {
+    if(glm::distance(glm::vec2(getTransform()->getLocalTranslation()), next_position) < 1.0f / 1000.0f * delta) {
       getTransform()->translate(next_position - glm::vec2(getTransform()->getLocalTranslation()));
       if(moving_left) {
         moving_left = false;
+        current_velocity = glm::vec2(0.0, 0.0);
       }
       if(moving_right) {
         moving_right = false;
+        current_velocity = glm::vec2(0.0, 0.0);
       }
       if(moving_up) {
         moving_up = false;
+        current_velocity = glm::vec2(0.0, 0.0);
       }
       if(moving_down) {
         moving_down = false;
+        current_velocity = glm::vec2(0.0, 0.0);
       }
     }
     else {
-      getTransform()->translate(current_velocity * 1.0 / 1000.0f * 16.6f);
+      getTransform()->translate(current_velocity * 1.0 / 1000.0f * delta);
     }
   }
   Entity::onUpdate(delta);
