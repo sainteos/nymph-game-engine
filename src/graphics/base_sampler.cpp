@@ -1,5 +1,9 @@
 #include "base_sampler.h"
+#ifdef __APPLE__
 #include <OpenGL/gl3.h>
+#else
+#include <glew.h>
+#endif
 
 namespace Graphics {
   BaseSampler::BaseSampler() {

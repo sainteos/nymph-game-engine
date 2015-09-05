@@ -12,7 +12,7 @@ solution "TileEngine"
     targetextension ".out"
 
     libdirs { "./lib" }
-    links { "Box2d", "GLUI", "fmod", "glfw3", "OpenGL.framework", "png", "z", "tmxparser", "IL"}
+    links { "Box2d", "GLUI", "fmod", "glew", "glfw3", "OpenGL.framework", "png", "z", "tmxparser", "IL"}
 
     includedirs { "./include", "./src" }
 
@@ -35,7 +35,7 @@ solution "TileEngine"
     targetextension ".out"
 
     libdirs { "./lib" }
-    links { "Box2d", "GLUI", "fmod", "glfw3", "OpenGL.framework", "png", "z", "tmxparser", "IL"}
+    links { "Box2d", "GLUI", "fmod", "glew", "glfw3", "OpenGL.framework", "png", "z", "tmxparser", "IL"}
 
     includedirs { "./include", "./src" }
 

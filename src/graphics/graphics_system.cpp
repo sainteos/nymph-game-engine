@@ -31,6 +31,14 @@ namespace Graphics {
       LOG(WARNING)<<"Can't reinitialize graphics system.";
       throw Exceptions::SystemAlreadyInitializedException("Graphics");
     }
+    
+    #ifndef __APPLE__
+    if (glewInit() != GLEW_OK)
+    {
+      LOG(ERROR)<<"Glew couldn't be initialized";
+      throw std::runtime_error("Glew couldn't be initialized");
+    }
+    #endif
 
     glfwSetErrorCallback(errorCallback);
 

@@ -3,8 +3,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/ext.hpp>
-#include <OpenGL/gl3.h>
-#include <glfw3.h>
 #include <tmx/Tmx.h>
 #include <sstream>
 #include <cstdlib>

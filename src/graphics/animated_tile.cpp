@@ -2,7 +2,11 @@
 #include <stdexcept>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/ext.hpp>
+#ifdef __APPLE__
 #include <OpenGL/gl3.h>
+#else
+#include <glew.h>
+#endif
 #include "graphics/animated_tile.h"
 
 namespace Graphics {

@@ -1,5 +1,9 @@
 #include <easylogging++.h>
+#ifdef __APPLE__
 #include <OpenGL/gl3.h>
+#else
+#include <glew.h>
+#endif
 #include <iostream>
 #include <sstream>
 #include <stdexcept>

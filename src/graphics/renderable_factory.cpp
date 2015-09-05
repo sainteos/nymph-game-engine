@@ -1,6 +1,10 @@
 #include <easylogging++.h>
 #include <glm/ext.hpp>
+#ifdef __APPLE__
 #include <OpenGL/gl3.h>
+#else
+#include <glew.h>
+#endif
 #include <algorithm>
 #include "graphics/renderable_factory.h"
 #include "graphics/renderable.h"

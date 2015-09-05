@@ -1,6 +1,10 @@
 #ifndef VERTEX_DATA_H
 #define VERTEX_DATA_H
+#ifdef __APPLE__
 #include <OpenGL/gl3.h>
+#else
+#include <glew.h>
+#endif
 #include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>

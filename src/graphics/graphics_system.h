@@ -7,6 +7,11 @@
 #include <set>
 #include <mutex>
 #include <string>
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#else
+#include <glew.h>
+#endif
 #include <glfw3.h>
 #include <glm/glm.hpp>
 #include "graphics/renderable.h"

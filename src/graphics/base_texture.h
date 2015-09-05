@@ -1,7 +1,11 @@
 #ifndef BASE_TEXTURE_H
 #define BASE_TEXTURE_H
 #include <memory>
+#ifdef __APPLE__
 #include <OpenGL/gl3.h>
+#else
+#include <glew.h>
+#endif
 #include <string>
 #include "graphics/base_sampler.h"
 

@@ -1,6 +1,10 @@
 #include <easylogging++.h>
 #include <fstream>
+#ifdef __APPLE__
 #include <OpenGL/gl3.h>
+#else
+#include <glew.h>
+#endif
 #include "shader_manager.h"
 #include "exceptions/invalid_filename_exception.h"
 #include "exceptions/invalid_shader_name_exception.h"

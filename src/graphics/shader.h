@@ -2,7 +2,11 @@
 #define SHADER_H
 #include <map>
 #include <string>
+#ifdef __APPLE__
 #include <OpenGL/gl3.h>
+#else
+#include <glew.h>
+#endif
 
 namespace Graphics {
   class Shader {
