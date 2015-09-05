@@ -8,6 +8,7 @@
 #include <tmx/Tmx.h>
 #include <sstream>
 #include <cstdlib>
+#include <functional>
 #include "graphics/graphics_system.h"
 #include "graphics/renderable.h"
 #include "graphics/vertex_data.h"
@@ -28,6 +29,7 @@ INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
 
 using namespace Graphics;
+using namespace std::placeholders;
 
 int main(int argc, char** argv) { 
   if(argc < 4) {
@@ -40,6 +42,9 @@ int main(int argc, char** argv) {
 
   Tmx::Map *map = new Tmx::Map();
   map->ParseFile(std::string(argv[1]));
+
+  Tmx::Map *animation_map = new Tmx::Map();
+  animation_map->ParseFile(std::string("./project-spero-assets/Maps/Animations.tmx"));
 
   GraphicsSystem graphics;
   graphics.initialize(1280, 720, "Dick Butts (tm)", Graphics::WindowExitFunctor());
@@ -56,11 +61,25 @@ int main(int argc, char** argv) {
   float viewport_tile_height = 12.0;
 
   std::shared_ptr<Camera> camera = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, 0.1f, 40.0f);
-  graphics.setCamera(camera);
+  camera->setTransform(std::make_shared<Transform>());
   camera->getTransform()->translate(glm::vec2(atof(argv[2]), atof(argv[3])));
+  graphics.setCamera(camera);
   TextureManager texture_manager;
   
   auto renderables = renderable_factory.createFromMap(*map, texture_manager, shader_manager);
+  auto animations = renderable_factory.createAnimationsFromAnimationMap(*animation_map, texture_manager, shader_manager);
+
+  for(auto& i : animations) {
+    i.tile->setTransform(std::make_shared<Transform>());
+  }
+
+  std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
+
+  for(auto& i : renderables.dynamic_animations) {
+    if(i.sprite_name == "Aidan") {
+      sprite->getTransform()->translate(glm::vec3((float)i.x_pos, (float)i.y_pos, (float)i.z_order));
+    }
+  }
   
   auto transform = std::make_shared<Transform>();
 
@@ -69,19 +88,44 @@ int main(int argc, char** argv) {
     graphics.addRenderable(i);
   }
 
-  transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
-  graphics.addRenderable(renderables.animated_tiles.back());
+  for(auto i : renderables.animated_tiles) {
+    transform->addChild(i->getTransform());
+    i->setActive();
+    graphics.addRenderable(i);
+  }
 
-  std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
+  transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
+  
+  auto matcher = [](const Animation& a, const std::string& sprite, const std::string& anim) {
+    return a.sprite_name == sprite && a.animation_name == anim;
+  };
+
+  auto move_up = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Up_Movement"));
+  auto move_down = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Down_Movement"));
+  auto move_left = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Left_Movement"));
+  auto move_right = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Right_Movement"));
+  auto stop_up = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Up_Still"));
+  auto stop_down = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Down_Still"));
+  auto stop_left = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Left_Still"));
+  auto stop_right = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Right_Still"));
+
   input_system.addObserver(sprite);
-  sprite->addTile("move up", renderables.animated_tiles.back());
-  sprite->addTile("move down", renderables.animated_tiles.back());
-  sprite->addTile("move left", renderables.animated_tiles.back());
-  sprite->addTile("move right", renderables.animated_tiles.back());
-  sprite->addTile("stop up", renderables.animated_tiles.back());
-  sprite->addTile("stop down", renderables.animated_tiles.back());
-  sprite->addTile("stop left", renderables.animated_tiles.back());
-  sprite->addTile("stop right", renderables.animated_tiles.back());
+  sprite->addTile(Sprite::AnimationState::MOVE_UP, move_up->tile);
+  graphics.addRenderable(move_up->tile);
+  sprite->addTile(Sprite::AnimationState::MOVE_DOWN, move_down->tile);
+  graphics.addRenderable(move_down->tile);
+  sprite->addTile(Sprite::AnimationState::MOVE_LEFT, move_left->tile);
+  graphics.addRenderable(move_left->tile);
+  sprite->addTile(Sprite::AnimationState::MOVE_RIGHT, move_right->tile);
+  graphics.addRenderable(move_right->tile);
+  sprite->addTile(Sprite::AnimationState::FACE_UP, stop_up->tile);
+  graphics.addRenderable(stop_up->tile);
+  sprite->addTile(Sprite::AnimationState::FACE_DOWN, stop_down->tile);
+  graphics.addRenderable(stop_down->tile);
+  sprite->addTile(Sprite::AnimationState::FACE_LEFT, stop_left->tile);
+  graphics.addRenderable(stop_left->tile);
+  sprite->addTile(Sprite::AnimationState::FACE_RIGHT, stop_right->tile);
+  graphics.addRenderable(stop_right->tile);
   sprite->setMovingSpeed(2.0);
   transform->addChild(sprite->getTransform());
 
@@ -99,7 +143,7 @@ int main(int argc, char** argv) {
       graphics.setWindowName(window_name.str());
       fps = fps_counter.getCurrentFPS();
     }
-    
+
     sprite->onUpdate(delta);
     graphics.renderFrame(delta);
     input_system.pollForInput();

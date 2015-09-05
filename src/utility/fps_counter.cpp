@@ -1,4 +1,5 @@
 #include "utility/fps_counter.h"
+#include <easylogging++.h>
 #include <thread>
 
 namespace Utility {
@@ -7,7 +8,8 @@ namespace Utility {
 
   FPSCounter::FPSCounter(const float max_fps = 0.0f) :
     last_time(clock::now()), current_time(clock::now()),
-    delta(0.0f), delta_accum(0.0f), fps_accum(0.0f), frame_count(0) {
+    delta(0.0f), delta_accum(0.0f), fps_accum(0.0f), frame_count(0),
+    max_fps(max_fps) {
   }
 
   const float FPSCounter::getMaxFPS() const noexcept {

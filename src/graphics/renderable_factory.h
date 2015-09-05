@@ -10,9 +10,24 @@
 #include "graphics/animated_tile.h"
 
 namespace Graphics {
+  struct AnimationPlaceholder {
+    std::string sprite_name;
+    std::string default_animation;
+    int x_pos;
+    int y_pos;
+    int z_order;
+  };
+
   struct MapRenderables {
     std::vector<std::shared_ptr<Tile>> tiles;
     std::vector<std::shared_ptr<AnimatedTile>> animated_tiles;
+    std::vector<AnimationPlaceholder> dynamic_animations;
+  };
+
+  struct Animation {
+    std::shared_ptr<AnimatedTile> tile;
+    std::string sprite_name;
+    std::string animation_name;
   };
 
   class RenderableFactory {
@@ -41,6 +56,8 @@ namespace Graphics {
       std::shared_ptr<T> create(const VertexData& vertex_data);
 
       MapRenderables createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager);
+      std::vector<Animation> createAnimationsFromAnimationMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager);
+
   };
 }
 

@@ -317,8 +317,17 @@ namespace Graphics {
 
             auto tile = tileset->GetTile(layer->GetTileId(x, y));
             auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
-            
-            if(!tile) {
+
+            if(tile != nullptr && tile->GetProperties().GetStringProperty("AnimatedSprite") == "True") {
+              AnimationPlaceholder placeholder;
+              placeholder.sprite_name = tile->GetProperties().GetStringProperty("CharacterName");
+              placeholder.default_animation = tile->GetProperties().GetStringProperty("DefaultAnimation");
+              placeholder.x_pos = x;
+              placeholder.y_pos = layer->GetHeight() - y - 1;
+              placeholder.z_order = -(min_z_order + max_z_order - (float)layer->GetZOrder());
+              renderables.dynamic_animations.push_back(placeholder);
+            }
+            else if(!tile) {
               unsigned int vertex_array_object = 0;
               VertexData vert_data(GL_TRIANGLES);
 
@@ -407,5 +416,45 @@ namespace Graphics {
     }
 
     return renderables;
+  }
+
+  std::vector<Animation> RenderableFactory::createAnimationsFromAnimationMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+    std::vector<Animation> animations;
+    auto path = map.GetFilepath();
+    for(auto& tileset : map.GetTilesets()) {
+      for(auto& tile : tileset->GetTiles()) {
+        auto properties = tile->GetProperties();
+        if(properties.HasProperty("SpriteName") && properties.HasProperty("AnimationName")) {
+          Animation new_anim; 
+          new_anim.sprite_name = properties.GetStringProperty("SpriteName");
+          new_anim.animation_name = properties.GetStringProperty("AnimationName");
+
+          auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
+
+          new_anim.tile = create<AnimatedTile>();
+          auto frames = tile->GetFrames();
+
+          new_anim.tile->setTexture(texture);
+          new_anim.tile->setSizeInPixels(tileset->GetTileWidth());
+          
+          for(auto frame : frames) {
+            auto id = frame.GetTileID();
+            auto duration = frame.GetDuration();
+
+            int width_in_tiles = texture->getWidth() / tileset->GetTileWidth();
+            int height_in_tiles = texture->getHeight() / tileset->GetTileHeight();
+            
+            int x_pos = id % width_in_tiles;
+            int y_pos = height_in_tiles - 1 - id / width_in_tiles;
+
+            new_anim.tile->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
+          }
+
+          new_anim.tile->setShader((*shader_manager)["tile_animation"]);
+          animations.push_back(new_anim);
+        }
+      }
+    }
+    return animations;
   }
 }

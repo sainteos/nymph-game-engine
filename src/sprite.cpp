@@ -6,8 +6,7 @@
 #include <glfw3.h>
 #include <glm/ext.hpp>
 
-Sprite::Sprite() : current_tile("stop down"), move_quantization_in_tiles(1.0),
-  moving_left(false), moving_right(false), moving_up(false), moving_down(false),
+Sprite::Sprite() : current_state(AnimationState::FACE_DOWN), move_quantization_in_tiles(1.0),
   up_down(false), down_down(false), left_down(false), right_down(false) {
 
 }
@@ -17,23 +16,19 @@ void Sprite::onNotify(const Events::Event& event) {
     auto casted_event = static_cast<const Input::KeyDownEvent*>(&event);
     switch(casted_event->getKey()) {
       case GLFW_KEY_W:
-        if(!moving_up)
-          moveUp();
+        moveUp();
         break;
 
       case GLFW_KEY_S:
-        if(!moving_down)
-          moveDown();
+        moveDown();
         break;
 
       case GLFW_KEY_A:
-        if(!moving_left)
-          moveLeft();
+        moveLeft();
         break;
 
       case GLFW_KEY_D:
-        if(!moving_right)
-          moveRight();
+        moveRight();
         break;
     }
   }
@@ -64,50 +59,58 @@ void Sprite::onNotify(const Events::Event& event) {
 }
 
 void Sprite::onStart() {
-  tiles[current_tile]->setActive();
+  for(auto i : tiles) {
+    if(i.first == current_state)
+      i.second->setActive();
+    else
+      i.second->setInactive();
+  }
   Entity::onStart();
 }
 
 void Sprite::onUpdate(const float delta) {
-  if(left_down && !moving_left && !moving_right && !moving_up && !moving_down) {
-    moving_left = true;
-    current_velocity = glm::vec2(-moving_speed, 0.0);
-    next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+  if(current_state == AnimationState::FACE_LEFT || current_state == AnimationState::FACE_RIGHT ||
+     current_state == AnimationState::FACE_UP || current_state == AnimationState::FACE_DOWN) {
+    if(left_down) {
+      current_velocity = glm::vec2(-moving_speed, 0.0);
+      next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+      triggerTile(AnimationState::MOVE_LEFT);
+    }
+    else if(right_down) {
+      current_velocity = glm::vec2(moving_speed, 0.0);
+      next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+      triggerTile(AnimationState::MOVE_RIGHT);
+    } 
+    else if(up_down) {
+      current_velocity = glm::vec2(0.0, moving_speed);
+      next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+      triggerTile(AnimationState::MOVE_UP);
+    }
+    else if(down_down) {
+      current_velocity = glm::vec2(0.0, -moving_speed);
+      next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+      triggerTile(AnimationState::MOVE_DOWN);
+    }
   }
-  else if(right_down && !moving_right && !moving_left && !moving_up && !moving_down) {
-    moving_right = true;
-    current_velocity = glm::vec2(moving_speed, 0.0);
-    next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-  } 
-  else if(up_down && !moving_up && !moving_left && !moving_right && !moving_down) {
-    moving_up = true;
-    current_velocity = glm::vec2(0.0, moving_speed);
-    next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-  }
-  else if(down_down && !moving_down && !moving_left && !moving_right && !moving_up) {
-    moving_down = true;
-    current_velocity = glm::vec2(0.0, -moving_speed);
-    next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-  }
-
-  if(moving_left || moving_right || moving_up || moving_down) {
+  if(current_state == AnimationState::MOVE_LEFT || current_state == AnimationState::MOVE_RIGHT ||
+     current_state == AnimationState::MOVE_UP || current_state == AnimationState::MOVE_DOWN) {
     if(glm::distance(glm::vec2(getTransform()->getLocalTranslation()), next_position) < 1.0f / 1000.0f * delta) {
       getTransform()->translate(next_position - glm::vec2(getTransform()->getLocalTranslation()));
-      if(moving_left) {
-        moving_left = false;
+      if(current_state == AnimationState::MOVE_LEFT) {
         current_velocity = glm::vec2(0.0, 0.0);
+        triggerTile(AnimationState::FACE_LEFT);
       }
-      if(moving_right) {
-        moving_right = false;
+      else if(current_state == AnimationState::MOVE_RIGHT) {
         current_velocity = glm::vec2(0.0, 0.0);
+        triggerTile(AnimationState::FACE_RIGHT);
       }
-      if(moving_up) {
-        moving_up = false;
+      else if(current_state == AnimationState::MOVE_UP) {
         current_velocity = glm::vec2(0.0, 0.0);
+        triggerTile(AnimationState::FACE_UP);
       }
-      if(moving_down) {
-        moving_down = false;
+      else if(current_state == AnimationState::MOVE_DOWN) {
         current_velocity = glm::vec2(0.0, 0.0);
+        triggerTile(AnimationState::FACE_DOWN);
       }
     }
     else {
@@ -117,13 +120,15 @@ void Sprite::onUpdate(const float delta) {
   Entity::onUpdate(delta);
 }
 
-void Sprite::addTile(const std::string& name, std::shared_ptr<Graphics::Tile> tile) {
+void Sprite::addTile(const AnimationState& state, std::shared_ptr<Graphics::Tile> tile) {
   addComponent(tile);
-  tiles[name] = tile;
+  tiles[state] = tile;
 }
 
-void Sprite::triggerTile(const std::string& name) {
-  current_tile = name;
+void Sprite::triggerTile(const AnimationState& state) {
+  tiles[current_state]->setInactive();
+  current_state = state;
+  tiles[current_state]->setActive();
 }
 
 void Sprite::setMovingSpeed(const float speed) {
@@ -135,41 +140,33 @@ void Sprite::setMoveQuantization(const float number_of_tiles) {
 }
 
 void Sprite::stopMovingLeft() {
-  triggerTile("stop left");
   left_down = false;
 }
 
 void Sprite::moveLeft() {
-  triggerTile("move left");
   left_down = true;
 }
 
 void Sprite::stopMovingRight() {
-  triggerTile("stop right");
   right_down = false;
 }
 
 void Sprite::moveRight() {
-  triggerTile("move right");
   right_down = true;
 }
 
 void Sprite::stopMovingUp() {
-  triggerTile("stop up");
   up_down = false;
 }
 
 void Sprite::moveUp() {
-  triggerTile("move up");
   up_down = true;
 }
 
 void Sprite::stopMovingDown() {
-  triggerTile("stop down");
   down_down = false;
 }
 
 void Sprite::moveDown() {
-  triggerTile("move down");
   down_down = true;
 }

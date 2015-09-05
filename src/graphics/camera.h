@@ -8,9 +8,8 @@
 #include "graphics/renderable.h"
 
 namespace Graphics {
-  class Camera : Component {
+  class Camera : public Component {
     private:
-      std::shared_ptr<Transform> transform;
       glm::mat4 projection_matrix;
       //THESE NEED TO BE MOVED TO SOMEWHERE ELSE, PERHAPS AN INHERITED CLASS
       Transform last_transform;
@@ -41,9 +40,6 @@ namespace Graphics {
       const float getFar() const noexcept;
 
       const bool isRenderableWithin(std::shared_ptr<Renderable> renderable) const;
-
-      void setTransform(const std::shared_ptr<Transform> transform) noexcept;
-      std::shared_ptr<Transform> getTransform() const noexcept;
   };
 }
 #endif

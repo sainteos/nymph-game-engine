@@ -5,12 +5,12 @@
 
 namespace Graphics {
   
-  Camera::Camera(const std::shared_ptr<ShaderManager> shader_manager) : shader_manager(shader_manager), projection_matrix(1.0), transform(std::make_shared<Transform>()) {
+  Camera::Camera(const std::shared_ptr<ShaderManager> shader_manager) : shader_manager(shader_manager), projection_matrix(1.0) {
 
   }
 
   Camera::Camera(const std::shared_ptr<ShaderManager> shader_manager, const float viewport_width, const float viewport_height, const float near, const float far) 
-    : viewport_width(viewport_width), viewport_height(viewport_height), near(near), far(far), projection_matrix(1.0), shader_manager(shader_manager), transform(std::make_shared<Transform>()) {
+    : viewport_width(viewport_width), viewport_height(viewport_height), near(near), far(far), projection_matrix(1.0), shader_manager(shader_manager) {
   }
 
   void Camera::onStart() { 
@@ -71,14 +71,6 @@ namespace Graphics {
     return far;
   }
 
-  void Camera::setTransform(const std::shared_ptr<Transform> transform) noexcept {
-    this->transform = transform;
-  }
-
-  std::shared_ptr<Transform> Camera::getTransform() const noexcept {
-    return transform;
-  }
-
   const bool Camera::isRenderableWithin(std::shared_ptr<Renderable> renderable) const {
     auto translation = renderable->getTransform()->getAbsoluteTranslation();
     auto camera_translation = transform->getAbsoluteTranslation();
@@ -97,7 +89,7 @@ namespace Graphics {
   Transform Camera::negateTransformForScreen(std::shared_ptr<Transform> trans) {
     //Gotta do this to make the camera move the opposite the renderables
     Transform negated_for_screen = *transform;
-    negated_for_screen.translate(glm::vec3(-2.0, -2.0, 1.0) * negated_for_screen.getLocalTranslation());
+    negated_for_screen.translate(glm::vec3(-2.0, -2.0, 1.0) * negated_for_screen.getAbsoluteTranslation());
     return negated_for_screen;
   }
 }
