@@ -2,6 +2,7 @@
 #include "events/event_type.h"
 #include "input/key_down_event.h"
 #include "input/key_up_event.h"
+#include "sprite_move_event.h"
 #include <easylogging++.h>
 #include <glfw3.h>
 #include <glm/ext.hpp>
@@ -74,22 +75,30 @@ void Sprite::onUpdate(const float delta) {
     if(left_down) {
       current_velocity = glm::vec2(-moving_speed, 0.0);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+      auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       triggerTile(AnimationState::MOVE_LEFT);
+      notify(SpriteMoveEvent(current_velocity, absolute_next_position));
     }
     else if(right_down) {
       current_velocity = glm::vec2(moving_speed, 0.0);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+      auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       triggerTile(AnimationState::MOVE_RIGHT);
+      notify(SpriteMoveEvent(current_velocity, absolute_next_position));
     } 
     else if(up_down) {
       current_velocity = glm::vec2(0.0, moving_speed);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+      auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       triggerTile(AnimationState::MOVE_UP);
+      notify(SpriteMoveEvent(current_velocity, absolute_next_position));
     }
     else if(down_down) {
       current_velocity = glm::vec2(0.0, -moving_speed);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+      auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       triggerTile(AnimationState::MOVE_DOWN);
+      notify(SpriteMoveEvent(current_velocity, absolute_next_position));
     }
   }
   if(current_state == AnimationState::MOVE_LEFT || current_state == AnimationState::MOVE_RIGHT ||

@@ -9,7 +9,8 @@ namespace Events {
     CURSOR_ENTER,
     CURSOR_LEAVE,
     KEY_DOWN,
-    KEY_UP
+    KEY_UP,
+    SPRITE_MOVE
   };
 }
 

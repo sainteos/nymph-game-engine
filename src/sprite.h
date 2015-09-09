@@ -9,7 +9,7 @@
 #include "events/event.h"
 #include "graphics/tile.h"
 
-class Sprite : public Entity, public Events::Observer {
+class Sprite : public Entity, public Events::Observer, public Events::Subject {
   public:
     enum class AnimationState {MOVE_UP, FACE_UP, MOVE_DOWN, FACE_DOWN, MOVE_LEFT, FACE_LEFT, MOVE_RIGHT, FACE_RIGHT};
   private: 

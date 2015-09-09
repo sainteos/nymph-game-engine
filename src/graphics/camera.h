@@ -6,9 +6,11 @@
 #include "transform.h"
 #include "graphics/shader_manager.h"
 #include "graphics/renderable.h"
+#include "events/observer.h"
+#include "events/event_type.h"
 
 namespace Graphics {
-  class Camera : public Component {
+  class Camera : public Component, public Events::Observer {
     private:
       glm::mat4 projection_matrix;
       //THESE NEED TO BE MOVED TO SOMEWHERE ELSE, PERHAPS AN INHERITED CLASS
@@ -21,6 +23,11 @@ namespace Graphics {
       float near;
       float far;
 
+      glm::vec2 velocity;
+      glm::vec2 target_position;
+
+      int screen_padding_in_tiles;
+
       Transform negateTransformForScreen(std::shared_ptr<Transform> trans);
     public:
       Camera() = delete;
@@ -30,6 +37,10 @@ namespace Graphics {
       virtual const bool onUpdate(const double delta) override;
       virtual void onDestroy() override;
 
+      void onNotify(const Events::Event& event) override;
+
+      void setScreenPaddingInTiles(const int padding) noexcept;
+      const int getScreenPaddingInTiles() const noexcept;
       void setWidth(const float width) noexcept;
       const float getWidth() const noexcept;
       void setHeight(const float height) noexcept;

@@ -78,6 +78,7 @@ int main(int argc, char** argv) {
       sprite->getTransform()->translate(glm::vec3((float)i.x_pos, (float)i.y_pos, (float)i.z_order));
     }
   }
+  sprite->addObserver(camera);
   
   auto transform = std::make_shared<Transform>();
 
