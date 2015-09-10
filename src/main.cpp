@@ -22,6 +22,7 @@
 #include "sprite.h"
 #include "input/input_system.h"
 #include "utility/fps_counter.h"
+#include "utility/config_manager.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -29,23 +30,32 @@ INITIALIZE_EASYLOGGINGPP
 using namespace Graphics;
 using namespace std::placeholders;
 
-int main(int argc, char** argv) { 
-  if(argc < 4) {
-    std::cout<<"USAGE:"<<std::endl;
-    std::cout<<"./TileEngine.out [map name with path] [camera x in tiles] [camera y in tiles]"<<std::endl;
+int main(int argc, char** argv) {
+  START_EASYLOGGINGPP(argc, argv);
+  
+  LOG(INFO)<<"Number of args: "<<argc;
+  std::string config_path;
+  if(argc > 2) {
+    config_path = std::string(argv[1]);
+  }
+  else {
+    config_path = "./config/default.json";
+  }
+
+  Utility::ConfigManager config;
+  if(!config.loadConfig(config_path)) {
+    LOG(FATAL)<<"Could not load config: "<<config_path;
     return 0;
   }
 
-  START_EASYLOGGINGPP(argc, argv);
-
   Tmx::Map *map = new Tmx::Map();
-  map->ParseFile(std::string(argv[1]));
+  map->ParseFile(config.getString("map"));
 
   Tmx::Map *animation_map = new Tmx::Map();
-  animation_map->ParseFile(std::string("./project-spero-assets/Maps/Animations.tmx"));
+  animation_map->ParseFile(config.getString("animation_database"));
 
   GraphicsSystem graphics;
-  graphics.initialize(1280, 720, "Dick Butts (tm)", Graphics::WindowExitFunctor());
+  graphics.initialize(config.getInt("screen_width"), config.getInt("screen_height"), config.getString("window_name"), Graphics::WindowExitFunctor());
 
   Input::InputSystem input_system(graphics.getWindow());
 
@@ -55,12 +65,11 @@ int main(int argc, char** argv) {
   shader_manager->loadShader("simple_texture");
   shader_manager->loadShader("tile_animation");;
 
-  float viewport_tile_width = 21.0;
-  float viewport_tile_height = 12.0;
+  float viewport_tile_width = config.getFloat("screen_width_tiles");
+  float viewport_tile_height = config.getFloat("screen_height_tiles");
 
-  std::shared_ptr<Camera> camera = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, 0.1f, 40.0f);
+  std::shared_ptr<Camera> camera = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config.getFloat("near_plane"), config.getFloat("far_plane"));
   camera->setTransform(std::make_shared<Transform>());
-  camera->getTransform()->translate(glm::vec2(atof(argv[2]), atof(argv[3])));
   graphics.setCamera(camera);
   TextureManager texture_manager;
   
@@ -78,6 +87,7 @@ int main(int argc, char** argv) {
       sprite->getTransform()->translate(glm::vec3((float)i.x_pos, (float)i.y_pos, (float)i.z_order));
     }
   }
+
   sprite->addObserver(camera);
   
   auto transform = std::make_shared<Transform>();
@@ -127,6 +137,7 @@ int main(int argc, char** argv) {
   graphics.addRenderable(stop_right->tile);
   sprite->setMovingSpeed(2.0);
   transform->addChild(sprite->getTransform());
+  camera->getTransform()->translate(glm::vec2(sprite->getTransform()->getAbsoluteTranslation()));
 
   sprite->onStart();
   graphics.startRender();
@@ -138,7 +149,7 @@ int main(int argc, char** argv) {
   while(graphics.isRunning()) {
     if(fps != fps_counter.getCurrentFPS()) {
       std::stringstream window_name;
-      window_name << "Dick Butts(tm)"<<"        "<<fps_counter.getCurrentFPS();
+      window_name <<config.getString("window_title")<<" "<<fps_counter.getCurrentFPS();
       graphics.setWindowName(window_name.str());
       fps = fps_counter.getCurrentFPS();
     }
