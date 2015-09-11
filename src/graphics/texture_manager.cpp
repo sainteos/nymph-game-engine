@@ -18,9 +18,9 @@ namespace Graphics {
 
   }
 
-  const bool TextureManager::loadTexture(const std::string& path, const std::string& texture_uniform_name) {
+  const bool TextureManager::loadTexture(const std::string& path, const std::string& texture_uniform_name, const unsigned int texture_unit) {
     std::string tex_name = getNameFromPath(path);
-    auto texture = std::make_shared<BaseTexture>(texture_uniform_name, GL_TEXTURE_2D, 0);
+    auto texture = std::make_shared<BaseTexture>(texture_uniform_name, GL_TEXTURE_2D, texture_unit);
 
     if(texture->load(path)) {
       textures_to_names[tex_name] = texture;

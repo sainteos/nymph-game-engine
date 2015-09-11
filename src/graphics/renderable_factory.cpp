@@ -162,7 +162,67 @@ namespace Graphics {
     auto texture_name = TextureManager::getNameFromPath(source);
 
     if(!texture_manager.textureExists(texture_name)) {
-      if(!texture_manager.loadTexture(source, uniform_name)) {
+      if(!texture_manager.loadTexture(source, uniform_name, 0)) {
+        throw Exceptions::InvalidFilenameException(source);
+      }
+    }
+
+    return texture_manager[texture_name];
+  }
+
+  std::shared_ptr<BaseTexture> RenderableFactory::normalTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+    //Get out of the map directory
+    auto pos = path.find_last_of("/");
+    auto new_path = path.substr(0, pos);
+    pos = new_path.find_last_of("/");
+    new_path = new_path.substr(0, pos);
+
+    auto tileset_image = tileset->GetImage();
+
+    auto source = tileset_image->GetSource();
+    //add path to the image source
+    source.erase(0, 2);
+    //add "normal" to source name
+    //find the dot for extension
+    //we want normal to go before it
+    auto extension_pos = source.find_last_of(".");
+    source.insert(extension_pos, "-Normal");
+    source = new_path + source;
+
+    auto texture_name = TextureManager::getNameFromPath(source);
+
+    if(!texture_manager.textureExists(texture_name)) {
+      if(!texture_manager.loadTexture(source, uniform_name, 1)) {
+        throw Exceptions::InvalidFilenameException(source);
+      }
+    }
+
+    return texture_manager[texture_name];
+  }
+
+  std::shared_ptr<BaseTexture> RenderableFactory::displacementTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+    //Get out of the map directory
+    auto pos = path.find_last_of("/");
+    auto new_path = path.substr(0, pos);
+    pos = new_path.find_last_of("/");
+    new_path = new_path.substr(0, pos);
+
+    auto tileset_image = tileset->GetImage();
+
+    auto source = tileset_image->GetSource();
+    //add path to the image source
+    source.erase(0, 2);
+    //add "normal" to source name
+    //find the dot for extension
+    //we want normal to go before it
+    auto extension_pos = source.find_last_of(".");
+    source.insert(extension_pos, "-Displacement");
+    source = new_path + source;
+
+    auto texture_name = TextureManager::getNameFromPath(source);
+
+    if(!texture_manager.textureExists(texture_name)) {
+      if(!texture_manager.loadTexture(source, uniform_name, 2)) {
         throw Exceptions::InvalidFilenameException(source);
       }
     }
@@ -321,6 +381,10 @@ namespace Graphics {
 
             auto tile = tileset->GetTile(layer->GetTileId(x, y));
             auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
+            std::shared_ptr<BaseTexture> normal_texture;
+            if(tileset->GetProperties().HasProperty("UseNormal") && tileset->GetProperties().GetStringProperty("UseNormal") == "True") {
+              normal_texture = normalTextureFromTileset(tileset, texture_manager, path, "normal_texture");
+            }
 
             if(tile != nullptr && tile->GetProperties().GetStringProperty("AnimatedSprite") == "True") {
               AnimationPlaceholder placeholder;
@@ -374,9 +438,19 @@ namespace Graphics {
               }
 
               std::shared_ptr<Tile> renderable = std::make_shared<Tile>(vertex_array_object, vert_data);
-              renderable->setTexture(texture);
+
+              renderable->addTexture(texture);
               renderable->setSizeInPixels(map.GetTileWidth());
-              renderable->setShader((*shader_manager)["simple_texture"]);
+              if(normal_texture) {
+                renderable->addTexture(normal_texture);
+              }
+
+              if(map.GetProperties().HasProperty("Lighted") && map.GetProperties().GetStringProperty("Lighted") == "True") {
+                renderable->setShader((*shader_manager)["normal_mapping"]);
+              }
+              else {
+                renderable->setShader((*shader_manager)["simple_texture"]); 
+              }
 
               auto transform = std::make_shared<Transform>();
               //subtract y from height and subtract 1 to normalize to 0
@@ -390,7 +464,7 @@ namespace Graphics {
               auto animated_renderable = create<AnimatedTile>();
               auto frames = tile->GetFrames();
 
-              animated_renderable->setTexture(texture);
+              animated_renderable->addTexture(texture);
               animated_renderable->setSizeInPixels(tileset->GetTileWidth());
               
               for(auto frame : frames) {
@@ -438,7 +512,7 @@ namespace Graphics {
           new_anim.tile = create<AnimatedTile>();
           auto frames = tile->GetFrames();
 
-          new_anim.tile->setTexture(texture);
+          new_anim.tile->addTexture(texture);
           new_anim.tile->setSizeInPixels(tileset->GetTileWidth());
           
           for(auto frame : frames) {

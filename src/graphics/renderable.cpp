@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <algorithm>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/ext.hpp>
 #include "exceptions/invalid_vertex_array_exception.h"
@@ -82,6 +83,16 @@ namespace Graphics {
 
   const std::vector<std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
     return textures;
+  }
+
+  const std::shared_ptr<BaseTexture> Renderable::getTextureByUniform(const std::string& uniform_name) {
+    auto tex_iter = std::find_if(textures.begin(), textures.end(), [&](std::shared_ptr<BaseTexture> t) { return t->getTextureUniformName() == uniform_name; });
+    if(tex_iter == textures.end()) {
+      return nullptr;
+    }
+    else {
+      return *tex_iter;
+    }
   }
   
   const unsigned int Renderable::getVertexArrayBinding() const noexcept {

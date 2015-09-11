@@ -43,8 +43,8 @@ namespace Graphics {
     if(tile_to_time.size() > 0 && getShader() != nullptr) {
       getShader()->setUniform("tile_coord", tile_to_time.front().first);
 
-      float normalized_width = float(sizeInPixels()) / float(getTexture()->getWidth());
-      float normalized_height = float(sizeInPixels()) / float(getTexture()->getHeight());
+      float normalized_width = float(sizeInPixels()) / float(getTextureByUniform("tileset")->getWidth());
+      float normalized_height = float(sizeInPixels()) / float(getTextureByUniform("tileset")->getHeight());
       multiplier = glm::vec2(normalized_width, normalized_height);
 
       getShader()->setUniform("tile_coord_multiplier", multiplier);

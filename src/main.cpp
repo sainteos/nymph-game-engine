@@ -63,7 +63,8 @@ int main(int argc, char** argv) {
 
   std::shared_ptr<ShaderManager> shader_manager = std::make_shared<ShaderManager>();
   shader_manager->loadShader("simple_texture");
-  shader_manager->loadShader("tile_animation");;
+  shader_manager->loadShader("tile_animation");
+  shader_manager->loadShader("normal_mapping");
 
   float viewport_tile_width = config.getFloat("screen_width_tiles");
   float viewport_tile_height = config.getFloat("screen_height_tiles");
@@ -92,12 +93,12 @@ int main(int argc, char** argv) {
   
   auto transform = std::make_shared<Transform>();
 
-  for(auto i : renderables.tiles) {
+  for(auto& i : renderables.tiles) {
     transform->addChild(i->getTransform());
     graphics.addRenderable(i);
   }
 
-  for(auto i : renderables.animated_tiles) {
+  for(auto& i : renderables.animated_tiles) {
     transform->addChild(i->getTransform());
     i->setActive();
     graphics.addRenderable(i);
@@ -137,9 +138,14 @@ int main(int argc, char** argv) {
   graphics.addRenderable(stop_right->tile);
   sprite->setMovingSpeed(2.0);
   transform->addChild(sprite->getTransform());
-  camera->getTransform()->translate(glm::vec2(sprite->getTransform()->getAbsoluteTranslation()));
-
+  //camera->getTransform()->translate(glm::vec2(sprite->getTransform()->getAbsoluteTranslation()));
+  camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
   sprite->onStart();
+
+  shader_manager->getShader("normal_mapping")->setUniform("resolution", glm::vec2(config.getFloat("screen_width"), config.getFloat("screen_height")));
+  shader_manager->getShader("normal_mapping")->setUniform("light_position", glm::vec3(config.getFloat("light_position_x"), config.getFloat("light_position_y"), config.getFloat("light_position_z")));
+  shader_manager->getShader("normal_mapping")->setUniform("light_color", glm::vec4(config.getFloat("light_color_r"), config.getFloat("light_color_g"), config.getFloat("light_color_b"), config.getFloat("light_intensity")));
+  shader_manager->getShader("normal_mapping")->setUniform("ambient_color", glm::vec4(config.getFloat("ambient_color_r"), config.getFloat("ambient_color_g"), config.getFloat("ambient_color_b"), config.getFloat("ambient_intensity")));
   graphics.startRender();
 
   Utility::FPSCounter fps_counter(60.0f);

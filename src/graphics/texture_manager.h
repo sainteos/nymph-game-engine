@@ -13,8 +13,7 @@ namespace Graphics {
       TextureManager();
       ~TextureManager();
 
-      //always loading as gl_texture_2d and on tex unit 0, should probably fix
-      const bool loadTexture(const std::string& path, const std::string& texture_uniform_name);
+      const bool loadTexture(const std::string& path, const std::string& texture_uniform_name, const unsigned int texture_unit = 0);
 
       const std::shared_ptr<BaseTexture> operator[](const std::string& name) const;
       const std::shared_ptr<BaseTexture> getTexture(const std::string& name) const;

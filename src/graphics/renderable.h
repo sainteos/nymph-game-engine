@@ -46,6 +46,7 @@ namespace Graphics {
 
       void addTexture(std::shared_ptr<BaseTexture> texture_object) noexcept;
       const std::vector<std::shared_ptr<BaseTexture>> getTextures() const noexcept;
+      const std::shared_ptr<BaseTexture> getTextureByUniform(const std::string& uniform_name);
 
       const unsigned int getVertexArrayBinding() const noexcept;
 

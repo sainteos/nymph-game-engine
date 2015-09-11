@@ -27,11 +27,11 @@ namespace Graphics {
     return size_pixels;
   }
 
-  void Tile::setTexture(std::shared_ptr<BaseTexture> texture_object) noexcept {
-    Renderable::addTexture(texture_object);
-  }
+  // void Tile::setTexture(std::shared_ptr<BaseTexture> texture_object) noexcept {
+  //   Renderable::addTexture(texture_object);
+  // }
 
-  std::shared_ptr<BaseTexture> Tile::getTexture() const noexcept {
-    return Renderable::getTextures().back();
-  }
+  // std::shared_ptr<BaseTexture> Tile::getTexture() const noexcept {
+  //   return Renderable::getTextures().back();
+  // }
 }

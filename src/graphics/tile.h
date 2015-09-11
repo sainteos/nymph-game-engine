@@ -16,9 +16,6 @@ namespace Graphics {
 
       void setSizeInPixels(const unsigned int size);
       const unsigned int sizeInPixels() const noexcept;
-
-      void setTexture(std::shared_ptr<BaseTexture> texture_object) noexcept;
-      std::shared_ptr<BaseTexture> getTexture() const noexcept;
   };
 }
 
