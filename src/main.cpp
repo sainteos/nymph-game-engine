@@ -30,6 +30,18 @@ INITIALIZE_EASYLOGGINGPP
 using namespace Graphics;
 using namespace std::placeholders;
 
+struct Light {
+  glm::vec4 position;
+  glm::vec3 color;
+  float intensity;
+  float linear_attenuation;
+  float quadratic_attenuation;
+  float cone_angle;
+  glm::vec3 cone_direction;
+  float quantization_bandwidth;
+  int number_quantized_bands;
+};
+
 int main(int argc, char** argv) {
   START_EASYLOGGINGPP(argc, argv);
   
@@ -142,14 +154,18 @@ int main(int argc, char** argv) {
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
   sprite->onStart();
 
-  shader_manager->getShader("normal_mapping")->setUniform("resolution", glm::vec2(config.getFloat("screen_width"), config.getFloat("screen_height")));
-  shader_manager->getShader("normal_mapping")->setUniform("light_position", glm::vec3(config.getFloat("light_position_x"), config.getFloat("light_position_y"), config.getFloat("light_position_z")));
-  shader_manager->getShader("normal_mapping")->setUniform("light_color", glm::vec4(config.getFloat("light_color_r"), config.getFloat("light_color_g"), config.getFloat("light_color_b"), config.getFloat("light_intensity")));
+  shader_manager->getShader("normal_mapping")->setUniform("num_lights", 1);
   shader_manager->getShader("normal_mapping")->setUniform("ambient_color", glm::vec4(config.getFloat("ambient_color_r"), config.getFloat("ambient_color_g"), config.getFloat("ambient_color_b"), config.getFloat("ambient_intensity")));
-  shader_manager->getShader("normal_mapping")->setUniform("quantization_bandwidth", config.getFloat("quantization_bandwidth"));
-  shader_manager->getShader("normal_mapping")->setUniform("number_quantized_bands", config.getInt("number_quantized_bands"));
-  shader_manager->getShader("normal_mapping")->setUniform("linear_attenuation", config.getFloat("linear_attenuation"));
-  shader_manager->getShader("normal_mapping")->setUniform("quadratic_attenuation", config.getFloat("quadratic_attenuation"));
+  shader_manager->getShader("normal_mapping")->setUniform("resolution", glm::vec2(config.getFloat("screen_width"), config.getFloat("screen_height")));
+  shader_manager->getShader("normal_mapping")->setUniform("lights[0].position", glm::vec3(config.getFloat("light_position_x"), config.getFloat("light_position_y"), config.getFloat("light_position_z")));
+  shader_manager->getShader("normal_mapping")->setUniform("lights[0].color", glm::vec3(config.getFloat("light_color_r"), config.getFloat("light_color_g"), config.getFloat("light_color_b")));
+  shader_manager->getShader("normal_mapping")->setUniform("lights[0].intensity", config.getFloat("light_intensity"));
+  shader_manager->getShader("normal_mapping")->setUniform("lights[0].quantization_bandwidth", config.getFloat("quantization_bandwidth"));
+  shader_manager->getShader("normal_mapping")->setUniform("lights[0].number_quantized_bands", config.getInt("number_quantized_bands"));
+  shader_manager->getShader("normal_mapping")->setUniform("lights[0].linear_attenuation", config.getFloat("linear_attenuation"));
+  shader_manager->getShader("normal_mapping")->setUniform("lights[0].quadratic_attenuation", config.getFloat("quadratic_attenuation"));
+  shader_manager->getShader("normal_mapping")->setUniform("lights[0].cone_angle", 0.0f);
+
   graphics.startRender();
 
   Utility::FPSCounter fps_counter(60.0f);
