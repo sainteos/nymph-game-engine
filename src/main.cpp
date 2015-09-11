@@ -146,6 +146,10 @@ int main(int argc, char** argv) {
   shader_manager->getShader("normal_mapping")->setUniform("light_position", glm::vec3(config.getFloat("light_position_x"), config.getFloat("light_position_y"), config.getFloat("light_position_z")));
   shader_manager->getShader("normal_mapping")->setUniform("light_color", glm::vec4(config.getFloat("light_color_r"), config.getFloat("light_color_g"), config.getFloat("light_color_b"), config.getFloat("light_intensity")));
   shader_manager->getShader("normal_mapping")->setUniform("ambient_color", glm::vec4(config.getFloat("ambient_color_r"), config.getFloat("ambient_color_g"), config.getFloat("ambient_color_b"), config.getFloat("ambient_intensity")));
+  shader_manager->getShader("normal_mapping")->setUniform("quantization_bandwidth", config.getFloat("quantization_bandwidth"));
+  shader_manager->getShader("normal_mapping")->setUniform("number_quantized_bands", config.getInt("number_quantized_bands"));
+  shader_manager->getShader("normal_mapping")->setUniform("linear_attenuation", config.getFloat("linear_attenuation"));
+  shader_manager->getShader("normal_mapping")->setUniform("quadratic_attenuation", config.getFloat("quadratic_attenuation"));
   graphics.startRender();
 
   Utility::FPSCounter fps_counter(60.0f);

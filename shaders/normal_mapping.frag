@@ -11,6 +11,10 @@ uniform vec2 resolution;      //resolution of screen
 uniform vec3 light_position;        //light position, normalized
 uniform vec4 light_color;      //light RGBA -- alpha is intensity
 uniform vec4 ambient_color;    //ambient RGBA -- alpha is intensity 
+uniform float linear_attenuation;
+uniform float quadratic_attenuation;
+uniform float quantization_bandwidth;
+uniform int number_quantized_bands;
 
 void main()
 {
@@ -26,14 +30,20 @@ void main()
   light_direction.x *= resolution.x / resolution.y;
   //Determine distance (used for attenuation) BEFORE we normalize our LightDir
   float dist = length(light_direction);
+  
+  if(quantization_bandwidth != 0.0) {
+    float xy_dist = length(light_direction.xy);
 
-  float xy_dist = length(light_direction.xy);
-  if(xy_dist < 0.2) dist = 0.0;
-  else if(xy_dist >= 0.2 && xy_dist < 0.4) dist = 0.2;
-  else if(xy_dist >= 0.4 && xy_dist < 0.6) dist = 0.4;
-  else if(xy_dist >= 0.6 && xy_dist < 0.8) dist = 0.6;
-  else if(xy_dist >= 0.8 && xy_dist < 1.0) dist = 0.8;
-  else dist = 50.0;
+    if(xy_dist < quantization_bandwidth) {
+      dist = quantization_bandwidth;
+    }
+    for(int i = 1; i < number_quantized_bands; i++) {
+      if(xy_dist >= float(i) * quantization_bandwidth && xy_dist < float(i+1) * quantization_bandwidth)
+        dist = quantization_bandwidth * float(i);
+    }
+    if(dist > float(number_quantized_bands) * quantization_bandwidth)
+      dist = 500.0;
+  }
   //normalize our vectors
   vec3 normal = normalize(normal_texel * 2.0 - 1.0);
   normal = vec3(0.0, 0.0, -1.0);
@@ -43,7 +53,7 @@ void main()
   vec3 diffuse = (light_color.rgb * light_color.a) * max(dot(normal, light_direction), 0.0);    //pre-multiply ambient color with intensity
   vec3 ambient = ambient_color.rgb * ambient_color.a;
   //calculate attenuation
-  float attenuation = 1.0 / ( 1.0 + (0.5*dist) + (14.0*dist*dist) );
+  float attenuation = 1.0 / ( 1.0 + (linear_attenuation*dist) + (quadratic_attenuation*dist*dist) );
   
   //if(length(light_direction.xy) > 1.0)
   //  diffuse = vec3(0.0, 0.0, 0.0);
