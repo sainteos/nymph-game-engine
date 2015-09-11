@@ -23,24 +23,13 @@
 #include "input/input_system.h"
 #include "utility/fps_counter.h"
 #include "utility/config_manager.h"
+#include "graphics/light.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
 
 using namespace Graphics;
 using namespace std::placeholders;
-
-struct Light {
-  glm::vec4 position;
-  glm::vec3 color;
-  float intensity;
-  float linear_attenuation;
-  float quadratic_attenuation;
-  float cone_angle;
-  glm::vec3 cone_direction;
-  float quantization_bandwidth;
-  int number_quantized_bands;
-};
 
 int main(int argc, char** argv) {
   START_EASYLOGGINGPP(argc, argv);
@@ -76,7 +65,8 @@ int main(int argc, char** argv) {
   std::shared_ptr<ShaderManager> shader_manager = std::make_shared<ShaderManager>();
   shader_manager->loadShader("simple_texture");
   shader_manager->loadShader("tile_animation");
-  shader_manager->loadShader("normal_mapping");
+  shader_manager->loadShader("diffuse_lighting");
+  shader_manager->getShader("diffuse_lighting")->setUniform("resolution", glm::vec2(config.getFloat("screen_width"), config.getFloat("screen_height")));
 
   float viewport_tile_width = config.getFloat("screen_width_tiles");
   float viewport_tile_height = config.getFloat("screen_height_tiles");
@@ -107,6 +97,8 @@ int main(int argc, char** argv) {
 
   for(auto& i : renderables.tiles) {
     transform->addChild(i->getTransform());
+    i->setAmbientLight(glm::vec3(config.getFloat("ambient_color_r"), config.getFloat("ambient_color_g"), config.getFloat("ambient_color_b")));
+    i->setAmbientIntensity(config.getFloat("ambient_intensity"));
     graphics.addRenderable(i);
   }
 
@@ -152,19 +144,31 @@ int main(int argc, char** argv) {
   transform->addChild(sprite->getTransform());
   //camera->getTransform()->translate(glm::vec2(sprite->getTransform()->getAbsoluteTranslation()));
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
-  sprite->onStart();
 
-  shader_manager->getShader("normal_mapping")->setUniform("num_lights", 1);
-  shader_manager->getShader("normal_mapping")->setUniform("ambient_color", glm::vec4(config.getFloat("ambient_color_r"), config.getFloat("ambient_color_g"), config.getFloat("ambient_color_b"), config.getFloat("ambient_intensity")));
-  shader_manager->getShader("normal_mapping")->setUniform("resolution", glm::vec2(config.getFloat("screen_width"), config.getFloat("screen_height")));
-  shader_manager->getShader("normal_mapping")->setUniform("lights[0].position", glm::vec3(config.getFloat("light_position_x"), config.getFloat("light_position_y"), config.getFloat("light_position_z")));
-  shader_manager->getShader("normal_mapping")->setUniform("lights[0].color", glm::vec3(config.getFloat("light_color_r"), config.getFloat("light_color_g"), config.getFloat("light_color_b")));
-  shader_manager->getShader("normal_mapping")->setUniform("lights[0].intensity", config.getFloat("light_intensity"));
-  shader_manager->getShader("normal_mapping")->setUniform("lights[0].quantization_bandwidth", config.getFloat("quantization_bandwidth"));
-  shader_manager->getShader("normal_mapping")->setUniform("lights[0].number_quantized_bands", config.getInt("number_quantized_bands"));
-  shader_manager->getShader("normal_mapping")->setUniform("lights[0].linear_attenuation", config.getFloat("linear_attenuation"));
-  shader_manager->getShader("normal_mapping")->setUniform("lights[0].quadratic_attenuation", config.getFloat("quadratic_attenuation"));
-  shader_manager->getShader("normal_mapping")->setUniform("lights[0].cone_angle", 0.0f);
+  std::shared_ptr<Light> light = std::make_shared<Light>();
+  light->setTransform(std::make_shared<Transform>());
+  light->getTransform()->translate(glm::vec3(config.getFloat("light_position_x"), config.getFloat("light_position_y"), config.getFloat("light_position_z")));
+  light->setColor(glm::vec3(config.getFloat("light_color_r"), config.getFloat("light_color_g"), config.getFloat("light_color_b")));
+  light->setIntensity(config.getFloat("light_intensity"));
+  light->setNumberOfQuantizedBands(config.getInt("number_quantized_bands"));
+  light->setLinearAttenuation(config.getFloat("linear_attenuation"));
+  light->setQuadraticAttenuation(config.getFloat("quadratic_attenuation"));
+  //transform->addChild(light->getTransform());
+  graphics.addLight(light);
+
+  std::shared_ptr<Light> light2 = std::make_shared<Light>(Light::Type::SPOT);
+  light2->setTransform(std::make_shared<Transform>());
+  light2->getTransform()->translate(glm::vec3(config.getFloat("light2_position_x"), config.getFloat("light2_position_y"), config.getFloat("light2_position_z")));
+  light2->setColor(glm::vec3(config.getFloat("light2_color_r"), config.getFloat("light2_color_g"), config.getFloat("light2_color_b")));
+  light2->setIntensity(config.getFloat("light2_intensity"));
+  light2->setNumberOfQuantizedBands(config.getInt("2_number_quantized_bands"));
+  light2->setLinearAttenuation(config.getFloat("2_linear_attenuation"));
+  light2->setQuadraticAttenuation(config.getFloat("2_quadratic_attenuation"));
+  light2->setConeAngle(config.getFloat("2_cone_angle"));
+  light2->setConeDirection(glm::vec3(config.getFloat("2_cone_x"), config.getFloat("2_cone_y"), config.getFloat("2_cone_z")));
+  
+  graphics.addLight(light2);
+  sprite->onStart();
 
   graphics.startRender();
 

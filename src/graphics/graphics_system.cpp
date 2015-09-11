@@ -6,6 +6,7 @@
 #include <chrono>
 #include <string>
 #include <sstream>
+#include <queue>
 #include <IL/il.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "exceptions/system_already_initialized_exception.h"
@@ -16,7 +17,7 @@
 
 namespace Graphics {
 
-  GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), next_id(1) {
+  GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), next_id(1), max_influence_lights(8) {
   }
 
   GraphicsSystem::~GraphicsSystem() {
@@ -181,6 +182,22 @@ namespace Graphics {
     renderables_mutex.lock();
     for(auto& renderables_iter : renderables_map) {
       if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second) && renderables_iter.second->onUpdate(delta)) {
+        if(renderables_iter.second->isLightReactive()) {
+          //find lights that influence renderable
+          std::priority_queue<RankedLight, std::vector<RankedLight>, std::less<RankedLight>> light_queue;
+
+          for(auto& light : lights) {
+            auto influence = light->influenceOnComponent(*renderables_iter.second);
+            if(influence > 0.0)
+              light_queue.push(RankedLight { light,  influence });
+          }
+          renderables_iter.second->clearInfluencingLights();
+          for(int i = 0; i < max_influence_lights && !light_queue.empty(); i++) {
+            renderables_iter.second->addInfluencingLight(light_queue.top().light);
+            light_queue.pop();
+          }
+
+        }
         //if renderable was updated, then render
         renderables_iter.second->onRender();
       }
@@ -203,6 +220,22 @@ namespace Graphics {
         LOG(ERROR)<<"Unknown error: "<<description;
         break;
     }
+  }
+
+  void GraphicsSystem::setMaxInfluenceLights(const unsigned int number) noexcept {
+    max_influence_lights = number;
+  }
+
+  const unsigned int GraphicsSystem::getMaxInfluenceLights() const noexcept {
+    return max_influence_lights;
+  }
+
+  void GraphicsSystem::addLight(std::shared_ptr<Light> light) noexcept {
+    lights.push_back(light);
+  }
+
+  void GraphicsSystem::removeLight(std::shared_ptr<Light> light) {
+    lights.remove(light);
   }
 
   void GraphicsSystem::destroy() {

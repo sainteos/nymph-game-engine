@@ -12,6 +12,7 @@
 #else
 #include <glew.h>
 #endif
+#define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
 #include <glm/glm.hpp>
 #include "graphics/renderable.h"
@@ -21,6 +22,14 @@
 namespace Graphics {
   class GraphicsSystem {
     private:
+      struct RankedLight {
+        std::shared_ptr<Light> light;
+        float influence;
+        friend bool operator<(const RankedLight& left, const RankedLight& right) {
+          return left.influence < right.influence;
+        }
+      };
+
       GLFWwindow* window;
       bool initialized;
       float delta;
@@ -30,6 +39,9 @@ namespace Graphics {
 
       std::map<int, std::shared_ptr<Graphics::Renderable>> renderables_map;
       std::mutex renderables_mutex;
+
+      std::list<std::shared_ptr<Light>> lights;
+      unsigned int max_influence_lights;
 
       //The next id for renderables
       int next_id;
@@ -123,6 +135,11 @@ namespace Graphics {
       std::shared_ptr<Camera> getCamera() const noexcept;
 
       GLFWwindow* getCurrentWindow() noexcept;
+
+      void setMaxInfluenceLights(const unsigned int number) noexcept;
+      const unsigned int getMaxInfluenceLights() const noexcept;
+      void addLight(std::shared_ptr<Light> light) noexcept;
+      void removeLight(std::shared_ptr<Light> light);
 
       /**
        * @brief Closes window, and destroys GLFW context.

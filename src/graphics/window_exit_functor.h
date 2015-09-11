@@ -1,5 +1,6 @@
 #ifndef WINDOW_EXIT_FUNCTOR_H
 #define WINDOW_EXIT_FUNCTOR_H
+#define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
 
 namespace Graphics {

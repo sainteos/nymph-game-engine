@@ -8,6 +8,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <algorithm>
+#include <sstream>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/ext.hpp>
 #include "exceptions/invalid_vertex_array_exception.h"
@@ -16,7 +17,7 @@
 #include "renderable.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
     }
@@ -33,6 +34,7 @@ namespace Graphics {
     trait.reset(std::move(renderable.trait.release()));
     transform = renderable.transform;
     renderable.transform.reset();
+    light_reactive = std::move(renderable.light_reactive);
     if(trait == nullptr) {
       throw std::invalid_argument("Move constructor: Can't pass a nullptr as a trait, this argument is required");
     }
@@ -46,6 +48,7 @@ namespace Graphics {
     trait.reset(std::move(renderable.trait.release()));
     transform = renderable.transform;
     renderable.transform.reset();
+    light_reactive = std::move(renderable.light_reactive);
     if(trait == nullptr) {
       throw std::invalid_argument("Move assignment: Can't pass a nullptr as a trait, this argument is required");
     }
@@ -94,6 +97,38 @@ namespace Graphics {
       return *tex_iter;
     }
   }
+
+  void Renderable::setLightReactive(const bool reactive) noexcept {
+    light_reactive = reactive;
+  }
+
+  const bool Renderable::isLightReactive() const noexcept {
+    return light_reactive;
+  }
+
+  void Renderable::setAmbientLight(const glm::vec3 color) noexcept {
+    ambient_light = color;
+  }
+
+  const glm::vec3 Renderable::getAmbientLight() const noexcept {
+    return ambient_light;
+  }
+
+  void Renderable::setAmbientIntensity(const float intensity) noexcept {
+    ambient_intensity = intensity;
+  }
+
+  const float Renderable::getAmbientIntensity() const noexcept {
+    return ambient_intensity;
+  }
+
+  void Renderable::addInfluencingLight(std::shared_ptr<Light> light) noexcept {
+    influencing_lights.push_back(light);
+  }
+
+  void Renderable::clearInfluencingLights() {
+    influencing_lights.clear();
+  }
   
   const unsigned int Renderable::getVertexArrayBinding() const noexcept {
     return vertex_array_object;
@@ -112,7 +147,8 @@ namespace Graphics {
   }
 
   void Renderable::onStart() {
-    
+    shader->setUniform("ambient_color", ambient_light);
+    shader->setUniform("ambient_intensity", ambient_intensity);
   }
 
   const bool Renderable::onUpdate(const double delta) {
@@ -128,6 +164,31 @@ namespace Graphics {
       glBindVertexArray(vertex_array_object);
 
       if(shader != nullptr) {
+        if(light_reactive) {
+          shader->setUniform("num_lights", (int)influencing_lights.size());
+          int index = 0;
+          std::stringstream light_str;
+          for(auto& light : influencing_lights) {
+            light_str << "lights[" << index << "].";
+            shader->setUniform(light_str.str() + "position", light->getTransform()->getAbsoluteTranslation());
+            shader->setUniform(light_str.str() + "color", light->getColor());
+            shader->setUniform(light_str.str() + "intensity", light->getIntensity());
+            shader->setUniform(light_str.str() + "linear_attenuation", light->getLinearAttenuation());
+            if(light->castsQuantizedBands()) {
+              shader->setUniform(light_str.str() + "number_quantized_bands", light->getNumberOfQuantizedBands());
+            }
+            if(light->getType() == Light::Type::POINT) {
+              shader->setUniform(light_str.str() + "cone_angle", 0.0f);
+            }
+            else if(light->getType() == Light::Type::SPOT) {
+              shader->setUniform(light_str.str() + "cone_angle", light->getConeAngle());
+              shader->setUniform(light_str.str() + "cone_direction", light->getConeDirection());
+            }
+            light_str.str(std::string());
+            index++;
+          }
+        }
+
         shader->useProgram();
         shader->setUniform<glm::mat4>("transform", transform->getAbsoluteTransformationMatrix());
         for(auto& texture : textures) {

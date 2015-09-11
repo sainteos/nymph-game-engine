@@ -10,6 +10,7 @@
 #include "base_attribute_trait.h"
 #include "renderable_attribute_trait.h"
 #include "transform.h"
+#include "light.h"
 
 namespace Graphics {
   class Renderable : public Component {
@@ -22,6 +23,11 @@ namespace Graphics {
 
       VertexData vertex_data;
       std::unique_ptr<BaseAttributeTrait> trait;
+
+      bool light_reactive;
+      std::list<std::shared_ptr<Light>> influencing_lights;
+      glm::vec3 ambient_light;
+      float ambient_intensity;
 
     public:
 
@@ -47,6 +53,17 @@ namespace Graphics {
       void addTexture(std::shared_ptr<BaseTexture> texture_object) noexcept;
       const std::vector<std::shared_ptr<BaseTexture>> getTextures() const noexcept;
       const std::shared_ptr<BaseTexture> getTextureByUniform(const std::string& uniform_name);
+
+      void setLightReactive(const bool reactive) noexcept;
+      const bool isLightReactive() const noexcept;
+
+      void setAmbientLight(const glm::vec3 color) noexcept;
+      const glm::vec3 getAmbientLight() const noexcept;
+      void setAmbientIntensity(const float intensity) noexcept;
+      const float getAmbientIntensity() const noexcept;
+
+      void addInfluencingLight(std::shared_ptr<Light> light) noexcept;
+      void clearInfluencingLights();
 
       const unsigned int getVertexArrayBinding() const noexcept;
 

@@ -4,6 +4,7 @@
 #include "input/key_up_event.h"
 #include "sprite_move_event.h"
 #include <easylogging++.h>
+#define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
 #include <glm/ext.hpp>
 

@@ -446,7 +446,8 @@ namespace Graphics {
               }
 
               if(map.GetProperties().HasProperty("Lighted") && map.GetProperties().GetStringProperty("Lighted") == "True") {
-                renderable->setShader((*shader_manager)["normal_mapping"]);
+                renderable->setShader((*shader_manager)["diffuse_lighting"]);
+                renderable->setLightReactive(true);
               }
               else {
                 renderable->setShader((*shader_manager)["simple_texture"]); 
