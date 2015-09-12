@@ -1,10 +1,13 @@
 #ifndef LIGHT_H
 #define LIGHT_H
+#include <easylogging++.h>
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
+#include <iostream>
 #include "component.h"
 
 namespace Graphics {
-  class Light : public Component {
+  class Light : public Component, public el::Loggable {
     public:
       enum class Type { POINT, SPOT };
     private:
@@ -45,6 +48,26 @@ namespace Graphics {
       const Light::Type getType() const noexcept;
 
       const float influenceOnComponent(const Component& component) const;
+      
+      virtual void log(el::base::type::ostream_t& os) const;
+
+      static inline const Light::Type stringToType(const std::string& str) {
+        if(str == "Spot" || str == "spot" || str == "SPOT") 
+          return Light::Type::SPOT;
+        else if(str == "Point" || str == "point" || str == "POINT")
+          return Light::Type::POINT;
+        else
+          return Light::Type::POINT;
+      }
+
+      static inline const std::string typeToString(const Light::Type& type) {
+        if(type == Light::Type::SPOT)
+          return std::string("Spot");
+        else if(type == Light::Type::POINT)
+          return std::string("Point");
+        else
+          return std::string("N/A");
+      }
 
   };
 }

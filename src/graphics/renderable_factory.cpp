@@ -12,6 +12,8 @@
 #include "graphics/animated_tile.h"
 #include "transform.h"
 #include "exceptions/invalid_filename_exception.h"
+#include "graphics/light.h"
+#include "utility/utility_functions.h"
 
 namespace Graphics {
   RenderableFactory::RenderableFactory() {
@@ -353,6 +355,54 @@ namespace Graphics {
   template<>
   std::shared_ptr<AnimatedTile> RenderableFactory::create(const VertexData& vertex_data) {
     return std::make_shared<AnimatedTile>(generateVertexArrayObject(vertex_data), vertex_data);
+  }
+
+  std::vector<std::shared_ptr<Light>> RenderableFactory::createLightsFromMap(const Tmx::Map& map) {
+    std::vector<std::shared_ptr<Light>> lights;
+    std::vector<Tmx::Object*> light_map_objects;
+    for(auto group : map.GetObjectGroups()) {
+      std::copy_if(group->GetObjects().begin(), group->GetObjects().end(), std::back_inserter(light_map_objects),
+        [&](Tmx::Object* o) {
+          return o->GetProperties().HasProperty("Type") && o->GetProperties().GetStringProperty("Type") == "Light";
+        }
+      );
+    }
+
+    for(auto map_light : light_map_objects) {
+      Light::Type light_type = Light::Type::POINT;
+      if(map_light->GetProperties().HasProperty("LightType")) {
+        light_type = Light::stringToType(map_light->GetProperties().GetStringProperty("LightType"));
+      }
+      
+      std::shared_ptr<Light> new_light = std::make_shared<Light>(light_type);
+      if(map_light->GetProperties().HasProperty("Color")) {
+        new_light->setColor(Utility::stringToVec3(map_light->GetProperties().GetStringProperty("Color")) / glm::vec3(256.0, 256.0, 256.0)); 
+      }
+      if(map_light->GetProperties().HasProperty("Intensity")) {
+        new_light->setIntensity(map_light->GetProperties().GetFloatProperty("Intensity"));
+      }
+      if(map_light->GetProperties().HasProperty("LinearAttenuation")) {
+        new_light->setLinearAttenuation(map_light->GetProperties().GetFloatProperty("LinearAttenuation"));
+      }
+      if(map_light->GetProperties().HasProperty("QuadraticAttenuation")) {
+        new_light->setQuadraticAttenuation(map_light->GetProperties().GetFloatProperty("QuadraticAttenuation"));
+      }
+      if(map_light->GetProperties().HasProperty("ConeAngle")) {
+        new_light->setConeAngle(map_light->GetProperties().GetFloatProperty("ConeAngle"));
+      }
+      if(map_light->GetProperties().HasProperty("ConeDirection")) {
+        new_light->setConeDirection(Utility::stringToVec3(map_light->GetProperties().GetStringProperty("ConeDirection"))); 
+      }
+
+      new_light->setTransform(std::make_shared<Transform>());
+      //Subtract y from height to flip the y coords. Tiled and I do it mirrored.
+      new_light->getTransform()->translate(glm::vec3(map_light->GetEllipse()->GetCenterX() / (float)map.GetTileWidth(), (float)map.GetHeight() - map_light->GetEllipse()->GetCenterY() / (float)map.GetTileHeight(), 0.0f));
+      if(map_light->GetProperties().HasProperty("ZPosition")) {
+        new_light->getTransform()->translate(glm::vec3(0.0f, 0.0f, map_light->GetProperties().GetFloatProperty("ZPosition")));
+      }
+      lights.push_back(new_light);
+    }
+    return lights;
   }
 
   MapRenderables RenderableFactory::createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {

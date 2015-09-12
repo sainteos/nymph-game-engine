@@ -24,7 +24,7 @@
 #include "utility/fps_counter.h"
 #include "utility/config_manager.h"
 #include "graphics/light.h"
-
+#include "utility/utility_functions.h"
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
 
@@ -66,7 +66,6 @@ int main(int argc, char** argv) {
   shader_manager->loadShader("simple_texture");
   shader_manager->loadShader("tile_animation");
   shader_manager->loadShader("diffuse_lighting");
-  shader_manager->getShader("diffuse_lighting")->setUniform("resolution", glm::vec2(config.getFloat("screen_width"), config.getFloat("screen_height")));
 
   float viewport_tile_width = config.getFloat("screen_width_tiles");
   float viewport_tile_height = config.getFloat("screen_height_tiles");
@@ -78,6 +77,7 @@ int main(int argc, char** argv) {
   
   auto renderables = renderable_factory.createFromMap(*map, texture_manager, shader_manager);
   auto animations = renderable_factory.createAnimationsFromAnimationMap(*animation_map, texture_manager, shader_manager);
+  auto lights = renderable_factory.createLightsFromMap(*map);
 
   for(auto& i : animations) {
     i.tile->setTransform(std::make_shared<Transform>());
@@ -97,8 +97,10 @@ int main(int argc, char** argv) {
 
   for(auto& i : renderables.tiles) {
     transform->addChild(i->getTransform());
-    i->setAmbientLight(glm::vec3(config.getFloat("ambient_color_r"), config.getFloat("ambient_color_g"), config.getFloat("ambient_color_b")));
-    i->setAmbientIntensity(config.getFloat("ambient_intensity"));
+    if(map->GetProperties().HasProperty("AmbientColor"))
+      i->setAmbientLight(Utility::stringToVec3(map->GetProperties().GetStringProperty("AmbientColor")));
+    if(map->GetProperties().HasProperty("AmbientIntensity"))
+      i->setAmbientIntensity(map->GetProperties().GetFloatProperty("AmbientIntensity"));
     graphics.addRenderable(i);
   }
 
@@ -106,6 +108,11 @@ int main(int argc, char** argv) {
     transform->addChild(i->getTransform());
     i->setActive();
     graphics.addRenderable(i);
+  }
+
+  for(auto& i : lights) {
+    transform->addChild(i->getTransform());
+    graphics.addLight(i);
   }
 
   transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
@@ -145,29 +152,6 @@ int main(int argc, char** argv) {
   //camera->getTransform()->translate(glm::vec2(sprite->getTransform()->getAbsoluteTranslation()));
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
 
-  std::shared_ptr<Light> light = std::make_shared<Light>();
-  light->setTransform(std::make_shared<Transform>());
-  light->getTransform()->translate(glm::vec3(config.getFloat("light_position_x"), config.getFloat("light_position_y"), config.getFloat("light_position_z")));
-  light->setColor(glm::vec3(config.getFloat("light_color_r"), config.getFloat("light_color_g"), config.getFloat("light_color_b")));
-  light->setIntensity(config.getFloat("light_intensity"));
-  light->setNumberOfQuantizedBands(config.getInt("number_quantized_bands"));
-  light->setLinearAttenuation(config.getFloat("linear_attenuation"));
-  light->setQuadraticAttenuation(config.getFloat("quadratic_attenuation"));
-  //transform->addChild(light->getTransform());
-  graphics.addLight(light);
-
-  std::shared_ptr<Light> light2 = std::make_shared<Light>(Light::Type::SPOT);
-  light2->setTransform(std::make_shared<Transform>());
-  light2->getTransform()->translate(glm::vec3(config.getFloat("light2_position_x"), config.getFloat("light2_position_y"), config.getFloat("light2_position_z")));
-  light2->setColor(glm::vec3(config.getFloat("light2_color_r"), config.getFloat("light2_color_g"), config.getFloat("light2_color_b")));
-  light2->setIntensity(config.getFloat("light2_intensity"));
-  light2->setNumberOfQuantizedBands(config.getInt("2_number_quantized_bands"));
-  light2->setLinearAttenuation(config.getFloat("2_linear_attenuation"));
-  light2->setQuadraticAttenuation(config.getFloat("2_quadratic_attenuation"));
-  light2->setConeAngle(config.getFloat("2_cone_angle"));
-  light2->setConeDirection(glm::vec3(config.getFloat("2_cone_x"), config.getFloat("2_cone_y"), config.getFloat("2_cone_z")));
-  
-  graphics.addLight(light2);
   sprite->onStart();
 
   graphics.startRender();

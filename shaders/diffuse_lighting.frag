@@ -27,7 +27,6 @@ uniform Light lights[MAX_LIGHTS];
 
 uniform vec3 ambient_color;    //ambient RGB
 uniform float ambient_intensity;
-uniform vec2 resolution;      //resolution of screen
 
 vec3 applyLight(Light light, vec3 surface_color, vec3 normal, vec3 surface_pos) {
   vec3 surface_to_light = normalize(vec3(light.position.xy - surface_pos.xy, light.position.z));
@@ -65,8 +64,6 @@ void main()
   vec3 normal = vec3(0.0, 0.0, 1.0);
 
   vec3 final_color = vec3(0.0, 0.0, 0.0);
-
-  vec2 res = resolution;
 
   //ambient
   vec3 ambient = ambient_color.rgb * ambient_intensity * texel.rgb;

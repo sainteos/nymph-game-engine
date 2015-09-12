@@ -96,4 +96,10 @@ namespace Graphics {
       diffuse_coefficient = 0.0;
     return diffuse_coefficient;
   }
+
+  void Light::log(el::base::type::ostream_t& os) const {
+    os<<"{Light("<<typeToString(type)<<")} "<<"Color: "<<glm::to_string(color)<<" Intensity: "<<intensity<<" LinearAttenuation: "<<linear_attenuation
+      <<" Quadratic Attenuation: "<<quadratic_attenuation<<" Quantized Bands: "<<quantized_bands<<" ConeAngle: "<<cone_angle
+      <<" Cone Direction: "<<glm::to_string(cone_direction)<<" Position: "<<glm::to_string(getTransform()->getAbsoluteTranslation());
+  }
 }
