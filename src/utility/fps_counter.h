@@ -13,6 +13,7 @@ namespace Utility {
       float delta_accum;
       unsigned int frame_count;
       float fps_accum;
+      void sleepFor(const int milliseconds);
 
     public:
       FPSCounter(const float max_fps);

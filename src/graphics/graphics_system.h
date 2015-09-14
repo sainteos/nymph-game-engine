@@ -5,7 +5,6 @@
 #include <atomic>
 #include <map>
 #include <set>
-#include <mutex>
 #include <string>
 #ifdef __APPLE__
 #include <OpenGL/gl3.h>
@@ -38,7 +37,6 @@ namespace Graphics {
       std::string window_title;
 
       std::map<int, std::shared_ptr<Graphics::Renderable>> renderables_map;
-      std::mutex renderables_mutex;
 
       std::list<std::shared_ptr<Light>> lights;
       unsigned int max_influence_lights;

@@ -1,6 +1,5 @@
 #include "utility/fps_counter.h"
 #include <easylogging++.h>
-#include <thread>
 
 namespace Utility {
   using clock = std::chrono::high_resolution_clock;
@@ -32,12 +31,17 @@ namespace Utility {
     frame_count = 0;
   }
 
+  void FPSCounter::sleepFor(const int milliseconds) {
+    auto start = clock::now();
+    while (std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - start).count() < milliseconds);
+  }
+
   const float FPSCounter::assessCountAndGetDelta() {    
     //if we have a max fps
     if(max_fps > 0.0) {
       //keep sleeping until we hit the right time
       while(std::chrono::duration_cast<microseconds>(clock::now() - last_time).count() < 1.0 / (max_fps / 1000000.0f)) {
-        std::this_thread::sleep_for(microseconds(1));
+        sleepFor(1);
       }
     }
     //update the current fps

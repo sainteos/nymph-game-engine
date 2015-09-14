@@ -8,3 +8,6 @@ Makefile
 *.out
 .DS_Store
 *.trace
+*.exe
+*.zip
+*Package/

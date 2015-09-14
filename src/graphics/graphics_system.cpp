@@ -32,14 +32,6 @@ namespace Graphics {
       LOG(WARNING)<<"Can't reinitialize graphics system.";
       throw Exceptions::SystemAlreadyInitializedException("Graphics");
     }
-    
-    #ifndef __APPLE__
-    if (glewInit() != GLEW_OK)
-    {
-      LOG(ERROR)<<"Glew couldn't be initialized";
-      throw std::runtime_error("Glew couldn't be initialized");
-    }
-    #endif
 
     glfwSetErrorCallback(errorCallback);
 
@@ -48,6 +40,7 @@ namespace Graphics {
       LOG(FATAL)<<"Glfw couldn't be initialized!";
       throw std::runtime_error("Glfw couldn't be initialized!");
     }
+
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -62,6 +55,16 @@ namespace Graphics {
     }
 
     glfwMakeContextCurrent(window);
+
+    #ifndef __APPLE__
+    glewExperimental=GL_TRUE; 
+    auto glew_status = glewInit();
+    if (glew_status != GLEW_OK)
+    {
+      LOG(ERROR)<<"Glew couldn't be initialized: "<<glew_status;
+      throw std::runtime_error("Glew couldn't be initialized");
+    }
+    #endif
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -117,7 +120,6 @@ namespace Graphics {
   const int GraphicsSystem::addRenderable(std::shared_ptr<Graphics::Renderable> renderable) {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
-    std::lock_guard<std::mutex> lock(renderables_mutex);
     renderables_map[next_id] = renderable;
     return next_id++;
   }
@@ -128,7 +130,6 @@ namespace Graphics {
     if(id < 1) 
       throw std::out_of_range("Cannot have id less than 1");
 
-    std::lock_guard<std::mutex> lock(renderables_mutex);
     if(renderables_map.count(id) <= 0)
       return false;
     renderables_map.erase(id);
@@ -139,7 +140,6 @@ namespace Graphics {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
 
-    std::lock_guard<std::mutex> lock(renderables_mutex);
     return renderables_map.size();
   }
 
@@ -179,7 +179,6 @@ namespace Graphics {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     camera->onUpdate(delta);
 
-    renderables_mutex.lock();
     for(auto& renderables_iter : renderables_map) {
       if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second) && renderables_iter.second->onUpdate(delta)) {
         if(renderables_iter.second->isLightReactive()) {
@@ -202,7 +201,6 @@ namespace Graphics {
         renderables_iter.second->onRender();
       }
     }
-    renderables_mutex.unlock();
 
     glfwSwapBuffers(window);
   }

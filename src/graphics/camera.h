@@ -8,6 +8,8 @@
 #include "graphics/renderable.h"
 #include "events/observer.h"
 #include "events/event_type.h"
+#undef near
+#undef far
 
 namespace Graphics {
   class Camera : public Component, public Events::Observer {
