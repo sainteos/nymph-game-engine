@@ -498,6 +498,10 @@ namespace Graphics {
               if(map.GetProperties().HasProperty("Lighted") && map.GetProperties().GetStringProperty("Lighted") == "True") {
                 renderable->setShader((*shader_manager)["diffuse_lighting"]);
                 renderable->setLightReactive(true);
+                if(map.GetProperties().HasProperty("AmbientColor"))
+                  renderable->setAmbientLight(Utility::stringToVec3(map.GetProperties().GetStringProperty("AmbientColor")) / glm::vec3(256.0, 256.0, 256.0));
+                if(map.GetProperties().HasProperty("AmbientIntensity"))
+                  renderable->setAmbientIntensity(map.GetProperties().GetFloatProperty("AmbientIntensity"));
               }
               else {
                 renderable->setShader((*shader_manager)["simple_texture"]); 

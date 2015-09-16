@@ -97,10 +97,6 @@ int main(int argc, char** argv) {
 
   for(auto& i : renderables.tiles) {
     transform->addChild(i->getTransform());
-    if(map->GetProperties().HasProperty("AmbientColor"))
-      i->setAmbientLight(Utility::stringToVec3(map->GetProperties().GetStringProperty("AmbientColor")));
-    if(map->GetProperties().HasProperty("AmbientIntensity"))
-      i->setAmbientIntensity(map->GetProperties().GetFloatProperty("AmbientIntensity"));
     graphics.addRenderable(i);
   }
 

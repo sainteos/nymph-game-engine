@@ -147,8 +147,10 @@ namespace Graphics {
   }
 
   void Renderable::onStart() {
-    shader->setUniform("ambient_color", ambient_light);
-    shader->setUniform("ambient_intensity", ambient_intensity);
+    if(light_reactive) {
+      shader->setUniform("ambient_color", ambient_light);
+      shader->setUniform("ambient_intensity", ambient_intensity);
+    }
   }
 
   const bool Renderable::onUpdate(const double delta) {
