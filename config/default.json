@@ -11,6 +11,6 @@
   "far_plane": 40.0,
   "camera_x": -15.0,
   "camera_y": -15.0,
-  "sprite_attachment_name": "HeroTile",
-  "sprite_attachment_animation_name": "Flash"
+  "sprite_attachment_name": "Watcher",
+  "sprite_attachment_animation_name": "Blink"
 }
