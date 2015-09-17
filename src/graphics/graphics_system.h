@@ -45,6 +45,7 @@ namespace Graphics {
       int next_id;
       
       static void errorCallback(int error, const char* description);
+      static void windowSizeCallback(GLFWwindow* window, int width, int height);
 
       WindowExitFunctor window_exit;
       
@@ -65,7 +66,7 @@ namespace Graphics {
        * @param name string containing the name of the window to be built
        * @param max_fps double containing the max allowed fps. Default 0.0.
        */
-      void initialize(const int width, const int height, std::string name, const WindowExitFunctor& window_exit);
+      void initialize(const int width, const int height, std::string name, const bool fullscreen, const WindowExitFunctor& window_exit);
       /**
        * @brief Getter to see if system is initialized
        * @details Will return true after initialize() is called.

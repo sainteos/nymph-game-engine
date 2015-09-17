@@ -26,7 +26,7 @@ namespace Graphics {
     }
   }
 
-  void GraphicsSystem::initialize(const int width, const int height, const std::string name, const WindowExitFunctor& window_exit) {
+  void GraphicsSystem::initialize(const int width, const int height, const std::string name, const bool fullscreen, const WindowExitFunctor& window_exit) {
     LOG(INFO)<<"Graphics System initializing...";
     if(initialized) {
       LOG(WARNING)<<"Can't reinitialize graphics system.";
@@ -45,8 +45,11 @@ namespace Graphics {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-    window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
+    GLFWmonitor* monitor = nullptr;
+    if(fullscreen) {
+      monitor = glfwGetPrimaryMonitor();
+    }
+    window = glfwCreateWindow(width, height, name.c_str(), monitor, nullptr);
     window_title = name;
     this->window_exit = window_exit;
     if(window == nullptr) {
@@ -72,6 +75,7 @@ namespace Graphics {
     glDepthFunc(GL_LEQUAL);
     glClearDepth(1.0f);
     ilInit();
+    glfwSetFramebufferSizeCallback(window, windowSizeCallback);
     
     glfwSetWindowTitle(window, window_title.c_str());
 
@@ -218,6 +222,10 @@ namespace Graphics {
         LOG(ERROR)<<"Unknown error: "<<description;
         break;
     }
+  }
+
+  void GraphicsSystem::windowSizeCallback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
   }
 
   void GraphicsSystem::setMaxInfluenceLights(const unsigned int number) noexcept {

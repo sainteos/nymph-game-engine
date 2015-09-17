@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
   animation_map->ParseFile(config.getString("animation_database"));
 
   GraphicsSystem graphics;
-  graphics.initialize(config.getInt("screen_width"), config.getInt("screen_height"), config.getString("window_name"), Graphics::WindowExitFunctor());
+  graphics.initialize(config.getInt("screen_width"), config.getInt("screen_height"), config.getString("window_name"), config.getBool("fullscreen"), Graphics::WindowExitFunctor());
 
   Input::InputSystem input_system(graphics.getWindow());
 
