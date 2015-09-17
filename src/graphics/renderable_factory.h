@@ -42,12 +42,13 @@ namespace Graphics {
 
       unsigned int animated_tile_vao;
       const VertexData generateCube();
-      const VertexData generateTile();
+      const VertexData generateTile(const unsigned int base_size, const unsigned int current_size);
       unsigned int generateVertexArrayObject(VertexData vertex_data);
       std::shared_ptr<BaseTexture> textureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name);
       std::shared_ptr<BaseTexture> normalTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name);
       std::shared_ptr<BaseTexture> displacementTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name);
-      std::vector<glm::vec2> generateTextureCoords(const Tmx::TileLayer* layer, const unsigned int x_pos, const unsigned int y_pos, const unsigned int texture_width, const unsigned int texture_height);
+      std::vector<glm::vec2> generateTextureCoords(const Tmx::TileLayer* layer, const unsigned int x_pos, const unsigned int y_pos, const unsigned int texture_width, const unsigned int texture_height, const unsigned int tile_width, const unsigned int tile_height);
+      std::vector<glm::vec3> generateVertexCoords(const unsigned int base_size, const unsigned int current_size);
     public:
       RenderableFactory();
       ~RenderableFactory();

@@ -52,13 +52,7 @@ namespace Graphics {
     return vertex_data;
   }
 
-  const VertexData RenderableFactory::generateTile() {
-    std::vector<glm::vec3> verts {
-      glm::vec3(0.0, 0.0, 0.0),
-      glm::vec3(0.0, 1.0, 0.0),
-      glm::vec3(1.0, 1.0, 0.0),
-      glm::vec3(1.0, 0.0, 0.0)
-    };
+  const VertexData RenderableFactory::generateTile(const unsigned int base_size, const unsigned int current_size) {
     std::vector<glm::vec2> texs {
       glm::vec2(0.0, 0.0),
       glm::vec2(0.0, 1.0),
@@ -70,7 +64,7 @@ namespace Graphics {
     };
     VertexData vert_data(GL_TRIANGLES);
     vert_data.addIndices(indices);
-    vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
+    vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, generateVertexCoords(base_size, current_size));
     vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
 
     return vert_data;
@@ -232,7 +226,7 @@ namespace Graphics {
     return texture_manager[texture_name];
   }
 
-  std::vector<glm::vec2> RenderableFactory::generateTextureCoords(const Tmx::TileLayer* layer, const unsigned int x_pos, const unsigned int y_pos, const unsigned int texture_width, const unsigned int texture_height) {
+  std::vector<glm::vec2> RenderableFactory::generateTextureCoords(const Tmx::TileLayer* layer, const unsigned int x_pos, const unsigned int y_pos, const unsigned int texture_width, const unsigned int texture_height, const unsigned int tile_width, const unsigned int tile_height) {
     std::vector<glm::vec2> texs {
       glm::vec2(-0.5, -0.5),
       glm::vec2(-0.5, 0.5),
@@ -290,9 +284,6 @@ namespace Graphics {
       texs[i] = texs[i] + glm::vec2(0.5, 0.5);
     }
 
-    auto tile_width = layer->mapGetMap()->GetTileWidth();
-    auto tile_height = layer->mapGetMap()->GetTileHeight();
-
     float width = (float)tile_width / (float)texture_width;
     float height = (float)tile_height / (float)texture_height;
      
@@ -316,6 +307,16 @@ namespace Graphics {
     return texs;
   }
 
+  std::vector<glm::vec3> RenderableFactory::generateVertexCoords(const unsigned int base_size, const unsigned int current_size) {
+    std::vector<glm::vec3> verts {
+      glm::vec3(0.0, 0.0, 0.0),
+      glm::vec3(0.0, 1.0 * (float)current_size / (float)base_size, 0.0),
+      glm::vec3(1.0 * (float)current_size / (float)base_size, 1.0 * (float)current_size / (float)base_size, 0.0),
+      glm::vec3(1.0 * (float)current_size / (float)base_size, 0.0, 0.0)
+    };
+    return verts;
+  }
+
   template<>
   std::shared_ptr<Renderable> RenderableFactory::create() {
     unsigned int new_binding = 0;
@@ -331,15 +332,15 @@ namespace Graphics {
     glGenVertexArrays(1, &new_binding);
     glBindVertexArray(new_binding);
     glBindVertexArray(0);
-    return std::make_shared<Tile>(new_binding, generateTile());
+    return std::make_shared<Tile>(new_binding, generateTile(32, 32));
   }
 
   template<>
   std::shared_ptr<AnimatedTile> RenderableFactory::create() {
     if(!glIsVertexArray(animated_tile_vao)) {
-      animated_tile_vao = generateVertexArrayObject(generateTile());
+      animated_tile_vao = generateVertexArrayObject(generateTile(32, 32));
     }
-    return std::make_shared<AnimatedTile>(animated_tile_vao, generateTile());
+    return std::make_shared<AnimatedTile>(animated_tile_vao, generateTile(32, 32));
   }
 
   template<>
@@ -431,7 +432,7 @@ namespace Graphics {
             auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
 
             if(tile != nullptr && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
-              auto animated_renderable = create<AnimatedTile>();
+              auto animated_renderable = create<AnimatedTile>(generateTile(map.GetTileWidth(), tileset->GetTileWidth()));
               auto frames = tile->GetFrames();
 
               animated_renderable->addTexture(texture);
@@ -521,18 +522,13 @@ namespace Graphics {
               auto iter = std::find_if(gid_to_vao.begin(), gid_to_vao.end(), find_pred);
 
               if(iter == gid_to_vao.end()) {
-                std::vector<glm::vec3> verts {
-                  glm::vec3(0.0, 0.0, -1.0),
-                  glm::vec3(0.0, 1.0, -1.0),
-                  glm::vec3(1.0, 1.0, -1.0),
-                  glm::vec3(1.0, 0.0, -1.0)
-                };
-
                 std::vector<unsigned int> indices {
                   0, 1, 2, 0, 2, 3
                 };
+                std::vector<glm::vec3> verts;
+                verts = generateVertexCoords(map.GetTileWidth(), tileset->GetTileHeight());
                 std::vector<glm::vec2> texs;
-                texs = generateTextureCoords(layer, x, y, texture->getWidth(), texture->getHeight());
+                texs = generateTextureCoords(layer, x, y, texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
                 vert_data.addIndices(indices);
                 vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
                 vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
@@ -553,7 +549,7 @@ namespace Graphics {
               std::shared_ptr<Tile> renderable = std::make_shared<Tile>(vertex_array_object, vert_data);
 
               renderable->addTexture(texture);
-              renderable->setSizeInPixels(map.GetTileWidth());
+              renderable->setSizeInPixels(tileset->GetTileWidth());
               if(normal_texture) {
                 renderable->addTexture(normal_texture);
               }
@@ -601,7 +597,7 @@ namespace Graphics {
 
           auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
 
-          new_anim.tile = create<AnimatedTile>();
+          new_anim.tile = create<AnimatedTile>(generateTile(map.GetTileWidth(), tileset->GetTileWidth()));
           auto frames = tile->GetFrames();
 
           new_anim.tile->addTexture(texture);
