@@ -125,6 +125,7 @@ int main(int argc, char** argv) {
   auto stop_down = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Down_Still"));
   auto stop_left = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Left_Still"));
   auto stop_right = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Right_Still"));
+  auto attachment = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, config.getString("sprite_attachment_name"), config.getString("sprite_attachment_animation_name")));
 
   input_system.addObserver(sprite);
   sprite->addTile(Sprite::AnimationState::MOVE_UP, move_up->tile);
@@ -145,6 +146,9 @@ int main(int argc, char** argv) {
   graphics.addRenderable(stop_right->tile);
   sprite->setMovingSpeed(2.0);
   transform->addChild(sprite->getTransform());
+  attachment->tile->setActive();
+  sprite->addComponent(attachment->tile);
+  graphics.addRenderable(attachment->tile);
   //camera->getTransform()->translate(glm::vec2(sprite->getTransform()->getAbsoluteTranslation()));
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
 
