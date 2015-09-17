@@ -20,7 +20,6 @@ namespace Graphics {
 
   struct MapRenderables {
     std::vector<std::shared_ptr<Tile>> tiles;
-    std::vector<std::shared_ptr<AnimatedTile>> animated_tiles;
     std::vector<AnimationPlaceholder> dynamic_animations;
   };
 
@@ -59,6 +58,7 @@ namespace Graphics {
 
       std::vector<std::shared_ptr<Light>> createLightsFromMap(const Tmx::Map& map);
       MapRenderables createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager);
+      std::vector<std::shared_ptr<AnimatedTile>> createStaticallyAnimatedTilesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager);
       std::vector<Animation> createAnimationsFromAnimationMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager);
 
   };

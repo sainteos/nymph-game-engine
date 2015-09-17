@@ -405,6 +405,69 @@ namespace Graphics {
     return lights;
   }
 
+  std::vector<std::shared_ptr<AnimatedTile>> RenderableFactory::createStaticallyAnimatedTilesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+    std::vector<std::shared_ptr<AnimatedTile>> tiles;
+    auto layers = map.GetTileLayers();
+    auto tilesets = map.GetTilesets();
+    auto path = map.GetFilepath();
+    
+    unsigned int max_z_order = 0;
+    unsigned int min_z_order = 0xFFFFFFFF;
+
+    for(auto layer : layers) {
+      if(min_z_order > layer->GetZOrder())
+        min_z_order = layer->GetZOrder();
+      if(max_z_order < layer->GetZOrder())
+        max_z_order = layer->GetZOrder();
+    }
+    
+    for(auto layer : layers) {
+      for(int y = 0; y < layer->GetHeight(); y++) {
+        for(int x = 0; x < layer->GetWidth(); x++) {
+          if(layer->GetTileTilesetIndex(x, y) >= 0) {
+            auto tileset = tilesets[layer->GetTileTilesetIndex(x, y)];
+
+            auto tile = tileset->GetTile(layer->GetTileId(x, y));
+            auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
+
+            if(tile != nullptr && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
+              auto animated_renderable = create<AnimatedTile>();
+              auto frames = tile->GetFrames();
+
+              animated_renderable->addTexture(texture);
+              animated_renderable->setSizeInPixels(tileset->GetTileWidth());
+              
+              for(auto frame : frames) {
+                auto id = frame.GetTileID();
+                auto duration = frame.GetDuration();
+
+                int width_in_tiles = texture->getWidth() / tileset->GetTileWidth();
+                int height_in_tiles = texture->getHeight() / tileset->GetTileHeight();
+                
+                int x_pos = id % width_in_tiles;
+                int y_pos = height_in_tiles - 1 - id / width_in_tiles;
+
+                animated_renderable->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
+              }
+
+              animated_renderable->setShader((*shader_manager)["tile_animation"]);
+              
+              auto transform = std::make_shared<Transform>();
+              //subtract y from layer height, and then subtract an additional 1 to normalize it to 0
+              transform->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
+              animated_renderable->setTransform(transform);
+              if(layer->IsVisible())
+                animated_renderable->setActive();
+              tiles.push_back(animated_renderable);
+            }
+          }
+        }
+      }
+    }
+
+    return tiles;
+  }
+
   MapRenderables RenderableFactory::createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
     std::vector<RenderableInfo> gid_to_vao;
     MapRenderables renderables;
@@ -509,39 +572,13 @@ namespace Graphics {
 
               auto transform = std::make_shared<Transform>();
               //subtract y from height and subtract 1 to normalize to 0
-              transform->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder())));
+              transform->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
               renderable->setTransform(transform);
               if(layer->IsVisible())
                 renderable->setActive();
               renderables.tiles.push_back(renderable);
             }
             else {
-              auto animated_renderable = create<AnimatedTile>();
-              auto frames = tile->GetFrames();
-
-              animated_renderable->addTexture(texture);
-              animated_renderable->setSizeInPixels(tileset->GetTileWidth());
-              
-              for(auto frame : frames) {
-                auto id = frame.GetTileID();
-                auto duration = frame.GetDuration();
-
-                int width_in_tiles = texture->getWidth() / tileset->GetTileWidth();
-                int height_in_tiles = texture->getHeight() / tileset->GetTileHeight();
-                
-                int x_pos = id % width_in_tiles;
-                int y_pos = height_in_tiles - 1 - id / width_in_tiles;
-
-                animated_renderable->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
-              }
-
-              animated_renderable->setShader((*shader_manager)["tile_animation"]);
-              
-              auto transform = std::make_shared<Transform>();
-              //subtract y from layer height, and then subtract an additional 1 to normalize it to 0
-              transform->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder())));
-              animated_renderable->setTransform(transform);
-              renderables.animated_tiles.push_back(animated_renderable);
             }
           }
         }

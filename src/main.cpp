@@ -77,6 +77,7 @@ int main(int argc, char** argv) {
   
   auto renderables = renderable_factory.createFromMap(*map, texture_manager, shader_manager);
   auto animations = renderable_factory.createAnimationsFromAnimationMap(*animation_map, texture_manager, shader_manager);
+  auto static_animations = renderable_factory.createStaticallyAnimatedTilesFromMap(*map, texture_manager, shader_manager);
   auto lights = renderable_factory.createLightsFromMap(*map);
 
   for(auto& i : animations) {
@@ -100,9 +101,8 @@ int main(int argc, char** argv) {
     graphics.addRenderable(i);
   }
 
-  for(auto& i : renderables.animated_tiles) {
+  for(auto& i : static_animations) {
     transform->addChild(i->getTransform());
-    i->setActive();
     graphics.addRenderable(i);
   }
 

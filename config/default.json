@@ -1,6 +1,6 @@
 {
   "window_title": "Bitches Don't Know Bout My Tiles(tm)",
-  "map": "./project-spero-assets/Maps/Cave.tmx",
+  "map": "./project-spero-assets/Maps/Intro_Ramses.tmx",
   "animation_database": "./project-spero-assets/Maps/Animations.tmx",
   "screen_width": 1280,
   "screen_height": 720,
@@ -9,5 +9,5 @@
   "near_plane": 0.1,
   "far_plane": 40.0,
   "camera_x": 0.0,
-  "camera_y": 0.0
+  "camera_y": 8.0
 }
