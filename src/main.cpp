@@ -154,7 +154,8 @@ int main(int argc, char** argv) {
   }
 
   input_system.addObserver(sprite);
-  sprite->addTriggerableTile(SpriteState::MOVE_UP, move_up->tile);
+  LOG(INFO)<<"Sprite observes input";
+  sprite->addTile(Sprite::AnimationState::MOVE_UP, move_up->tile);
   graphics.addRenderable(move_up->tile);
   sprite->addTriggerableTile(SpriteState::MOVE_DOWN, move_down->tile);
   graphics.addRenderable(move_down->tile);
