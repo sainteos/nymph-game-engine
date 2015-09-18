@@ -87,11 +87,6 @@ int main(int argc, char** argv) {
   auto lights = renderable_factory.createLightsFromMap(*map);
   LOG(INFO)<<"Generated lights";
 
-  for(auto& i : animations) {
-    i.tile->setTransform(std::make_shared<Transform>());
-  }
-  LOG(INFO)<<"Initialized dynamic animations";
-
   std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
 
   for(auto& i : renderables.dynamic_animations) {
@@ -159,22 +154,21 @@ int main(int argc, char** argv) {
   }
 
   input_system.addObserver(sprite);
-  LOG(INFO)<<"Sprite observes input";
-  sprite->addTile(Sprite::AnimationState::MOVE_UP, move_up->tile);
+  sprite->addTriggerableTile(SpriteState::MOVE_UP, move_up->tile);
   graphics.addRenderable(move_up->tile);
-  sprite->addTile(Sprite::AnimationState::MOVE_DOWN, move_down->tile);
+  sprite->addTriggerableTile(SpriteState::MOVE_DOWN, move_down->tile);
   graphics.addRenderable(move_down->tile);
-  sprite->addTile(Sprite::AnimationState::MOVE_LEFT, move_left->tile);
+  sprite->addTriggerableTile(SpriteState::MOVE_LEFT, move_left->tile);
   graphics.addRenderable(move_left->tile);
-  sprite->addTile(Sprite::AnimationState::MOVE_RIGHT, move_right->tile);
+  sprite->addTriggerableTile(SpriteState::MOVE_RIGHT, move_right->tile);
   graphics.addRenderable(move_right->tile);
-  sprite->addTile(Sprite::AnimationState::FACE_UP, stop_up->tile);
+  sprite->addTriggerableTile(SpriteState::FACE_UP, stop_up->tile);
   graphics.addRenderable(stop_up->tile);
-  sprite->addTile(Sprite::AnimationState::FACE_DOWN, stop_down->tile);
+  sprite->addTriggerableTile(SpriteState::FACE_DOWN, stop_down->tile);
   graphics.addRenderable(stop_down->tile);
-  sprite->addTile(Sprite::AnimationState::FACE_LEFT, stop_left->tile);
+  sprite->addTriggerableTile(SpriteState::FACE_LEFT, stop_left->tile);
   graphics.addRenderable(stop_left->tile);
-  sprite->addTile(Sprite::AnimationState::FACE_RIGHT, stop_right->tile);
+  sprite->addTriggerableTile(SpriteState::FACE_RIGHT, stop_right->tile);
   graphics.addRenderable(stop_right->tile);
   LOG(INFO)<<"Added tiles to sprite";
   sprite->setMovingSpeed(2.0);
@@ -207,7 +201,7 @@ int main(int argc, char** argv) {
       graphics.setWindowName(window_name.str());
       fps = fps_counter.getCurrentFPS();
     }
-
+    
     sprite->onUpdate(delta);
     graphics.renderFrame(delta);
     input_system.pollForInput();

@@ -2,13 +2,13 @@
 #define COMPONENT_H
 
 #include <memory>
-
-class Transform;
+#include "transform.h"
 
 class Component {
   protected:
     std::shared_ptr<Transform> transform;
   public:
+    Component();
     virtual void onStart() = 0;
     virtual const bool onUpdate(const double delta) = 0;
     virtual void onDestroy() = 0;

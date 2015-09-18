@@ -15,7 +15,7 @@ namespace Graphics {
   }
 
   const bool Tile::onUpdate(const double delta) {
-    return true;
+    return Renderable::onUpdate(delta);
 
   }
 
