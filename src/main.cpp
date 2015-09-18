@@ -54,6 +54,7 @@ int main(int argc, char** argv) {
 
   Tmx::Map *animation_map = new Tmx::Map();
   animation_map->ParseFile(config.getString("animation_database"));
+  LOG(INFO)<<"Loaded map";
 
   GraphicsSystem graphics;
   graphics.initialize(config.getInt("screen_width"), config.getInt("screen_height"), config.getString("window_name"), config.getBool("fullscreen"), Graphics::WindowExitFunctor());
@@ -66,6 +67,7 @@ int main(int argc, char** argv) {
   shader_manager->loadShader("simple_texture");
   shader_manager->loadShader("tile_animation");
   shader_manager->loadShader("diffuse_lighting");
+  LOG(INFO)<<"Loaded shaders.";
 
   float viewport_tile_width = config.getFloat("screen_width_tiles");
   float viewport_tile_height = config.getFloat("screen_height_tiles");
@@ -73,16 +75,22 @@ int main(int argc, char** argv) {
   std::shared_ptr<Camera> camera = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config.getFloat("near_plane"), config.getFloat("far_plane"));
   camera->setTransform(std::make_shared<Transform>());
   graphics.setCamera(camera);
+  LOG(INFO)<<"Setup cameras.";
   TextureManager texture_manager;
   
   auto renderables = renderable_factory.createFromMap(*map, texture_manager, shader_manager);
+  LOG(INFO)<<"Generated tiles";
   auto animations = renderable_factory.createAnimationsFromAnimationMap(*animation_map, texture_manager, shader_manager);
+  LOG(INFO)<<"Generated dynamic animations.";
   auto static_animations = renderable_factory.createStaticallyAnimatedTilesFromMap(*map, texture_manager, shader_manager);
+  LOG(INFO)<<"Generated static animations";
   auto lights = renderable_factory.createLightsFromMap(*map);
+  LOG(INFO)<<"Generated lights";
 
   for(auto& i : animations) {
     i.tile->setTransform(std::make_shared<Transform>());
   }
+  LOG(INFO)<<"Initialized dynamic animations";
 
   std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
 
@@ -91,8 +99,11 @@ int main(int argc, char** argv) {
       sprite->getTransform()->translate(glm::vec3((float)i.x_pos, (float)i.y_pos, (float)i.z_order));
     }
   }
+  LOG(INFO)<<"Setup Aidan";
 
   sprite->addObserver(camera);
+
+  LOG(INFO)<<"Camera observes sprite.";
   
   auto transform = std::make_shared<Transform>();
 
@@ -100,34 +111,55 @@ int main(int argc, char** argv) {
     transform->addChild(i->getTransform());
     graphics.addRenderable(i);
   }
+  LOG(INFO)<<"Tiles added for rendering";
 
   for(auto& i : static_animations) {
     transform->addChild(i->getTransform());
     graphics.addRenderable(i);
   }
 
+  LOG(INFO)<<"Static animations added for rendering.";
+
   for(auto& i : lights) {
     transform->addChild(i->getTransform());
     graphics.addLight(i);
   }
 
+  LOG(INFO)<<"Lights added for rendering.";
+
   transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
+  LOG(INFO)<<"Set 0,0 to the center of the map";
   
   auto matcher = [](const Animation& a, const std::string& sprite, const std::string& anim) {
     return a.sprite_name == sprite && a.animation_name == anim;
   };
 
   auto move_up = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Up_Movement"));
+  LOG(INFO)<<"Found move up";
   auto move_down = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Down_Movement"));
+  LOG(INFO)<<"Found move down";
   auto move_left = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Left_Movement"));
+  LOG(INFO)<<"Found move left";
   auto move_right = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Right_Movement"));
+  LOG(INFO)<<"Found move right";
   auto stop_up = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Up_Still"));
+  LOG(INFO)<<"Found stop up";
   auto stop_down = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Down_Still"));
+  LOG(INFO)<<"Found stop down";
   auto stop_left = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Left_Still"));
+  LOG(INFO)<<"Found stop left";
   auto stop_right = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Right_Still"));
+  LOG(INFO)<<"Found stop right";
   auto attachment = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, config.getString("sprite_attachment_name"), config.getString("sprite_attachment_animation_name")));
+  if(attachment != animations.end()) {
+    LOG(INFO)<<"Found attachment: "<<config.getString("sprite_attachment_name")<<" : "<<config.getString("sprite_attachment_animation_name");
+  }
+  else {
+    LOG(INFO)<<"Did not find attachment with name: "<<config.getString("sprite_attachment_name")<<" : "<<config.getString("sprite_attachment_animation_name");
+  }
 
   input_system.addObserver(sprite);
+  LOG(INFO)<<"Sprite observes input";
   sprite->addTile(Sprite::AnimationState::MOVE_UP, move_up->tile);
   graphics.addRenderable(move_up->tile);
   sprite->addTile(Sprite::AnimationState::MOVE_DOWN, move_down->tile);
@@ -144,15 +176,22 @@ int main(int argc, char** argv) {
   graphics.addRenderable(stop_left->tile);
   sprite->addTile(Sprite::AnimationState::FACE_RIGHT, stop_right->tile);
   graphics.addRenderable(stop_right->tile);
+  LOG(INFO)<<"Added tiles to sprite";
   sprite->setMovingSpeed(2.0);
+  LOG(INFO)<<"Set moving speed";
   transform->addChild(sprite->getTransform());
+  LOG(INFO)<<"Set sprite transform as child to toplevel transform";
   attachment->tile->setActive();
+  LOG(INFO)<<"Set sprite active";
   sprite->addComponent(attachment->tile);
+  LOG(INFO)<<"Added component";
   graphics.addRenderable(attachment->tile);
+  LOG(INFO)<<"Added attachment";
   //camera->getTransform()->translate(glm::vec2(sprite->getTransform()->getAbsoluteTranslation()));
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
-
+  LOG(INFO)<<"Transformed camera";
   sprite->onStart();
+  LOG(INFO)<<"Sprite started";
 
   graphics.startRender();
 
@@ -160,6 +199,7 @@ int main(int argc, char** argv) {
   float delta = 0.0f;
   float fps = fps_counter.getCurrentFPS();
   
+  LOG(INFO)<<"Beginning loop";
   while(graphics.isRunning()) {
     if(fps != fps_counter.getCurrentFPS()) {
       std::stringstream window_name;
