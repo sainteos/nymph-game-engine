@@ -25,11 +25,42 @@
 #include "utility/config_manager.h"
 #include "graphics/light.h"
 #include "utility/utility_functions.h"
+#include "entity.h"
+#include "graphics/triggerable_animations.hpp"
+#include "events/observer.h"
+#include "sprite_move_event.h"
+#include "sprite_stop_event.h"
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
 
 using namespace Graphics;
 using namespace std::placeholders;
+
+enum class GrassStates { MOVING, NOTMOVING };
+class Grass : public Entity, public TriggerableAnimations<GrassStates>, public Events::Observer {
+  public:
+    Grass() : TriggerableAnimations<GrassStates>(GrassStates::NOTMOVING) {}
+    virtual void onStart() override {
+      TriggerableAnimations<GrassStates>::initializeStates();
+      Entity::onStart();
+    }
+
+    virtual void onNotify(const Events::Event& event) override {
+      if(event.getEventCode() == Events::EventType::SPRITE_MOVE) {
+        auto casted_event = static_cast<const SpriteMoveEvent*>(&event);
+        triggerTile(GrassStates::MOVING);
+      }
+      else if(event.getEventCode() == Events::EventType::SPRITE_STOP) {
+        auto casted_event = static_cast<const SpriteStopEvent*>(&event);
+        triggerTile(GrassStates::NOTMOVING);
+      }
+    }
+
+    void addTriggerableTile(const GrassStates& state, std::shared_ptr<Tile> tile) {
+      addTile(state, tile);
+      addComponent(tile);
+    }
+};
 
 int main(int argc, char** argv) {
   START_EASYLOGGINGPP(argc, argv);
@@ -152,10 +183,11 @@ int main(int argc, char** argv) {
   else {
     LOG(INFO)<<"Did not find attachment with name: "<<config.getString("sprite_attachment_name")<<" : "<<config.getString("sprite_attachment_animation_name");
   }
+  auto stop_attachment = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, config.getString("sprite_attachment_stop_name"), config.getString("sprite_attachment_animation_stop_name")));
 
   input_system.addObserver(sprite);
   LOG(INFO)<<"Sprite observes input";
-  sprite->addTile(Sprite::AnimationState::MOVE_UP, move_up->tile);
+  sprite->addTriggerableTile(SpriteState::MOVE_UP, move_up->tile);
   graphics.addRenderable(move_up->tile);
   sprite->addTriggerableTile(SpriteState::MOVE_DOWN, move_down->tile);
   graphics.addRenderable(move_down->tile);
@@ -176,16 +208,23 @@ int main(int argc, char** argv) {
   LOG(INFO)<<"Set moving speed";
   transform->addChild(sprite->getTransform());
   LOG(INFO)<<"Set sprite transform as child to toplevel transform";
-  attachment->tile->setActive();
-  LOG(INFO)<<"Set sprite active";
-  sprite->addComponent(attachment->tile);
+
+
+  std::shared_ptr<Grass> grass = std::make_shared<Grass>();
+  grass->addTriggerableTile(GrassStates::MOVING, attachment->tile);
+  grass->addTriggerableTile(GrassStates::NOTMOVING, stop_attachment->tile);
+  sprite->addObserver(grass);
+
   LOG(INFO)<<"Added component";
   graphics.addRenderable(attachment->tile);
+  graphics.addRenderable(stop_attachment->tile);
+  sprite->getTransform()->addChild(grass->getTransform());
   LOG(INFO)<<"Added attachment";
   //camera->getTransform()->translate(glm::vec2(sprite->getTransform()->getAbsoluteTranslation()));
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
   LOG(INFO)<<"Transformed camera";
   sprite->onStart();
+  grass->onStart();
   LOG(INFO)<<"Sprite started";
 
   graphics.startRender();

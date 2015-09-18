@@ -3,6 +3,7 @@
 #include "input/key_down_event.h"
 #include "input/key_up_event.h"
 #include "sprite_move_event.h"
+#include "sprite_stop_event.h"
 #include <easylogging++.h>
 #define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
@@ -104,18 +105,22 @@ void Sprite::onUpdate(const float delta) {
       if(current_state == SpriteState::MOVE_LEFT) {
         current_velocity = glm::vec2(0.0, 0.0);
         triggerTile(SpriteState::FACE_LEFT);
+        notify(SpriteStopEvent());
       }
       else if(current_state == SpriteState::MOVE_RIGHT) {
         current_velocity = glm::vec2(0.0, 0.0);
         triggerTile(SpriteState::FACE_RIGHT);
+        notify(SpriteStopEvent());
       }
       else if(current_state == SpriteState::MOVE_UP) {
         current_velocity = glm::vec2(0.0, 0.0);
         triggerTile(SpriteState::FACE_UP);
+        notify(SpriteStopEvent());
       }
       else if(current_state == SpriteState::MOVE_DOWN) {
         current_velocity = glm::vec2(0.0, 0.0);
         triggerTile(SpriteState::FACE_DOWN);
+        notify(SpriteStopEvent());
       }
     }
     else {
