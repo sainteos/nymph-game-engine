@@ -2,8 +2,7 @@
 #define COMPONENT_H
 
 #include <memory>
-
-class Transform;
+#include "transform.h"
 
 class Component {
   protected:

@@ -52,6 +52,7 @@ namespace Graphics {
     else {
       LOG(WARNING)<<"Trying to start an AnimatedTile without shader!";
     }
+    Tile::onStart();
   }
   
   const bool AnimatedTile::onUpdate(const double delta) {
@@ -62,7 +63,7 @@ namespace Graphics {
         tile_to_time.pop_front();
         frame_time_accumulator = 0.0;
       }
-      return true;
+      return Tile::onUpdate(delta);
     }
     else {
       LOG(WARNING)<<"Trying to update animated tile without frames!";

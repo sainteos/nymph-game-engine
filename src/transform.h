@@ -4,9 +4,8 @@
 #include <glm/gtc/quaternion.hpp>
 #include <memory>
 #include <list>
-#include "component.h"
 
-class Transform : public Component, public std::enable_shared_from_this<Transform> {
+class Transform : public std::enable_shared_from_this<Transform> {
   private:
     std::shared_ptr<Transform> parent;
     std::list<std::shared_ptr<Transform>> children;
@@ -60,10 +59,6 @@ class Transform : public Component, public std::enable_shared_from_this<Transfor
 
     const glm::mat4 getAbsoluteTransformationMatrix() const noexcept;
     const glm::mat4 getLocalTransformationMatrix() const noexcept;
-
-    virtual void onStart() override;
-    virtual const bool onUpdate(const double delta) override;
-    virtual void onDestroy() override;
 };
 
 #endif

@@ -2,8 +2,8 @@
 #include <typeinfo>
 #include "entity.h"
 
-Entity::Entity() : transform(std::make_shared<Transform>()) {
-  components.push_back(std::static_pointer_cast<Component>(transform));
+Entity::Entity() {
+  transform = std::make_shared<Transform>();
 }
 
 void Entity::addComponent(std::shared_ptr<Component> component) {
