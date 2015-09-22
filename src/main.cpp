@@ -25,6 +25,8 @@
 #include "utility/config_manager.h"
 #include "graphics/light.h"
 #include "utility/utility_functions.h"
+#include "component_manager.h"
+
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
 
@@ -70,9 +72,14 @@ int main(int argc, char** argv) {
   float viewport_tile_width = config.getFloat("screen_width_tiles");
   float viewport_tile_height = config.getFloat("screen_height_tiles");
 
+  ComponentManager component_manager;
+
   std::shared_ptr<Camera> camera = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config.getFloat("near_plane"), config.getFloat("far_plane"));
   camera->setTransform(std::make_shared<Transform>());
+  camera->setActive();
+  component_manager.addComponent(camera);
   graphics.setCamera(camera);
+
   TextureManager texture_manager;
   
   auto renderables = renderable_factory.createFromMap(*map, texture_manager, shader_manager);
@@ -99,11 +106,13 @@ int main(int argc, char** argv) {
   for(auto& i : renderables.tiles) {
     transform->addChild(i->getTransform());
     graphics.addRenderable(i);
+    component_manager.addComponent(i);
   }
 
   for(auto& i : static_animations) {
     transform->addChild(i->getTransform());
     graphics.addRenderable(i);
+    component_manager.addComponent(i);
   }
 
   for(auto& i : lights) {
@@ -129,20 +138,28 @@ int main(int argc, char** argv) {
   input_system.addObserver(sprite);
   sprite->addTile(Sprite::AnimationState::MOVE_UP, move_up->tile);
   graphics.addRenderable(move_up->tile);
+  component_manager.addComponent(move_up->tile);
   sprite->addTile(Sprite::AnimationState::MOVE_DOWN, move_down->tile);
   graphics.addRenderable(move_down->tile);
+  component_manager.addComponent(move_down->tile);
   sprite->addTile(Sprite::AnimationState::MOVE_LEFT, move_left->tile);
   graphics.addRenderable(move_left->tile);
+  component_manager.addComponent(move_left->tile);
   sprite->addTile(Sprite::AnimationState::MOVE_RIGHT, move_right->tile);
   graphics.addRenderable(move_right->tile);
+  component_manager.addComponent(move_right->tile);
   sprite->addTile(Sprite::AnimationState::FACE_UP, stop_up->tile);
   graphics.addRenderable(stop_up->tile);
+  component_manager.addComponent(stop_up->tile);
   sprite->addTile(Sprite::AnimationState::FACE_DOWN, stop_down->tile);
   graphics.addRenderable(stop_down->tile);
+  component_manager.addComponent(stop_down->tile);
   sprite->addTile(Sprite::AnimationState::FACE_LEFT, stop_left->tile);
   graphics.addRenderable(stop_left->tile);
+  component_manager.addComponent(stop_left->tile);
   sprite->addTile(Sprite::AnimationState::FACE_RIGHT, stop_right->tile);
   graphics.addRenderable(stop_right->tile);
+  component_manager.addComponent(stop_right->tile);
   sprite->setMovingSpeed(2.0);
   transform->addChild(sprite->getTransform());
   //camera->getTransform()->translate(glm::vec2(sprite->getTransform()->getAbsoluteTranslation()));
@@ -151,6 +168,7 @@ int main(int argc, char** argv) {
   sprite->onStart();
 
   graphics.startRender();
+  component_manager.onStart();
 
   Utility::FPSCounter fps_counter(60.0f);
   float delta = 0.0f;
@@ -163,14 +181,15 @@ int main(int argc, char** argv) {
       graphics.setWindowName(window_name.str());
       fps = fps_counter.getCurrentFPS();
     }
-
     sprite->onUpdate(delta);
+    component_manager.onUpdate(delta);
     graphics.renderFrame(delta);
     input_system.pollForInput();
     delta = fps_counter.assessCountAndGetDelta();
   }
 
   graphics.destroy();
+  component_manager.destroy();
 
   return 0;
 }

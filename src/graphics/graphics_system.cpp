@@ -69,11 +69,6 @@ namespace Graphics {
     }
     #endif
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-    glClearDepth(1.0f);
     ilInit();
     glfwSetFramebufferSizeCallback(window, windowSizeCallback);
     
@@ -163,17 +158,14 @@ namespace Graphics {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
     glClearColor(0.0, 0.0, 0.0, 1.0);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glClearDepth(1.0f);
 
     if(camera == nullptr)
       throw Exceptions::NoCameraAttachedException();
-
-    camera->onStart();
-
-    for(auto& renderables_iter : renderables_map) {
-      if(renderables_iter.second->isActive()) {
-        renderables_iter.second->onStart();
-      }
-    }
   }
 
   void GraphicsSystem::renderFrame(const float delta) {
@@ -181,10 +173,9 @@ namespace Graphics {
       throw Exceptions::SystemNotInitializedException("Graphics");
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    camera->onUpdate(delta);
 
     for(auto& renderables_iter : renderables_map) {
-      if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second) && renderables_iter.second->onUpdate(delta)) {
+      if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second)) {
         if(renderables_iter.second->isLightReactive()) {
           //find lights that influence renderable
           std::priority_queue<RankedLight, std::vector<RankedLight>, std::less<RankedLight>> light_queue;
@@ -201,7 +192,7 @@ namespace Graphics {
           }
 
         }
-        //if renderable was updated, then render
+        
         renderables_iter.second->onRender();
       }
     }

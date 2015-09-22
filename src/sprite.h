@@ -29,6 +29,8 @@ class Sprite : public Entity, public Events::Observer, public Events::Subject {
     void onNotify(const Events::Event& event) override;
     void onUpdate(const float delta) override;
     void onStart() override;
+    void onStop() override {}
+    void onDestroy() override {}
     void addTile(const AnimationState& state, std::shared_ptr<Graphics::Tile> tile);
     void triggerTile(const AnimationState& state);
     void setMovingSpeed(const float speed);

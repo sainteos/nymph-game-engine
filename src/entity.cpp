@@ -22,22 +22,13 @@ std::shared_ptr<Transform> Entity::getTransform() const noexcept {
 }
 
 void Entity::onStart() {
-  for(auto i : components) {
-    i->onStart();
-  }
 }
 
 void Entity::onUpdate(const float delta) {
-  for(auto i : components) {
-    i->onUpdate(delta);
-  }
 }
 
 void Entity::onStop() {
 }
 
 void Entity::onDestroy() {
-  for(auto i : components) {
-    i->onDestroy();
-  }
 }

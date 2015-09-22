@@ -15,10 +15,10 @@ class Entity {
     void addComponent(std::shared_ptr<Component> component);
     void removeComponent(std::shared_ptr<Component> component);
     std::shared_ptr<Transform> getTransform() const noexcept;
-    virtual void onStart();
-    virtual void onUpdate(const float delta);
-    virtual void onStop();
-    virtual void onDestroy();
+    virtual void onStart() = 0;
+    virtual void onUpdate(const float delta) = 0;
+    virtual void onStop() = 0;
+    virtual void onDestroy() = 0;
 };
 
 #endif

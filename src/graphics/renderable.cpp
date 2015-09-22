@@ -17,7 +17,7 @@
 #include "renderable.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : active(false), vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
     }
@@ -58,18 +58,6 @@ namespace Graphics {
 
   Renderable::~Renderable() {
     onDestroy();
-  }
-  
-  void Renderable::setActive() noexcept {
-    active = true;
-  }
-
-  void Renderable::setInactive() noexcept {
-    active = false;
-  }
-
-  const bool Renderable::isActive() const noexcept {
-    return active;
   }
 
   void Renderable::setShader(const std::shared_ptr<Shader> shader_object) noexcept {

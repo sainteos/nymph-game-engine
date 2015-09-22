@@ -15,8 +15,6 @@
 namespace Graphics {
   class Renderable : public Component {
     private:
-      bool active;
-
       unsigned int vertex_array_object;
       std::shared_ptr<Shader> shader;
       std::vector<std::shared_ptr<BaseTexture>> textures;
@@ -42,10 +40,6 @@ namespace Graphics {
       Renderable& operator=(Renderable&& renderable);
 
       virtual ~Renderable();
-
-      void setActive() noexcept;
-      void setInactive() noexcept;
-      const bool isActive() const noexcept;
 
       void setShader(std::shared_ptr<Shader> shader_object) noexcept;
       const std::shared_ptr<Shader> getShader() const noexcept;
