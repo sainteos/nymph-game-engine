@@ -453,10 +453,8 @@ namespace Graphics {
 
               animated_renderable->setShader((*shader_manager)["tile_animation"]);
               
-              auto transform = std::make_shared<Transform>();
               //subtract y from layer height, and then subtract an additional 1 to normalize it to 0
-              transform->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
-              animated_renderable->setTransform(transform);
+              animated_renderable->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
               if(layer->IsVisible())
                 animated_renderable->setActive();
               tiles.push_back(animated_renderable);
@@ -506,7 +504,7 @@ namespace Graphics {
               placeholder.default_animation = tile->GetProperties().GetStringProperty("DefaultAnimation");
               placeholder.x_pos = x;
               placeholder.y_pos = layer->GetHeight() - y - 1;
-              placeholder.z_order = -(min_z_order + max_z_order - (float)layer->GetZOrder());
+              placeholder.z_order = -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0;
               renderables.dynamic_animations.push_back(placeholder);
             }
             else if(!tile) {
@@ -566,10 +564,8 @@ namespace Graphics {
                 renderable->setShader((*shader_manager)["simple_texture"]); 
               }
 
-              auto transform = std::make_shared<Transform>();
               //subtract y from height and subtract 1 to normalize to 0
-              transform->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
-              renderable->setTransform(transform);
+              renderable->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
               if(layer->IsVisible())
                 renderable->setActive();
               renderables.tiles.push_back(renderable);
