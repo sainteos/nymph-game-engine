@@ -104,7 +104,10 @@ void Sprite::onUpdate(const float delta) {
   }
   if(current_state == AnimationState::MOVE_LEFT || current_state == AnimationState::MOVE_RIGHT ||
      current_state == AnimationState::MOVE_UP || current_state == AnimationState::MOVE_DOWN) {
-    if(glm::distance(glm::vec2(getTransform()->getLocalTranslation()), next_position) < 1.0f / 1000.0f * delta) {
+    if(glm::distance(glm::vec2(getTransform()->getLocalTranslation()), next_position) > glm::length(current_velocity * 1.0f / 1000.0f * delta)) {
+      getTransform()->translate(current_velocity * 1.0 / 1000.0f * delta);
+    }
+    else {
       getTransform()->translate(next_position - glm::vec2(getTransform()->getLocalTranslation()));
       if(current_state == AnimationState::MOVE_LEFT) {
         current_velocity = glm::vec2(0.0, 0.0);
@@ -123,10 +126,8 @@ void Sprite::onUpdate(const float delta) {
         triggerTile(AnimationState::FACE_DOWN);
       }
     }
-    else {
-      getTransform()->translate(current_velocity * 1.0 / 1000.0f * delta);
-    }
   }
+
   Entity::onUpdate(delta);
 }
 
