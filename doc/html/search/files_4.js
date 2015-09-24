@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['opengl_5fsetup_2ecpp',['opengl_setup.cpp',['../opengl__setup_8cpp.html',1,'']]],
-  ['opengl_5fsetup_2eh',['opengl_setup.h',['../opengl__setup_8h.html',1,'']]]
+  ['fps_5fcounter_2ecpp',['fps_counter.cpp',['../fps__counter_8cpp.html',1,'']]],
+  ['fps_5fcounter_2eh',['fps_counter.h',['../fps__counter_8h.html',1,'']]]
 ];

@@ -92,6 +92,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_graphics_1_1_shader_manager-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -115,6 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4a3c0f369be06a34a8e44ad8a41862a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c82c5f8d73dbb9ec3038b2db71add41"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr&lt; <a class="el" href="class_graphics_1_1_shader.html">Shader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_shader_manager.html#a8c82c5f8d73dbb9ec3038b2db71add41">getShader</a> (const std::string &amp;name) const </td></tr>
 <tr class="separator:a8c82c5f8d73dbb9ec3038b2db71add41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a506437c5209786ccd03c3243de456cd3"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a506437c5209786ccd03c3243de456cd3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_shader_manager.html#a506437c5209786ccd03c3243de456cd3">setUniformForAllPrograms</a> (const std::string &amp;name, const T &amp;data)</td></tr>
+<tr class="separator:a506437c5209786ccd03c3243de456cd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -126,6 +130,13 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a66cf54024f2f1e51db6f5afccbcba67e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3cef3602a2a0205064bdff0ac9437a8"><td class="memItemLeft" align="right" valign="top">static char const *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_shader_manager.html#ad3cef3602a2a0205064bdff0ac9437a8">SHADER_DIRECTORY</a> = &quot;./shaders/&quot;</td></tr>
 <tr class="separator:ad3cef3602a2a0205064bdff0ac9437a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a7c73d370e436f69ee340a0f2b02558fc"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_shader_manager.html#a7c73d370e436f69ee340a0f2b02558fc">checkCompilation</a> (const unsigned int &amp;shader_object)</td></tr>
+<tr class="separator:a7c73d370e436f69ee340a0f2b02558fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2477b4ccc2227086b2759dc95c55005a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_shader_manager.html#a2477b4ccc2227086b2759dc95c55005a">logShaderInfoLog</a> (const unsigned int &amp;shader_object)</td></tr>
+<tr class="separator:a2477b4ccc2227086b2759dc95c55005a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -164,6 +175,30 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a7c73d370e436f69ee340a0f2b02558fc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bool Graphics::ShaderManager::checkCompilation </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>shader_object</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a8c82c5f8d73dbb9ec3038b2db71add41"></a>
 <div class="memitem">
 <div class="memproto">
@@ -244,6 +279,30 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a2477b4ccc2227086b2759dc95c55005a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Graphics::ShaderManager::logShaderInfoLog </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>shader_object</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a4a3c0f369be06a34a8e44ad8a41862a4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -254,6 +313,34 @@ Private Attributes</h2></td></tr>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a506437c5209786ccd03c3243de456cd3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void Graphics::ShaderManager::setUniformForAllPrograms </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -368,7 +455,7 @@ Private Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 28 2015 16:54:53 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 24 2015 14:22:06 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

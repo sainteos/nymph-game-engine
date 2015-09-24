@@ -141,6 +141,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abda73a49d1b280ee091afd53973c3448"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59b5214fe3d6b6f9425032c86abf65cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#a59b5214fe3d6b6f9425032c86abf65cb">~VertexData</a> ()</td></tr>
 <tr class="separator:a59b5214fe3d6b6f9425032c86abf65cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad58ef98925908992fcd3ff090f57693f"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#ad58ef98925908992fcd3ff090f57693f">operator==</a> (const <a class="el" href="class_graphics_1_1_vertex_data.html">VertexData</a> &amp;other)</td></tr>
+<tr class="separator:ad58ef98925908992fcd3ff090f57693f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac03511a02af7005757f60783b73fc51f"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#ac03511a02af7005757f60783b73fc51f">operator!=</a> (const <a class="el" href="class_graphics_1_1_vertex_data.html">VertexData</a> &amp;other)</td></tr>
+<tr class="separator:ac03511a02af7005757f60783b73fc51f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d7dfbf44faa4ebeeb052d9a49ec72c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#a9d7dfbf44faa4ebeeb052d9a49ec72c4">addIndices</a> (const std::vector&lt; unsigned int &gt; &amp;<a class="el" href="class_graphics_1_1_vertex_data.html#a9b777aa4bf035e805b2957fbcd158842">indices</a>)</td></tr>
 <tr class="separator:a9d7dfbf44faa4ebeeb052d9a49ec72c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1432af05a48b67a06c711910bb495c6e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -155,6 +159,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a860575a29aa889f2a1028f2b8a255adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39b62d7b756b924aed1025d725a2316a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#a39b62d7b756b924aed1025d725a2316a">getIndices</a> () const noexcept</td></tr>
 <tr class="separator:a39b62d7b756b924aed1025d725a2316a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae46d393d65961b336a380d22bc8e39cb"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#ae46d393d65961b336a380d22bc8e39cb">numberVertexBufferObjects</a> () const noexcept</td></tr>
+<tr class="separator:ae46d393d65961b336a380d22bc8e39cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c16815abdf03faa1789af508f378b4a"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
 <tr class="memitem:a3c16815abdf03faa1789af508f378b4a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#a3c16815abdf03faa1789af508f378b4a">addVec</a> (<a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">VertexData::DATA_TYPE</a> data_type, const std::vector&lt; float &gt; &amp;vec)</td></tr>
 <tr class="separator:a3c16815abdf03faa1789af508f378b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,8 +188,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a8b7b2345af2cce65482bf48c503f15f6"><td class="memItemLeft" align="right" valign="top">static const std::map&lt; <a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">DATA_TYPE</a>, unsigned char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#a8b7b2345af2cce65482bf48c503f15f6">DataWidth</a></td></tr>
-<tr class="separator:a8b7b2345af2cce65482bf48c503f15f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af49335b9e9bb94a48d1ade3e798278eb"><td class="memItemLeft" align="right" valign="top">static const std::map&lt; <a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">DATA_TYPE</a>, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#af49335b9e9bb94a48d1ade3e798278eb">DataWidth</a></td></tr>
+<tr class="separator:af49335b9e9bb94a48d1ade3e798278eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -193,6 +199,9 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a6bbb857b2a231cd75a236adfb553e976"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac506af313dd521dfd05c566df3bf41bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#ac506af313dd521dfd05c566df3bf41bd">clearDataType</a> (const <a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">DATA_TYPE</a> &amp;type)</td></tr>
 <tr class="separator:ac506af313dd521dfd05c566df3bf41bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe21332be8f7e42e9655c3271ddef0c0"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:abe21332be8f7e42e9655c3271ddef0c0"><td class="memTemplItemLeft" align="right" valign="top">const bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_graphics_1_1_vertex_data.html#abe21332be8f7e42e9655c3271ddef0c0">mapCompare</a> (std::map&lt; <a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">DATA_TYPE</a>, std::vector&lt; T &gt;&gt; lhs, std::map&lt; <a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">DATA_TYPE</a>, std::vector&lt; T &gt;&gt; rhs)</td></tr>
+<tr class="separator:abe21332be8f7e42e9655c3271ddef0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -607,14 +616,14 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a460ef7490af53909849ede22d63f3144"></a>
+<a class="anchor" id="a248ab37b8eec5e4befba68c09a56fc1b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;<a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">VertexData::DATA_TYPE</a>, std::vector&lt;double&gt; &gt; Graphics::VertexData::getCollapsedVectors </td>
+          <td class="memname">std::map&lt;<a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">VertexData::DATA_TYPE</a>, std::vector&lt;float&gt; &gt; Graphics::VertexData::getCollapsedVectors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -624,14 +633,14 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a1a056a887e89425563b93c7d14402a21"></a>
+<a class="anchor" id="a460ef7490af53909849ede22d63f3144"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;<a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">VertexData::DATA_TYPE</a>, std::vector&lt;unsigned int&gt; &gt; Graphics::VertexData::getCollapsedVectors </td>
+          <td class="memname">std::map&lt;<a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">VertexData::DATA_TYPE</a>, std::vector&lt;double&gt; &gt; Graphics::VertexData::getCollapsedVectors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -658,14 +667,14 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a248ab37b8eec5e4befba68c09a56fc1b"></a>
+<a class="anchor" id="a1a056a887e89425563b93c7d14402a21"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;<a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">VertexData::DATA_TYPE</a>, std::vector&lt;float&gt; &gt; Graphics::VertexData::getCollapsedVectors </td>
+          <td class="memname">std::map&lt;<a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">VertexData::DATA_TYPE</a>, std::vector&lt;unsigned int&gt; &gt; Graphics::VertexData::getCollapsedVectors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -744,6 +753,81 @@ template&lt;&gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="abe21332be8f7e42e9655c3271ddef0c0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bool Graphics::VertexData::mapCompare </td>
+          <td>(</td>
+          <td class="paramtype">std::map&lt; <a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">DATA_TYPE</a>, std::vector&lt; T &gt;&gt;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::map&lt; <a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">DATA_TYPE</a>, std::vector&lt; T &gt;&gt;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae46d393d65961b336a380d22bc8e39cb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int Graphics::VertexData::numberVertexBufferObjects </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac03511a02af7005757f60783b73fc51f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bool Graphics::VertexData::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_graphics_1_1_vertex_data.html">VertexData</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="abda73a49d1b280ee091afd53973c3448"></a>
 <div class="memitem">
 <div class="memproto">
@@ -753,6 +837,22 @@ template&lt;&gt; </div>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_graphics_1_1_vertex_data.html">VertexData</a> &amp;&#160;</td>
           <td class="paramname"><em>vertex_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad58ef98925908992fcd3ff090f57693f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bool Graphics::VertexData::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_graphics_1_1_vertex_data.html">VertexData</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -781,7 +881,7 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a8b7b2345af2cce65482bf48c503f15f6"></a>
+<a class="anchor" id="af49335b9e9bb94a48d1ade3e798278eb"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -789,7 +889,7 @@ template&lt;&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::map&lt; <a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">Graphics::VertexData::DATA_TYPE</a>, unsigned char &gt; Graphics::VertexData::DataWidth</td>
+          <td class="memname">const std::map&lt; <a class="el" href="class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620e">Graphics::VertexData::DATA_TYPE</a>, unsigned int &gt; Graphics::VertexData::DataWidth</td>
         </tr>
       </table>
   </td>
@@ -798,7 +898,7 @@ template&lt;&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= std::map&lt;Graphics::VertexData::DATA_TYPE, unsigned char&gt;  {</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= std::map&lt;Graphics::VertexData::DATA_TYPE, unsigned int&gt;  {</div>
 <div class="line">        {Graphics::VertexData::DATA_TYPE::GEOMETRY, 3},</div>
 <div class="line">        {Graphics::VertexData::DATA_TYPE::TEX_COORDS, 2},</div>
 <div class="line">        {Graphics::VertexData::DATA_TYPE::NORMAL_COORDS, 3},</div>
@@ -1284,7 +1384,7 @@ template&lt;&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 28 2015 16:54:53 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 24 2015 14:22:06 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

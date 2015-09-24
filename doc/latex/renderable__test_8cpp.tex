@@ -10,6 +10,8 @@
 {\ttfamily \#include \char`\"{}graphics/renderable.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}graphics/vertex\+\_\+data.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}graphics/shader.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}graphics/shader\+\_\+manager.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}graphics/renderable\+\_\+factory.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}graphics/renderable\+\_\+attribute\+\_\+trait.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}exceptions/invalid\+\_\+vertex\+\_\+array\+\_\+exception.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}exceptions/invalid\+\_\+shader\+\_\+object\+\_\+exception.\+h\char`\"{}}\\*
@@ -22,29 +24,21 @@ class \hyperlink{class_test_attribute_trait}{Test\+Attribute\+Trait}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_graphics_1_1_renderable}{Graphics\+::\+Renderable} \hyperlink{renderable__test_8cpp_ad4abfed172a5171e2825532c4ec32064}{setup\+\_\+renderable} ()
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_renderable}{Graphics\+::\+Renderable} $>$ \hyperlink{renderable__test_8cpp_a787dc0b09645556a35ca2f184a94ee28}{setup\+\_\+renderable} ()
 \item 
-std\+::vector$<$ glm\+::vec3 $>$ \hyperlink{renderable__test_8cpp_ab2307bbe9c981faf77bfda1a0eebd3ad}{setup\+\_\+random\+\_\+vertex\+\_\+data} (const int indices)
+std\+::vector$<$ glm\+::vec3 $>$ \hyperlink{renderable__test_8cpp_aa44232a0f1517096756a45014ffab1d3}{setup\+\_\+random\+\_\+vertex\+\_\+data} (const int size)
 \item 
-std\+::vector$<$ unsigned int $>$ \hyperlink{renderable__test_8cpp_a8473ddd9974426bf39a6ffe3f6a598fd}{setup\+\_\+random\+\_\+index\+\_\+data} (const int indices, const int max)
+std\+::vector$<$ unsigned int $>$ \hyperlink{renderable__test_8cpp_a057835f1c8bec59cbad7019459fb3b61}{setup\+\_\+random\+\_\+index\+\_\+data} (const int num\+\_\+indices, const int max)
 \item 
 std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_shader}{Graphics\+::\+Shader} $>$ \hyperlink{renderable__test_8cpp_adb84b94677d3a01479590c12c31e49ad}{setup\+\_\+shader} ()
 \item 
-\hyperlink{class_graphics_1_1_renderable}{Graphics\+::\+Renderable} \hyperlink{renderable__test_8cpp_a079d0baa7b889ab104ea37f6a6886d34}{setup\+\_\+renderable\+\_\+with\+\_\+data} (bool multiple\+\_\+vertex\+\_\+data, bool use\+\_\+index)
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_renderable}{Graphics\+::\+Renderable} $>$ \hyperlink{renderable__test_8cpp_a6cbaeadc5e1033d50e6f67dca81e0096}{setup\+\_\+renderable\+\_\+with\+\_\+data} (bool multiple\+\_\+vertex\+\_\+data, bool use\+\_\+index)
 \item 
-\hyperlink{class_graphics_1_1_renderable}{Graphics\+::\+Renderable} \hyperlink{renderable__test_8cpp_ae3558eb9bc8d1568bd93d485f4e24234}{setup\+\_\+initialized\+\_\+renderable} (bool multiple\+\_\+vertex\+\_\+data, bool use\+\_\+index)
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_renderable}{Graphics\+::\+Renderable} $>$ \hyperlink{renderable__test_8cpp_aa25d03d001f10eaf66dad15222ad8cbf}{setup\+\_\+initialized\+\_\+renderable} (bool multiple\+\_\+vertex\+\_\+data, bool use\+\_\+index)
 \item 
 \hyperlink{renderable__test_8cpp_a03452292ca67d54415afae6b389e3ed2}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}A renderable can\textquotesingle{}t be constructed with an invalid vertex array object\char`\"{},\char`\"{}\mbox{[}renderable\mbox{]}\char`\"{})
 \item 
 \hyperlink{renderable__test_8cpp_a03fcca3d1436fcb3569b1c677d37fa4a}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}A renderable can be constructed with a valid vertex array object\char`\"{},\char`\"{}\mbox{[}renderable\mbox{]}\char`\"{})
-\item 
-\hyperlink{renderable__test_8cpp_a5199e4205f0207673b83a8706eed3aee}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}A renderable can be initialized with one set of vertex data and no index data\char`\"{},\char`\"{}\mbox{[}renderable\mbox{]}\char`\"{})
-\item 
-\hyperlink{renderable__test_8cpp_a170f34c0812c9266f256967e5920ab8f}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}A renderable can be initialized with multiple sets of vertex data and no index data\char`\"{},\char`\"{}\mbox{[}renderable\mbox{]}\char`\"{})
-\item 
-\hyperlink{renderable__test_8cpp_a820fca76160e7e541209de4699389741}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}A renderable can be initialized with index data and one set of vertex data\char`\"{},\char`\"{}\mbox{[}renderable\mbox{]}\char`\"{})
-\item 
-\hyperlink{renderable__test_8cpp_ab9e94d7fbb54242880be6a24b464a9a6}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}A renderable can be initialized with index data and multiple sets of vertex data\char`\"{},\char`\"{}\mbox{[}renderable\mbox{]}\char`\"{})
 \item 
 \hyperlink{renderable__test_8cpp_a439bf25eeed3ed76a2ae7bdf4ab96e77}{S\+C\+E\+N\+A\+R\+I\+O} (\char`\"{}A renderable can be given a valid shader object handle\char`\"{})
 \item 
@@ -75,38 +69,6 @@ std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_shader}{Graphics\+::\+Sh
 \item[{\char`\"{}\char`\"{}}]{\mbox{[}renderable\mbox{]}}
 \end{DoxyParamCaption}
 )}\label{renderable__test_8cpp_a03fcca3d1436fcb3569b1c677d37fa4a}
-\hypertarget{renderable__test_8cpp_a5199e4205f0207673b83a8706eed3aee}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
-\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
-\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
-\begin{DoxyParamCaption}
-\item[{\char`\"{}A renderable can be initialized with one set of vertex data and no index data\char`\"{}}]{, }
-\item[{\char`\"{}\char`\"{}}]{\mbox{[}renderable\mbox{]}}
-\end{DoxyParamCaption}
-)}\label{renderable__test_8cpp_a5199e4205f0207673b83a8706eed3aee}
-\hypertarget{renderable__test_8cpp_a170f34c0812c9266f256967e5920ab8f}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
-\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
-\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
-\begin{DoxyParamCaption}
-\item[{\char`\"{}A renderable can be initialized with multiple sets of vertex data and no index data\char`\"{}}]{, }
-\item[{\char`\"{}\char`\"{}}]{\mbox{[}renderable\mbox{]}}
-\end{DoxyParamCaption}
-)}\label{renderable__test_8cpp_a170f34c0812c9266f256967e5920ab8f}
-\hypertarget{renderable__test_8cpp_a820fca76160e7e541209de4699389741}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
-\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
-\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
-\begin{DoxyParamCaption}
-\item[{\char`\"{}A renderable can be initialized with index data and one set of vertex data\char`\"{}}]{, }
-\item[{\char`\"{}\char`\"{}}]{\mbox{[}renderable\mbox{]}}
-\end{DoxyParamCaption}
-)}\label{renderable__test_8cpp_a820fca76160e7e541209de4699389741}
-\hypertarget{renderable__test_8cpp_ab9e94d7fbb54242880be6a24b464a9a6}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
-\index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
-\subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
-\begin{DoxyParamCaption}
-\item[{\char`\"{}A renderable can be initialized with index data and multiple sets of vertex data\char`\"{}}]{, }
-\item[{\char`\"{}\char`\"{}}]{\mbox{[}renderable\mbox{]}}
-\end{DoxyParamCaption}
-)}\label{renderable__test_8cpp_ab9e94d7fbb54242880be6a24b464a9a6}
 \hypertarget{renderable__test_8cpp_a439bf25eeed3ed76a2ae7bdf4ab96e77}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}}
 \index{S\+C\+E\+N\+A\+R\+I\+O@{S\+C\+E\+N\+A\+R\+I\+O}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
 \subsubsection[{S\+C\+E\+N\+A\+R\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}S\+C\+E\+N\+A\+R\+I\+O (
@@ -146,44 +108,44 @@ std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_shader}{Graphics\+::\+Sh
 \item[{\char`\"{}\char`\"{}}]{\mbox{[}renderable\mbox{]}}
 \end{DoxyParamCaption}
 )}\label{renderable__test_8cpp_a1d596f25e5b7c6e48e2c87191792e83d}
-\hypertarget{renderable__test_8cpp_ae3558eb9bc8d1568bd93d485f4e24234}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+initialized\+\_\+renderable@{setup\+\_\+initialized\+\_\+renderable}}
+\hypertarget{renderable__test_8cpp_aa25d03d001f10eaf66dad15222ad8cbf}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+initialized\+\_\+renderable@{setup\+\_\+initialized\+\_\+renderable}}
 \index{setup\+\_\+initialized\+\_\+renderable@{setup\+\_\+initialized\+\_\+renderable}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
-\subsubsection[{setup\+\_\+initialized\+\_\+renderable}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Graphics\+::\+Renderable} setup\+\_\+initialized\+\_\+renderable (
+\subsubsection[{setup\+\_\+initialized\+\_\+renderable}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<${\bf Graphics\+::\+Renderable}$>$ setup\+\_\+initialized\+\_\+renderable (
 \begin{DoxyParamCaption}
 \item[{bool}]{multiple\+\_\+vertex\+\_\+data, }
 \item[{bool}]{use\+\_\+index}
 \end{DoxyParamCaption}
-)}\label{renderable__test_8cpp_ae3558eb9bc8d1568bd93d485f4e24234}
-\hypertarget{renderable__test_8cpp_a8473ddd9974426bf39a6ffe3f6a598fd}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+random\+\_\+index\+\_\+data@{setup\+\_\+random\+\_\+index\+\_\+data}}
+)}\label{renderable__test_8cpp_aa25d03d001f10eaf66dad15222ad8cbf}
+\hypertarget{renderable__test_8cpp_a057835f1c8bec59cbad7019459fb3b61}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+random\+\_\+index\+\_\+data@{setup\+\_\+random\+\_\+index\+\_\+data}}
 \index{setup\+\_\+random\+\_\+index\+\_\+data@{setup\+\_\+random\+\_\+index\+\_\+data}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
 \subsubsection[{setup\+\_\+random\+\_\+index\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$unsigned int$>$ setup\+\_\+random\+\_\+index\+\_\+data (
 \begin{DoxyParamCaption}
-\item[{const int}]{indices, }
+\item[{const int}]{num\+\_\+indices, }
 \item[{const int}]{max}
 \end{DoxyParamCaption}
-)}\label{renderable__test_8cpp_a8473ddd9974426bf39a6ffe3f6a598fd}
-\hypertarget{renderable__test_8cpp_ab2307bbe9c981faf77bfda1a0eebd3ad}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+random\+\_\+vertex\+\_\+data@{setup\+\_\+random\+\_\+vertex\+\_\+data}}
+)}\label{renderable__test_8cpp_a057835f1c8bec59cbad7019459fb3b61}
+\hypertarget{renderable__test_8cpp_aa44232a0f1517096756a45014ffab1d3}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+random\+\_\+vertex\+\_\+data@{setup\+\_\+random\+\_\+vertex\+\_\+data}}
 \index{setup\+\_\+random\+\_\+vertex\+\_\+data@{setup\+\_\+random\+\_\+vertex\+\_\+data}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
 \subsubsection[{setup\+\_\+random\+\_\+vertex\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$glm\+::vec3$>$ setup\+\_\+random\+\_\+vertex\+\_\+data (
 \begin{DoxyParamCaption}
-\item[{const int}]{indices}
+\item[{const int}]{size}
 \end{DoxyParamCaption}
-)}\label{renderable__test_8cpp_ab2307bbe9c981faf77bfda1a0eebd3ad}
-\hypertarget{renderable__test_8cpp_ad4abfed172a5171e2825532c4ec32064}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+renderable@{setup\+\_\+renderable}}
+)}\label{renderable__test_8cpp_aa44232a0f1517096756a45014ffab1d3}
+\hypertarget{renderable__test_8cpp_a787dc0b09645556a35ca2f184a94ee28}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+renderable@{setup\+\_\+renderable}}
 \index{setup\+\_\+renderable@{setup\+\_\+renderable}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
-\subsubsection[{setup\+\_\+renderable}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Graphics\+::\+Renderable} setup\+\_\+renderable (
+\subsubsection[{setup\+\_\+renderable}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<${\bf Graphics\+::\+Renderable}$>$ setup\+\_\+renderable (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}\label{renderable__test_8cpp_ad4abfed172a5171e2825532c4ec32064}
-\hypertarget{renderable__test_8cpp_a079d0baa7b889ab104ea37f6a6886d34}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+renderable\+\_\+with\+\_\+data@{setup\+\_\+renderable\+\_\+with\+\_\+data}}
+)}\label{renderable__test_8cpp_a787dc0b09645556a35ca2f184a94ee28}
+\hypertarget{renderable__test_8cpp_a6cbaeadc5e1033d50e6f67dca81e0096}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+renderable\+\_\+with\+\_\+data@{setup\+\_\+renderable\+\_\+with\+\_\+data}}
 \index{setup\+\_\+renderable\+\_\+with\+\_\+data@{setup\+\_\+renderable\+\_\+with\+\_\+data}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
-\subsubsection[{setup\+\_\+renderable\+\_\+with\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Graphics\+::\+Renderable} setup\+\_\+renderable\+\_\+with\+\_\+data (
+\subsubsection[{setup\+\_\+renderable\+\_\+with\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<${\bf Graphics\+::\+Renderable}$>$ setup\+\_\+renderable\+\_\+with\+\_\+data (
 \begin{DoxyParamCaption}
 \item[{bool}]{multiple\+\_\+vertex\+\_\+data, }
 \item[{bool}]{use\+\_\+index}
 \end{DoxyParamCaption}
-)}\label{renderable__test_8cpp_a079d0baa7b889ab104ea37f6a6886d34}
+)}\label{renderable__test_8cpp_a6cbaeadc5e1033d50e6f67dca81e0096}
 \hypertarget{renderable__test_8cpp_adb84b94677d3a01479590c12c31e49ad}{}\index{renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}!setup\+\_\+shader@{setup\+\_\+shader}}
 \index{setup\+\_\+shader@{setup\+\_\+shader}!renderable\+\_\+test.\+cpp@{renderable\+\_\+test.\+cpp}}
 \subsubsection[{setup\+\_\+shader}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<${\bf Graphics\+::\+Shader}$>$ setup\+\_\+shader (

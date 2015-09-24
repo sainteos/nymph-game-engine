@@ -95,22 +95,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define RENDERABLE_ATTRIBUTE_TRAIT_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vertex__data_8h.html">graphics/vertex_data.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_graphics.html">Graphics</a> {</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="class_graphics_1_1_renderable_attribute_trait.html">    7</a></span>&#160;  <span class="keyword">class </span><a class="code" href="class_graphics_1_1_renderable_attribute_trait.html">RenderableAttributeTrait</a> {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;      <span class="keyword">const</span> <span class="keyword">virtual</span> std::map&lt;VertexData::DATA_TYPE, unsigned int&gt; <a class="code" href="class_graphics_1_1_renderable_attribute_trait.html#aa14577b50e8d86e4b02a298d1584c133">operator()</a>() <span class="keyword">const</span> noexcept = 0;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  };</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="base__attribute__trait_8h.html">graphics/base_attribute_trait.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_graphics.html">Graphics</a> {</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="class_graphics_1_1_renderable_attribute_trait.html">    8</a></span>&#160;  <span class="keyword">class </span><a class="code" href="class_graphics_1_1_renderable_attribute_trait.html">RenderableAttributeTrait</a> : <span class="keyword">public</span> <a class="code" href="class_graphics_1_1_base_attribute_trait.html">BaseAttributeTrait</a> {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="class_graphics_1_1_renderable_attribute_trait.html#aa20fd62c99d1635eabe9a7fd73a67b32">   10</a></span>&#160;      std::map&lt;VertexData::DATA_TYPE, unsigned int&gt; <a class="code" href="class_graphics_1_1_renderable_attribute_trait.html#aa20fd62c99d1635eabe9a7fd73a67b32">trait</a>;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="class_graphics_1_1_renderable_attribute_trait.html#afae7775a218a12c44a77c9d2190fccd3">   12</a></span>&#160;      <a class="code" href="class_graphics_1_1_renderable_attribute_trait.html#afae7775a218a12c44a77c9d2190fccd3">RenderableAttributeTrait</a>() {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        trait = std::map&lt;VertexData::DATA_TYPE, unsigned int&gt; {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;          {VertexData::DATA_TYPE::GEOMETRY, 0},</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        };</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;      }</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="class_graphics_1_1_renderable_attribute_trait.html#a44401f624ace1dc71220e7064db92465">   18</a></span>&#160;      <span class="keyword">virtual</span> <span class="keyword">const</span> std::map&lt;VertexData::DATA_TYPE, unsigned int&gt; <a class="code" href="class_graphics_1_1_renderable_attribute_trait.html#a44401f624ace1dc71220e7064db92465">operator()</a>() const noexcept<span class="keyword"> override </span>{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_graphics_1_1_renderable_attribute_trait.html#aa20fd62c99d1635eabe9a7fd73a67b32">trait</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;      }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  };</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="class_graphics_1_1_renderable_attribute_trait_html_afae7775a218a12c44a77c9d2190fccd3"><div class="ttname"><a href="class_graphics_1_1_renderable_attribute_trait.html#afae7775a218a12c44a77c9d2190fccd3">Graphics::RenderableAttributeTrait::RenderableAttributeTrait</a></div><div class="ttdeci">RenderableAttributeTrait()</div><div class="ttdef"><b>Definition:</b> renderable_attribute_trait.h:12</div></div>
+<div class="ttc" id="class_graphics_1_1_base_attribute_trait_html"><div class="ttname"><a href="class_graphics_1_1_base_attribute_trait.html">Graphics::BaseAttributeTrait</a></div><div class="ttdef"><b>Definition:</b> base_attribute_trait.h:8</div></div>
+<div class="ttc" id="base__attribute__trait_8h_html"><div class="ttname"><a href="base__attribute__trait_8h.html">base_attribute_trait.h</a></div></div>
 <div class="ttc" id="vertex__data_8h_html"><div class="ttname"><a href="vertex__data_8h.html">vertex_data.h</a></div></div>
-<div class="ttc" id="namespace_graphics_html"><div class="ttname"><a href="namespace_graphics.html">Graphics</a></div><div class="ttdef"><b>Definition:</b> graphics_system.cpp:13</div></div>
-<div class="ttc" id="class_graphics_1_1_renderable_attribute_trait_html"><div class="ttname"><a href="class_graphics_1_1_renderable_attribute_trait.html">Graphics::RenderableAttributeTrait</a></div><div class="ttdef"><b>Definition:</b> renderable_attribute_trait.h:7</div></div>
-<div class="ttc" id="class_graphics_1_1_renderable_attribute_trait_html_aa14577b50e8d86e4b02a298d1584c133"><div class="ttname"><a href="class_graphics_1_1_renderable_attribute_trait.html#aa14577b50e8d86e4b02a298d1584c133">Graphics::RenderableAttributeTrait::operator()</a></div><div class="ttdeci">virtual const std::map&lt; VertexData::DATA_TYPE, unsigned int &gt; operator()() const noexcept=0</div></div>
+<div class="ttc" id="class_graphics_1_1_renderable_attribute_trait_html_a44401f624ace1dc71220e7064db92465"><div class="ttname"><a href="class_graphics_1_1_renderable_attribute_trait.html#a44401f624ace1dc71220e7064db92465">Graphics::RenderableAttributeTrait::operator()</a></div><div class="ttdeci">virtual const std::map&lt; VertexData::DATA_TYPE, unsigned int &gt; operator()() const noexceptoverride</div><div class="ttdef"><b>Definition:</b> renderable_attribute_trait.h:18</div></div>
+<div class="ttc" id="namespace_graphics_html"><div class="ttname"><a href="namespace_graphics.html">Graphics</a></div><div class="ttdef"><b>Definition:</b> animated_tile.cpp:12</div></div>
+<div class="ttc" id="class_graphics_1_1_renderable_attribute_trait_html"><div class="ttname"><a href="class_graphics_1_1_renderable_attribute_trait.html">Graphics::RenderableAttributeTrait</a></div><div class="ttdef"><b>Definition:</b> renderable_attribute_trait.h:8</div></div>
+<div class="ttc" id="class_graphics_1_1_renderable_attribute_trait_html_aa20fd62c99d1635eabe9a7fd73a67b32"><div class="ttname"><a href="class_graphics_1_1_renderable_attribute_trait.html#aa20fd62c99d1635eabe9a7fd73a67b32">Graphics::RenderableAttributeTrait::trait</a></div><div class="ttdeci">std::map&lt; VertexData::DATA_TYPE, unsigned int &gt; trait</div><div class="ttdef"><b>Definition:</b> renderable_attribute_trait.h:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 28 2015 16:54:53 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 24 2015 14:22:06 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

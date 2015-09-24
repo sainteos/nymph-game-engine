@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['removerenderable',['removeRenderable',['../class_graphics_1_1_graphics_system.html#a476b0e6945c37c7b2d48bddcf246a389',1,'Graphics::GraphicsSystem']]],
-  ['renderable',['Renderable',['../class_graphics_1_1_renderable.html#a2c99d41631558194811f6f4c61a7f464',1,'Graphics::Renderable::Renderable()=delete'],['../class_graphics_1_1_renderable.html#a366de19f0399ad70ba8afcd20af693fa',1,'Graphics::Renderable::Renderable(const unsigned int vertex_array_object, const VertexData &amp;vertex_data, RenderableAttributeTrait *trait=new TileAttributeTrait())'],['../class_graphics_1_1_renderable.html#a7db48c39efa99650480cca6376bbf6c6',1,'Graphics::Renderable::Renderable(const Renderable &amp;)=delete'],['../class_graphics_1_1_renderable.html#a7edf9a0c89593ab500d5107e89f7bbae',1,'Graphics::Renderable::Renderable(Renderable &amp;&amp;renderable)']]],
-  ['renderablenotinitializedexception',['RenderableNotInitializedException',['../class_exceptions_1_1_renderable_not_initialized_exception.html#a18c5b3c635950038831820df28b81bc5',1,'Exceptions::RenderableNotInitializedException']]],
-  ['renderablescount',['renderablesCount',['../class_graphics_1_1_graphics_system.html#a2b37c3e6f53707002c72c38062be6617',1,'Graphics::GraphicsSystem']]],
-  ['renderloop',['renderLoop',['../class_graphics_1_1_graphics_system.html#af222ab3a8a83796ad1c12ccf95a6f37a',1,'Graphics::GraphicsSystem']]]
+  ['light',['Light',['../class_graphics_1_1_light.html#ab15f626fee49a5332eac2f39ac6965f7',1,'Graphics::Light']]],
+  ['load',['load',['../class_graphics_1_1_base_texture.html#a32681ccc99ff4a4704172f9d365ea282',1,'Graphics::BaseTexture']]],
+  ['loadconfig',['loadConfig',['../class_utility_1_1_config_manager.html#a61ba82f3a3283b3c8ce32f9711d251df',1,'Utility::ConfigManager']]],
+  ['loadshader',['loadShader',['../class_graphics_1_1_shader_manager.html#a29234192f964ad1d9da812e8ceab008f',1,'Graphics::ShaderManager::loadShader(const std::string &amp;name, const bool geometry_shader=false)'],['../class_graphics_1_1_shader_manager.html#a0cd014938152e36fd81717dadd7e390a',1,'Graphics::ShaderManager::loadShader(const std::string &amp;name, const std::string &amp;vertex_filename, const std::string &amp;fragment_filename, const std::string &amp;geometry_filename)']]],
+  ['loadtexture',['loadTexture',['../class_graphics_1_1_texture_manager.html#aaf3f4c4eae602c748482950639335dee',1,'Graphics::TextureManager']]],
+  ['log',['log',['../class_graphics_1_1_light.html#a2f6b15e75d42564f0db9dea75847a3e6',1,'Graphics::Light']]],
+  ['logshaderinfolog',['logShaderInfoLog',['../class_graphics_1_1_shader_manager.html#a2477b4ccc2227086b2759dc95c55005a',1,'Graphics::ShaderManager']]]
 ];

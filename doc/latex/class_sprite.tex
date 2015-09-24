@@ -1,0 +1,231 @@
+\hypertarget{class_sprite}{}\section{Sprite Class Reference}
+\label{class_sprite}\index{Sprite@{Sprite}}
+
+
+{\ttfamily \#include $<$sprite.\+h$>$}
+
+Inheritance diagram for Sprite\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.972222cm]{class_sprite}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_sprite_a12cba3ac1868418add3c4d95ce87e615}{Sprite} ()
+\item 
+void \hyperlink{class_sprite_a86d7cca33da7b1e2681da6bd094be088}{on\+Notify} (const \hyperlink{class_events_1_1_event}{Events\+::\+Event} \&event) override
+\item 
+void \hyperlink{class_sprite_a0db72afea03d07a957b1bee8a0828c2d}{on\+Update} (const float delta) override
+\item 
+void \hyperlink{class_sprite_afdefdcda4fb7de9ed10bb9571928f665}{on\+Start} () override
+\item 
+void \hyperlink{class_sprite_a974593031fb6e1a53883a588b7669422}{add\+Triggerable\+Tile} (const \hyperlink{sprite_8h_af7ccac6abcbe8bf213b36feaa7b69cda}{Sprite\+State} \&state, std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_tile}{Graphics\+::\+Tile} $>$ tile)
+\item 
+void \hyperlink{class_sprite_a55be0cc7ccc4fb02d4e5c0c10cdd7c32}{set\+Moving\+Speed} (const float speed)
+\item 
+void \hyperlink{class_sprite_ae6dea1bbb49662ad95ad7fb4629bed54}{set\+Move\+Quantization} (const float number\+\_\+of\+\_\+tiles)
+\item 
+void \hyperlink{class_sprite_a02fea5f2c354539922212722aaa52dde}{stop\+Moving\+Left} ()
+\item 
+void \hyperlink{class_sprite_a2b32d9f2d5dad0992069fc0e41f18548}{move\+Left} ()
+\item 
+void \hyperlink{class_sprite_a6e003778e1db53846a484b0ce44fc1fe}{stop\+Moving\+Right} ()
+\item 
+void \hyperlink{class_sprite_a7de624519b1f7e754a4d26ba9fad2e6b}{move\+Right} ()
+\item 
+void \hyperlink{class_sprite_a03ac7597c67a532e3ba6f101670b55bd}{stop\+Moving\+Up} ()
+\item 
+void \hyperlink{class_sprite_ae8bd81da374569643dca0f473d6edb60}{move\+Up} ()
+\item 
+void \hyperlink{class_sprite_a029ed51250b9bfbe69e3de60fe533b5c}{stop\+Moving\+Down} ()
+\item 
+void \hyperlink{class_sprite_a558d8e35835a4a0c2ef6afdc7adc7309}{move\+Down} ()
+\item 
+std\+::list$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_component}{Component} $>$ $>$ \hyperlink{class_sprite_a3d3ec9294747ab657db1ad2e6d0a15a5}{get\+Components} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{class_sprite_ad926ce6bee2f2fec7c919fc239a05562}{moving\+\_\+speed}
+\item 
+float \hyperlink{class_sprite_a6d0ab8736ed2427b9ae3784ec13559ac}{move\+\_\+quantization\+\_\+in\+\_\+tiles}
+\item 
+glm\+::vec2 \hyperlink{class_sprite_a3243ae10ccf1c0ffdd7318fd86031c4b}{current\+\_\+velocity}
+\item 
+glm\+::vec2 \hyperlink{class_sprite_a9f3431bd938e2f2097833bb014182db6}{next\+\_\+position}
+\item 
+bool \hyperlink{class_sprite_aa4bbce95c033a28b6fb7621d4bf669f0}{left\+\_\+down}
+\item 
+bool \hyperlink{class_sprite_a41fe0a8d0b923c47bdf6f99806f763f4}{up\+\_\+down}
+\item 
+bool \hyperlink{class_sprite_ab52c6db2e3784c0ef3c120cc758028e8}{down\+\_\+down}
+\item 
+bool \hyperlink{class_sprite_ad3df5ad11bc9883e55cfea8d48a7166f}{right\+\_\+down}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_sprite_a12cba3ac1868418add3c4d95ce87e615}{}\index{Sprite@{Sprite}!Sprite@{Sprite}}
+\index{Sprite@{Sprite}!Sprite@{Sprite}}
+\subsubsection[{Sprite}]{\setlength{\rightskip}{0pt plus 5cm}Sprite\+::\+Sprite (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a12cba3ac1868418add3c4d95ce87e615}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_sprite_a974593031fb6e1a53883a588b7669422}{}\index{Sprite@{Sprite}!add\+Triggerable\+Tile@{add\+Triggerable\+Tile}}
+\index{add\+Triggerable\+Tile@{add\+Triggerable\+Tile}!Sprite@{Sprite}}
+\subsubsection[{add\+Triggerable\+Tile}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::add\+Triggerable\+Tile (
+\begin{DoxyParamCaption}
+\item[{const {\bf Sprite\+State} \&}]{state, }
+\item[{std\+::shared\+\_\+ptr$<$ {\bf Graphics\+::\+Tile} $>$}]{tile}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a974593031fb6e1a53883a588b7669422}
+\hypertarget{class_sprite_a3d3ec9294747ab657db1ad2e6d0a15a5}{}\index{Sprite@{Sprite}!get\+Components@{get\+Components}}
+\index{get\+Components@{get\+Components}!Sprite@{Sprite}}
+\subsubsection[{get\+Components}]{\setlength{\rightskip}{0pt plus 5cm}std\+::list$<$ std\+::shared\+\_\+ptr$<$ {\bf Component} $>$ $>$ Sprite\+::get\+Components (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a3d3ec9294747ab657db1ad2e6d0a15a5}
+\hypertarget{class_sprite_a558d8e35835a4a0c2ef6afdc7adc7309}{}\index{Sprite@{Sprite}!move\+Down@{move\+Down}}
+\index{move\+Down@{move\+Down}!Sprite@{Sprite}}
+\subsubsection[{move\+Down}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::move\+Down (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a558d8e35835a4a0c2ef6afdc7adc7309}
+\hypertarget{class_sprite_a2b32d9f2d5dad0992069fc0e41f18548}{}\index{Sprite@{Sprite}!move\+Left@{move\+Left}}
+\index{move\+Left@{move\+Left}!Sprite@{Sprite}}
+\subsubsection[{move\+Left}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::move\+Left (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a2b32d9f2d5dad0992069fc0e41f18548}
+\hypertarget{class_sprite_a7de624519b1f7e754a4d26ba9fad2e6b}{}\index{Sprite@{Sprite}!move\+Right@{move\+Right}}
+\index{move\+Right@{move\+Right}!Sprite@{Sprite}}
+\subsubsection[{move\+Right}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::move\+Right (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a7de624519b1f7e754a4d26ba9fad2e6b}
+\hypertarget{class_sprite_ae8bd81da374569643dca0f473d6edb60}{}\index{Sprite@{Sprite}!move\+Up@{move\+Up}}
+\index{move\+Up@{move\+Up}!Sprite@{Sprite}}
+\subsubsection[{move\+Up}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::move\+Up (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_ae8bd81da374569643dca0f473d6edb60}
+\hypertarget{class_sprite_a86d7cca33da7b1e2681da6bd094be088}{}\index{Sprite@{Sprite}!on\+Notify@{on\+Notify}}
+\index{on\+Notify@{on\+Notify}!Sprite@{Sprite}}
+\subsubsection[{on\+Notify}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::on\+Notify (
+\begin{DoxyParamCaption}
+\item[{const {\bf Events\+::\+Event} \&}]{event}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\label{class_sprite_a86d7cca33da7b1e2681da6bd094be088}
+
+
+Implements \hyperlink{class_events_1_1_observer_ad10e3ade9e803e9f706c5799da1d6525}{Events\+::\+Observer}.
+
+\hypertarget{class_sprite_afdefdcda4fb7de9ed10bb9571928f665}{}\index{Sprite@{Sprite}!on\+Start@{on\+Start}}
+\index{on\+Start@{on\+Start}!Sprite@{Sprite}}
+\subsubsection[{on\+Start}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::on\+Start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\label{class_sprite_afdefdcda4fb7de9ed10bb9571928f665}
+
+
+Reimplemented from \hyperlink{class_entity_afe788ab09347ad97ca39af8133a55589}{Entity}.
+
+\hypertarget{class_sprite_a0db72afea03d07a957b1bee8a0828c2d}{}\index{Sprite@{Sprite}!on\+Update@{on\+Update}}
+\index{on\+Update@{on\+Update}!Sprite@{Sprite}}
+\subsubsection[{on\+Update}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::on\+Update (
+\begin{DoxyParamCaption}
+\item[{const float}]{delta}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\label{class_sprite_a0db72afea03d07a957b1bee8a0828c2d}
+
+
+Reimplemented from \hyperlink{class_entity_a43745870ac080aea60c717611c10145d}{Entity}.
+
+\hypertarget{class_sprite_ae6dea1bbb49662ad95ad7fb4629bed54}{}\index{Sprite@{Sprite}!set\+Move\+Quantization@{set\+Move\+Quantization}}
+\index{set\+Move\+Quantization@{set\+Move\+Quantization}!Sprite@{Sprite}}
+\subsubsection[{set\+Move\+Quantization}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::set\+Move\+Quantization (
+\begin{DoxyParamCaption}
+\item[{const float}]{number\+\_\+of\+\_\+tiles}
+\end{DoxyParamCaption}
+)}\label{class_sprite_ae6dea1bbb49662ad95ad7fb4629bed54}
+\hypertarget{class_sprite_a55be0cc7ccc4fb02d4e5c0c10cdd7c32}{}\index{Sprite@{Sprite}!set\+Moving\+Speed@{set\+Moving\+Speed}}
+\index{set\+Moving\+Speed@{set\+Moving\+Speed}!Sprite@{Sprite}}
+\subsubsection[{set\+Moving\+Speed}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::set\+Moving\+Speed (
+\begin{DoxyParamCaption}
+\item[{const float}]{speed}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a55be0cc7ccc4fb02d4e5c0c10cdd7c32}
+\hypertarget{class_sprite_a029ed51250b9bfbe69e3de60fe533b5c}{}\index{Sprite@{Sprite}!stop\+Moving\+Down@{stop\+Moving\+Down}}
+\index{stop\+Moving\+Down@{stop\+Moving\+Down}!Sprite@{Sprite}}
+\subsubsection[{stop\+Moving\+Down}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::stop\+Moving\+Down (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a029ed51250b9bfbe69e3de60fe533b5c}
+\hypertarget{class_sprite_a02fea5f2c354539922212722aaa52dde}{}\index{Sprite@{Sprite}!stop\+Moving\+Left@{stop\+Moving\+Left}}
+\index{stop\+Moving\+Left@{stop\+Moving\+Left}!Sprite@{Sprite}}
+\subsubsection[{stop\+Moving\+Left}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::stop\+Moving\+Left (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a02fea5f2c354539922212722aaa52dde}
+\hypertarget{class_sprite_a6e003778e1db53846a484b0ce44fc1fe}{}\index{Sprite@{Sprite}!stop\+Moving\+Right@{stop\+Moving\+Right}}
+\index{stop\+Moving\+Right@{stop\+Moving\+Right}!Sprite@{Sprite}}
+\subsubsection[{stop\+Moving\+Right}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::stop\+Moving\+Right (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a6e003778e1db53846a484b0ce44fc1fe}
+\hypertarget{class_sprite_a03ac7597c67a532e3ba6f101670b55bd}{}\index{Sprite@{Sprite}!stop\+Moving\+Up@{stop\+Moving\+Up}}
+\index{stop\+Moving\+Up@{stop\+Moving\+Up}!Sprite@{Sprite}}
+\subsubsection[{stop\+Moving\+Up}]{\setlength{\rightskip}{0pt plus 5cm}void Sprite\+::stop\+Moving\+Up (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_sprite_a03ac7597c67a532e3ba6f101670b55bd}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_sprite_a3243ae10ccf1c0ffdd7318fd86031c4b}{}\index{Sprite@{Sprite}!current\+\_\+velocity@{current\+\_\+velocity}}
+\index{current\+\_\+velocity@{current\+\_\+velocity}!Sprite@{Sprite}}
+\subsubsection[{current\+\_\+velocity}]{\setlength{\rightskip}{0pt plus 5cm}glm\+::vec2 Sprite\+::current\+\_\+velocity\hspace{0.3cm}{\ttfamily [private]}}\label{class_sprite_a3243ae10ccf1c0ffdd7318fd86031c4b}
+\hypertarget{class_sprite_ab52c6db2e3784c0ef3c120cc758028e8}{}\index{Sprite@{Sprite}!down\+\_\+down@{down\+\_\+down}}
+\index{down\+\_\+down@{down\+\_\+down}!Sprite@{Sprite}}
+\subsubsection[{down\+\_\+down}]{\setlength{\rightskip}{0pt plus 5cm}bool Sprite\+::down\+\_\+down\hspace{0.3cm}{\ttfamily [private]}}\label{class_sprite_ab52c6db2e3784c0ef3c120cc758028e8}
+\hypertarget{class_sprite_aa4bbce95c033a28b6fb7621d4bf669f0}{}\index{Sprite@{Sprite}!left\+\_\+down@{left\+\_\+down}}
+\index{left\+\_\+down@{left\+\_\+down}!Sprite@{Sprite}}
+\subsubsection[{left\+\_\+down}]{\setlength{\rightskip}{0pt plus 5cm}bool Sprite\+::left\+\_\+down\hspace{0.3cm}{\ttfamily [private]}}\label{class_sprite_aa4bbce95c033a28b6fb7621d4bf669f0}
+\hypertarget{class_sprite_a6d0ab8736ed2427b9ae3784ec13559ac}{}\index{Sprite@{Sprite}!move\+\_\+quantization\+\_\+in\+\_\+tiles@{move\+\_\+quantization\+\_\+in\+\_\+tiles}}
+\index{move\+\_\+quantization\+\_\+in\+\_\+tiles@{move\+\_\+quantization\+\_\+in\+\_\+tiles}!Sprite@{Sprite}}
+\subsubsection[{move\+\_\+quantization\+\_\+in\+\_\+tiles}]{\setlength{\rightskip}{0pt plus 5cm}float Sprite\+::move\+\_\+quantization\+\_\+in\+\_\+tiles\hspace{0.3cm}{\ttfamily [private]}}\label{class_sprite_a6d0ab8736ed2427b9ae3784ec13559ac}
+\hypertarget{class_sprite_ad926ce6bee2f2fec7c919fc239a05562}{}\index{Sprite@{Sprite}!moving\+\_\+speed@{moving\+\_\+speed}}
+\index{moving\+\_\+speed@{moving\+\_\+speed}!Sprite@{Sprite}}
+\subsubsection[{moving\+\_\+speed}]{\setlength{\rightskip}{0pt plus 5cm}float Sprite\+::moving\+\_\+speed\hspace{0.3cm}{\ttfamily [private]}}\label{class_sprite_ad926ce6bee2f2fec7c919fc239a05562}
+\hypertarget{class_sprite_a9f3431bd938e2f2097833bb014182db6}{}\index{Sprite@{Sprite}!next\+\_\+position@{next\+\_\+position}}
+\index{next\+\_\+position@{next\+\_\+position}!Sprite@{Sprite}}
+\subsubsection[{next\+\_\+position}]{\setlength{\rightskip}{0pt plus 5cm}glm\+::vec2 Sprite\+::next\+\_\+position\hspace{0.3cm}{\ttfamily [private]}}\label{class_sprite_a9f3431bd938e2f2097833bb014182db6}
+\hypertarget{class_sprite_ad3df5ad11bc9883e55cfea8d48a7166f}{}\index{Sprite@{Sprite}!right\+\_\+down@{right\+\_\+down}}
+\index{right\+\_\+down@{right\+\_\+down}!Sprite@{Sprite}}
+\subsubsection[{right\+\_\+down}]{\setlength{\rightskip}{0pt plus 5cm}bool Sprite\+::right\+\_\+down\hspace{0.3cm}{\ttfamily [private]}}\label{class_sprite_ad3df5ad11bc9883e55cfea8d48a7166f}
+\hypertarget{class_sprite_a41fe0a8d0b923c47bdf6f99806f763f4}{}\index{Sprite@{Sprite}!up\+\_\+down@{up\+\_\+down}}
+\index{up\+\_\+down@{up\+\_\+down}!Sprite@{Sprite}}
+\subsubsection[{up\+\_\+down}]{\setlength{\rightskip}{0pt plus 5cm}bool Sprite\+::up\+\_\+down\hspace{0.3cm}{\ttfamily [private]}}\label{class_sprite_a41fe0a8d0b923c47bdf6f99806f763f4}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{sprite_8h}{sprite.\+h}\item 
+src/\hyperlink{sprite_8cpp}{sprite.\+cpp}\end{DoxyCompactItemize}

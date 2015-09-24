@@ -1,0 +1,155 @@
+\hypertarget{class_input_1_1_input_system}{}\section{Input\+:\+:Input\+System Class Reference}
+\label{class_input_1_1_input_system}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+
+
+{\ttfamily \#include $<$input\+\_\+system.\+h$>$}
+
+Inheritance diagram for Input\+:\+:Input\+System\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_input_1_1_input_system}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_input_1_1_input_system_aa754c4c6a976f808004a93dbcfcdb39e}{Input\+System} (G\+L\+F\+Wwindow $\ast$window)
+\item 
+void \hyperlink{class_input_1_1_input_system_a922d74d9c7b1d58785d58eb8187b90db}{poll\+For\+Input} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{class_input_1_1_input_system_a2a53f93797b351082ba88e65a76a59d3}{key\+Callback} (G\+L\+F\+Wwindow $\ast$window, int key, int scan\+\_\+code, int action, int mods)
+\item 
+static void \hyperlink{class_input_1_1_input_system_a25e317033e1c9932fca9a0f18bafba3e}{cursor\+Position\+Callback} (G\+L\+F\+Wwindow $\ast$window, double x\+\_\+pos, double y\+\_\+pos)
+\item 
+static void \hyperlink{class_input_1_1_input_system_a418ad9c5aeea37d4700ce108a525168c}{cursor\+Enter\+Callback} (G\+L\+F\+Wwindow $\ast$window, int entered)
+\item 
+static void \hyperlink{class_input_1_1_input_system_a2d52be441c72bf70dc369c1c075e252d}{mouse\+Button\+Callback} (G\+L\+F\+Wwindow $\ast$window, int button, int action, int mods)
+\item 
+static void \hyperlink{class_input_1_1_input_system_adcc2296baf82656e5ffbe9aa939163eb}{mouse\+Scroll\+Callback} (G\+L\+F\+Wwindow $\ast$window, double x\+\_\+offset, double y\+\_\+offset)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ int, int $>$ \hyperlink{class_input_1_1_input_system_a7975b0aa6e26934e4676adc7eddb7afe}{last\+\_\+keys\+\_\+to\+\_\+actions}
+\item 
+std\+::map$<$ int, int $>$ \hyperlink{class_input_1_1_input_system_a114e8f05ef3fa1dfb9bc7846110a17df}{last\+\_\+mouse\+\_\+buttons\+\_\+to\+\_\+actions}
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::map$<$ int, int $>$ \hyperlink{class_input_1_1_input_system_a95d4a156b1576e4a79290d3d3f404515}{keys\+\_\+to\+\_\+actions} \{\}
+\item 
+static std\+::map$<$ int, int $>$ \hyperlink{class_input_1_1_input_system_aef7be617b0a51e5fbd854100212438c8}{mouse\+\_\+buttons\+\_\+to\+\_\+actions} \{\}
+\item 
+static glm\+::dvec2 \hyperlink{class_input_1_1_input_system_acc7d0415600059d9cc427a7734b59190}{cursor\+\_\+position} = glm\+::dvec2(0.\+0, 0.\+0)
+\item 
+static glm\+::dvec2 \hyperlink{class_input_1_1_input_system_a7d9b7ce763b48a16d3feff0c93a14428}{scroll\+\_\+offset} = glm\+::dvec2(0.\+0, 0.\+0)
+\item 
+static bool \hyperlink{class_input_1_1_input_system_a35b0b0ab2ba2e21c1b0f177a6c78a130}{cursor\+\_\+entered} = false
+\item 
+static bool \hyperlink{class_input_1_1_input_system_a4206748c9f2535838f63e393f9859739}{cursor\+\_\+left} = false
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_input_1_1_input_system_aa754c4c6a976f808004a93dbcfcdb39e}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!Input\+System@{Input\+System}}
+\index{Input\+System@{Input\+System}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{Input\+System}]{\setlength{\rightskip}{0pt plus 5cm}Input\+::\+Input\+System\+::\+Input\+System (
+\begin{DoxyParamCaption}
+\item[{G\+L\+F\+Wwindow $\ast$}]{window}
+\end{DoxyParamCaption}
+)}\label{class_input_1_1_input_system_aa754c4c6a976f808004a93dbcfcdb39e}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_input_1_1_input_system_a418ad9c5aeea37d4700ce108a525168c}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!cursor\+Enter\+Callback@{cursor\+Enter\+Callback}}
+\index{cursor\+Enter\+Callback@{cursor\+Enter\+Callback}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{cursor\+Enter\+Callback}]{\setlength{\rightskip}{0pt plus 5cm}void Input\+::\+Input\+System\+::cursor\+Enter\+Callback (
+\begin{DoxyParamCaption}
+\item[{G\+L\+F\+Wwindow $\ast$}]{window, }
+\item[{int}]{entered}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_a418ad9c5aeea37d4700ce108a525168c}
+\hypertarget{class_input_1_1_input_system_a25e317033e1c9932fca9a0f18bafba3e}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!cursor\+Position\+Callback@{cursor\+Position\+Callback}}
+\index{cursor\+Position\+Callback@{cursor\+Position\+Callback}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{cursor\+Position\+Callback}]{\setlength{\rightskip}{0pt plus 5cm}void Input\+::\+Input\+System\+::cursor\+Position\+Callback (
+\begin{DoxyParamCaption}
+\item[{G\+L\+F\+Wwindow $\ast$}]{window, }
+\item[{double}]{x\+\_\+pos, }
+\item[{double}]{y\+\_\+pos}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_a25e317033e1c9932fca9a0f18bafba3e}
+\hypertarget{class_input_1_1_input_system_a2a53f93797b351082ba88e65a76a59d3}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!key\+Callback@{key\+Callback}}
+\index{key\+Callback@{key\+Callback}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{key\+Callback}]{\setlength{\rightskip}{0pt plus 5cm}void Input\+::\+Input\+System\+::key\+Callback (
+\begin{DoxyParamCaption}
+\item[{G\+L\+F\+Wwindow $\ast$}]{window, }
+\item[{int}]{key, }
+\item[{int}]{scan\+\_\+code, }
+\item[{int}]{action, }
+\item[{int}]{mods}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_a2a53f93797b351082ba88e65a76a59d3}
+\hypertarget{class_input_1_1_input_system_a2d52be441c72bf70dc369c1c075e252d}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!mouse\+Button\+Callback@{mouse\+Button\+Callback}}
+\index{mouse\+Button\+Callback@{mouse\+Button\+Callback}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{mouse\+Button\+Callback}]{\setlength{\rightskip}{0pt plus 5cm}void Input\+::\+Input\+System\+::mouse\+Button\+Callback (
+\begin{DoxyParamCaption}
+\item[{G\+L\+F\+Wwindow $\ast$}]{window, }
+\item[{int}]{button, }
+\item[{int}]{action, }
+\item[{int}]{mods}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_a2d52be441c72bf70dc369c1c075e252d}
+\hypertarget{class_input_1_1_input_system_adcc2296baf82656e5ffbe9aa939163eb}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!mouse\+Scroll\+Callback@{mouse\+Scroll\+Callback}}
+\index{mouse\+Scroll\+Callback@{mouse\+Scroll\+Callback}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{mouse\+Scroll\+Callback}]{\setlength{\rightskip}{0pt plus 5cm}void Input\+::\+Input\+System\+::mouse\+Scroll\+Callback (
+\begin{DoxyParamCaption}
+\item[{G\+L\+F\+Wwindow $\ast$}]{window, }
+\item[{double}]{x\+\_\+offset, }
+\item[{double}]{y\+\_\+offset}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_adcc2296baf82656e5ffbe9aa939163eb}
+\hypertarget{class_input_1_1_input_system_a922d74d9c7b1d58785d58eb8187b90db}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!poll\+For\+Input@{poll\+For\+Input}}
+\index{poll\+For\+Input@{poll\+For\+Input}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{poll\+For\+Input}]{\setlength{\rightskip}{0pt plus 5cm}void Input\+::\+Input\+System\+::poll\+For\+Input (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_input_1_1_input_system_a922d74d9c7b1d58785d58eb8187b90db}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_input_1_1_input_system_a35b0b0ab2ba2e21c1b0f177a6c78a130}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!cursor\+\_\+entered@{cursor\+\_\+entered}}
+\index{cursor\+\_\+entered@{cursor\+\_\+entered}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{cursor\+\_\+entered}]{\setlength{\rightskip}{0pt plus 5cm}bool Input\+::\+Input\+System\+::cursor\+\_\+entered = false\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_a35b0b0ab2ba2e21c1b0f177a6c78a130}
+\hypertarget{class_input_1_1_input_system_a4206748c9f2535838f63e393f9859739}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!cursor\+\_\+left@{cursor\+\_\+left}}
+\index{cursor\+\_\+left@{cursor\+\_\+left}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{cursor\+\_\+left}]{\setlength{\rightskip}{0pt plus 5cm}bool Input\+::\+Input\+System\+::cursor\+\_\+left = false\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_a4206748c9f2535838f63e393f9859739}
+\hypertarget{class_input_1_1_input_system_acc7d0415600059d9cc427a7734b59190}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!cursor\+\_\+position@{cursor\+\_\+position}}
+\index{cursor\+\_\+position@{cursor\+\_\+position}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{cursor\+\_\+position}]{\setlength{\rightskip}{0pt plus 5cm}glm\+::dvec2 Input\+::\+Input\+System\+::cursor\+\_\+position = glm\+::dvec2(0.\+0, 0.\+0)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_acc7d0415600059d9cc427a7734b59190}
+\hypertarget{class_input_1_1_input_system_a95d4a156b1576e4a79290d3d3f404515}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!keys\+\_\+to\+\_\+actions@{keys\+\_\+to\+\_\+actions}}
+\index{keys\+\_\+to\+\_\+actions@{keys\+\_\+to\+\_\+actions}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{keys\+\_\+to\+\_\+actions}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$ int, int $>$ Input\+::\+Input\+System\+::keys\+\_\+to\+\_\+actions \{\}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_a95d4a156b1576e4a79290d3d3f404515}
+\hypertarget{class_input_1_1_input_system_a7975b0aa6e26934e4676adc7eddb7afe}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!last\+\_\+keys\+\_\+to\+\_\+actions@{last\+\_\+keys\+\_\+to\+\_\+actions}}
+\index{last\+\_\+keys\+\_\+to\+\_\+actions@{last\+\_\+keys\+\_\+to\+\_\+actions}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{last\+\_\+keys\+\_\+to\+\_\+actions}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$int, int$>$ Input\+::\+Input\+System\+::last\+\_\+keys\+\_\+to\+\_\+actions\hspace{0.3cm}{\ttfamily [private]}}\label{class_input_1_1_input_system_a7975b0aa6e26934e4676adc7eddb7afe}
+\hypertarget{class_input_1_1_input_system_a114e8f05ef3fa1dfb9bc7846110a17df}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!last\+\_\+mouse\+\_\+buttons\+\_\+to\+\_\+actions@{last\+\_\+mouse\+\_\+buttons\+\_\+to\+\_\+actions}}
+\index{last\+\_\+mouse\+\_\+buttons\+\_\+to\+\_\+actions@{last\+\_\+mouse\+\_\+buttons\+\_\+to\+\_\+actions}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{last\+\_\+mouse\+\_\+buttons\+\_\+to\+\_\+actions}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$int, int$>$ Input\+::\+Input\+System\+::last\+\_\+mouse\+\_\+buttons\+\_\+to\+\_\+actions\hspace{0.3cm}{\ttfamily [private]}}\label{class_input_1_1_input_system_a114e8f05ef3fa1dfb9bc7846110a17df}
+\hypertarget{class_input_1_1_input_system_aef7be617b0a51e5fbd854100212438c8}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!mouse\+\_\+buttons\+\_\+to\+\_\+actions@{mouse\+\_\+buttons\+\_\+to\+\_\+actions}}
+\index{mouse\+\_\+buttons\+\_\+to\+\_\+actions@{mouse\+\_\+buttons\+\_\+to\+\_\+actions}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{mouse\+\_\+buttons\+\_\+to\+\_\+actions}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$ int, int $>$ Input\+::\+Input\+System\+::mouse\+\_\+buttons\+\_\+to\+\_\+actions \{\}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_aef7be617b0a51e5fbd854100212438c8}
+\hypertarget{class_input_1_1_input_system_a7d9b7ce763b48a16d3feff0c93a14428}{}\index{Input\+::\+Input\+System@{Input\+::\+Input\+System}!scroll\+\_\+offset@{scroll\+\_\+offset}}
+\index{scroll\+\_\+offset@{scroll\+\_\+offset}!Input\+::\+Input\+System@{Input\+::\+Input\+System}}
+\subsubsection[{scroll\+\_\+offset}]{\setlength{\rightskip}{0pt plus 5cm}glm\+::dvec2 Input\+::\+Input\+System\+::scroll\+\_\+offset = glm\+::dvec2(0.\+0, 0.\+0)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_input_1_1_input_system_a7d9b7ce763b48a16d3feff0c93a14428}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/input/\hyperlink{input__system_8h}{input\+\_\+system.\+h}\item 
+src/input/\hyperlink{input__system_8cpp}{input\+\_\+system.\+cpp}\end{DoxyCompactItemize}

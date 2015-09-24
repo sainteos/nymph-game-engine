@@ -1,0 +1,165 @@
+\hypertarget{class_graphics_1_1_animated_tile}{}\section{Graphics\+:\+:Animated\+Tile Class Reference}
+\label{class_graphics_1_1_animated_tile}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+
+
+{\ttfamily \#include $<$animated\+\_\+tile.\+h$>$}
+
+Inheritance diagram for Graphics\+:\+:Animated\+Tile\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{class_graphics_1_1_animated_tile}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_graphics_1_1_animated_tile_a2845baac8df3cd5ceda7226d8c1da83a}{Animated\+Tile} (const unsigned int \hyperlink{class_graphics_1_1_renderable_aabfa91ebff7b10decd54119d663044ef}{vertex\+\_\+array\+\_\+object}, const \hyperlink{class_graphics_1_1_vertex_data}{Vertex\+Data} \&data)
+\item 
+virtual \hyperlink{class_graphics_1_1_animated_tile_a914ca23734bc692a35db7b1217418ef9}{$\sim$\+Animated\+Tile} ()
+\item 
+void \hyperlink{class_graphics_1_1_animated_tile_a7d4f7572d383943f06c81c86f87e06a2}{add\+Frame\+Front} (const glm\+::ivec2 \&frame\+\_\+pos, const unsigned int frame\+\_\+time)
+\item 
+void \hyperlink{class_graphics_1_1_animated_tile_a3b10e46f8f35a03e2c338cc20f9b7bd0}{add\+Frame\+Back} (const glm\+::ivec2 \&frame\+\_\+pos, const unsigned int frame\+\_\+time)
+\item 
+void \hyperlink{class_graphics_1_1_animated_tile_a92ab2aabe27674c38e7e7a31fd9b331e}{pop\+Frame\+Front} ()
+\item 
+void \hyperlink{class_graphics_1_1_animated_tile_a820c1aca5a701a43e50bdfbfe7324619}{pop\+Frame\+Back} ()
+\item 
+virtual void \hyperlink{class_graphics_1_1_animated_tile_ad82e39321244cc2e06ee3df527473aba}{on\+Start} () override
+\item 
+virtual const bool \hyperlink{class_graphics_1_1_animated_tile_a2c6f7cd3866cad84b73ea5da8b92b76e}{on\+Update} (const double delta) override
+\begin{DoxyCompactList}\small\item\em \mbox{[}brief description\mbox{]} \end{DoxyCompactList}\item 
+virtual const bool \hyperlink{class_graphics_1_1_animated_tile_a0b414dfdb18e4647652f8bb9334f9eee}{on\+Render} () override
+\item 
+virtual void \hyperlink{class_graphics_1_1_animated_tile_a9781b9b256a666a123fd2c050adb5118}{on\+Destroy} () override
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::list$<$ std\+::pair$<$ glm\+::ivec2, unsigned int $>$ $>$ \hyperlink{class_graphics_1_1_animated_tile_a4d02a9bdd7576d1228b9ddf3eadec65c}{tile\+\_\+to\+\_\+time}
+\item 
+glm\+::vec2 \hyperlink{class_graphics_1_1_animated_tile_a6ceae6448ee26d0cd1b489795c55eb22}{multiplier}
+\item 
+float \hyperlink{class_graphics_1_1_animated_tile_a77a84617edf89f6b1576d4745bdd5d13}{frame\+\_\+time\+\_\+accumulator}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_graphics_1_1_animated_tile_a2845baac8df3cd5ceda7226d8c1da83a}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!Animated\+Tile@{Animated\+Tile}}
+\index{Animated\+Tile@{Animated\+Tile}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{Animated\+Tile}]{\setlength{\rightskip}{0pt plus 5cm}Graphics\+::\+Animated\+Tile\+::\+Animated\+Tile (
+\begin{DoxyParamCaption}
+\item[{const unsigned int}]{vertex\+\_\+array\+\_\+object, }
+\item[{const {\bf Vertex\+Data} \&}]{data}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_animated_tile_a2845baac8df3cd5ceda7226d8c1da83a}
+\hypertarget{class_graphics_1_1_animated_tile_a914ca23734bc692a35db7b1217418ef9}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!````~Animated\+Tile@{$\sim$\+Animated\+Tile}}
+\index{````~Animated\+Tile@{$\sim$\+Animated\+Tile}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{$\sim$\+Animated\+Tile}]{\setlength{\rightskip}{0pt plus 5cm}Graphics\+::\+Animated\+Tile\+::$\sim$\+Animated\+Tile (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_graphics_1_1_animated_tile_a914ca23734bc692a35db7b1217418ef9}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_graphics_1_1_animated_tile_a3b10e46f8f35a03e2c338cc20f9b7bd0}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!add\+Frame\+Back@{add\+Frame\+Back}}
+\index{add\+Frame\+Back@{add\+Frame\+Back}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{add\+Frame\+Back}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Animated\+Tile\+::add\+Frame\+Back (
+\begin{DoxyParamCaption}
+\item[{const glm\+::ivec2 \&}]{frame\+\_\+pos, }
+\item[{const unsigned int}]{frame\+\_\+time}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_animated_tile_a3b10e46f8f35a03e2c338cc20f9b7bd0}
+\hypertarget{class_graphics_1_1_animated_tile_a7d4f7572d383943f06c81c86f87e06a2}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!add\+Frame\+Front@{add\+Frame\+Front}}
+\index{add\+Frame\+Front@{add\+Frame\+Front}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{add\+Frame\+Front}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Animated\+Tile\+::add\+Frame\+Front (
+\begin{DoxyParamCaption}
+\item[{const glm\+::ivec2 \&}]{frame\+\_\+pos, }
+\item[{const unsigned int}]{frame\+\_\+time}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_animated_tile_a7d4f7572d383943f06c81c86f87e06a2}
+\hypertarget{class_graphics_1_1_animated_tile_a9781b9b256a666a123fd2c050adb5118}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!on\+Destroy@{on\+Destroy}}
+\index{on\+Destroy@{on\+Destroy}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{on\+Destroy}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Animated\+Tile\+::on\+Destroy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\label{class_graphics_1_1_animated_tile_a9781b9b256a666a123fd2c050adb5118}
+
+
+Reimplemented from \hyperlink{class_graphics_1_1_tile_a28f5bdfa2fc61b292dda7ec15316b981}{Graphics\+::\+Tile}.
+
+\hypertarget{class_graphics_1_1_animated_tile_a0b414dfdb18e4647652f8bb9334f9eee}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!on\+Render@{on\+Render}}
+\index{on\+Render@{on\+Render}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{on\+Render}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Animated\+Tile\+::on\+Render (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\label{class_graphics_1_1_animated_tile_a0b414dfdb18e4647652f8bb9334f9eee}
+
+
+Reimplemented from \hyperlink{class_graphics_1_1_renderable_afafd0e6147c73090234670934bbb8cbb}{Graphics\+::\+Renderable}.
+
+\hypertarget{class_graphics_1_1_animated_tile_ad82e39321244cc2e06ee3df527473aba}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!on\+Start@{on\+Start}}
+\index{on\+Start@{on\+Start}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{on\+Start}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Animated\+Tile\+::on\+Start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\label{class_graphics_1_1_animated_tile_ad82e39321244cc2e06ee3df527473aba}
+
+
+Reimplemented from \hyperlink{class_graphics_1_1_renderable_a7433551970cd25e0241a4a5bb756ba50}{Graphics\+::\+Renderable}.
+
+\hypertarget{class_graphics_1_1_animated_tile_a2c6f7cd3866cad84b73ea5da8b92b76e}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!on\+Update@{on\+Update}}
+\index{on\+Update@{on\+Update}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{on\+Update}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Animated\+Tile\+::on\+Update (
+\begin{DoxyParamCaption}
+\item[{const double}]{delta}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}\label{class_graphics_1_1_animated_tile_a2c6f7cd3866cad84b73ea5da8b92b76e}
+
+
+\mbox{[}brief description\mbox{]} 
+
+\mbox{[}long description\mbox{]} \begin{DoxyReturn}{Returns}
+true if anything was updated, false if nothing was updated 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_graphics_1_1_tile_a0311b1d9548f6badc9e81820b110cbb4}{Graphics\+::\+Tile}.
+
+\hypertarget{class_graphics_1_1_animated_tile_a820c1aca5a701a43e50bdfbfe7324619}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!pop\+Frame\+Back@{pop\+Frame\+Back}}
+\index{pop\+Frame\+Back@{pop\+Frame\+Back}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{pop\+Frame\+Back}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Animated\+Tile\+::pop\+Frame\+Back (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_animated_tile_a820c1aca5a701a43e50bdfbfe7324619}
+\hypertarget{class_graphics_1_1_animated_tile_a92ab2aabe27674c38e7e7a31fd9b331e}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!pop\+Frame\+Front@{pop\+Frame\+Front}}
+\index{pop\+Frame\+Front@{pop\+Frame\+Front}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{pop\+Frame\+Front}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Animated\+Tile\+::pop\+Frame\+Front (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_animated_tile_a92ab2aabe27674c38e7e7a31fd9b331e}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_graphics_1_1_animated_tile_a77a84617edf89f6b1576d4745bdd5d13}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!frame\+\_\+time\+\_\+accumulator@{frame\+\_\+time\+\_\+accumulator}}
+\index{frame\+\_\+time\+\_\+accumulator@{frame\+\_\+time\+\_\+accumulator}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{frame\+\_\+time\+\_\+accumulator}]{\setlength{\rightskip}{0pt plus 5cm}float Graphics\+::\+Animated\+Tile\+::frame\+\_\+time\+\_\+accumulator\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_animated_tile_a77a84617edf89f6b1576d4745bdd5d13}
+\hypertarget{class_graphics_1_1_animated_tile_a6ceae6448ee26d0cd1b489795c55eb22}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!multiplier@{multiplier}}
+\index{multiplier@{multiplier}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{multiplier}]{\setlength{\rightskip}{0pt plus 5cm}glm\+::vec2 Graphics\+::\+Animated\+Tile\+::multiplier\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_animated_tile_a6ceae6448ee26d0cd1b489795c55eb22}
+\hypertarget{class_graphics_1_1_animated_tile_a4d02a9bdd7576d1228b9ddf3eadec65c}{}\index{Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}!tile\+\_\+to\+\_\+time@{tile\+\_\+to\+\_\+time}}
+\index{tile\+\_\+to\+\_\+time@{tile\+\_\+to\+\_\+time}!Graphics\+::\+Animated\+Tile@{Graphics\+::\+Animated\+Tile}}
+\subsubsection[{tile\+\_\+to\+\_\+time}]{\setlength{\rightskip}{0pt plus 5cm}std\+::list$<$std\+::pair$<$glm\+::ivec2, unsigned int$>$ $>$ Graphics\+::\+Animated\+Tile\+::tile\+\_\+to\+\_\+time\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_animated_tile_a4d02a9bdd7576d1228b9ddf3eadec65c}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/graphics/\hyperlink{animated__tile_8h}{animated\+\_\+tile.\+h}\item 
+src/graphics/\hyperlink{animated__tile_8cpp}{animated\+\_\+tile.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,126 @@
+\hypertarget{class_entity}{}\section{Entity Class Reference}
+\label{class_entity}\index{Entity@{Entity}}
+
+
+{\ttfamily \#include $<$entity.\+h$>$}
+
+Inheritance diagram for Entity\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_entity}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_entity_a980f368aa07ce358583982821533a54a}{Entity} ()
+\item 
+void \hyperlink{class_entity_a1e04612ca60083490443ff1dff92b3fe}{add\+Component} (std\+::shared\+\_\+ptr$<$ \hyperlink{class_component}{Component} $>$ component)
+\item 
+void \hyperlink{class_entity_a6c736e11abe151f3997be250e25935d6}{remove\+Component} (std\+::shared\+\_\+ptr$<$ \hyperlink{class_component}{Component} $>$ component)
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ \hyperlink{class_entity_a3fc75182569e1dafabffdb1920c16073}{get\+Transform} () const noexcept
+\item 
+virtual void \hyperlink{class_entity_afe788ab09347ad97ca39af8133a55589}{on\+Start} ()
+\item 
+virtual void \hyperlink{class_entity_a43745870ac080aea60c717611c10145d}{on\+Update} (const float delta)
+\item 
+virtual void \hyperlink{class_entity_ae791185bd4921dc4e8b7fed92f6553e6}{on\+Stop} ()
+\item 
+virtual void \hyperlink{class_entity_a6db576733100dea6173fa5818ff11f10}{on\+Destroy} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::list$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_component}{Component} $>$ $>$ \hyperlink{class_entity_a91f8301ced2daaaed904292bd34460dd}{components}
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ \hyperlink{class_entity_ab2b82c9846ff3adc81074b3fa61f143a}{transform}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_entity_a980f368aa07ce358583982821533a54a}{}\index{Entity@{Entity}!Entity@{Entity}}
+\index{Entity@{Entity}!Entity@{Entity}}
+\subsubsection[{Entity}]{\setlength{\rightskip}{0pt plus 5cm}Entity\+::\+Entity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_entity_a980f368aa07ce358583982821533a54a}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_entity_a1e04612ca60083490443ff1dff92b3fe}{}\index{Entity@{Entity}!add\+Component@{add\+Component}}
+\index{add\+Component@{add\+Component}!Entity@{Entity}}
+\subsubsection[{add\+Component}]{\setlength{\rightskip}{0pt plus 5cm}void Entity\+::add\+Component (
+\begin{DoxyParamCaption}
+\item[{std\+::shared\+\_\+ptr$<$ {\bf Component} $>$}]{component}
+\end{DoxyParamCaption}
+)}\label{class_entity_a1e04612ca60083490443ff1dff92b3fe}
+\hypertarget{class_entity_a3fc75182569e1dafabffdb1920c16073}{}\index{Entity@{Entity}!get\+Transform@{get\+Transform}}
+\index{get\+Transform@{get\+Transform}!Entity@{Entity}}
+\subsubsection[{get\+Transform}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<$ {\bf Transform} $>$ Entity\+::get\+Transform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_entity_a3fc75182569e1dafabffdb1920c16073}
+\hypertarget{class_entity_a6db576733100dea6173fa5818ff11f10}{}\index{Entity@{Entity}!on\+Destroy@{on\+Destroy}}
+\index{on\+Destroy@{on\+Destroy}!Entity@{Entity}}
+\subsubsection[{on\+Destroy}]{\setlength{\rightskip}{0pt plus 5cm}void Entity\+::on\+Destroy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_entity_a6db576733100dea6173fa5818ff11f10}
+\hypertarget{class_entity_afe788ab09347ad97ca39af8133a55589}{}\index{Entity@{Entity}!on\+Start@{on\+Start}}
+\index{on\+Start@{on\+Start}!Entity@{Entity}}
+\subsubsection[{on\+Start}]{\setlength{\rightskip}{0pt plus 5cm}void Entity\+::on\+Start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_entity_afe788ab09347ad97ca39af8133a55589}
+
+
+Reimplemented in \hyperlink{class_sprite_afdefdcda4fb7de9ed10bb9571928f665}{Sprite}.
+
+\hypertarget{class_entity_ae791185bd4921dc4e8b7fed92f6553e6}{}\index{Entity@{Entity}!on\+Stop@{on\+Stop}}
+\index{on\+Stop@{on\+Stop}!Entity@{Entity}}
+\subsubsection[{on\+Stop}]{\setlength{\rightskip}{0pt plus 5cm}void Entity\+::on\+Stop (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_entity_ae791185bd4921dc4e8b7fed92f6553e6}
+\hypertarget{class_entity_a43745870ac080aea60c717611c10145d}{}\index{Entity@{Entity}!on\+Update@{on\+Update}}
+\index{on\+Update@{on\+Update}!Entity@{Entity}}
+\subsubsection[{on\+Update}]{\setlength{\rightskip}{0pt plus 5cm}void Entity\+::on\+Update (
+\begin{DoxyParamCaption}
+\item[{const float}]{delta}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_entity_a43745870ac080aea60c717611c10145d}
+
+
+Reimplemented in \hyperlink{class_sprite_a0db72afea03d07a957b1bee8a0828c2d}{Sprite}.
+
+\hypertarget{class_entity_a6c736e11abe151f3997be250e25935d6}{}\index{Entity@{Entity}!remove\+Component@{remove\+Component}}
+\index{remove\+Component@{remove\+Component}!Entity@{Entity}}
+\subsubsection[{remove\+Component}]{\setlength{\rightskip}{0pt plus 5cm}void Entity\+::remove\+Component (
+\begin{DoxyParamCaption}
+\item[{std\+::shared\+\_\+ptr$<$ {\bf Component} $>$}]{component}
+\end{DoxyParamCaption}
+)}\label{class_entity_a6c736e11abe151f3997be250e25935d6}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_entity_a91f8301ced2daaaed904292bd34460dd}{}\index{Entity@{Entity}!components@{components}}
+\index{components@{components}!Entity@{Entity}}
+\subsubsection[{components}]{\setlength{\rightskip}{0pt plus 5cm}std\+::list$<$std\+::shared\+\_\+ptr$<${\bf Component}$>$ $>$ Entity\+::components\hspace{0.3cm}{\ttfamily [protected]}}\label{class_entity_a91f8301ced2daaaed904292bd34460dd}
+\hypertarget{class_entity_ab2b82c9846ff3adc81074b3fa61f143a}{}\index{Entity@{Entity}!transform@{transform}}
+\index{transform@{transform}!Entity@{Entity}}
+\subsubsection[{transform}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<${\bf Transform}$>$ Entity\+::transform\hspace{0.3cm}{\ttfamily [private]}}\label{class_entity_ab2b82c9846ff3adc81074b3fa61f143a}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{entity_8h}{entity.\+h}\item 
+src/\hyperlink{entity_8cpp}{entity.\+cpp}\end{DoxyCompactItemize}

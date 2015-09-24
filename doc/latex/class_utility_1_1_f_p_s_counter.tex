@@ -1,0 +1,133 @@
+\hypertarget{class_utility_1_1_f_p_s_counter}{}\section{Utility\+:\+:F\+P\+S\+Counter Class Reference}
+\label{class_utility_1_1_f_p_s_counter}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+
+
+{\ttfamily \#include $<$fps\+\_\+counter.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_utility_1_1_f_p_s_counter_a5e76d827002c0d0e4217f43b998d6f1e}{F\+P\+S\+Counter} (const float \hyperlink{class_utility_1_1_f_p_s_counter_a148c5309c9d72773cd39d5bb791642d4}{max\+\_\+fps})
+\item 
+const float \hyperlink{class_utility_1_1_f_p_s_counter_a11077d4a419a31bbd254103b68e3956b}{get\+Max\+F\+P\+S} () const noexcept
+\item 
+const float \hyperlink{class_utility_1_1_f_p_s_counter_a79f4857494606837a23c545d0f7e5917}{get\+Current\+F\+P\+S} () const noexcept
+\item 
+const float \hyperlink{class_utility_1_1_f_p_s_counter_af30e85894cd28030f940973d7c38b678}{get\+Average\+F\+P\+S} () const noexcept
+\item 
+void \hyperlink{class_utility_1_1_f_p_s_counter_a80612f3c0a69bafdb226a2ba9f997b0d}{reset\+Average\+F\+P\+S} () noexcept
+\item 
+const float \hyperlink{class_utility_1_1_f_p_s_counter_aa068e564c963cbc82ebacffac9201a90}{assess\+Count\+And\+Get\+Delta} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_utility_1_1_f_p_s_counter_ae99416b7341249e9deaf227e66d908ea}{sleep\+For} (const int milliseconds)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{class_utility_1_1_f_p_s_counter_a148c5309c9d72773cd39d5bb791642d4}{max\+\_\+fps}
+\item 
+float \hyperlink{class_utility_1_1_f_p_s_counter_a2acc1ab187653e4246fa2b08c773cb24}{current\+\_\+fps}
+\item 
+std\+::chrono\+::time\+\_\+point$<$ std\+::chrono\+::high\+\_\+resolution\+\_\+clock $>$ \hyperlink{class_utility_1_1_f_p_s_counter_ada67ad2c8564e63ee6e93251c40b257d}{last\+\_\+time}
+\item 
+std\+::chrono\+::time\+\_\+point$<$ std\+::chrono\+::high\+\_\+resolution\+\_\+clock $>$ \hyperlink{class_utility_1_1_f_p_s_counter_adbc8e757b4b1f8a4cd20b7cb21932b51}{current\+\_\+time}
+\item 
+float \hyperlink{class_utility_1_1_f_p_s_counter_a2f9c59b3d0e736480414d91cea7f7357}{delta}
+\item 
+float \hyperlink{class_utility_1_1_f_p_s_counter_a046815eb9021980aa4dda67ac03fcfea}{delta\+\_\+accum}
+\item 
+unsigned int \hyperlink{class_utility_1_1_f_p_s_counter_a9040813170d766efb0f1d82f742292cc}{frame\+\_\+count}
+\item 
+float \hyperlink{class_utility_1_1_f_p_s_counter_af222b6f51b284c7b735957b16e1187e3}{fps\+\_\+accum}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_utility_1_1_f_p_s_counter_a5e76d827002c0d0e4217f43b998d6f1e}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!F\+P\+S\+Counter@{F\+P\+S\+Counter}}
+\index{F\+P\+S\+Counter@{F\+P\+S\+Counter}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{F\+P\+S\+Counter}]{\setlength{\rightskip}{0pt plus 5cm}Utility\+::\+F\+P\+S\+Counter\+::\+F\+P\+S\+Counter (
+\begin{DoxyParamCaption}
+\item[{const float}]{max\+\_\+fps = {\ttfamily 0.0f}}
+\end{DoxyParamCaption}
+)}\label{class_utility_1_1_f_p_s_counter_a5e76d827002c0d0e4217f43b998d6f1e}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_utility_1_1_f_p_s_counter_aa068e564c963cbc82ebacffac9201a90}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!assess\+Count\+And\+Get\+Delta@{assess\+Count\+And\+Get\+Delta}}
+\index{assess\+Count\+And\+Get\+Delta@{assess\+Count\+And\+Get\+Delta}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{assess\+Count\+And\+Get\+Delta}]{\setlength{\rightskip}{0pt plus 5cm}const float Utility\+::\+F\+P\+S\+Counter\+::assess\+Count\+And\+Get\+Delta (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_utility_1_1_f_p_s_counter_aa068e564c963cbc82ebacffac9201a90}
+\hypertarget{class_utility_1_1_f_p_s_counter_af30e85894cd28030f940973d7c38b678}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!get\+Average\+F\+P\+S@{get\+Average\+F\+P\+S}}
+\index{get\+Average\+F\+P\+S@{get\+Average\+F\+P\+S}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{get\+Average\+F\+P\+S}]{\setlength{\rightskip}{0pt plus 5cm}const float Utility\+::\+F\+P\+S\+Counter\+::get\+Average\+F\+P\+S (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_utility_1_1_f_p_s_counter_af30e85894cd28030f940973d7c38b678}
+\hypertarget{class_utility_1_1_f_p_s_counter_a79f4857494606837a23c545d0f7e5917}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!get\+Current\+F\+P\+S@{get\+Current\+F\+P\+S}}
+\index{get\+Current\+F\+P\+S@{get\+Current\+F\+P\+S}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{get\+Current\+F\+P\+S}]{\setlength{\rightskip}{0pt plus 5cm}const float Utility\+::\+F\+P\+S\+Counter\+::get\+Current\+F\+P\+S (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_utility_1_1_f_p_s_counter_a79f4857494606837a23c545d0f7e5917}
+\hypertarget{class_utility_1_1_f_p_s_counter_a11077d4a419a31bbd254103b68e3956b}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!get\+Max\+F\+P\+S@{get\+Max\+F\+P\+S}}
+\index{get\+Max\+F\+P\+S@{get\+Max\+F\+P\+S}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{get\+Max\+F\+P\+S}]{\setlength{\rightskip}{0pt plus 5cm}const float Utility\+::\+F\+P\+S\+Counter\+::get\+Max\+F\+P\+S (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_utility_1_1_f_p_s_counter_a11077d4a419a31bbd254103b68e3956b}
+\hypertarget{class_utility_1_1_f_p_s_counter_a80612f3c0a69bafdb226a2ba9f997b0d}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!reset\+Average\+F\+P\+S@{reset\+Average\+F\+P\+S}}
+\index{reset\+Average\+F\+P\+S@{reset\+Average\+F\+P\+S}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{reset\+Average\+F\+P\+S}]{\setlength{\rightskip}{0pt plus 5cm}void Utility\+::\+F\+P\+S\+Counter\+::reset\+Average\+F\+P\+S (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_utility_1_1_f_p_s_counter_a80612f3c0a69bafdb226a2ba9f997b0d}
+\hypertarget{class_utility_1_1_f_p_s_counter_ae99416b7341249e9deaf227e66d908ea}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!sleep\+For@{sleep\+For}}
+\index{sleep\+For@{sleep\+For}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{sleep\+For}]{\setlength{\rightskip}{0pt plus 5cm}void Utility\+::\+F\+P\+S\+Counter\+::sleep\+For (
+\begin{DoxyParamCaption}
+\item[{const int}]{milliseconds}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\label{class_utility_1_1_f_p_s_counter_ae99416b7341249e9deaf227e66d908ea}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_utility_1_1_f_p_s_counter_a2acc1ab187653e4246fa2b08c773cb24}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!current\+\_\+fps@{current\+\_\+fps}}
+\index{current\+\_\+fps@{current\+\_\+fps}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{current\+\_\+fps}]{\setlength{\rightskip}{0pt plus 5cm}float Utility\+::\+F\+P\+S\+Counter\+::current\+\_\+fps\hspace{0.3cm}{\ttfamily [private]}}\label{class_utility_1_1_f_p_s_counter_a2acc1ab187653e4246fa2b08c773cb24}
+\hypertarget{class_utility_1_1_f_p_s_counter_adbc8e757b4b1f8a4cd20b7cb21932b51}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!current\+\_\+time@{current\+\_\+time}}
+\index{current\+\_\+time@{current\+\_\+time}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{current\+\_\+time}]{\setlength{\rightskip}{0pt plus 5cm}std\+::chrono\+::time\+\_\+point$<$std\+::chrono\+::high\+\_\+resolution\+\_\+clock$>$ Utility\+::\+F\+P\+S\+Counter\+::current\+\_\+time\hspace{0.3cm}{\ttfamily [private]}}\label{class_utility_1_1_f_p_s_counter_adbc8e757b4b1f8a4cd20b7cb21932b51}
+\hypertarget{class_utility_1_1_f_p_s_counter_a2f9c59b3d0e736480414d91cea7f7357}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!delta@{delta}}
+\index{delta@{delta}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{delta}]{\setlength{\rightskip}{0pt plus 5cm}float Utility\+::\+F\+P\+S\+Counter\+::delta\hspace{0.3cm}{\ttfamily [private]}}\label{class_utility_1_1_f_p_s_counter_a2f9c59b3d0e736480414d91cea7f7357}
+\hypertarget{class_utility_1_1_f_p_s_counter_a046815eb9021980aa4dda67ac03fcfea}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!delta\+\_\+accum@{delta\+\_\+accum}}
+\index{delta\+\_\+accum@{delta\+\_\+accum}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{delta\+\_\+accum}]{\setlength{\rightskip}{0pt plus 5cm}float Utility\+::\+F\+P\+S\+Counter\+::delta\+\_\+accum\hspace{0.3cm}{\ttfamily [private]}}\label{class_utility_1_1_f_p_s_counter_a046815eb9021980aa4dda67ac03fcfea}
+\hypertarget{class_utility_1_1_f_p_s_counter_af222b6f51b284c7b735957b16e1187e3}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!fps\+\_\+accum@{fps\+\_\+accum}}
+\index{fps\+\_\+accum@{fps\+\_\+accum}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{fps\+\_\+accum}]{\setlength{\rightskip}{0pt plus 5cm}float Utility\+::\+F\+P\+S\+Counter\+::fps\+\_\+accum\hspace{0.3cm}{\ttfamily [private]}}\label{class_utility_1_1_f_p_s_counter_af222b6f51b284c7b735957b16e1187e3}
+\hypertarget{class_utility_1_1_f_p_s_counter_a9040813170d766efb0f1d82f742292cc}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!frame\+\_\+count@{frame\+\_\+count}}
+\index{frame\+\_\+count@{frame\+\_\+count}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{frame\+\_\+count}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Utility\+::\+F\+P\+S\+Counter\+::frame\+\_\+count\hspace{0.3cm}{\ttfamily [private]}}\label{class_utility_1_1_f_p_s_counter_a9040813170d766efb0f1d82f742292cc}
+\hypertarget{class_utility_1_1_f_p_s_counter_ada67ad2c8564e63ee6e93251c40b257d}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!last\+\_\+time@{last\+\_\+time}}
+\index{last\+\_\+time@{last\+\_\+time}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{last\+\_\+time}]{\setlength{\rightskip}{0pt plus 5cm}std\+::chrono\+::time\+\_\+point$<$std\+::chrono\+::high\+\_\+resolution\+\_\+clock$>$ Utility\+::\+F\+P\+S\+Counter\+::last\+\_\+time\hspace{0.3cm}{\ttfamily [private]}}\label{class_utility_1_1_f_p_s_counter_ada67ad2c8564e63ee6e93251c40b257d}
+\hypertarget{class_utility_1_1_f_p_s_counter_a148c5309c9d72773cd39d5bb791642d4}{}\index{Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}!max\+\_\+fps@{max\+\_\+fps}}
+\index{max\+\_\+fps@{max\+\_\+fps}!Utility\+::\+F\+P\+S\+Counter@{Utility\+::\+F\+P\+S\+Counter}}
+\subsubsection[{max\+\_\+fps}]{\setlength{\rightskip}{0pt plus 5cm}float Utility\+::\+F\+P\+S\+Counter\+::max\+\_\+fps\hspace{0.3cm}{\ttfamily [private]}}\label{class_utility_1_1_f_p_s_counter_a148c5309c9d72773cd39d5bb791642d4}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/utility/\hyperlink{fps__counter_8h}{fps\+\_\+counter.\+h}\item 
+src/utility/\hyperlink{fps__counter_8cpp}{fps\+\_\+counter.\+cpp}\end{DoxyCompactItemize}
