@@ -8,13 +8,14 @@
 #include "events/observer.h"
 #include "events/event.h"
 #include "graphics/tile.h"
+#include "graphics/triggerable_animations.hpp"
+#include <list>
+#include "component.h"
 
-class Sprite : public Entity, public Events::Observer, public Events::Subject {
+enum class SpriteState {MOVE_UP, FACE_UP, MOVE_DOWN, FACE_DOWN, MOVE_LEFT, FACE_LEFT, MOVE_RIGHT, FACE_RIGHT};
+class Sprite : public Entity, public Events::Observer, public Events::Subject, public Graphics::TriggerableAnimations<SpriteState> {
   public:
-    enum class AnimationState {MOVE_UP, FACE_UP, MOVE_DOWN, FACE_DOWN, MOVE_LEFT, FACE_LEFT, MOVE_RIGHT, FACE_RIGHT};
   private: 
-    std::map<AnimationState, std::shared_ptr<Graphics::Tile>> tiles;
-    AnimationState current_state;
     float moving_speed;
     float move_quantization_in_tiles;
     glm::vec2 current_velocity;
@@ -31,8 +32,7 @@ class Sprite : public Entity, public Events::Observer, public Events::Subject {
     void onStart() override;
     void onStop() override {}
     void onDestroy() override {}
-    void addTile(const AnimationState& state, std::shared_ptr<Graphics::Tile> tile);
-    void triggerTile(const AnimationState& state);
+    void addTriggerableTile(const SpriteState& state, std::shared_ptr<Graphics::Tile> tile);
     void setMovingSpeed(const float speed);
     void setMoveQuantization(const float number_of_tiles);
     void stopMovingLeft();
@@ -43,6 +43,7 @@ class Sprite : public Entity, public Events::Observer, public Events::Subject {
     void moveUp();
     void stopMovingDown();
     void moveDown();
+    std::list<std::shared_ptr<Component>> getComponents();
 };
 
 #endif

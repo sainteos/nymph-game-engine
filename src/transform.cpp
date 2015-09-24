@@ -12,6 +12,22 @@ Transform::Transform() : parent(nullptr) {
 }
 
 Transform::~Transform() {
+  if(parent != nullptr) {
+    auto new_end = std::remove_if(parent->children.begin(), parent->children.end(), [&](const std::shared_ptr<Transform>& transform) { return this == transform.get();});
+    parent->children.erase(new_end, parent->children.end());
+    parent = nullptr;
+  }
+
+  local_translation = glm::vec3(0.0);
+  local_rotation = glm::quat(glm::mat4(1.0));
+  local_scale = glm::vec3(1.0, 1.0, 1.0);
+  
+  for(auto& child : children) {
+    child->parent = nullptr;
+    child.reset(new Transform());
+  }
+  parent = nullptr;
+  children.clear();
 }
 
 const bool Transform::operator==(const Transform& other) {
@@ -158,31 +174,4 @@ void Transform::removeChild(const std::shared_ptr<Transform>& transform) {
 
 std::list<std::shared_ptr<Transform>> Transform::getChildren() const {
   return children;
-}
-
-void Transform::onStart() {
-}
-
-const bool Transform::onUpdate(const double delta) {
-  return true;
-}
-
-void Transform::onDestroy() {
-  if(parent != nullptr) {
-    auto new_end = std::remove_if(parent->children.begin(), parent->children.end(), [&](const std::shared_ptr<Transform>& transform) { return this == transform.get();});
-    parent->children.erase(new_end, parent->children.end());
-    parent = nullptr;
-  }
-
-  local_translation = glm::vec3(0.0);
-  local_rotation = glm::quat(glm::mat4(1.0));
-  local_scale = glm::vec3(1.0, 1.0, 1.0);
-  
-  for(auto& child : children) {
-    child->parent = nullptr;
-    child->onDestroy();
-    child.reset(new Transform());
-  }
-  parent = nullptr;
-  children.clear();
 }

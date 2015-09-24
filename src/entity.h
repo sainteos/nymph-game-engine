@@ -8,8 +8,9 @@
 
 class Entity {
   private:
-    std::list<std::shared_ptr<Component>> components;
     std::shared_ptr<Transform> transform;
+  protected:
+    std::list<std::shared_ptr<Component>> components;
   public:
     Entity();
     void addComponent(std::shared_ptr<Component> component);
