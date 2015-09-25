@@ -1,8 +1,7 @@
 #include "graphics/tile.h"
-#include "graphics/tile_attribute_trait.h"
 
 namespace Graphics {
-  Tile::Tile(const unsigned int vertex_array_object, const VertexData& data) : Renderable(vertex_array_object, data, new TileAttributeTrait()), size_pixels(0) {
+  Tile::Tile(const unsigned int vertex_array_object, const VertexData& data) : Renderable(vertex_array_object, data), size_pixels(0) {
 
   }
 

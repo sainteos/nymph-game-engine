@@ -18,20 +18,20 @@ solution "TileEngine"
 
     configuration "WindowsDebug"
       buildoptions { "-std=c++11" }
-      links { "fmod", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL" }
+      links { "freetype_win", "fmod", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL" }
       defines { "DEBUG", "GLEW_STATIC" }
       targetextension ".exe"
 
     configuration "Debug"
       buildoptions { "-std=c++11", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
-      links {  "fmod", "glfw3.3.1", "png", "z", "OpenGL.framework", "glew", "IL" }
+      links {  "freetype", "fmod", "glfw3.3.1", "png", "z", "OpenGL.framework", "glew", "IL" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
 
     configuration "Release"
       buildoptions { "-std=c++11", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
-      links {  "fmod", "glfw3.3.1", "png", "z", "OpenGL.framework", "glew", "IL" }
+      links {  "freetype", "fmod", "glfw3.3.1", "png", "z", "OpenGL.framework", "glew", "IL" }
       defines { "NDEBUG" }
       flags { "Optimize" }
       targetextension ".out"

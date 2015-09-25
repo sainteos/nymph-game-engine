@@ -5,17 +5,17 @@
 #include "transform.h"
 #include "exceptions/child_does_not_exist_exception.h"
 
-Transform::Transform() : parent(nullptr) {
+Transform::Transform() {
   local_translation = glm::vec3(0.0);
   local_rotation = glm::quat(glm::mat4(1.0));
   local_scale = glm::vec3(1.0, 1.0, 1.0);
 }
 
 Transform::~Transform() {
-  if(parent != nullptr) {
-    auto new_end = std::remove_if(parent->children.begin(), parent->children.end(), [&](const std::shared_ptr<Transform>& transform) { return this == transform.get();});
-    parent->children.erase(new_end, parent->children.end());
-    parent = nullptr;
+  if(parent.lock() != nullptr) {
+    auto new_end = std::remove_if(parent.lock()->children.begin(), parent.lock()->children.end(), [&](const std::shared_ptr<Transform>& transform) { return this == transform.get();});
+    parent.lock()->children.erase(new_end, parent.lock()->children.end());
+    parent.reset();
   }
 
   local_translation = glm::vec3(0.0);
@@ -23,10 +23,8 @@ Transform::~Transform() {
   local_scale = glm::vec3(1.0, 1.0, 1.0);
   
   for(auto& child : children) {
-    child->parent = nullptr;
     child.reset(new Transform());
   }
-  parent = nullptr;
   children.clear();
 }
 
@@ -58,8 +56,8 @@ void Transform::translate(const glm::vec3& translation) {
 }
 
 const glm::vec3 Transform::getAbsoluteTranslation() const noexcept {
-  if(parent != nullptr)
-    return local_translation + parent->getAbsoluteTranslation();
+  if(parent.lock() != nullptr) 
+    return local_translation + parent.lock()->getAbsoluteTranslation();
   else
     return local_translation;
 }
@@ -88,8 +86,8 @@ void Transform::rotate(const glm::quat& quat) {
 }
 
 const glm::quat Transform::getAbsoluteRotation() const noexcept {
-  if(parent != nullptr)
-    return parent->getAbsoluteRotation() * local_rotation;
+  if(parent.lock() != nullptr)
+    return parent.lock()->getAbsoluteRotation() * local_rotation;
   else
     return local_rotation;
 }
@@ -138,8 +136,8 @@ void Transform::scale(const float& scale) {
 }
 
 const glm::vec3 Transform::getAbsoluteScale() const noexcept {
-  if(parent != nullptr)
-    return local_scale * parent->getAbsoluteScale();
+  if(parent.lock() != nullptr)
+    return local_scale * parent.lock()->getAbsoluteScale();
   else
     return local_scale;
 }
@@ -149,8 +147,8 @@ const glm::vec3 Transform::getLocalScale() const noexcept {
 }
 
 const glm::mat4 Transform::getAbsoluteTransformationMatrix() const noexcept {
-  if(parent != nullptr)
-    return parent->getAbsoluteTransformationMatrix() * getLocalTransformationMatrix();
+  if(parent.lock() != nullptr)
+    return parent.lock()->getAbsoluteTransformationMatrix() * getLocalTransformationMatrix();
   else
     return getLocalTransformationMatrix();
 }
@@ -162,13 +160,13 @@ const glm::mat4 Transform::getLocalTransformationMatrix() const noexcept {
   return out;
 }
 
-void Transform::addChild(const std::shared_ptr<Transform>& transform) {
+void Transform::addChild(std::shared_ptr<Transform> transform) {
   transform->parent = shared_from_this();
   children.push_back(transform);
 }
 
-void Transform::removeChild(const std::shared_ptr<Transform>& transform) {
-  transform->parent = nullptr;
+void Transform::removeChild(std::shared_ptr<Transform> transform) {
+  transform->parent.reset();
   children.remove(transform);
 }
 
