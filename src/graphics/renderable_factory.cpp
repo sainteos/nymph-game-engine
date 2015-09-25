@@ -52,7 +52,7 @@ namespace Graphics {
     return vertex_data;
   }
 
-  const VertexData RenderableFactory::generateTile(const unsigned int base_size, const unsigned int current_size) {
+  const VertexData RenderableFactory::generateTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int offset_x, const unsigned int offset_y) {
     std::vector<glm::vec2> texs {
       glm::vec2(0.0, 0.0),
       glm::vec2(0.0, 1.0),
@@ -64,7 +64,7 @@ namespace Graphics {
     };
     VertexData vert_data(GL_TRIANGLES);
     vert_data.addIndices(indices);
-    vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, generateVertexCoords(base_size, current_size));
+    vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, generateVertexCoords(base_width, base_height, current_width, current_height, offset_x, offset_y));
     vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
 
     return vert_data;
@@ -307,12 +307,12 @@ namespace Graphics {
     return texs;
   }
 
-  std::vector<glm::vec3> RenderableFactory::generateVertexCoords(const unsigned int base_size, const unsigned int current_size) {
+  std::vector<glm::vec3> RenderableFactory::generateVertexCoords(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int offset_x, const unsigned int offset_y) {
     std::vector<glm::vec3> verts {
-      glm::vec3(0.0, 0.0, 0.0),
-      glm::vec3(0.0, 1.0 * (float)current_size / (float)base_size, 0.0),
-      glm::vec3(1.0 * (float)current_size / (float)base_size, 1.0 * (float)current_size / (float)base_size, 0.0),
-      glm::vec3(1.0 * (float)current_size / (float)base_size, 0.0, 0.0)
+      glm::vec3((float)offset_x / (float)base_width, (float)offset_y / (float)base_height, 0.0),
+      glm::vec3((float)offset_x / (float)base_width, (float)offset_y / (float)base_height + (float)current_height / (float)base_height, 0.0),
+      glm::vec3((float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)offset_y / (float)base_height + (float)current_height / (float)base_height, 0.0),
+      glm::vec3((float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)offset_y / (float)base_height, 0.0)
     };
     return verts;
   }
@@ -332,15 +332,15 @@ namespace Graphics {
     glGenVertexArrays(1, &new_binding);
     glBindVertexArray(new_binding);
     glBindVertexArray(0);
-    return std::make_shared<Tile>(new_binding, generateTile(32, 32));
+    return std::make_shared<Tile>(new_binding, generateTile(32, 32, 32, 32));
   }
 
   template<>
   std::shared_ptr<AnimatedTile> RenderableFactory::create() {
     if(!glIsVertexArray(animated_tile_vao)) {
-      animated_tile_vao = generateVertexArrayObject(generateTile(32, 32));
+      animated_tile_vao = generateVertexArrayObject(generateTile(32, 32, 32, 32));
     }
-    return std::make_shared<AnimatedTile>(animated_tile_vao, generateTile(32, 32));
+    return std::make_shared<AnimatedTile>(animated_tile_vao, generateTile(32, 32, 32, 32));
   }
 
   template<>
@@ -432,7 +432,7 @@ namespace Graphics {
             auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
 
             if(tile != nullptr && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
-              auto animated_renderable = create<AnimatedTile>(generateTile(map.GetTileWidth(), tileset->GetTileWidth()));
+              auto animated_renderable = create<AnimatedTile>(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
               auto frames = tile->GetFrames();
 
               animated_renderable->addTexture(texture);
@@ -524,7 +524,7 @@ namespace Graphics {
                   0, 1, 2, 0, 2, 3
                 };
                 std::vector<glm::vec3> verts;
-                verts = generateVertexCoords(map.GetTileWidth(), tileset->GetTileHeight());
+                verts = generateVertexCoords(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
                 std::vector<glm::vec2> texs;
                 texs = generateTextureCoords(layer, x, y, texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
                 vert_data.addIndices(indices);
@@ -593,7 +593,7 @@ namespace Graphics {
 
           auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
 
-          new_anim.tile = create<AnimatedTile>(generateTile(map.GetTileWidth(), tileset->GetTileWidth()));
+          new_anim.tile = create<AnimatedTile>(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
           auto frames = tile->GetFrames();
 
           new_anim.tile->addTexture(texture);
@@ -618,5 +618,37 @@ namespace Graphics {
       }
     }
     return animations;
+  }
+
+  std::shared_ptr<Text> RenderableFactory::createText(std::shared_ptr<Font> font, const glm::vec4& color) {
+    std::shared_ptr<Text> text = std::make_shared<Text>();
+    text->setColor(color);
+    text->setFont(font);
+
+    for(auto i : font->getCharacters()) {
+      std::vector<glm::vec2> texs {
+        glm::vec2(0.0, 1.0),
+        glm::vec2(0.0, 0.0),
+        glm::vec2(1.0, 0.0),
+        glm::vec2(1.0, 1.0)
+      };
+      std::vector<unsigned int> indices {
+        0, 1, 2, 0, 2, 3
+      };
+      std::vector<glm::vec3> verts {
+        glm::vec3(i.second.bearing.x, -i.second.size.y + i.second.bearing.y, 0.0),
+        glm::vec3(i.second.bearing.x, i.second.size.y - i.second.size.y + i.second.bearing.y, 0.0),
+        glm::vec3(i.second.bearing.x + i.second.size.x, i.second.size.y - i.second.size.y + i.second.bearing.y, 0.0),
+        glm::vec3(i.second.bearing.x + i.second.size.x, -i.second.size.y + i.second.bearing.y, 0.0)
+      };
+      VertexData vert_data(GL_TRIANGLES);
+      vert_data.addIndices(indices);
+      vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
+      vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
+      auto vao = generateVertexArrayObject(vert_data);
+
+      text->addCharacterVertexData(i.first, vert_data, vao);
+    }
+    return text;
   }
 }

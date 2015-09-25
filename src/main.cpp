@@ -11,7 +11,6 @@
 #include "graphics/renderable.h"
 #include "graphics/vertex_data.h"
 #include "graphics/window_exit_functor.h"
-#include "graphics/tile_attribute_trait.h"
 #include "graphics/shader.h"
 #include "graphics/base_texture.h"
 #include "graphics/shader_manager.h"
@@ -26,6 +25,7 @@
 #include "graphics/light.h"
 #include "utility/utility_functions.h"
 #include "component_manager.h"
+#include "graphics/font_generator.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
   shader_manager->loadShader("simple_texture");
   shader_manager->loadShader("tile_animation");
   shader_manager->loadShader("diffuse_lighting");
+  shader_manager->loadShader("simple_text");
 
   float viewport_tile_width = config.getFloat("screen_width_tiles");
   float viewport_tile_height = config.getFloat("screen_height_tiles");
@@ -80,12 +81,16 @@ int main(int argc, char** argv) {
   component_manager.addComponent(camera);
   graphics.setCamera(camera);
 
+  FontGenerator font_generator("./project-spero-assets/Fonts/");
+  font_generator.loadFont("Pacifico.ttf", 64, "pacifico");
+
   TextureManager texture_manager;
   
   auto renderables = renderable_factory.createFromMap(*map, texture_manager, shader_manager);
   auto animations = renderable_factory.createAnimationsFromAnimationMap(*animation_map, texture_manager, shader_manager);
   auto static_animations = renderable_factory.createStaticallyAnimatedTilesFromMap(*map, texture_manager, shader_manager);
   auto lights = renderable_factory.createLightsFromMap(*map);
+  auto text = renderable_factory.createText(font_generator.getFont("pacifico"), glm::vec4(1.0, 0.4, 0.2, 1.0));
 
   std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
 
@@ -160,6 +165,34 @@ int main(int argc, char** argv) {
 
   transform->addChild(sprite->getTransform());
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
+
+  text->getTransform()->translate(glm::vec3(0.0, 0.0, -0.3));
+  text->getTransform()->scale(glm::vec2(1.0 / 64.0, 1.0 / 64.0));
+  text->setShader(shader_manager->getShader("simple_text"));
+  text->setText("Banana Hammock");
+  if(config.getString("text_horizontal_alignment") == "left") {
+    text->setHorizontalAlignment(Text::HorizontalAlignment::LEFT);
+  }
+  else if(config.getString("text_horizontal_alignment") == "center") {
+    text->setHorizontalAlignment(Text::HorizontalAlignment::CENTER);
+  }
+  else if(config.getString("text_horizontal_alignment") == "right") {
+    text->setHorizontalAlignment(Text::HorizontalAlignment::RIGHT);
+  }
+
+  if(config.getString("text_vertical_alignment") == "top") {
+    text->setVerticalAlignment(Text::VerticalAlignment::TOP);
+  }
+  else if(config.getString("text_vertical_alignment") == "center") {
+    text->setVerticalAlignment(Text::VerticalAlignment::CENTER);
+  }
+  else if(config.getString("text_vertical_alignment") == "bottom") {
+    text->setVerticalAlignment(Text::VerticalAlignment::BOTTOM);
+  }
+  text->setActive();
+  component_manager.addComponent(text);
+  camera->getTransform()->addChild(text->getTransform());
+  graphics.addRenderable(text);
 
   sprite->onStart();
 

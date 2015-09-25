@@ -85,8 +85,7 @@ namespace Graphics {
     public:
       static const std::map<DATA_TYPE, unsigned int> DataWidth;
       
-      VertexData() = delete;
-      VertexData(const GLenum primitive_type);
+      VertexData(const GLenum primitive_type = GL_TRIANGLES);
 
       VertexData(const VertexData& vertex_data);
       VertexData operator=(const VertexData& vertex_data);

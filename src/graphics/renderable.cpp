@@ -17,12 +17,13 @@
 #include "renderable.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, BaseAttributeTrait* ra_trait) : vertex_data(vertex_data), trait(std::unique_ptr<BaseAttributeTrait>(std::move(ra_trait))), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
+  Renderable::Renderable() : shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
+
+  }
+
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data) : vertex_data(vertex_data), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
-    }
-    if(trait == nullptr) {
-      throw std::invalid_argument("Constructor: Can't pass a nullptr as a trait, this argument is required");
     }
     this->vertex_array_object = vertex_array_object;
   }
@@ -31,13 +32,9 @@ namespace Graphics {
     active = std::move(renderable.active);
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
-    trait.reset(std::move(renderable.trait.release()));
     transform = renderable.transform;
     renderable.transform.reset();
     light_reactive = std::move(renderable.light_reactive);
-    if(trait == nullptr) {
-      throw std::invalid_argument("Move constructor: Can't pass a nullptr as a trait, this argument is required");
-    }
   }
 
   Renderable& Renderable::operator=(Renderable&& renderable) { 
@@ -45,13 +42,9 @@ namespace Graphics {
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
     vertex_data = renderable.vertex_data;
-    trait.reset(std::move(renderable.trait.release()));
     transform = renderable.transform;
     renderable.transform.reset();
     light_reactive = std::move(renderable.light_reactive);
-    if(trait == nullptr) {
-      throw std::invalid_argument("Move assignment: Can't pass a nullptr as a trait, this argument is required");
-    }
 
     return *this;
   }
@@ -131,7 +124,6 @@ namespace Graphics {
     //not this one's job to destroy shader
     shader = nullptr;
     textures.clear();
-    trait.reset();
   }
 
   void Renderable::onStart() {
