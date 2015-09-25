@@ -7,7 +7,7 @@
 
 class Transform : public std::enable_shared_from_this<Transform> {
   private:
-    std::shared_ptr<Transform> parent;
+    std::weak_ptr<Transform> parent;
     std::list<std::shared_ptr<Transform>> children;
 
     glm::vec3 local_translation;
@@ -22,8 +22,8 @@ class Transform : public std::enable_shared_from_this<Transform> {
     //does not take tree properties into account
     const bool operator!=(const Transform& other);
 
-    void addChild(const std::shared_ptr<Transform>& transform);
-    void removeChild(const std::shared_ptr<Transform>& transform);
+    void addChild(std::shared_ptr<Transform> transform);
+    void removeChild(std::shared_ptr<Transform> transform);
 
     std::list<std::shared_ptr<Transform>> getChildren() const;
 

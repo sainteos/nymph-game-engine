@@ -7,8 +7,6 @@
 #include "vertex_data.h"
 #include "shader.h"
 #include "base_texture.h"
-#include "base_attribute_trait.h"
-#include "renderable_attribute_trait.h"
 #include "transform.h"
 #include "light.h"
 
@@ -22,18 +20,16 @@ namespace Graphics {
       std::vector<std::shared_ptr<BaseTexture>> textures;
 
       VertexData vertex_data;
-      std::unique_ptr<BaseAttributeTrait> trait;
 
       bool light_reactive;
       std::list<std::shared_ptr<Light>> influencing_lights;
       glm::vec3 ambient_light;
       float ambient_intensity;
+    protected:
+      Renderable();
 
     public:
-
-      Renderable() = delete;
-      Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data, 
-                 BaseAttributeTrait* trait = new RenderableAttributeTrait());
+      Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data);
       //Remove copy constructor and assignment
       Renderable(const Renderable&) = delete;
       Renderable operator=(Renderable&) = delete;
