@@ -7,14 +7,23 @@ Entity::Entity() {
 }
 
 void Entity::addComponent(std::shared_ptr<Component> component) {
-  transform->addChild(component->getTransform());
+  component->setTransform(transform);
   components.push_back(component);
   components.unique();
+
+  for(auto& i : components) {
+    component->addObserver(i);
+    i->addObserver(component);
+  }
 }
 
 void Entity::removeComponent(std::shared_ptr<Component> component) {
-  transform->removeChild(component->getTransform());
+  component->setTransform(std::make_shared<Transform>());
   components.remove(component);
+  for(auto& i : components) {
+    component->removeObserver(i);
+    i->removeObserver(component);
+  }
 }
 
 std::shared_ptr<Transform> Entity::getTransform() const noexcept {

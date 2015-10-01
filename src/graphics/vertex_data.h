@@ -111,6 +111,7 @@ namespace Graphics {
       std::vector<unsigned int> getIndices() const noexcept;
 
       unsigned int numberVertexBufferObjects() const noexcept;
+      const unsigned int generateVertexArrayObject() const;
   };
 }
 

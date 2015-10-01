@@ -1,19 +1,20 @@
-#include "sprite.h"
+#include "sprite_movement.h"
 #include "events/event_type.h"
 #include "input/key_down_event.h"
 #include "input/key_up_event.h"
 #include "sprite_move_event.h"
+#include "component_trigger_event.hpp"
 #include <easylogging++.h>
 #define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
 #include <glm/ext.hpp>
 
-Sprite::Sprite() : Graphics::TriggerableAnimations<SpriteState>(SpriteState::FACE_DOWN), move_quantization_in_tiles(1.0),
-  up_down(false), down_down(false), left_down(false), right_down(false) {
+SpriteMovement::SpriteMovement() : move_quantization_in_tiles(1.0),
+  up_down(false), down_down(false), left_down(false), right_down(false), current_state(SpriteState::FACE_DOWN) {
 
 }
 
-void Sprite::onNotify(const Events::Event& event) {
+void SpriteMovement::onNotify(const Events::Event& event) {
   if(event.getEventCode() == Events::EventType::KEY_DOWN) {
     auto casted_event = static_cast<const Input::KeyDownEvent*>(&event);
     switch(casted_event->getKey()) {
@@ -60,40 +61,38 @@ void Sprite::onNotify(const Events::Event& event) {
   }
 }
 
-void Sprite::onStart() {
-  TriggerableAnimations<SpriteState>::initializeStates();
-  Entity::onStart();
+void SpriteMovement::onStart() {
 }
 
-void Sprite::onUpdate(const float delta) {
+const bool SpriteMovement::onUpdate(const double delta) {
   if(current_state == SpriteState::FACE_LEFT || current_state == SpriteState::FACE_RIGHT ||
      current_state == SpriteState::FACE_UP || current_state == SpriteState::FACE_DOWN) {
     if(left_down) {
       current_velocity = glm::vec2(-moving_speed, 0.0);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-      triggerTile(SpriteState::MOVE_LEFT);
+      notify(ComponentTriggerEvent<SpriteState>(SpriteState::MOVE_LEFT));
       notify(SpriteMoveEvent(current_velocity, absolute_next_position));
     }
     else if(right_down) {
       current_velocity = glm::vec2(moving_speed, 0.0);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-      triggerTile(SpriteState::MOVE_RIGHT);
+      notify(ComponentTriggerEvent<SpriteState>(SpriteState::MOVE_RIGHT));
       notify(SpriteMoveEvent(current_velocity, absolute_next_position));
     } 
     else if(up_down) {
       current_velocity = glm::vec2(0.0, moving_speed);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-      triggerTile(SpriteState::MOVE_UP);
+      notify(ComponentTriggerEvent<SpriteState>(SpriteState::MOVE_UP));
       notify(SpriteMoveEvent(current_velocity, absolute_next_position));
     }
     else if(down_down) {
       current_velocity = glm::vec2(0.0, -moving_speed);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-      triggerTile(SpriteState::MOVE_DOWN);
+      notify(ComponentTriggerEvent<SpriteState>(SpriteState::MOVE_DOWN));
       notify(SpriteMoveEvent(current_velocity, absolute_next_position));
     }
   }
@@ -106,71 +105,61 @@ void Sprite::onUpdate(const float delta) {
       getTransform()->translate(next_position - glm::vec2(getTransform()->getLocalTranslation()));
       if(current_state == SpriteState::MOVE_LEFT) {
         current_velocity = glm::vec2(0.0, 0.0);
-        triggerTile(SpriteState::FACE_LEFT);
+        notify(ComponentTriggerEvent<SpriteState>(SpriteState::FACE_LEFT));
       }
       else if(current_state == SpriteState::MOVE_RIGHT) {
         current_velocity = glm::vec2(0.0, 0.0);
-        triggerTile(SpriteState::FACE_RIGHT);
+        notify(ComponentTriggerEvent<SpriteState>(SpriteState::FACE_RIGHT));
       }
       else if(current_state == SpriteState::MOVE_UP) {
         current_velocity = glm::vec2(0.0, 0.0);
-        triggerTile(SpriteState::FACE_UP);
+        notify(ComponentTriggerEvent<SpriteState>(SpriteState::FACE_UP));
       }
       else if(current_state == SpriteState::MOVE_DOWN) {
         current_velocity = glm::vec2(0.0, 0.0);
-        triggerTile(SpriteState::FACE_DOWN);
+        notify(ComponentTriggerEvent<SpriteState>(SpriteState::FACE_DOWN));
       }
     }
   }
-
-  Entity::onUpdate(delta);
+  return true;
 }
 
-void Sprite::addTriggerableTile(const SpriteState& state, std::shared_ptr<Graphics::Tile> tile) {
-  addComponent(tile);
-  TriggerableAnimations<SpriteState>::addTile(state, tile);
-}
-
-void Sprite::setMovingSpeed(const float speed) {
+void SpriteMovement::setMovingSpeed(const float speed) {
   moving_speed = speed;
 }
 
-void Sprite::setMoveQuantization(const float number_of_tiles) {
+void SpriteMovement::setMoveQuantization(const float number_of_tiles) {
   move_quantization_in_tiles = number_of_tiles;
 }
 
-void Sprite::stopMovingLeft() {
+void SpriteMovement::stopMovingLeft() {
   left_down = false;
 }
 
-void Sprite::moveLeft() {
+void SpriteMovement::moveLeft() {
   left_down = true;
 }
 
-void Sprite::stopMovingRight() {
+void SpriteMovement::stopMovingRight() {
   right_down = false;
 }
 
-void Sprite::moveRight() {
+void SpriteMovement::moveRight() {
   right_down = true;
 }
 
-void Sprite::stopMovingUp() {
+void SpriteMovement::stopMovingUp() {
   up_down = false;
 }
 
-void Sprite::moveUp() {
+void SpriteMovement::moveUp() {
   up_down = true;
 }
 
-void Sprite::stopMovingDown() {
+void SpriteMovement::stopMovingDown() {
   down_down = false;
 }
 
-void Sprite::moveDown() {
+void SpriteMovement::moveDown() {
   down_down = true;
-}
-
-std::list<std::shared_ptr<Component>> Sprite::getComponents() {
-  return components;
 }

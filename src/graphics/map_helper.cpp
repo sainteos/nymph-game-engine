@@ -6,23 +6,21 @@
 #include <glew.h>
 #endif
 #include <algorithm>
-#include "graphics/renderable_factory.h"
+#include "graphics/map_helper.h"
 #include "graphics/renderable.h"
-#include "graphics/tile.h"
-#include "graphics/animated_tile.h"
 #include "transform.h"
 #include "exceptions/invalid_filename_exception.h"
 #include "graphics/light.h"
 #include "utility/utility_functions.h"
 
 namespace Graphics {
-  RenderableFactory::RenderableFactory() {
+  MapHelper::MapHelper() {
   }
 
-  RenderableFactory::~RenderableFactory() {
+  MapHelper::~MapHelper() {
   }
 
-  const VertexData RenderableFactory::generateCube() {
+  const VertexData MapHelper::generateCube() {
     std::vector<glm::vec3> verts {
       glm::vec3(0.0, 0.0, 0.0),
       glm::vec3(0.0, 1.0, 0.0),
@@ -52,7 +50,7 @@ namespace Graphics {
     return vertex_data;
   }
 
-  const VertexData RenderableFactory::generateTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int offset_x, const unsigned int offset_y) {
+  const VertexData MapHelper::generateTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int offset_x, const unsigned int offset_y) {
     std::vector<glm::vec2> texs {
       glm::vec2(0.0, 0.0),
       glm::vec2(0.0, 1.0),
@@ -70,78 +68,7 @@ namespace Graphics {
     return vert_data;
   }
 
-  unsigned int RenderableFactory::generateVertexArrayObject(VertexData vertex_data) {
-    LOG(INFO)<<"Renderable initializing...";
-
-    unsigned int vertex_array_object = 0;
-    glGenVertexArrays(1, &vertex_array_object);
-    glBindVertexArray(vertex_array_object);
-
-    auto float_data = vertex_data.getCollapsedVectors<float>();
-    auto double_data = vertex_data.getCollapsedVectors<double>();
-    auto int_data = vertex_data.getCollapsedVectors<int>();
-    auto unsigned_int_data = vertex_data.getCollapsedVectors<unsigned int>();
-    
-    unsigned int num_of_vertex_buffers = vertex_data.numberVertexBufferObjects();
-    unsigned int* vertex_buffer_objects = new unsigned int[num_of_vertex_buffers];
-    unsigned int index_buffer_object = 0;
-
-    std::vector<std::pair<VertexData::DATA_TYPE, GLenum>> data_types;
-    glGenBuffers(num_of_vertex_buffers, vertex_buffer_objects);
-
-    unsigned int current_buffer = 0;
-    
-    //Do this if we actually have indices
-    if(vertex_data.getIndices().size() > 0) {
-      glGenBuffers(1, &index_buffer_object);
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertex_data.getIndices().size() * sizeof(unsigned int), &(vertex_data.getIndices())[0], GL_STATIC_DRAW);
-    }
-
-    for(auto i : float_data) {
-      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
-      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(float), &(i.second)[0], GL_STATIC_DRAW);
-      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_FLOAT));
-    }
-
-    for(auto i : double_data) {
-      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
-      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(double), &(i.second)[0], GL_STATIC_DRAW);
-      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_DOUBLE));
-    }
-
-    for(auto i : int_data) {
-      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
-      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(int), &(i.second)[0], GL_STATIC_DRAW);
-      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_INT));
-    }
-
-    for(auto i : unsigned_int_data) {
-      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
-      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(unsigned int), &(i.second)[0], GL_STATIC_DRAW);
-      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_UNSIGNED_INT));
-    }
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    glBindVertexArray(vertex_array_object);
-
-    for(int i = 0; i < num_of_vertex_buffers; i++) {
-      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[i]);
-      glVertexAttribPointer(data_types[i].first, VertexData::DataWidth.at(data_types[i].first), data_types[i].second, GL_FALSE, 0, 0);
-      glEnableVertexAttribArray(data_types[i].first);
-
-    }
-    
-    if(vertex_data.getIndices().size() > 0) {
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
-    }
-    glBindVertexArray(0);
-
-    return vertex_array_object;
-  }
-
-  std::shared_ptr<BaseTexture> RenderableFactory::textureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+  std::shared_ptr<BaseTexture> MapHelper::textureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
     //Get out of the map directory
     auto pos = path.find_last_of("/");
     auto new_path = path.substr(0, pos);
@@ -166,7 +93,7 @@ namespace Graphics {
     return texture_manager[texture_name];
   }
 
-  std::shared_ptr<BaseTexture> RenderableFactory::normalTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+  std::shared_ptr<BaseTexture> MapHelper::normalTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
     //Get out of the map directory
     auto pos = path.find_last_of("/");
     auto new_path = path.substr(0, pos);
@@ -196,7 +123,7 @@ namespace Graphics {
     return texture_manager[texture_name];
   }
 
-  std::shared_ptr<BaseTexture> RenderableFactory::displacementTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+  std::shared_ptr<BaseTexture> MapHelper::displacementTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
     //Get out of the map directory
     auto pos = path.find_last_of("/");
     auto new_path = path.substr(0, pos);
@@ -226,7 +153,7 @@ namespace Graphics {
     return texture_manager[texture_name];
   }
 
-  std::vector<glm::vec2> RenderableFactory::generateTextureCoords(const Tmx::TileLayer* layer, const unsigned int x_pos, const unsigned int y_pos, const unsigned int texture_width, const unsigned int texture_height, const unsigned int tile_width, const unsigned int tile_height) {
+  std::vector<glm::vec2> MapHelper::generateTextureCoords(const Tmx::TileLayer* layer, const unsigned int x_pos, const unsigned int y_pos, const unsigned int texture_width, const unsigned int texture_height, const unsigned int tile_width, const unsigned int tile_height) {
     std::vector<glm::vec2> texs {
       glm::vec2(-0.5, -0.5),
       glm::vec2(-0.5, 0.5),
@@ -307,7 +234,7 @@ namespace Graphics {
     return texs;
   }
 
-  std::vector<glm::vec3> RenderableFactory::generateVertexCoords(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int offset_x, const unsigned int offset_y) {
+  std::vector<glm::vec3> MapHelper::generateVertexCoords(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int offset_x, const unsigned int offset_y) {
     std::vector<glm::vec3> verts {
       glm::vec3((float)offset_x / (float)base_width, (float)offset_y / (float)base_height, 0.0),
       glm::vec3((float)offset_x / (float)base_width, (float)offset_y / (float)base_height + (float)current_height / (float)base_height, 0.0),
@@ -317,48 +244,7 @@ namespace Graphics {
     return verts;
   }
 
-  template<>
-  std::shared_ptr<Renderable> RenderableFactory::create() {
-    unsigned int new_binding = 0;
-    glGenVertexArrays(1, &new_binding);
-    glBindVertexArray(new_binding);
-    glBindVertexArray(0);
-    return std::make_shared<Renderable>(new_binding, generateCube());
-  }
-
-  template<>
-  std::shared_ptr<Tile> RenderableFactory::create() {
-    unsigned int new_binding = 0;
-    glGenVertexArrays(1, &new_binding);
-    glBindVertexArray(new_binding);
-    glBindVertexArray(0);
-    return std::make_shared<Tile>(new_binding, generateTile(32, 32, 32, 32));
-  }
-
-  template<>
-  std::shared_ptr<AnimatedTile> RenderableFactory::create() {
-    if(!glIsVertexArray(animated_tile_vao)) {
-      animated_tile_vao = generateVertexArrayObject(generateTile(32, 32, 32, 32));
-    }
-    return std::make_shared<AnimatedTile>(animated_tile_vao, generateTile(32, 32, 32, 32));
-  }
-
-  template<>
-  std::shared_ptr<Renderable> RenderableFactory::create(const VertexData& vertex_data) {
-    return std::make_shared<Renderable>(generateVertexArrayObject(vertex_data), vertex_data);
-  }
-
-  template<>
-  std::shared_ptr<Tile> RenderableFactory::create(const VertexData& vertex_data) {
-    return std::make_shared<Tile>(generateVertexArrayObject(vertex_data), vertex_data);
-  }
-
-  template<>
-  std::shared_ptr<AnimatedTile> RenderableFactory::create(const VertexData& vertex_data) {
-    return std::make_shared<AnimatedTile>(generateVertexArrayObject(vertex_data), vertex_data);
-  }
-
-  std::vector<std::shared_ptr<Light>> RenderableFactory::createLightsFromMap(const Tmx::Map& map) {
+  std::vector<std::shared_ptr<Light>> MapHelper::createLightsFromMap(const Tmx::Map& map) {
     std::vector<std::shared_ptr<Light>> lights;
     std::vector<Tmx::Object*> light_map_objects;
     for(auto group : map.GetObjectGroups()) {
@@ -406,8 +292,8 @@ namespace Graphics {
     return lights;
   }
 
-  std::vector<std::shared_ptr<AnimatedTile>> RenderableFactory::createStaticallyAnimatedTilesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
-    std::vector<std::shared_ptr<AnimatedTile>> tiles;
+  std::vector<StaticAnimation> MapHelper::createStaticallyAnimatedTilesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+    std::vector<StaticAnimation> animations;
     auto layers = map.GetTileLayers();
     auto tilesets = map.GetTilesets();
     auto path = map.GetFilepath();
@@ -432,11 +318,12 @@ namespace Graphics {
             auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
 
             if(tile != nullptr && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
-              auto animated_renderable = create<AnimatedTile>(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
+              auto renderable = Renderable::create(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
+              auto animator = TileAnimator::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
+
               auto frames = tile->GetFrames();
 
-              animated_renderable->addTexture(texture);
-              animated_renderable->setSizeInPixels(tileset->GetTileWidth());
+              renderable->addTexture(texture);
               
               for(auto frame : frames) {
                 auto id = frame.GetTileID();
@@ -448,26 +335,27 @@ namespace Graphics {
                 int x_pos = id % width_in_tiles;
                 int y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
-                animated_renderable->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
+                animator->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
               }
 
-              animated_renderable->setShader((*shader_manager)["tile_animation"]);
+              renderable->setShader((*shader_manager)["tile_animation"]);
               
               //subtract y from layer height, and then subtract an additional 1 to normalize it to 0
-              animated_renderable->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
-              if(layer->IsVisible())
-                animated_renderable->setActive();
-              tiles.push_back(animated_renderable);
+              renderable->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
+              if(layer->IsVisible()) 
+                renderable->setActive(true);
+              animator->setActive(true);
+              animations.push_back(StaticAnimation { renderable, animator });
             }
           }
         }
       }
     }
 
-    return tiles;
+    return animations;
   }
 
-  MapRenderables RenderableFactory::createFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+  MapRenderables MapHelper::createRenderablesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
     std::vector<RenderableInfo> gid_to_vao;
     MapRenderables renderables;
     auto layers = map.GetTileLayers();
@@ -531,7 +419,7 @@ namespace Graphics {
                 vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
                 vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
 
-                vertex_array_object = generateVertexArrayObject(vert_data);
+                vertex_array_object = vert_data.generateVertexArrayObject();
 
                 RenderableInfo info { vert_data, vertex_array_object, layer->GetTileGid(x, y) };
                 info.flip_horizontal = layer->IsTileFlippedHorizontally(x, y);
@@ -544,10 +432,9 @@ namespace Graphics {
                 vert_data = iter->vertex_data;
               }
 
-              std::shared_ptr<Tile> renderable = std::make_shared<Tile>(vertex_array_object, vert_data);
+              auto renderable = Renderable::create(vert_data);
 
               renderable->addTexture(texture);
-              renderable->setSizeInPixels(tileset->GetTileWidth());
               if(normal_texture) {
                 renderable->addTexture(normal_texture);
               }
@@ -567,8 +454,8 @@ namespace Graphics {
               //subtract y from height and subtract 1 to normalize to 0
               renderable->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
               if(layer->IsVisible())
-                renderable->setActive();
-              renderables.tiles.push_back(renderable);
+                renderable->setActive(true);
+              renderables.renderables.push_back(renderable);
             }
             else {
             }
@@ -580,24 +467,25 @@ namespace Graphics {
     return renderables;
   }
 
-  std::vector<Animation> RenderableFactory::createAnimationsFromAnimationMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
-    std::vector<Animation> animations;
+  std::vector<DynamicAnimation> MapHelper::createAnimationsFromAnimationMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+    std::vector<DynamicAnimation> animations;
     auto path = map.GetFilepath();
     for(auto& tileset : map.GetTilesets()) {
       for(auto& tile : tileset->GetTiles()) {
         auto properties = tile->GetProperties();
         if(properties.HasProperty("SpriteName") && properties.HasProperty("AnimationName")) {
-          Animation new_anim; 
+          DynamicAnimation new_anim; 
           new_anim.sprite_name = properties.GetStringProperty("SpriteName");
           new_anim.animation_name = properties.GetStringProperty("AnimationName");
 
           auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
 
-          new_anim.tile = create<AnimatedTile>(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
+          new_anim.renderable = Renderable::create(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
           auto frames = tile->GetFrames();
 
-          new_anim.tile->addTexture(texture);
-          new_anim.tile->setSizeInPixels(tileset->GetTileWidth());
+          new_anim.renderable->addTexture(texture);
+
+          new_anim.animator = TileAnimator::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
           
           for(auto frame : frames) {
             auto id = frame.GetTileID();
@@ -609,10 +497,10 @@ namespace Graphics {
             int x_pos = id % width_in_tiles;
             int y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
-            new_anim.tile->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
+            new_anim.animator->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
           }
 
-          new_anim.tile->setShader((*shader_manager)["tile_animation"]);
+          new_anim.renderable->setShader((*shader_manager)["tile_animation"]);
           animations.push_back(new_anim);
         }
       }
@@ -620,8 +508,8 @@ namespace Graphics {
     return animations;
   }
 
-  std::shared_ptr<Text> RenderableFactory::createText(std::shared_ptr<Font> font, const glm::vec4& color) {
-    std::shared_ptr<Text> text = std::make_shared<Text>();
+  std::shared_ptr<UI::Text> MapHelper::createText(std::shared_ptr<UI::Font> font, const glm::vec4& color) {
+    std::shared_ptr<UI::Text> text = std::make_shared<UI::Text>();
     text->setColor(color);
     text->setFont(font);
 
@@ -645,7 +533,7 @@ namespace Graphics {
       vert_data.addIndices(indices);
       vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
       vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
-      auto vao = generateVertexArrayObject(vert_data);
+      auto vao = vert_data.generateVertexArrayObject();
 
       text->addCharacterVertexData(i.first, vert_data, vao);
     }

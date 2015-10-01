@@ -631,4 +631,73 @@ namespace Graphics {
            int_vector1s.size() + int_vector2s.size() + int_vector3s.size() + int_vector4s.size() +
            unsigned_int_vector1s.size() + unsigned_int_vector2s.size() + unsigned_int_vector3s.size() + unsigned_int_vector4s.size();
   }
+
+  const unsigned int VertexData::generateVertexArrayObject() const {
+    unsigned int vertex_array_object = 0;
+    glGenVertexArrays(1, &vertex_array_object);
+    glBindVertexArray(vertex_array_object);
+
+    auto float_data = getCollapsedVectors<float>();
+    auto double_data = getCollapsedVectors<double>();
+    auto int_data = getCollapsedVectors<int>();
+    auto unsigned_int_data = getCollapsedVectors<unsigned int>();
+    
+    unsigned int num_of_vertex_buffers = numberVertexBufferObjects();
+    unsigned int* vertex_buffer_objects = new unsigned int[num_of_vertex_buffers];
+    unsigned int index_buffer_object = 0;
+
+    std::vector<std::pair<VertexData::DATA_TYPE, GLenum>> data_types;
+    glGenBuffers(num_of_vertex_buffers, vertex_buffer_objects);
+
+    unsigned int current_buffer = 0;
+    
+    //Do this if we actually have indices
+    if(getIndices().size() > 0) {
+      glGenBuffers(1, &index_buffer_object);
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
+      glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndices().size() * sizeof(unsigned int), &(getIndices())[0], GL_STATIC_DRAW);
+    }
+
+    for(auto i : float_data) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
+      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(float), &(i.second)[0], GL_STATIC_DRAW);
+      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_FLOAT));
+    }
+
+    for(auto i : double_data) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
+      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(double), &(i.second)[0], GL_STATIC_DRAW);
+      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_DOUBLE));
+    }
+
+    for(auto i : int_data) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
+      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(int), &(i.second)[0], GL_STATIC_DRAW);
+      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_INT));
+    }
+
+    for(auto i : unsigned_int_data) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[current_buffer++]);
+      glBufferData(GL_ARRAY_BUFFER, i.second.size() * sizeof(unsigned int), &(i.second)[0], GL_STATIC_DRAW);
+      data_types.push_back(std::pair<VertexData::DATA_TYPE, GLenum>(i.first, GL_UNSIGNED_INT));
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    glBindVertexArray(vertex_array_object);
+
+    for(int i = 0; i < num_of_vertex_buffers; i++) {
+      glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[i]);
+      glVertexAttribPointer(data_types[i].first, VertexData::DataWidth.at(data_types[i].first), data_types[i].second, GL_FALSE, 0, 0);
+      glEnableVertexAttribArray(data_types[i].first);
+
+    }
+    
+    if(getIndices().size() > 0) {
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
+    }
+    glBindVertexArray(0);
+
+    return vertex_array_object;
+  }
 }

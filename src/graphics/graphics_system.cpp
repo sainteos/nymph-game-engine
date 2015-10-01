@@ -184,7 +184,7 @@ namespace Graphics {
     camera->onUpdate(delta);
 
     for(auto& renderables_iter : renderables_map) {
-      if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second) && renderables_iter.second->onUpdate(delta)) {
+      if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second)) {
         if(renderables_iter.second->isLightReactive()) {
           //find lights that influence renderable
           std::priority_queue<RankedLight, std::vector<RankedLight>, std::less<RankedLight>> light_queue;
@@ -202,7 +202,7 @@ namespace Graphics {
 
         }
         //if renderable was updated, then render
-        renderables_iter.second->onRender();
+        renderables_iter.second->onUpdate(delta);
       }
     }
 

@@ -9,12 +9,12 @@
 #include "base_texture.h"
 #include "transform.h"
 #include "light.h"
+#include "events/observer.h"
+#include "uniform.h"
 
 namespace Graphics {
   class Renderable : public Component {
     private:
-      bool active;
-
       unsigned int vertex_array_object;
       std::shared_ptr<Shader> shader;
       std::vector<std::shared_ptr<BaseTexture>> textures;
@@ -25,11 +25,15 @@ namespace Graphics {
       std::list<std::shared_ptr<Light>> influencing_lights;
       glm::vec3 ambient_light;
       float ambient_intensity;
-    protected:
-      Renderable();
+
+      std::vector<Uniform> uniforms;
+      void setUniforms();
 
     public:
       Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data);
+      static std::shared_ptr<Renderable> create(const VertexData& vertex_data);
+ 
+      Renderable() = delete;
       //Remove copy constructor and assignment
       Renderable(const Renderable&) = delete;
       Renderable operator=(Renderable&) = delete;
@@ -39,14 +43,13 @@ namespace Graphics {
 
       virtual ~Renderable();
 
-      void setActive() noexcept;
-      void setInactive() noexcept;
-      const bool isActive() const noexcept;
+      void onNotify(const Events::Event& event) override;
 
       void setShader(std::shared_ptr<Shader> shader_object) noexcept;
       const std::shared_ptr<Shader> getShader() const noexcept;
 
       void addTexture(std::shared_ptr<BaseTexture> texture_object) noexcept;
+      void removeTexture(std::shared_ptr<BaseTexture> texture_object);
       const std::vector<std::shared_ptr<BaseTexture>> getTextures() const noexcept;
       const std::shared_ptr<BaseTexture> getTextureByUniform(const std::string& uniform_name);
 
@@ -73,7 +76,6 @@ namespace Graphics {
        * @return true if anything was updated, false if nothing was updated
        */
       virtual const bool onUpdate(const double delta) override;
-      virtual const bool onRender();
   };
 }
 #endif

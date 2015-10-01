@@ -12,7 +12,7 @@
 #undef far
 
 namespace Graphics {
-  class Camera : public Component, public Events::Observer {
+  class Camera : public Component {
     private:
       glm::mat4 projection_matrix;
       //THESE NEED TO BE MOVED TO SOMEWHERE ELSE, PERHAPS AN INHERITED CLASS

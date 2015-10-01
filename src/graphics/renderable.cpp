@@ -15,21 +15,22 @@
 #include "exceptions/renderable_not_initialized_exception.h"
 #include "exceptions/invalid_shader_object_exception.h"
 #include "renderable.h"
+#include "graphics/set_uniform_event.h"
 
 namespace Graphics {
-  Renderable::Renderable() : active(false), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
-
-  }
-
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data) : active(false), vertex_data(vertex_data), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data) : vertex_data(vertex_data), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
     }
     this->vertex_array_object = vertex_array_object;
   }
 
+
+  std::shared_ptr<Renderable> Renderable::create(const VertexData& vertex_data) {
+    return std::make_shared<Renderable>(vertex_data.generateVertexArrayObject(), vertex_data);
+  }
+
   Renderable::Renderable(Renderable&& renderable) : vertex_data(renderable.vertex_data) {
-    active = std::move(renderable.active);
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
     transform = renderable.transform;
@@ -38,7 +39,6 @@ namespace Graphics {
   }
 
   Renderable& Renderable::operator=(Renderable&& renderable) { 
-    active = std::move(renderable.active);
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
     vertex_data = renderable.vertex_data;
@@ -52,17 +52,24 @@ namespace Graphics {
   Renderable::~Renderable() {
     onDestroy();
   }
-  
-  void Renderable::setActive() noexcept {
-    active = true;
-  }
 
-  void Renderable::setInactive() noexcept {
-    active = false;
-  }
-
-  const bool Renderable::isActive() const noexcept {
-    return active;
+  void Renderable::onNotify(const Events::Event& event) {
+    switch(event.getEventCode()) {
+      case Events::EventType::SET_SHADER:
+      case Events::EventType::ADD_TEXTURE:
+      case Events::EventType::REMOVE_TEXTURE:
+      case Events::EventType::SET_UNIFORM: {
+        auto casted_event = static_cast<const Graphics::SetUniformEvent*>(&event);
+        auto iter = std::remove_if(uniforms.begin(), uniforms.end(), [&](const Uniform& uniform) { return uniform.getName() == casted_event->getUniform().getName(); });
+        if(iter != uniforms.end())
+          uniforms.erase(iter);
+        uniforms.push_back(casted_event->getUniform());
+        break;
+      }
+      default:
+        break;
+    }
+    Component::onNotify(event);
   }
 
   void Renderable::setShader(const std::shared_ptr<Shader> shader_object) noexcept {
@@ -75,6 +82,12 @@ namespace Graphics {
 
   void Renderable::addTexture(std::shared_ptr<BaseTexture> texture_object) noexcept {
     textures.push_back(texture_object);
+  }
+
+  void Renderable::removeTexture(std::shared_ptr<BaseTexture> texture_object) {
+    auto iter = std::remove(textures.begin(), textures.end(), texture_object);
+    if(iter != textures.end())
+      textures.erase(iter);
   }
 
   const std::vector<std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
@@ -131,8 +144,91 @@ namespace Graphics {
     return vertex_data;
   }
 
+  void Renderable::setUniforms() {
+    for(auto i : uniforms) {
+      switch(i.getType()) {
+        case Graphics::Uniform::UniformTypes::FLOAT:
+          getShader()->setUniform(i.getName(), i.getData<float>());
+          break;
+        case Graphics::Uniform::UniformTypes::VEC2:
+          getShader()->setUniform(i.getName(), i.getData<glm::vec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::VEC3:
+          getShader()->setUniform(i.getName(), i.getData<glm::vec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::VEC4:
+          getShader()->setUniform(i.getName(), i.getData<glm::vec4>());
+          break;
+        case Graphics::Uniform::UniformTypes::INT:
+          getShader()->setUniform(i.getName(), i.getData<int>());
+          break;
+        case Graphics::Uniform::UniformTypes::IVEC2:
+          getShader()->setUniform(i.getName(), i.getData<glm::ivec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::IVEC3:
+          getShader()->setUniform(i.getName(), i.getData<glm::ivec3>());
+          break;
+        case Graphics::Uniform::UniformTypes::IVEC4:
+          getShader()->setUniform(i.getName(), i.getData<glm::ivec4>());
+          break;
+        case Graphics::Uniform::UniformTypes::UINT:
+          getShader()->setUniform(i.getName(), i.getData<unsigned int>());
+          break;
+        case Graphics::Uniform::UniformTypes::UVEC2:
+          getShader()->setUniform(i.getName(), i.getData<glm::uvec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::UVEC3:
+          getShader()->setUniform(i.getName(), i.getData<glm::uvec3>());
+          break;
+        case Graphics::Uniform::UniformTypes::UVEC4:
+          getShader()->setUniform(i.getName(), i.getData<glm::uvec4>());
+          break;
+        case Graphics::Uniform::UniformTypes::BOOL:
+          getShader()->setUniform(i.getName(), i.getData<bool>());
+          break;
+        case Graphics::Uniform::UniformTypes::BVEC2:
+          getShader()->setUniform(i.getName(), i.getData<glm::bvec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::BVEC3:
+          getShader()->setUniform(i.getName(), i.getData<glm::bvec3>());
+          break;
+        case Graphics::Uniform::UniformTypes::BVEC4:
+          getShader()->setUniform(i.getName(), i.getData<glm::bvec4>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT2:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat2>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT3:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat3>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT4:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat4>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT23:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat2x3>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT32:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat3x2>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT24:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat2x4>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT42:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat4x2>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT34:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat3x4>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT43:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat4x3>());
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
   void Renderable::onDestroy() {
-    active = false;
     //not this one's job to destroy shader
     shader = nullptr;
     textures.clear();
@@ -146,14 +242,12 @@ namespace Graphics {
   }
 
   const bool Renderable::onUpdate(const double delta) {
-    return true;
-  }
-
-  const bool Renderable::onRender() {
-    if(active) {
+    if(isActive()) {
       if(!glIsVertexArray(vertex_array_object)) {
         throw Exceptions::InvalidVertexArrayException(vertex_array_object);
       }
+
+      setUniforms();
 
       glBindVertexArray(vertex_array_object);
 

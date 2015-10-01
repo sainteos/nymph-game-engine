@@ -14,17 +14,18 @@
 #include "graphics/shader.h"
 #include "graphics/base_texture.h"
 #include "graphics/shader_manager.h"
-#include "graphics/renderable_factory.h"
-#include "graphics/animated_tile.h"
+#include "graphics/map_helper.h"
 #include "transform.h"
 #include "graphics/camera.h"
-#include "sprite.h"
+#include "sprite_movement.h"
 #include "input/input_system.h"
 #include "utility/fps_counter.h"
 #include "utility/config_manager.h"
 #include "graphics/light.h"
 #include "utility/utility_functions.h"
-#include "graphics/font_generator.h"
+#include "graphics/ui/font_generator.h"
+#include "entity.h"
+#include "triggerable.hpp"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -61,7 +62,7 @@ int main(int argc, char** argv) {
 
   Input::InputSystem input_system(graphics.getWindow());
 
-  RenderableFactory renderable_factory;
+  MapHelper map_helper;
 
   std::shared_ptr<ShaderManager> shader_manager = std::make_shared<ShaderManager>();
   shader_manager->loadShader("simple_texture");
@@ -76,18 +77,18 @@ int main(int argc, char** argv) {
   camera->setTransform(std::make_shared<Transform>());
   graphics.setCamera(camera);
 
-  FontGenerator font_generator("./project-spero-assets/Fonts/");
-  font_generator.loadFont("Pacifico.ttf", 64, "pacifico");
+  UI::FontGenerator font_generator("./project-spero-assets/");
+  font_generator.loadFont("Jack.ttf", 64, "jack");
 
   TextureManager texture_manager;
   
-  auto renderables = renderable_factory.createFromMap(*map, texture_manager, shader_manager);
-  auto animations = renderable_factory.createAnimationsFromAnimationMap(*animation_map, texture_manager, shader_manager);
-  auto static_animations = renderable_factory.createStaticallyAnimatedTilesFromMap(*map, texture_manager, shader_manager);
-  auto lights = renderable_factory.createLightsFromMap(*map);
-  auto text = renderable_factory.createText(font_generator.getFont("pacifico"), glm::vec4(1.0, 0.4, 0.2, 1.0));
+  auto renderables = map_helper.createRenderablesFromMap(*map, texture_manager, shader_manager);
+  auto animations = map_helper.createAnimationsFromAnimationMap(*animation_map, texture_manager, shader_manager);
+  auto static_animations = map_helper.createStaticallyAnimatedTilesFromMap(*map, texture_manager, shader_manager);
+  auto lights = map_helper.createLightsFromMap(*map);
+  auto text = map_helper.createText(font_generator.getFont("jack"), glm::vec4(0.1, 0.4, 0.2, 0.5));
 
-  std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
+  std::shared_ptr<Entity> sprite = std::make_shared<Entity>();
 
   for(auto& i : renderables.dynamic_animations) {
     if(i.sprite_name == "Aidan") {
@@ -95,18 +96,25 @@ int main(int argc, char** argv) {
     }
   }
 
-  sprite->addObserver(camera);
+  std::shared_ptr<SpriteMovement> sprite_movement = std::make_shared<SpriteMovement>();
+  sprite_movement->addObserver(camera);
+  sprite_movement->setMovingSpeed(2.0);
+  sprite_movement->setActive(true);
+
+  sprite->addComponent(sprite_movement);
+  input_system.addObserver(sprite_movement);
   
   auto transform = std::make_shared<Transform>();
 
-  for(auto& i : renderables.tiles) {
+  for(auto& i : renderables.renderables) {
     transform->addChild(i->getTransform());
     graphics.addRenderable(i);
   }
 
   for(auto& i : static_animations) {
-    transform->addChild(i->getTransform());
-    graphics.addRenderable(i);
+    transform->addChild(i.renderable->getTransform());
+    graphics.addRenderable(i.renderable);
+    i.animator->addObserver(i.renderable);
   }
 
   for(auto& i : lights) {
@@ -116,7 +124,7 @@ int main(int argc, char** argv) {
 
   transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
   
-  auto matcher = [](const Animation& a, const std::string& sprite, const std::string& anim) {
+  auto matcher = [](const DynamicAnimation& a, const std::string& sprite, const std::string& anim) {
     return a.sprite_name == sprite && a.animation_name == anim;
   };
 
@@ -129,55 +137,77 @@ int main(int argc, char** argv) {
   auto stop_left = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Left_Still"));
   auto stop_right = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Right_Still"));
 
-  input_system.addObserver(sprite);
-  sprite->addTriggerableTile(SpriteState::MOVE_UP, move_up->tile);
-  graphics.addRenderable(move_up->tile);
-  sprite->addTriggerableTile(SpriteState::MOVE_DOWN, move_down->tile);
-  graphics.addRenderable(move_down->tile);
-  sprite->addTriggerableTile(SpriteState::MOVE_LEFT, move_left->tile);
-  graphics.addRenderable(move_left->tile);
-  sprite->addTriggerableTile(SpriteState::MOVE_RIGHT, move_right->tile);
-  graphics.addRenderable(move_right->tile);
-  sprite->addTriggerableTile(SpriteState::FACE_UP, stop_up->tile);
-  graphics.addRenderable(stop_up->tile);
-  sprite->addTriggerableTile(SpriteState::FACE_DOWN, stop_down->tile);
-  graphics.addRenderable(stop_down->tile);
-  sprite->addTriggerableTile(SpriteState::FACE_LEFT, stop_left->tile);
-  graphics.addRenderable(stop_left->tile);
-  sprite->addTriggerableTile(SpriteState::FACE_RIGHT, stop_right->tile);
-  graphics.addRenderable(stop_right->tile);
-  sprite->setMovingSpeed(2.0);
+  std::shared_ptr<Triggerable<SpriteState>> triggerable = std::make_shared<Triggerable<SpriteState>>(SpriteState::FACE_DOWN);
+  triggerable->setActive(true);
+  sprite->addComponent(triggerable);
+
+  triggerable->addTriggerableComponent(SpriteState::MOVE_UP, move_up->renderable->getId());
+  sprite->addComponent(move_up->renderable);
+  //graphics.addRenderable(move_up->renderable);
+
+  triggerable->addTriggerableComponent(SpriteState::MOVE_DOWN, move_down->renderable->getId());
+  sprite->addComponent(move_down->renderable);
+ // graphics.addRenderable(move_down->renderable);
+
+  triggerable->addTriggerableComponent(SpriteState::MOVE_LEFT, move_left->renderable->getId());
+  sprite->addComponent(move_left->renderable);
+  //graphics.addRenderable(move_left->renderable);
+
+  triggerable->addTriggerableComponent(SpriteState::MOVE_RIGHT, move_right->renderable->getId());
+  sprite->addComponent(move_right->renderable);
+ // graphics.addRenderable(move_right->renderable);
+
+
+  triggerable->addTriggerableComponent(SpriteState::FACE_UP, stop_up->renderable->getId());
+  sprite->addComponent(stop_up->renderable);
+  //graphics.addRenderable(stop_up->renderable);
+
+  triggerable->addTriggerableComponent(SpriteState::FACE_DOWN, stop_down->renderable->getId());
+  sprite->addComponent(stop_down->renderable);
+ // graphics.addRenderable(stop_down->renderable);
+
+  triggerable->addTriggerableComponent(SpriteState::FACE_LEFT, stop_left->renderable->getId());
+  sprite->addComponent(stop_left->renderable);
+ // graphics.addRenderable(stop_left->renderable);
+
+  triggerable->addTriggerableComponent(SpriteState::FACE_RIGHT, stop_right->renderable->getId());
+  sprite->addComponent(stop_right->renderable);
+ // graphics.addRenderable(stop_right->renderable);
+
 
   transform->addChild(sprite->getTransform());
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
 
-  text->getTransform()->translate(glm::vec3(0.0, 0.0, -0.3));
-  text->getTransform()->scale(glm::vec2(1.0 / 64.0, 1.0 / 64.0));
-  text->setShader(shader_manager->getShader("simple_text"));
-  text->setText("Banana Hammock");
-  if(config.getString("text_horizontal_alignment") == "left") {
-    text->setHorizontalAlignment(Text::HorizontalAlignment::LEFT);
-  }
-  else if(config.getString("text_horizontal_alignment") == "center") {
-    text->setHorizontalAlignment(Text::HorizontalAlignment::CENTER);
-  }
-  else if(config.getString("text_horizontal_alignment") == "right") {
-    text->setHorizontalAlignment(Text::HorizontalAlignment::RIGHT);
-  }
+  // text->getTransform()->translate(glm::vec3(0.0, 0.0, -0.3));
+  // text->getTransform()->scale(glm::vec2(1.0 / 64.0, 1.0 / 64.0));
+  // text->setShader(shader_manager->getShader("simple_text"));
+  // text->setText("Banana Hammock");
+  // if(config.getString("text_horizontal_alignment") == "left") {
+  //   text->setHorizontalAlignment(UI::Text::HorizontalAlignment::LEFT);
+  // }
+  // else if(config.getString("text_horizontal_alignment") == "center") {
+  //   text->setHorizontalAlignment(UI::Text::HorizontalAlignment::CENTER);
+  // }
+  // else if(config.getString("text_horizontal_alignment") == "right") {
+  //   text->setHorizontalAlignment(UI::Text::HorizontalAlignment::RIGHT);
+  // }
 
-  if(config.getString("text_vertical_alignment") == "top") {
-    text->setVerticalAlignment(Text::VerticalAlignment::TOP);
-  }
-  else if(config.getString("text_vertical_alignment") == "center") {
-    text->setVerticalAlignment(Text::VerticalAlignment::CENTER);
-  }
-  else if(config.getString("text_vertical_alignment") == "bottom") {
-    text->setVerticalAlignment(Text::VerticalAlignment::BOTTOM);
-  }
-  text->setActive();
-  camera->getTransform()->addChild(text->getTransform());
-  graphics.addRenderable(text);
+  // if(config.getString("text_vertical_alignment") == "top") {
+  //   text->setVerticalAlignment(UI::Text::VerticalAlignment::TOP);
+  // }
+  // else if(config.getString("text_vertical_alignment") == "center") {
+  //   text->setVerticalAlignment(UI::Text::VerticalAlignment::CENTER);
+  // }
+  // else if(config.getString("text_vertical_alignment") == "bottom") {
+  //   text->setVerticalAlignment(UI::Text::VerticalAlignment::BOTTOM);
+  // }
+  // text->setActive();
+  //camera->getTransform()->addChild(text->getTransform());
+  //graphics.addRenderable(text);
 
+  for(auto i : static_animations) {
+    i.animator->onStart();
+  }
   sprite->onStart();
 
   graphics.startRender();
@@ -192,6 +222,9 @@ int main(int argc, char** argv) {
       window_name <<config.getString("window_title")<<" "<<fps_counter.getCurrentFPS();
       graphics.setWindowName(window_name.str());
       fps = fps_counter.getCurrentFPS();
+    }
+    for(auto i : static_animations) {
+      i.animator->onUpdate(delta);
     }
     
     sprite->onUpdate(delta);
