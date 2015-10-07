@@ -1,14 +1,16 @@
 #ifndef OBSERVER_H
 #define OBSERVER_H
 #include <memory>
-#include <list>
+#include <queue>
 #include "events/event.h"
 
 namespace Events {
   class Observer {
+    protected:
+      std::queue<std::shared_ptr<Event>> events;
     public:
       virtual ~Observer() {}
-      virtual void onNotify(const Events::Event& event) = 0;
+      void onNotify(std::shared_ptr<Events::Event> event) { events.push(event); }
   };
 }
 

@@ -18,7 +18,7 @@ namespace Events {
     REMOVE_TEXTURE,
     SET_ACTIVE,
     SET_UNIFORM,
-    COMPONENT_TRIGGER
+    ANIMATION_TRIGGER
   };
 
   inline std::map<EventType, std::string> EventTypesToString() {
@@ -36,7 +36,7 @@ namespace Events {
       {REMOVE_TEXTURE, "Remove Texture"},
       {SET_ACTIVE, "Set Active"},
       {SET_UNIFORM, "Set Uniform"},
-      {COMPONENT_TRIGGER, "Component Trigger"}
+      {ANIMATION_TRIGGER, "Animation Trigger"}
     };
   }
 }

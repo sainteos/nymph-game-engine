@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <memory>
+#include <set>
 #include "component.h"
 #include "vertex_data.h"
 #include "shader.h"
@@ -26,7 +27,7 @@ namespace Graphics {
       glm::vec3 ambient_light;
       float ambient_intensity;
 
-      std::vector<Uniform> uniforms;
+      std::set<Uniform> uniforms;
       void setUniforms();
 
     public:
@@ -42,8 +43,6 @@ namespace Graphics {
       Renderable& operator=(Renderable&& renderable);
 
       virtual ~Renderable();
-
-      void onNotify(const Events::Event& event) override;
 
       void setShader(std::shared_ptr<Shader> shader_object) noexcept;
       const std::shared_ptr<Shader> getShader() const noexcept;

@@ -6,17 +6,21 @@
 #include "events/subject.h"
 #include "events/observer.h"
 
+class ComponentManager;
+
 class Component : public Events::Subject, public Events::Observer {
   protected:
-    std::shared_ptr<Transform> transform;
+    std::weak_ptr<Transform> transform;
     bool active;
     unsigned int id;
 
     static unsigned int next_id;
+
+    friend class ComponentManager;
   public:
     Component();
     virtual void onStart() = 0;
-    virtual const bool onUpdate(const double delta) = 0;
+    virtual const bool onUpdate(const double delta);
     virtual void onDestroy() = 0;
     void setTransform(std::shared_ptr<Transform> transform);
     std::shared_ptr<Transform> getTransform() const noexcept;
@@ -26,7 +30,7 @@ class Component : public Events::Subject, public Events::Observer {
 
     const unsigned int getId() const noexcept;
 
-    virtual void onNotify(const Events::Event& event) override;
+    const bool operator<(const Component& other) const noexcept;
 
     virtual ~Component() {}
 };

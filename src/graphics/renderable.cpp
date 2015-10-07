@@ -33,8 +33,6 @@ namespace Graphics {
   Renderable::Renderable(Renderable&& renderable) : vertex_data(renderable.vertex_data) {
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
-    transform = renderable.transform;
-    renderable.transform.reset();
     light_reactive = std::move(renderable.light_reactive);
   }
 
@@ -42,8 +40,6 @@ namespace Graphics {
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
     vertex_data = renderable.vertex_data;
-    transform = renderable.transform;
-    renderable.transform.reset();
     light_reactive = std::move(renderable.light_reactive);
 
     return *this;
@@ -51,25 +47,6 @@ namespace Graphics {
 
   Renderable::~Renderable() {
     onDestroy();
-  }
-
-  void Renderable::onNotify(const Events::Event& event) {
-    switch(event.getEventCode()) {
-      case Events::EventType::SET_SHADER:
-      case Events::EventType::ADD_TEXTURE:
-      case Events::EventType::REMOVE_TEXTURE:
-      case Events::EventType::SET_UNIFORM: {
-        auto casted_event = static_cast<const Graphics::SetUniformEvent*>(&event);
-        auto iter = std::remove_if(uniforms.begin(), uniforms.end(), [&](const Uniform& uniform) { return uniform.getName() == casted_event->getUniform().getName(); });
-        if(iter != uniforms.end())
-          uniforms.erase(iter);
-        uniforms.push_back(casted_event->getUniform());
-        break;
-      }
-      default:
-        break;
-    }
-    Component::onNotify(event);
   }
 
   void Renderable::setShader(const std::shared_ptr<Shader> shader_object) noexcept {
@@ -242,43 +219,48 @@ namespace Graphics {
   }
 
   const bool Renderable::onUpdate(const double delta) {
+    Component::onUpdate(delta);
+    if(!active)
+      return false;
+
     if(isActive()) {
       if(!glIsVertexArray(vertex_array_object)) {
         throw Exceptions::InvalidVertexArrayException(vertex_array_object);
       }
 
-      setUniforms();
 
       glBindVertexArray(vertex_array_object);
 
       if(shader != nullptr) {
-        if(light_reactive) {
-          shader->setUniform("num_lights", (int)influencing_lights.size());
-          int index = 0;
-          std::stringstream light_str;
-          for(auto& light : influencing_lights) {
-            light_str << "lights[" << index << "].";
-            shader->setUniform(light_str.str() + "position", light->getTransform()->getAbsoluteTranslation());
-            shader->setUniform(light_str.str() + "color", light->getColor());
-            shader->setUniform(light_str.str() + "intensity", light->getIntensity());
-            shader->setUniform(light_str.str() + "linear_attenuation", light->getLinearAttenuation());
-            if(light->castsQuantizedBands()) {
-              shader->setUniform(light_str.str() + "number_quantized_bands", light->getNumberOfQuantizedBands());
-            }
-            if(light->getType() == Light::Type::POINT) {
-              shader->setUniform(light_str.str() + "cone_angle", 0.0f);
-            }
-            else if(light->getType() == Light::Type::SPOT) {
-              shader->setUniform(light_str.str() + "cone_angle", light->getConeAngle());
-              shader->setUniform(light_str.str() + "cone_direction", light->getConeDirection());
-            }
-            light_str.str(std::string());
-            index++;
-          }
-        }
+        // if(light_reactive) {
+        //   shader->setUniform("num_lights", (int)influencing_lights.size());
+        //   int index = 0;
+        //   std::stringstream light_str;
+        //   for(auto& light : influencing_lights) {
+        //     light_str << "lights[" << index << "].";
+        //     shader->setUniform(light_str.str() + "position", light->getTransform()->getAbsoluteTranslation());
+        //     shader->setUniform(light_str.str() + "color", light->getColor());
+        //     shader->setUniform(light_str.str() + "intensity", light->getIntensity());
+        //     shader->setUniform(light_str.str() + "linear_attenuation", light->getLinearAttenuation());
+        //     if(light->castsQuantizedBands()) {
+        //       shader->setUniform(light_str.str() + "number_quantized_bands", light->getNumberOfQuantizedBands());
+        //     }
+        //     if(light->getType() == Light::Type::POINT) {
+        //       shader->setUniform(light_str.str() + "cone_angle", 0.0f);
+        //     }
+        //     else if(light->getType() == Light::Type::SPOT) {
+        //       shader->setUniform(light_str.str() + "cone_angle", light->getConeAngle());
+        //       shader->setUniform(light_str.str() + "cone_direction", light->getConeDirection());
+        //     }
+        //     light_str.str(std::string());
+        //     index++;
+        //   }
+        // }
 
+        setUniforms();
         shader->useProgram();
-        shader->setUniform<glm::mat4>("transform", transform->getAbsoluteTransformationMatrix());
+
+        shader->setUniform<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix());
         for(auto& texture : textures) {
           shader->setUniform<int>(texture->getTextureUniformName(), texture->getTextureUnit());
           texture->bind();
@@ -294,11 +276,32 @@ namespace Graphics {
       else {
         glDrawArrays(GL_TRIANGLES, 0, vertex_data.getVertexCount());
       }
+    }
 
-      return true;
+    while(!events.empty()) {
+      auto event = events.front();
+      events.pop();
+      switch(event->getEventCode()) {
+        case Events::EventType::SET_SHADER:
+          break;
+        case Events::EventType::ADD_TEXTURE:
+          break;
+        case Events::EventType::REMOVE_TEXTURE:
+          break;
+        case Events::EventType::SET_UNIFORM: {
+          auto casted_event = std::static_pointer_cast<Graphics::SetUniformEvent>(event);
+
+          auto insert_success = uniforms.insert(casted_event->getUniform());
+          if(!insert_success.second) {
+            uniforms.erase(insert_success.first);
+            uniforms.insert(casted_event->getUniform());
+          }
+          break;
+        }
+        default:
+          break;
+      }
     }
-    else {
-      return false;
-    }
+    return true; 
   }
 }

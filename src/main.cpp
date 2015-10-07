@@ -7,6 +7,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <functional>
+#include <typeinfo>
 #include "graphics/graphics_system.h"
 #include "graphics/renderable.h"
 #include "graphics/vertex_data.h"
@@ -16,7 +17,6 @@
 #include "graphics/shader_manager.h"
 #include "graphics/map_helper.h"
 #include "transform.h"
-#include "graphics/camera.h"
 #include "sprite_movement.h"
 #include "input/input_system.h"
 #include "utility/fps_counter.h"
@@ -25,7 +25,8 @@
 #include "utility/utility_functions.h"
 #include "graphics/ui/font_generator.h"
 #include "entity.h"
-#include "triggerable.hpp"
+#include "component_manager.h"
+#include "graphics/camera.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -62,7 +63,9 @@ int main(int argc, char** argv) {
 
   Input::InputSystem input_system(graphics.getWindow());
 
-  MapHelper map_helper;
+  std::shared_ptr<ComponentManager> component_manager = std::make_shared<ComponentManager>();
+
+  MapHelper map_helper(component_manager);
 
   std::shared_ptr<ShaderManager> shader_manager = std::make_shared<ShaderManager>();
   shader_manager->loadShader("simple_texture");
@@ -73,9 +76,12 @@ int main(int argc, char** argv) {
   float viewport_tile_width = config.getFloat("screen_width_tiles");
   float viewport_tile_height = config.getFloat("screen_height_tiles");
 
-  std::shared_ptr<Camera> camera = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config.getFloat("near_plane"), config.getFloat("far_plane"));
-  camera->setTransform(std::make_shared<Transform>());
-  graphics.setCamera(camera);
+  std::shared_ptr<Entity> camera = std::make_shared<Entity>();
+  std::shared_ptr<Camera> camera_component = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config.getFloat("near_plane"), config.getFloat("far_plane"));
+  camera->addComponent(camera_component);
+  camera->setActive(true);
+
+  component_manager->addComponent(camera_component);
 
   UI::FontGenerator font_generator("./project-spero-assets/");
   font_generator.loadFont("Jack.ttf", 64, "jack");
@@ -88,92 +94,59 @@ int main(int argc, char** argv) {
   auto lights = map_helper.createLightsFromMap(*map);
   auto text = map_helper.createText(font_generator.getFont("jack"), glm::vec4(0.1, 0.4, 0.2, 0.5));
 
-  std::shared_ptr<Entity> sprite = std::make_shared<Entity>();
+  
+  auto transform = std::make_shared<Transform>();
+
+  std::vector<std::shared_ptr<Entity>> entities;
+
+  for(auto& i : renderables.entities) {
+    transform->addChild(i->getTransform());
+  }
+
+  for(auto& i : static_animations) {
+    transform->addChild(i->getTransform());
+  }
+
+  // for(auto& i : lights) {
+  //   transform->addChild(i->getTransform());
+  //   graphics.addLight(i);
+  //   component_manager.addComponent(i);
+  // }
+
+  transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
+  
+  auto matcher = [](std::shared_ptr<DynamicAnimation> a, const std::string& sprite) {
+    return a->sprite_name == sprite;
+  };
+
+  auto aidan = *std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan"));
+
+  auto sprite = aidan->entity;
 
   for(auto& i : renderables.dynamic_animations) {
     if(i.sprite_name == "Aidan") {
       sprite->getTransform()->translate(glm::vec3((float)i.x_pos, (float)i.y_pos, (float)i.z_order));
+      aidan->animator->setStartingState(i.default_animation);
     }
   }
 
   std::shared_ptr<SpriteMovement> sprite_movement = std::make_shared<SpriteMovement>();
-  sprite_movement->addObserver(camera);
+  sprite_movement->setAnimationStringState(SpriteState::MOVE_UP, "Up_Movement");
+  sprite_movement->setAnimationStringState(SpriteState::MOVE_DOWN, "Down_Movement");
+  sprite_movement->setAnimationStringState(SpriteState::MOVE_LEFT, "Left_Movement");
+  sprite_movement->setAnimationStringState(SpriteState::MOVE_RIGHT, "Right_Movement");
+  sprite_movement->setAnimationStringState(SpriteState::FACE_UP, "Up_Still");
+  sprite_movement->setAnimationStringState(SpriteState::FACE_DOWN, "Down_Still");
+  sprite_movement->setAnimationStringState(SpriteState::FACE_LEFT, "Left_Still");
+  sprite_movement->setAnimationStringState(SpriteState::FACE_RIGHT, "Right_Still");
+  sprite_movement->addObserver(camera_component);
   sprite_movement->setMovingSpeed(2.0);
-  sprite_movement->setActive(true);
+  component_manager->addComponent(sprite_movement);
 
   sprite->addComponent(sprite_movement);
   input_system.addObserver(sprite_movement);
-  
-  auto transform = std::make_shared<Transform>();
 
-  for(auto& i : renderables.renderables) {
-    transform->addChild(i->getTransform());
-    graphics.addRenderable(i);
-  }
-
-  for(auto& i : static_animations) {
-    transform->addChild(i.renderable->getTransform());
-    graphics.addRenderable(i.renderable);
-    i.animator->addObserver(i.renderable);
-  }
-
-  for(auto& i : lights) {
-    transform->addChild(i->getTransform());
-    graphics.addLight(i);
-  }
-
-  transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
-  
-  auto matcher = [](const DynamicAnimation& a, const std::string& sprite, const std::string& anim) {
-    return a.sprite_name == sprite && a.animation_name == anim;
-  };
-
-  auto move_up = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Up_Movement"));
-  auto move_down = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Down_Movement"));
-  auto move_left = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Left_Movement"));
-  auto move_right = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Right_Movement"));
-  auto stop_up = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Up_Still"));
-  auto stop_down = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Down_Still"));
-  auto stop_left = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Left_Still"));
-  auto stop_right = std::find_if(animations.begin(), animations.end(), std::bind(matcher, _1, "Aidan", "Right_Still"));
-
-  std::shared_ptr<Triggerable<SpriteState>> triggerable = std::make_shared<Triggerable<SpriteState>>(SpriteState::FACE_DOWN);
-  triggerable->setActive(true);
-  sprite->addComponent(triggerable);
-
-  triggerable->addTriggerableComponent(SpriteState::MOVE_UP, move_up->renderable->getId());
-  sprite->addComponent(move_up->renderable);
-  //graphics.addRenderable(move_up->renderable);
-
-  triggerable->addTriggerableComponent(SpriteState::MOVE_DOWN, move_down->renderable->getId());
-  sprite->addComponent(move_down->renderable);
- // graphics.addRenderable(move_down->renderable);
-
-  triggerable->addTriggerableComponent(SpriteState::MOVE_LEFT, move_left->renderable->getId());
-  sprite->addComponent(move_left->renderable);
-  //graphics.addRenderable(move_left->renderable);
-
-  triggerable->addTriggerableComponent(SpriteState::MOVE_RIGHT, move_right->renderable->getId());
-  sprite->addComponent(move_right->renderable);
- // graphics.addRenderable(move_right->renderable);
-
-
-  triggerable->addTriggerableComponent(SpriteState::FACE_UP, stop_up->renderable->getId());
-  sprite->addComponent(stop_up->renderable);
-  //graphics.addRenderable(stop_up->renderable);
-
-  triggerable->addTriggerableComponent(SpriteState::FACE_DOWN, stop_down->renderable->getId());
-  sprite->addComponent(stop_down->renderable);
- // graphics.addRenderable(stop_down->renderable);
-
-  triggerable->addTriggerableComponent(SpriteState::FACE_LEFT, stop_left->renderable->getId());
-  sprite->addComponent(stop_left->renderable);
- // graphics.addRenderable(stop_left->renderable);
-
-  triggerable->addTriggerableComponent(SpriteState::FACE_RIGHT, stop_right->renderable->getId());
-  sprite->addComponent(stop_right->renderable);
- // graphics.addRenderable(stop_right->renderable);
-
+  sprite->setActive(true);
 
   transform->addChild(sprite->getTransform());
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
@@ -205,12 +178,8 @@ int main(int argc, char** argv) {
   //camera->getTransform()->addChild(text->getTransform());
   //graphics.addRenderable(text);
 
-  for(auto i : static_animations) {
-    i.animator->onStart();
-  }
-  sprite->onStart();
-
   graphics.startRender();
+  component_manager->onStart();
 
   Utility::FPSCounter fps_counter(60.0f);
   float delta = 0.0f;
@@ -223,17 +192,15 @@ int main(int argc, char** argv) {
       graphics.setWindowName(window_name.str());
       fps = fps_counter.getCurrentFPS();
     }
-    for(auto i : static_animations) {
-      i.animator->onUpdate(delta);
-    }
-    
-    sprite->onUpdate(delta);
-    graphics.renderFrame(delta);
+    graphics.startFrame();
+    component_manager->onUpdate(delta);
+    graphics.stopFrame();
     input_system.pollForInput();
     delta = fps_counter.assessCountAndGetDelta();
   }
 
   graphics.destroy();
+  component_manager->destroy();
 
   return 0;
 }

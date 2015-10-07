@@ -3,7 +3,7 @@
 #include "input/key_down_event.h"
 #include "input/key_up_event.h"
 #include "sprite_move_event.h"
-#include "component_trigger_event.hpp"
+#include "animation_trigger_event.h"
 #include <easylogging++.h>
 #define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
@@ -14,86 +14,96 @@ SpriteMovement::SpriteMovement() : move_quantization_in_tiles(1.0),
 
 }
 
-void SpriteMovement::onNotify(const Events::Event& event) {
-  if(event.getEventCode() == Events::EventType::KEY_DOWN) {
-    auto casted_event = static_cast<const Input::KeyDownEvent*>(&event);
-    switch(casted_event->getKey()) {
-      case GLFW_KEY_W:
-        moveUp();
-        break;
-
-      case GLFW_KEY_S:
-        moveDown();
-        break;
-
-      case GLFW_KEY_A:
-        moveLeft();
-        break;
-
-      case GLFW_KEY_D:
-        moveRight();
-        break;
-    }
-  }
-  else if(event.getEventCode() == Events::EventType::KEY_UP) {
-    auto casted_event = static_cast<const Input::KeyUpEvent*>(&event);
-    switch(casted_event->getKey()) {
-      case GLFW_KEY_W:
-        if(up_down)
-          stopMovingUp();
-        break;
-
-      case GLFW_KEY_S:
-        if(down_down)
-          stopMovingDown();
-        break;
-
-      case GLFW_KEY_A:
-        if(left_down)
-          stopMovingLeft();
-        break;
-
-      case GLFW_KEY_D:
-        if(right_down)
-          stopMovingRight();
-        break;
-    }
-  }
-}
-
 void SpriteMovement::onStart() {
 }
 
 const bool SpriteMovement::onUpdate(const double delta) {
+  Component::onUpdate(delta);
+  if(!active)
+    return false;
+
+  while(!events.empty()) {
+    auto event = events.front();
+    events.pop();
+    if(event->getEventCode() == Events::EventType::KEY_DOWN) {
+      auto casted_event = std::static_pointer_cast<Input::KeyDownEvent>(event);
+      switch(casted_event->getKey()) {
+        case GLFW_KEY_W:
+          moveUp();
+          break;
+
+        case GLFW_KEY_S:
+          moveDown();
+          break;
+
+        case GLFW_KEY_A:
+          moveLeft();
+          break;
+
+        case GLFW_KEY_D:
+          moveRight();
+          break;
+      }
+    }
+    else if(event->getEventCode() == Events::EventType::KEY_UP) {
+      auto casted_event = std::static_pointer_cast<Input::KeyUpEvent>(event);
+      switch(casted_event->getKey()) {
+        case GLFW_KEY_W:
+          if(up_down)
+            stopMovingUp();
+          break;
+
+        case GLFW_KEY_S:
+          if(down_down)
+            stopMovingDown();
+          break;
+
+        case GLFW_KEY_A:
+          if(left_down)
+            stopMovingLeft();
+          break;
+
+        case GLFW_KEY_D:
+          if(right_down)
+            stopMovingRight();
+          break;
+      }
+    }
+  }
+
   if(current_state == SpriteState::FACE_LEFT || current_state == SpriteState::FACE_RIGHT ||
      current_state == SpriteState::FACE_UP || current_state == SpriteState::FACE_DOWN) {
     if(left_down) {
       current_velocity = glm::vec2(-moving_speed, 0.0);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-      notify(ComponentTriggerEvent<SpriteState>(SpriteState::MOVE_LEFT));
-      notify(SpriteMoveEvent(current_velocity, absolute_next_position));
+      current_state = SpriteState::MOVE_LEFT;
+      notify(AnimationTriggerEvent::create(states[SpriteState::MOVE_LEFT]));
+      notify(SpriteMoveEvent::create(current_velocity, absolute_next_position));
     }
     else if(right_down) {
       current_velocity = glm::vec2(moving_speed, 0.0);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-      notify(ComponentTriggerEvent<SpriteState>(SpriteState::MOVE_RIGHT));
-      notify(SpriteMoveEvent(current_velocity, absolute_next_position));
+      current_state = SpriteState::MOVE_RIGHT;
+      notify(AnimationTriggerEvent::create(states[SpriteState::MOVE_RIGHT]));
+      notify(SpriteMoveEvent::create(current_velocity, absolute_next_position));
     } 
     else if(up_down) {
       current_velocity = glm::vec2(0.0, moving_speed);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-      notify(ComponentTriggerEvent<SpriteState>(SpriteState::MOVE_UP));
-      notify(SpriteMoveEvent(current_velocity, absolute_next_position));
+      current_state = SpriteState::MOVE_UP;
+      notify(AnimationTriggerEvent::create(states[SpriteState::MOVE_UP]));
+      notify(SpriteMoveEvent::create(current_velocity, absolute_next_position));
     }
     else if(down_down) {
       current_velocity = glm::vec2(0.0, -moving_speed);
       next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
       auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
-      notify(ComponentTriggerEvent<SpriteState>(SpriteState::MOVE_DOWN));
-      notify(SpriteMoveEvent(current_velocity, absolute_next_position));
+      current_state = SpriteState::MOVE_DOWN;
+      notify(AnimationTriggerEvent::create(states[SpriteState::MOVE_DOWN]));
+      notify(SpriteMoveEvent::create(current_velocity, absolute_next_position));
     }
   }
   if(current_state == SpriteState::MOVE_LEFT || current_state == SpriteState::MOVE_RIGHT ||
@@ -105,23 +115,31 @@ const bool SpriteMovement::onUpdate(const double delta) {
       getTransform()->translate(next_position - glm::vec2(getTransform()->getLocalTranslation()));
       if(current_state == SpriteState::MOVE_LEFT) {
         current_velocity = glm::vec2(0.0, 0.0);
-        notify(ComponentTriggerEvent<SpriteState>(SpriteState::FACE_LEFT));
+        current_state = SpriteState::FACE_LEFT;
+        notify(AnimationTriggerEvent::create(states[SpriteState::FACE_LEFT]));
       }
       else if(current_state == SpriteState::MOVE_RIGHT) {
         current_velocity = glm::vec2(0.0, 0.0);
-        notify(ComponentTriggerEvent<SpriteState>(SpriteState::FACE_RIGHT));
+        current_state = SpriteState::FACE_RIGHT;
+        notify(AnimationTriggerEvent::create(states[SpriteState::FACE_RIGHT]));
       }
       else if(current_state == SpriteState::MOVE_UP) {
         current_velocity = glm::vec2(0.0, 0.0);
-        notify(ComponentTriggerEvent<SpriteState>(SpriteState::FACE_UP));
+        current_state = SpriteState::FACE_UP;
+        notify(AnimationTriggerEvent::create(states[SpriteState::FACE_UP]));
       }
       else if(current_state == SpriteState::MOVE_DOWN) {
         current_velocity = glm::vec2(0.0, 0.0);
-        notify(ComponentTriggerEvent<SpriteState>(SpriteState::FACE_DOWN));
+        current_state = SpriteState::FACE_DOWN;
+        notify(AnimationTriggerEvent::create(states[SpriteState::FACE_DOWN]));
       }
     }
   }
   return true;
+}
+
+void SpriteMovement::setAnimationStringState(const SpriteState& state, const std::string& str) {
+  states[state] = str;
 }
 
 void SpriteMovement::setMovingSpeed(const float speed) {

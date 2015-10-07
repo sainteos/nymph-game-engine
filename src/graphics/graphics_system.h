@@ -48,8 +48,6 @@ namespace Graphics {
       static void windowSizeCallback(GLFWwindow* window, int width, int height);
 
       WindowExitFunctor window_exit;
-      
-      std::shared_ptr<Camera> camera;
 
     public:
       GraphicsSystem();
@@ -77,8 +75,9 @@ namespace Graphics {
       const bool isRunning() noexcept;
 
       void startRender();
-      void renderFrame(const float delta);
       void stopRender();
+      void startFrame();
+      void stopFrame();
 
       GLFWwindow* getWindow() const noexcept;
       /**
@@ -129,9 +128,6 @@ namespace Graphics {
        * @return integer representing number of renderables in the system
        */
       const int renderablesCount();
-
-      void setCamera(const std::shared_ptr<Camera> camera) noexcept;
-      std::shared_ptr<Camera> getCamera() const noexcept;
 
       GLFWwindow* getCurrentWindow() noexcept;
 

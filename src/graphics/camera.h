@@ -39,8 +39,6 @@ namespace Graphics {
       virtual const bool onUpdate(const double delta) override;
       virtual void onDestroy() override;
 
-      void onNotify(const Events::Event& event) override;
-
       void setScreenPaddingInTiles(const int padding) noexcept;
       const int getScreenPaddingInTiles() const noexcept;
       void setWidth(const float width) noexcept;
@@ -52,7 +50,7 @@ namespace Graphics {
       void setFar(const float far) noexcept;
       const float getFar() const noexcept;
 
-      const bool isRenderableWithin(std::shared_ptr<Renderable> renderable) const;
+      const bool isComponentWithin(const Component& component) const;
   };
 }
 #endif

@@ -1,6 +1,10 @@
 #include "graphics/uniform.h"
+#include <easylogging++.h>
 
 namespace Graphics {
+  Uniform::Uniform() : name("") {
+  }
+
   template<>
   void Uniform::setData<float>(const std::string& name, const float& data) {
     uniform_type = UniformTypes::FLOAT;
@@ -176,136 +180,140 @@ namespace Graphics {
     this->name = name;
   }
 
-  Uniform::UniformTypes Uniform::getType() const noexcept {
+  const Uniform::UniformTypes Uniform::getType() const noexcept {
     return uniform_type;
   }
 
-  std::string Uniform::getName() const noexcept {
+  const std::string Uniform::getName() const noexcept {
     return name;
   }
 
   template<>
-  float Uniform::getData<float>() const noexcept {
+  const float Uniform::getData<float>() const noexcept {
     return float_data;
   }
 
   template<>
-  glm::vec2 Uniform::getData<glm::vec2>() const noexcept {
+  const glm::vec2 Uniform::getData<glm::vec2>() const noexcept {
     return vec2_data;
   }
 
   template<>
-  glm::vec3 Uniform::getData<glm::vec3>() const noexcept {
+  const glm::vec3 Uniform::getData<glm::vec3>() const noexcept {
     return vec3_data;
   }
 
   template<>
-  glm::vec4 Uniform::getData<glm::vec4>() const noexcept {
+  const glm::vec4 Uniform::getData<glm::vec4>() const noexcept {
     return vec4_data;
   }
 
   template<>
-  int Uniform::getData<int>() const noexcept {
+  const int Uniform::getData<int>() const noexcept {
     return int_data;
   }
 
   template<>
-  glm::ivec2 Uniform::getData<glm::ivec2>() const noexcept {
+  const glm::ivec2 Uniform::getData<glm::ivec2>() const noexcept {
     return ivec2_data;
   }
 
   template<>
-  glm::ivec3 Uniform::getData<glm::ivec3>() const noexcept {
+  const glm::ivec3 Uniform::getData<glm::ivec3>() const noexcept {
     return ivec3_data;
   }
 
   template<>
-  glm::ivec4 Uniform::getData<glm::ivec4>() const noexcept {
+  const glm::ivec4 Uniform::getData<glm::ivec4>() const noexcept {
     return ivec4_data;
   }
 
   template<>
-  unsigned int Uniform::getData<unsigned int>() const noexcept {
+  const unsigned int Uniform::getData<unsigned int>() const noexcept {
     return uint_data;
   }
 
   template<>
-  glm::uvec2 Uniform::getData<glm::uvec2>() const noexcept {
+  const glm::uvec2 Uniform::getData<glm::uvec2>() const noexcept {
     return uvec2_data;
   }
 
   template<>
-  glm::uvec3 Uniform::getData<glm::uvec3>() const noexcept {
+  const glm::uvec3 Uniform::getData<glm::uvec3>() const noexcept {
     return uvec3_data;
   }
 
   template<>
-  glm::uvec4 Uniform::getData<glm::uvec4>() const noexcept {
+  const glm::uvec4 Uniform::getData<glm::uvec4>() const noexcept {
     return uvec4_data;
   }
 
   template<>
-  bool Uniform::getData<bool>() const noexcept {
+  const bool Uniform::getData<bool>() const noexcept {
     return bool_data;
   }
 
   template<>
-  glm::bvec2 Uniform::getData<glm::bvec2>() const noexcept {
+  const glm::bvec2 Uniform::getData<glm::bvec2>() const noexcept {
     return bvec2_data;
   }
 
   template<>
-  glm::bvec3 Uniform::getData<glm::bvec3>() const noexcept {
+  const glm::bvec3 Uniform::getData<glm::bvec3>() const noexcept {
     return bvec3_data;
   }
 
   template<>
-  glm::bvec4 Uniform::getData<glm::bvec4>() const noexcept {
+  const glm::bvec4 Uniform::getData<glm::bvec4>() const noexcept {
     return bvec4_data;
   }
 
   template<>
-  glm::mat2 Uniform::getData<glm::mat2>() const noexcept {
+  const glm::mat2 Uniform::getData<glm::mat2>() const noexcept {
     return mat2_data;
   }
 
   template<>
-  glm::mat3 Uniform::getData<glm::mat3>() const noexcept {
+  const glm::mat3 Uniform::getData<glm::mat3>() const noexcept {
     return mat3_data;
   }
 
   template<>
-  glm::mat4 Uniform::getData<glm::mat4>() const noexcept {
+  const glm::mat4 Uniform::getData<glm::mat4>() const noexcept {
     return mat4_data;
   }
 
   template<>
-  glm::mat2x3 Uniform::getData<glm::mat2x3>() const noexcept {
+  const glm::mat2x3 Uniform::getData<glm::mat2x3>() const noexcept {
     return mat23_data;
   }
 
   template<>
-  glm::mat3x2 Uniform::getData<glm::mat3x2>() const noexcept {
+  const glm::mat3x2 Uniform::getData<glm::mat3x2>() const noexcept {
     return mat32_data;
   }
 
   template<>
-  glm::mat2x4 Uniform::getData<glm::mat2x4>() const noexcept {
+  const glm::mat2x4 Uniform::getData<glm::mat2x4>() const noexcept {
     return mat24_data;
   }
 
   template<>
-  glm::mat4x2 Uniform::getData<glm::mat4x2>() const noexcept {
+  const glm::mat4x2 Uniform::getData<glm::mat4x2>() const noexcept {
     return mat42_data;
   }
 
   template<>
-  glm::mat3x4 Uniform::getData<glm::mat3x4>() const noexcept {
+  const glm::mat3x4 Uniform::getData<glm::mat3x4>() const noexcept {
     return mat34_data;
   }
 
   template<>
-  glm::mat4x3 Uniform::getData<glm::mat4x3>() const noexcept {
+  const glm::mat4x3 Uniform::getData<glm::mat4x3>() const noexcept {
     return mat43_data;
+  }
+
+  const bool Uniform::operator<(const Uniform& right) const noexcept {
+    return name < right.name;
   }
 }

@@ -8,6 +8,7 @@
 #include "component.h"
 
 enum class SpriteState {MOVE_UP, FACE_UP, MOVE_DOWN, FACE_DOWN, MOVE_LEFT, FACE_LEFT, MOVE_RIGHT, FACE_RIGHT};
+
 class SpriteMovement : public Component {
   public:
   private: 
@@ -20,13 +21,14 @@ class SpriteMovement : public Component {
     bool down_down;
     bool right_down;
     SpriteState current_state;
+    std::map<SpriteState, std::string> states;
 
   public:
     SpriteMovement();
-    void onNotify(const Events::Event& event) override;
     const bool onUpdate(const double delta) override;
     void onStart() override;
     void onDestroy() override {}
+    void setAnimationStringState(const SpriteState& state, const std::string& str);
     void setMovingSpeed(const float speed);
     void setMoveQuantization(const float number_of_tiles);
     void stopMovingLeft();

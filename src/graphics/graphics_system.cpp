@@ -13,7 +13,6 @@
 #include "exceptions/system_not_initialized_exception.h"
 #include "exceptions/system_already_running_exception.h"
 #include "exceptions/system_not_running_exception.h"
-#include "exceptions/no_camera_attached_exception.h"
 
 namespace Graphics {
 
@@ -69,11 +68,6 @@ namespace Graphics {
     }
     #endif
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-    glClearDepth(1.0f);
     ilInit();
     glfwSetFramebufferSizeCallback(window, windowSizeCallback);
     
@@ -147,14 +141,6 @@ namespace Graphics {
     return renderables_map.size();
   }
 
-  void GraphicsSystem::setCamera(const std::shared_ptr<Camera> camera) noexcept {
-    this->camera = camera;
-  }
-
-  std::shared_ptr<Camera> GraphicsSystem::getCamera() const noexcept {
-    return camera;
-  }
-
   GLFWwindow* GraphicsSystem::getCurrentWindow() noexcept {
     return window;
   }
@@ -163,49 +149,46 @@ namespace Graphics {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
     glClearColor(0.0, 0.0, 0.0, 1.0);
-
-    if(camera == nullptr)
-      throw Exceptions::NoCameraAttachedException();
-
-    camera->onStart();
-
-    for(auto& renderables_iter : renderables_map) {
-      if(renderables_iter.second->isActive()) {
-        renderables_iter.second->onStart();
-      }
-    }
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glClearDepth(1.0f);
   }
 
-  void GraphicsSystem::renderFrame(const float delta) {
+  void GraphicsSystem::startFrame() {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    camera->onUpdate(delta);
 
-    for(auto& renderables_iter : renderables_map) {
-      if(renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second)) {
-        if(renderables_iter.second->isLightReactive()) {
-          //find lights that influence renderable
-          std::priority_queue<RankedLight, std::vector<RankedLight>, std::less<RankedLight>> light_queue;
+    // for(auto& renderables_iter : renderables_map) {
+    //   if(renderables_iter.second->isActive() && !camera->isRenderableWithin(renderables_iter.second)) {
+    //     renderables_iter.second->setActive(false);
+    //   }
+    //   else if(!renderables_iter.second->isActive() && camera->isRenderableWithin(renderables_iter.second)) {
+    //     renderables_iter.second->setActive(true);
+    //   }
+      //   if(renderables_iter.second->isLightReactive()) {
+      //     //find lights that influence renderable
+      //     std::priority_queue<RankedLight, std::vector<RankedLight>, std::less<RankedLight>> light_queue;
 
-          for(auto& light : lights) {
-            auto influence = light->influenceOnComponent(*renderables_iter.second);
-            if(influence > 0.0)
-              light_queue.push(RankedLight { light,  influence });
-          }
-          renderables_iter.second->clearInfluencingLights();
-          for(int i = 0; i < max_influence_lights && !light_queue.empty(); i++) {
-            renderables_iter.second->addInfluencingLight(light_queue.top().light);
-            light_queue.pop();
-          }
+      //     for(auto& light : lights) {
+      //       auto influence = light->influenceOnComponent(*renderables_iter.second);
+      //       if(influence > 0.0)
+      //         light_queue.push(RankedLight { light,  influence });
+      //     }
+      //     renderables_iter.second->clearInfluencingLights();
+      //     for(int i = 0; i < max_influence_lights && !light_queue.empty(); i++) {
+      //       renderables_iter.second->addInfluencingLight(light_queue.top().light);
+      //       light_queue.pop();
+      //     }
+      //   }
+      // }
+    // }
+  }
 
-        }
-        //if renderable was updated, then render
-        renderables_iter.second->onUpdate(delta);
-      }
-    }
-
+  void GraphicsSystem::stopFrame() {
     glfwSwapBuffers(window);
   }
 

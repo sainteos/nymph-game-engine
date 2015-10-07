@@ -10,7 +10,7 @@ namespace Events {
     private: 
       std::list<std::shared_ptr<Observer>> observers;
     protected:
-      void notify(const Events::Event& event);
+      void notify(std::shared_ptr<Event> event);
     public:
       void addObserver(std::shared_ptr<Observer> observer);
       void removeObserver(std::shared_ptr<Observer> observer);

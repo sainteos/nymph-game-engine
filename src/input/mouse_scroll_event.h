@@ -10,6 +10,7 @@ namespace Input {
       glm::dvec2 offset;
     public:
       MouseScrollEvent(const glm::dvec2& offset) : Event(Events::EventType::MOUSE_SCROLL), offset(offset) {}
+      static std::shared_ptr<MouseScrollEvent> create(const glm::dvec2& offset) { return std::make_shared<MouseScrollEvent>(offset); }
       const glm::dvec2 getPosition() const noexcept { return offset; }
   };
 }

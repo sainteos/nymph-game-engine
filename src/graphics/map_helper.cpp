@@ -14,7 +14,7 @@
 #include "utility/utility_functions.h"
 
 namespace Graphics {
-  MapHelper::MapHelper() {
+  MapHelper::MapHelper(std::shared_ptr<ComponentManager> manager) : component_manager(manager) {
   }
 
   MapHelper::~MapHelper() {
@@ -292,8 +292,8 @@ namespace Graphics {
     return lights;
   }
 
-  std::vector<StaticAnimation> MapHelper::createStaticallyAnimatedTilesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
-    std::vector<StaticAnimation> animations;
+  std::vector<std::shared_ptr<Entity>> MapHelper::createStaticallyAnimatedTilesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+    std::vector<std::shared_ptr<Entity>> animations;
     auto layers = map.GetTileLayers();
     auto tilesets = map.GetTilesets();
     auto path = map.GetFilepath();
@@ -335,17 +335,22 @@ namespace Graphics {
                 int x_pos = id % width_in_tiles;
                 int y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
-                animator->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
+                animator->addFrameBack("default", glm::ivec2(x_pos, y_pos), duration, true);
               }
 
               renderable->setShader((*shader_manager)["tile_animation"]);
               
               //subtract y from layer height, and then subtract an additional 1 to normalize it to 0
-              renderable->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
+              std::shared_ptr<Entity> entity = std::make_shared<Entity>();
+              entity->addComponent(renderable);
+              entity->addComponent(animator);
+              component_manager->addComponent(renderable);
+              component_manager->addComponent(animator);
+
+              entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
               if(layer->IsVisible()) 
-                renderable->setActive(true);
-              animator->setActive(true);
-              animations.push_back(StaticAnimation { renderable, animator });
+                entity->setActive(true);
+              animations.push_back(entity);
             }
           }
         }
@@ -450,12 +455,15 @@ namespace Graphics {
               else {
                 renderable->setShader((*shader_manager)["simple_texture"]); 
               }
-
+              
+              auto entity = std::make_shared<Entity>();
+              entity->addComponent(renderable);
+              component_manager->addComponent(renderable);
               //subtract y from height and subtract 1 to normalize to 0
-              renderable->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
+              entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
               if(layer->IsVisible())
-                renderable->setActive(true);
-              renderables.renderables.push_back(renderable);
+                entity->setActive(true);
+              renderables.entities.push_back(entity);
             }
             else {
             }
@@ -467,41 +475,60 @@ namespace Graphics {
     return renderables;
   }
 
-  std::vector<DynamicAnimation> MapHelper::createAnimationsFromAnimationMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
-    std::vector<DynamicAnimation> animations;
+  std::vector<std::shared_ptr<DynamicAnimation>> MapHelper::createAnimationsFromAnimationMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+    std::vector<std::shared_ptr<DynamicAnimation>> animations; 
     auto path = map.GetFilepath();
     for(auto& tileset : map.GetTilesets()) {
       for(auto& tile : tileset->GetTiles()) {
         auto properties = tile->GetProperties();
         if(properties.HasProperty("SpriteName") && properties.HasProperty("AnimationName")) {
-          DynamicAnimation new_anim; 
-          new_anim.sprite_name = properties.GetStringProperty("SpriteName");
-          new_anim.animation_name = properties.GetStringProperty("AnimationName");
+          auto find_with_name = [&](std::shared_ptr<DynamicAnimation> a) { return a->sprite_name == properties.GetStringProperty("SpriteName"); };
+          auto sprite_iter = std::find_if(animations.begin(), animations.end(), find_with_name);
+          std::shared_ptr<DynamicAnimation> anim = std::make_shared<DynamicAnimation>();
 
-          auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
+          if(sprite_iter == animations.end()) {
+            anim->sprite_name = properties.GetStringProperty("SpriteName");
 
-          new_anim.renderable = Renderable::create(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
+            auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
+            auto renderable = Renderable::create(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
+
+            renderable->addTexture(texture);
+            renderable->setShader((*shader_manager)["tile_animation"]);
+
+            anim->entity = std::make_shared<Entity>();
+
+            anim->entity->addComponent(renderable);
+            component_manager->addComponent(renderable);
+          }
+          else {
+            anim = *sprite_iter;
+          }
+
+          auto animation_name = properties.GetStringProperty("AnimationName");
+
           auto frames = tile->GetFrames();
-
-          new_anim.renderable->addTexture(texture);
-
-          new_anim.animator = TileAnimator::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
+          if(anim->animator == nullptr) {
+            anim->animator = TileAnimator::create(tileset->GetImage()->GetWidth(), tileset->GetImage()->GetHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
+            anim->entity->addComponent(anim->animator);
+            component_manager->addComponent(anim->animator);
+          }
           
           for(auto frame : frames) {
             auto id = frame.GetTileID();
             auto duration = frame.GetDuration();
 
-            int width_in_tiles = texture->getWidth() / tileset->GetTileWidth();
-            int height_in_tiles = texture->getHeight() / tileset->GetTileHeight();
+            int width_in_tiles = tileset->GetImage()->GetWidth() / tileset->GetTileWidth();
+            int height_in_tiles = tileset->GetImage()->GetHeight() / tileset->GetTileHeight();
             
             int x_pos = id % width_in_tiles;
             int y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
-            new_anim.animator->addFrameBack(glm::ivec2(x_pos, y_pos), duration);
+            anim->animator->addFrameBack(animation_name, glm::ivec2(x_pos, y_pos), duration);
           }
 
-          new_anim.renderable->setShader((*shader_manager)["tile_animation"]);
-          animations.push_back(new_anim);
+          
+          if(sprite_iter == animations.end())
+            animations.push_back(anim);
         }
       }
     }
