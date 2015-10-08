@@ -465,8 +465,6 @@ namespace Graphics {
                 entity->setActive(true);
               renderables.entities.push_back(entity);
             }
-            else {
-            }
           }
         }
       }
