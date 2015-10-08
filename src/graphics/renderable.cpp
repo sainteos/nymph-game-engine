@@ -15,12 +15,9 @@
 #include "exceptions/renderable_not_initialized_exception.h"
 #include "exceptions/invalid_shader_object_exception.h"
 #include "renderable.h"
+#include "graphics/set_uniform_event.h"
 
 namespace Graphics {
-  Renderable::Renderable() : shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
-
-  }
-
   Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data) : vertex_data(vertex_data), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
@@ -28,22 +25,21 @@ namespace Graphics {
     this->vertex_array_object = vertex_array_object;
   }
 
+
+  std::shared_ptr<Renderable> Renderable::create(const VertexData& vertex_data) {
+    return std::make_shared<Renderable>(vertex_data.generateVertexArrayObject(), vertex_data);
+  }
+
   Renderable::Renderable(Renderable&& renderable) : vertex_data(renderable.vertex_data) {
-    active = std::move(renderable.active);
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
-    transform = renderable.transform;
-    renderable.transform.reset();
     light_reactive = std::move(renderable.light_reactive);
   }
 
   Renderable& Renderable::operator=(Renderable&& renderable) { 
-    active = std::move(renderable.active);
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
     vertex_data = renderable.vertex_data;
-    transform = renderable.transform;
-    renderable.transform.reset();
     light_reactive = std::move(renderable.light_reactive);
 
     return *this;
@@ -63,6 +59,12 @@ namespace Graphics {
 
   void Renderable::addTexture(std::shared_ptr<BaseTexture> texture_object) noexcept {
     textures.push_back(texture_object);
+  }
+
+  void Renderable::removeTexture(std::shared_ptr<BaseTexture> texture_object) {
+    auto iter = std::remove(textures.begin(), textures.end(), texture_object);
+    if(iter != textures.end())
+      textures.erase(iter);
   }
 
   const std::vector<std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
@@ -119,8 +121,91 @@ namespace Graphics {
     return vertex_data;
   }
 
+  void Renderable::setUniforms() {
+    for(auto i : uniforms) {
+      switch(i.getType()) {
+        case Graphics::Uniform::UniformTypes::FLOAT:
+          getShader()->setUniform(i.getName(), i.getData<float>());
+          break;
+        case Graphics::Uniform::UniformTypes::VEC2:
+          getShader()->setUniform(i.getName(), i.getData<glm::vec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::VEC3:
+          getShader()->setUniform(i.getName(), i.getData<glm::vec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::VEC4:
+          getShader()->setUniform(i.getName(), i.getData<glm::vec4>());
+          break;
+        case Graphics::Uniform::UniformTypes::INT:
+          getShader()->setUniform(i.getName(), i.getData<int>());
+          break;
+        case Graphics::Uniform::UniformTypes::IVEC2:
+          getShader()->setUniform(i.getName(), i.getData<glm::ivec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::IVEC3:
+          getShader()->setUniform(i.getName(), i.getData<glm::ivec3>());
+          break;
+        case Graphics::Uniform::UniformTypes::IVEC4:
+          getShader()->setUniform(i.getName(), i.getData<glm::ivec4>());
+          break;
+        case Graphics::Uniform::UniformTypes::UINT:
+          getShader()->setUniform(i.getName(), i.getData<unsigned int>());
+          break;
+        case Graphics::Uniform::UniformTypes::UVEC2:
+          getShader()->setUniform(i.getName(), i.getData<glm::uvec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::UVEC3:
+          getShader()->setUniform(i.getName(), i.getData<glm::uvec3>());
+          break;
+        case Graphics::Uniform::UniformTypes::UVEC4:
+          getShader()->setUniform(i.getName(), i.getData<glm::uvec4>());
+          break;
+        case Graphics::Uniform::UniformTypes::BOOL:
+          getShader()->setUniform(i.getName(), i.getData<bool>());
+          break;
+        case Graphics::Uniform::UniformTypes::BVEC2:
+          getShader()->setUniform(i.getName(), i.getData<glm::bvec2>());
+          break;
+        case Graphics::Uniform::UniformTypes::BVEC3:
+          getShader()->setUniform(i.getName(), i.getData<glm::bvec3>());
+          break;
+        case Graphics::Uniform::UniformTypes::BVEC4:
+          getShader()->setUniform(i.getName(), i.getData<glm::bvec4>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT2:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat2>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT3:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat3>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT4:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat4>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT23:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat2x3>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT32:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat3x2>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT24:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat2x4>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT42:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat4x2>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT34:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat3x4>());
+          break;
+        case Graphics::Uniform::UniformTypes::MAT43:
+          getShader()->setUniform(i.getName(), i.getData<glm::mat4x3>());
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
   void Renderable::onDestroy() {
-    active = false;
     //not this one's job to destroy shader
     shader = nullptr;
     textures.clear();
@@ -134,45 +219,48 @@ namespace Graphics {
   }
 
   const bool Renderable::onUpdate(const double delta) {
-    return true;
-  }
+    Component::onUpdate(delta);
+    if(!active)
+      return false;
 
-  const bool Renderable::onRender() {
-    if(active) {
+    if(isActive()) {
       if(!glIsVertexArray(vertex_array_object)) {
         throw Exceptions::InvalidVertexArrayException(vertex_array_object);
       }
 
+
       glBindVertexArray(vertex_array_object);
 
       if(shader != nullptr) {
-        if(light_reactive) {
-          shader->setUniform("num_lights", (int)influencing_lights.size());
-          int index = 0;
-          std::stringstream light_str;
-          for(auto& light : influencing_lights) {
-            light_str << "lights[" << index << "].";
-            shader->setUniform(light_str.str() + "position", light->getTransform()->getAbsoluteTranslation());
-            shader->setUniform(light_str.str() + "color", light->getColor());
-            shader->setUniform(light_str.str() + "intensity", light->getIntensity());
-            shader->setUniform(light_str.str() + "linear_attenuation", light->getLinearAttenuation());
-            if(light->castsQuantizedBands()) {
-              shader->setUniform(light_str.str() + "number_quantized_bands", light->getNumberOfQuantizedBands());
-            }
-            if(light->getType() == Light::Type::POINT) {
-              shader->setUniform(light_str.str() + "cone_angle", 0.0f);
-            }
-            else if(light->getType() == Light::Type::SPOT) {
-              shader->setUniform(light_str.str() + "cone_angle", light->getConeAngle());
-              shader->setUniform(light_str.str() + "cone_direction", light->getConeDirection());
-            }
-            light_str.str(std::string());
-            index++;
-          }
-        }
+        // if(light_reactive) {
+        //   shader->setUniform("num_lights", (int)influencing_lights.size());
+        //   int index = 0;
+        //   std::stringstream light_str;
+        //   for(auto& light : influencing_lights) {
+        //     light_str << "lights[" << index << "].";
+        //     shader->setUniform(light_str.str() + "position", light->getTransform()->getAbsoluteTranslation());
+        //     shader->setUniform(light_str.str() + "color", light->getColor());
+        //     shader->setUniform(light_str.str() + "intensity", light->getIntensity());
+        //     shader->setUniform(light_str.str() + "linear_attenuation", light->getLinearAttenuation());
+        //     if(light->castsQuantizedBands()) {
+        //       shader->setUniform(light_str.str() + "number_quantized_bands", light->getNumberOfQuantizedBands());
+        //     }
+        //     if(light->getType() == Light::Type::POINT) {
+        //       shader->setUniform(light_str.str() + "cone_angle", 0.0f);
+        //     }
+        //     else if(light->getType() == Light::Type::SPOT) {
+        //       shader->setUniform(light_str.str() + "cone_angle", light->getConeAngle());
+        //       shader->setUniform(light_str.str() + "cone_direction", light->getConeDirection());
+        //     }
+        //     light_str.str(std::string());
+        //     index++;
+        //   }
+        // }
 
+        setUniforms();
         shader->useProgram();
-        shader->setUniform<glm::mat4>("transform", transform->getAbsoluteTransformationMatrix());
+
+        shader->setUniform<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix());
         for(auto& texture : textures) {
           shader->setUniform<int>(texture->getTextureUniformName(), texture->getTextureUnit());
           texture->bind();
@@ -188,11 +276,32 @@ namespace Graphics {
       else {
         glDrawArrays(GL_TRIANGLES, 0, vertex_data.getVertexCount());
       }
+    }
 
-      return true;
+    while(!events.empty()) {
+      auto event = events.front();
+      events.pop();
+      switch(event->getEventCode()) {
+        case Events::EventType::SET_SHADER:
+          break;
+        case Events::EventType::ADD_TEXTURE:
+          break;
+        case Events::EventType::REMOVE_TEXTURE:
+          break;
+        case Events::EventType::SET_UNIFORM: {
+          auto casted_event = std::static_pointer_cast<Graphics::SetUniformEvent>(event);
+
+          auto insert_success = uniforms.insert(casted_event->getUniform());
+          if(!insert_success.second) {
+            uniforms.erase(insert_success.first);
+            uniforms.insert(casted_event->getUniform());
+          }
+          break;
+        }
+        default:
+          break;
+      }
     }
-    else {
-      return false;
-    }
+    return true; 
   }
 }

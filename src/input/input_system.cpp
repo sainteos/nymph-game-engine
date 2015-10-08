@@ -26,33 +26,33 @@ namespace Input {
 
   void InputSystem::pollForInput() {
     if(cursor_position != glm::dvec2(0.0, 0.0)) {
-      notify(MouseCursorEvent(cursor_position));
+      notify(MouseCursorEvent::create(cursor_position));
       cursor_position = glm::dvec2(0.0, 0.0);
     }
 
     if(scroll_offset != glm::dvec2(0.0, 0.0)) {
-      notify(MouseScrollEvent(scroll_offset));
+      notify(MouseScrollEvent::create(scroll_offset));
       scroll_offset = glm::dvec2(0.0, 0.0);
     }
 
     if(cursor_entered) {
-      notify(CursorEnterEvent());
+      notify(CursorEnterEvent::create());
       cursor_entered = false;
     }
 
     if(cursor_left) {
-      notify(CursorLeaveEvent());
+      notify(CursorLeaveEvent::create());
       cursor_left = false;
     }
 
     for(auto& key : keys_to_actions) {
       if(key.second == GLFW_PRESS && last_keys_to_actions.count(key.first) == 0 ||
          key.second == GLFW_PRESS && last_keys_to_actions.count(key.first) > 0 && last_keys_to_actions[key.first] != key.second) {
-        notify(KeyDownEvent(key.first));
+        notify(KeyDownEvent::create(key.first));
       }
       else if(key.second == GLFW_RELEASE && last_keys_to_actions.count(key.first) == 0 ||
          key.second == GLFW_RELEASE && last_keys_to_actions.count(key.first) > 0 && last_keys_to_actions[key.first] != key.second) {
-        notify(KeyUpEvent(key.first));
+        notify(KeyUpEvent::create(key.first));
       }
     }
 
@@ -62,11 +62,11 @@ namespace Input {
     for(auto& button : mouse_buttons_to_actions) {
       if(button.second == GLFW_PRESS && last_mouse_buttons_to_actions.count(button.first) == 0 ||
          button.second == GLFW_PRESS && last_mouse_buttons_to_actions.count(button.first) > 0 && last_mouse_buttons_to_actions[button.first] != button.second) {
-        notify(KeyDownEvent(button.first));
+        notify(KeyDownEvent::create(button.first));
       }
       else if(button.second == GLFW_RELEASE && last_mouse_buttons_to_actions.count(button.first) == 0 ||
          button.second == GLFW_RELEASE && last_mouse_buttons_to_actions.count(button.first) > 0 && last_mouse_buttons_to_actions[button.first] != button.second) {
-        notify(KeyUpEvent(button.first));
+        notify(KeyUpEvent::create(button.first));
       }
     }
 

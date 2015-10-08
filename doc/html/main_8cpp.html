@@ -96,15 +96,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="textblock"><code>#include &lt;easylogging++.h&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;glm/vec3.hpp&gt;</code><br />
-<code>#include &lt;OpenGL/gl3.h&gt;</code><br />
-<code>#include &lt;glfw3.h&gt;</code><br />
+<code>#include &lt;glm/glm.hpp&gt;</code><br />
+<code>#include &lt;glm/gtc/matrix_transform.hpp&gt;</code><br />
+<code>#include &lt;glm/ext.hpp&gt;</code><br />
+<code>#include &lt;tmx/Tmx.h&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 <code>#include &quot;<a class="el" href="graphics__system_8h_source.html">graphics/graphics_system.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="renderable_8h_source.html">graphics/renderable.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="vertex__data_8h_source.html">graphics/vertex_data.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="window__exit__functor_8h_source.html">graphics/window_exit_functor.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tile__attribute__trait_8h_source.html">graphics/tile_attribute_trait.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="shader_8h_source.html">graphics/shader.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="base__texture_8h_source.html">graphics/base_texture.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="shader__manager_8h_source.html">graphics/shader_manager.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="renderable__factory_8h_source.html">graphics/renderable_factory.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="animated__tile_8h_source.html">graphics/animated_tile.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="transform_8h_source.html">transform.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="camera_8h_source.html">graphics/camera.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sprite_8h_source.html">sprite.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="input__system_8h_source.html">input/input_system.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="fps__counter_8h_source.html">utility/fps_counter.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="config__manager_8h_source.html">utility/config_manager.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="light_8h_source.html">graphics/light.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="utility__functions_8h_source.html">utility/utility_functions.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -113,10 +129,6 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aeacc9dbd3a3374fd4e0856a3ecf7224d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#aeacc9dbd3a3374fd4e0856a3ecf7224d">generate_valid_fragment</a> ()</td></tr>
-<tr class="separator:aeacc9dbd3a3374fd4e0856a3ecf7224d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17049b22143dc4bbb930c2263ff88541"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a17049b22143dc4bbb930c2263ff88541">generate_valid_vertex</a> ()</td></tr>
-<tr class="separator:a17049b22143dc4bbb930c2263ff88541"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -134,36 +146,6 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aeacc9dbd3a3374fd4e0856a3ecf7224d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int generate_valid_fragment </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a17049b22143dc4bbb930c2263ff88541"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int generate_valid_vertex </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a3c04138a5bfe5d72780bb7e82a18e627"></a>
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +175,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 28 2015 16:54:53 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 24 2015 14:22:06 for Unnamed 2D Tile Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

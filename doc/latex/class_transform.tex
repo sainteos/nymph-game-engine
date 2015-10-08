@@ -1,0 +1,358 @@
+\hypertarget{class_transform}{}\section{Transform Class Reference}
+\label{class_transform}\index{Transform@{Transform}}
+
+
+{\ttfamily \#include $<$transform.\+h$>$}
+
+Inheritance diagram for Transform\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_transform}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_transform_aa08ca4266efabc768973cdeea51945ab}{Transform} ()
+\item 
+\hyperlink{class_transform_aa72e286c069850db80927b0e6554cd3e}{$\sim$\+Transform} ()
+\item 
+const bool \hyperlink{class_transform_a0ab0fe030d715fff815fb5cd2fad3951}{operator==} (const \hyperlink{class_transform}{Transform} \&other)
+\item 
+const bool \hyperlink{class_transform_aae84653176af974b257e44c832692501}{operator!=} (const \hyperlink{class_transform}{Transform} \&other)
+\item 
+void \hyperlink{class_transform_a56a4cdc7936c2654fc56c66a53f4432f}{add\+Child} (const std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ \&transform)
+\item 
+void \hyperlink{class_transform_a9b4c664919e485ae51e244e8e9eb548d}{remove\+Child} (const std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ \&transform)
+\item 
+std\+::list$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ $>$ \hyperlink{class_transform_a8a4dd635e2fa7e652af05f13f22fe72b}{get\+Children} () const 
+\item 
+const unsigned int \hyperlink{class_transform_a4f9cf868bd8f7894ea28c4aae450cb69}{get\+Tree\+Size} () const 
+\item 
+{\footnotesize template$<$class T $>$ }\\void \hyperlink{class_transform_aafe00d06850ed594fcf0e44364f29224}{translate} (const T \&translation)
+\item 
+const glm\+::vec3 \hyperlink{class_transform_ad26386c52e4169a5f839a727c61e27a3}{get\+Absolute\+Translation} () const noexcept
+\item 
+const glm\+::vec3 \hyperlink{class_transform_a9abe479dcadead1d23c1335e8f042cea}{get\+Local\+Translation} () const noexcept
+\item 
+void \hyperlink{class_transform_a9b7f60043e6101b38888d9d760534626}{rotate} (const float angle, const glm\+::vec3 \&axis)
+\item 
+void \hyperlink{class_transform_a8f20b2aafd83175cb49eee9a14e55513}{rotate} (const float angle\+\_\+x, const float angle\+\_\+y, const float angle\+\_\+z)
+\item 
+void \hyperlink{class_transform_a2b4c1f2d0a62d0c89dedd88dbcdaa2d8}{rotate} (const glm\+::vec3 \&euler\+\_\+angles)
+\item 
+void \hyperlink{class_transform_ad51b8505353fa221c1a9d44590248e7e}{rotate} (const glm\+::quat \&quat)
+\item 
+const glm\+::quat \hyperlink{class_transform_adf0d22f16d1828804a038785d23aa782}{get\+Absolute\+Rotation} () const noexcept
+\item 
+const float \hyperlink{class_transform_abb2c3ea4aa73f73ee5a1e952e6ca572b}{get\+Absolute\+Rotation\+Angle} () const noexcept
+\item 
+const glm\+::vec3 \hyperlink{class_transform_aeeecb2d6949700678f7255a75e1aa109}{get\+Absolute\+Rotation\+Axis} () const noexcept
+\item 
+const glm\+::vec3 \hyperlink{class_transform_a680e2ca55154ee64067b637b3089a49a}{get\+Absolute\+Euler\+Angles} () const noexcept
+\item 
+const glm\+::quat \hyperlink{class_transform_af4c4efeddf0447ded7aedc65372691bc}{get\+Local\+Rotation} () const noexcept
+\item 
+const float \hyperlink{class_transform_adced558caa60dba283bc5711cd7f1357}{get\+Local\+Rotation\+Angle} () const noexcept
+\item 
+const glm\+::vec3 \hyperlink{class_transform_a861beae13233ea457e0eb906ac9f6ae5}{get\+Local\+Rotation\+Axis} () const noexcept
+\item 
+const glm\+::vec3 \hyperlink{class_transform_afd6613e7f6ecea657d9c4faf4b3772bd}{get\+Local\+Euler\+Angles} () const noexcept
+\item 
+{\footnotesize template$<$class T $>$ }\\void \hyperlink{class_transform_aa60a0073e2fd884226624f697ee31fe9}{scale} (const T \&scale)
+\item 
+const glm\+::vec3 \hyperlink{class_transform_a0c6436bf2df21cbf0675a86b84e3fb28}{get\+Absolute\+Scale} () const noexcept
+\item 
+const glm\+::vec3 \hyperlink{class_transform_aa9f7caf0eed7db1563ac72fc5726e2fe}{get\+Local\+Scale} () const noexcept
+\item 
+const glm\+::mat4 \hyperlink{class_transform_ab20c19ccdee7831086d2632a92eb078a}{get\+Absolute\+Transformation\+Matrix} () const noexcept
+\item 
+const glm\+::mat4 \hyperlink{class_transform_a503a33b8ca90f9e63d7f46c692561363}{get\+Local\+Transformation\+Matrix} () const noexcept
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_transform_aa32a94ec80690e270a849b0ae0fd9230}{translate} (const glm\+::vec2 \&translation)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_transform_af72de2343b28c920935e085a369618f7}{translate} (const glm\+::vec3 \&translation)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_transform_a80a0d4e1e53facf0576af6c7c0d7b3fe}{scale} (const glm\+::vec3 \&scale)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_transform_ae246427e89c5a775fbb4981078410e29}{scale} (const glm\+::vec2 \&scale)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_transform_a602ccc5ef9e53683bb7b9c6a4580f680}{scale} (const float \&scale)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ \hyperlink{class_transform_a71f8820c3ef3bd92f681bc92d200548f}{parent}
+\item 
+std\+::list$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ $>$ \hyperlink{class_transform_a22f8ebd97bc4ab75e133d0490d88e240}{children}
+\item 
+glm\+::vec3 \hyperlink{class_transform_a9cab8178cfc03757f96fb805d3725a2f}{local\+\_\+translation}
+\item 
+glm\+::quat \hyperlink{class_transform_a363d6f26cde024731741bdfcafd77777}{local\+\_\+rotation}
+\item 
+glm\+::vec3 \hyperlink{class_transform_adc17f89af50a97d875020e34e2b1ca3d}{local\+\_\+scale}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_transform_aa08ca4266efabc768973cdeea51945ab}{}\index{Transform@{Transform}!Transform@{Transform}}
+\index{Transform@{Transform}!Transform@{Transform}}
+\subsubsection[{Transform}]{\setlength{\rightskip}{0pt plus 5cm}Transform\+::\+Transform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_transform_aa08ca4266efabc768973cdeea51945ab}
+\hypertarget{class_transform_aa72e286c069850db80927b0e6554cd3e}{}\index{Transform@{Transform}!````~Transform@{$\sim$\+Transform}}
+\index{````~Transform@{$\sim$\+Transform}!Transform@{Transform}}
+\subsubsection[{$\sim$\+Transform}]{\setlength{\rightskip}{0pt plus 5cm}Transform\+::$\sim$\+Transform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_transform_aa72e286c069850db80927b0e6554cd3e}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_transform_a56a4cdc7936c2654fc56c66a53f4432f}{}\index{Transform@{Transform}!add\+Child@{add\+Child}}
+\index{add\+Child@{add\+Child}!Transform@{Transform}}
+\subsubsection[{add\+Child}]{\setlength{\rightskip}{0pt plus 5cm}void Transform\+::add\+Child (
+\begin{DoxyParamCaption}
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Transform} $>$ \&}]{transform}
+\end{DoxyParamCaption}
+)}\label{class_transform_a56a4cdc7936c2654fc56c66a53f4432f}
+\hypertarget{class_transform_a680e2ca55154ee64067b637b3089a49a}{}\index{Transform@{Transform}!get\+Absolute\+Euler\+Angles@{get\+Absolute\+Euler\+Angles}}
+\index{get\+Absolute\+Euler\+Angles@{get\+Absolute\+Euler\+Angles}!Transform@{Transform}}
+\subsubsection[{get\+Absolute\+Euler\+Angles}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::vec3 Transform\+::get\+Absolute\+Euler\+Angles (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_a680e2ca55154ee64067b637b3089a49a}
+\hypertarget{class_transform_adf0d22f16d1828804a038785d23aa782}{}\index{Transform@{Transform}!get\+Absolute\+Rotation@{get\+Absolute\+Rotation}}
+\index{get\+Absolute\+Rotation@{get\+Absolute\+Rotation}!Transform@{Transform}}
+\subsubsection[{get\+Absolute\+Rotation}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::quat Transform\+::get\+Absolute\+Rotation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_adf0d22f16d1828804a038785d23aa782}
+\hypertarget{class_transform_abb2c3ea4aa73f73ee5a1e952e6ca572b}{}\index{Transform@{Transform}!get\+Absolute\+Rotation\+Angle@{get\+Absolute\+Rotation\+Angle}}
+\index{get\+Absolute\+Rotation\+Angle@{get\+Absolute\+Rotation\+Angle}!Transform@{Transform}}
+\subsubsection[{get\+Absolute\+Rotation\+Angle}]{\setlength{\rightskip}{0pt plus 5cm}const float Transform\+::get\+Absolute\+Rotation\+Angle (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_abb2c3ea4aa73f73ee5a1e952e6ca572b}
+\hypertarget{class_transform_aeeecb2d6949700678f7255a75e1aa109}{}\index{Transform@{Transform}!get\+Absolute\+Rotation\+Axis@{get\+Absolute\+Rotation\+Axis}}
+\index{get\+Absolute\+Rotation\+Axis@{get\+Absolute\+Rotation\+Axis}!Transform@{Transform}}
+\subsubsection[{get\+Absolute\+Rotation\+Axis}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::vec3 Transform\+::get\+Absolute\+Rotation\+Axis (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_aeeecb2d6949700678f7255a75e1aa109}
+\hypertarget{class_transform_a0c6436bf2df21cbf0675a86b84e3fb28}{}\index{Transform@{Transform}!get\+Absolute\+Scale@{get\+Absolute\+Scale}}
+\index{get\+Absolute\+Scale@{get\+Absolute\+Scale}!Transform@{Transform}}
+\subsubsection[{get\+Absolute\+Scale}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::vec3 Transform\+::get\+Absolute\+Scale (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_a0c6436bf2df21cbf0675a86b84e3fb28}
+\hypertarget{class_transform_ab20c19ccdee7831086d2632a92eb078a}{}\index{Transform@{Transform}!get\+Absolute\+Transformation\+Matrix@{get\+Absolute\+Transformation\+Matrix}}
+\index{get\+Absolute\+Transformation\+Matrix@{get\+Absolute\+Transformation\+Matrix}!Transform@{Transform}}
+\subsubsection[{get\+Absolute\+Transformation\+Matrix}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::mat4 Transform\+::get\+Absolute\+Transformation\+Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_ab20c19ccdee7831086d2632a92eb078a}
+\hypertarget{class_transform_ad26386c52e4169a5f839a727c61e27a3}{}\index{Transform@{Transform}!get\+Absolute\+Translation@{get\+Absolute\+Translation}}
+\index{get\+Absolute\+Translation@{get\+Absolute\+Translation}!Transform@{Transform}}
+\subsubsection[{get\+Absolute\+Translation}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::vec3 Transform\+::get\+Absolute\+Translation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_ad26386c52e4169a5f839a727c61e27a3}
+\hypertarget{class_transform_a8a4dd635e2fa7e652af05f13f22fe72b}{}\index{Transform@{Transform}!get\+Children@{get\+Children}}
+\index{get\+Children@{get\+Children}!Transform@{Transform}}
+\subsubsection[{get\+Children}]{\setlength{\rightskip}{0pt plus 5cm}std\+::list$<$ std\+::shared\+\_\+ptr$<$ {\bf Transform} $>$ $>$ Transform\+::get\+Children (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{class_transform_a8a4dd635e2fa7e652af05f13f22fe72b}
+\hypertarget{class_transform_afd6613e7f6ecea657d9c4faf4b3772bd}{}\index{Transform@{Transform}!get\+Local\+Euler\+Angles@{get\+Local\+Euler\+Angles}}
+\index{get\+Local\+Euler\+Angles@{get\+Local\+Euler\+Angles}!Transform@{Transform}}
+\subsubsection[{get\+Local\+Euler\+Angles}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::vec3 Transform\+::get\+Local\+Euler\+Angles (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_afd6613e7f6ecea657d9c4faf4b3772bd}
+\hypertarget{class_transform_af4c4efeddf0447ded7aedc65372691bc}{}\index{Transform@{Transform}!get\+Local\+Rotation@{get\+Local\+Rotation}}
+\index{get\+Local\+Rotation@{get\+Local\+Rotation}!Transform@{Transform}}
+\subsubsection[{get\+Local\+Rotation}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::quat Transform\+::get\+Local\+Rotation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_af4c4efeddf0447ded7aedc65372691bc}
+\hypertarget{class_transform_adced558caa60dba283bc5711cd7f1357}{}\index{Transform@{Transform}!get\+Local\+Rotation\+Angle@{get\+Local\+Rotation\+Angle}}
+\index{get\+Local\+Rotation\+Angle@{get\+Local\+Rotation\+Angle}!Transform@{Transform}}
+\subsubsection[{get\+Local\+Rotation\+Angle}]{\setlength{\rightskip}{0pt plus 5cm}const float Transform\+::get\+Local\+Rotation\+Angle (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_adced558caa60dba283bc5711cd7f1357}
+\hypertarget{class_transform_a861beae13233ea457e0eb906ac9f6ae5}{}\index{Transform@{Transform}!get\+Local\+Rotation\+Axis@{get\+Local\+Rotation\+Axis}}
+\index{get\+Local\+Rotation\+Axis@{get\+Local\+Rotation\+Axis}!Transform@{Transform}}
+\subsubsection[{get\+Local\+Rotation\+Axis}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::vec3 Transform\+::get\+Local\+Rotation\+Axis (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_a861beae13233ea457e0eb906ac9f6ae5}
+\hypertarget{class_transform_aa9f7caf0eed7db1563ac72fc5726e2fe}{}\index{Transform@{Transform}!get\+Local\+Scale@{get\+Local\+Scale}}
+\index{get\+Local\+Scale@{get\+Local\+Scale}!Transform@{Transform}}
+\subsubsection[{get\+Local\+Scale}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::vec3 Transform\+::get\+Local\+Scale (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_aa9f7caf0eed7db1563ac72fc5726e2fe}
+\hypertarget{class_transform_a503a33b8ca90f9e63d7f46c692561363}{}\index{Transform@{Transform}!get\+Local\+Transformation\+Matrix@{get\+Local\+Transformation\+Matrix}}
+\index{get\+Local\+Transformation\+Matrix@{get\+Local\+Transformation\+Matrix}!Transform@{Transform}}
+\subsubsection[{get\+Local\+Transformation\+Matrix}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::mat4 Transform\+::get\+Local\+Transformation\+Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_a503a33b8ca90f9e63d7f46c692561363}
+\hypertarget{class_transform_a9abe479dcadead1d23c1335e8f042cea}{}\index{Transform@{Transform}!get\+Local\+Translation@{get\+Local\+Translation}}
+\index{get\+Local\+Translation@{get\+Local\+Translation}!Transform@{Transform}}
+\subsubsection[{get\+Local\+Translation}]{\setlength{\rightskip}{0pt plus 5cm}const glm\+::vec3 Transform\+::get\+Local\+Translation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_transform_a9abe479dcadead1d23c1335e8f042cea}
+\hypertarget{class_transform_a4f9cf868bd8f7894ea28c4aae450cb69}{}\index{Transform@{Transform}!get\+Tree\+Size@{get\+Tree\+Size}}
+\index{get\+Tree\+Size@{get\+Tree\+Size}!Transform@{Transform}}
+\subsubsection[{get\+Tree\+Size}]{\setlength{\rightskip}{0pt plus 5cm}const unsigned int Transform\+::get\+Tree\+Size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{class_transform_a4f9cf868bd8f7894ea28c4aae450cb69}
+\hypertarget{class_transform_aae84653176af974b257e44c832692501}{}\index{Transform@{Transform}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!Transform@{Transform}}
+\subsubsection[{operator"!=}]{\setlength{\rightskip}{0pt plus 5cm}const bool Transform\+::operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Transform} \&}]{other}
+\end{DoxyParamCaption}
+)}\label{class_transform_aae84653176af974b257e44c832692501}
+\hypertarget{class_transform_a0ab0fe030d715fff815fb5cd2fad3951}{}\index{Transform@{Transform}!operator==@{operator==}}
+\index{operator==@{operator==}!Transform@{Transform}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}const bool Transform\+::operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf Transform} \&}]{other}
+\end{DoxyParamCaption}
+)}\label{class_transform_a0ab0fe030d715fff815fb5cd2fad3951}
+\hypertarget{class_transform_a9b4c664919e485ae51e244e8e9eb548d}{}\index{Transform@{Transform}!remove\+Child@{remove\+Child}}
+\index{remove\+Child@{remove\+Child}!Transform@{Transform}}
+\subsubsection[{remove\+Child}]{\setlength{\rightskip}{0pt plus 5cm}void Transform\+::remove\+Child (
+\begin{DoxyParamCaption}
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Transform} $>$ \&}]{transform}
+\end{DoxyParamCaption}
+)}\label{class_transform_a9b4c664919e485ae51e244e8e9eb548d}
+\hypertarget{class_transform_a9b7f60043e6101b38888d9d760534626}{}\index{Transform@{Transform}!rotate@{rotate}}
+\index{rotate@{rotate}!Transform@{Transform}}
+\subsubsection[{rotate}]{\setlength{\rightskip}{0pt plus 5cm}void Transform\+::rotate (
+\begin{DoxyParamCaption}
+\item[{const float}]{angle, }
+\item[{const glm\+::vec3 \&}]{axis}
+\end{DoxyParamCaption}
+)}\label{class_transform_a9b7f60043e6101b38888d9d760534626}
+\hypertarget{class_transform_a8f20b2aafd83175cb49eee9a14e55513}{}\index{Transform@{Transform}!rotate@{rotate}}
+\index{rotate@{rotate}!Transform@{Transform}}
+\subsubsection[{rotate}]{\setlength{\rightskip}{0pt plus 5cm}void Transform\+::rotate (
+\begin{DoxyParamCaption}
+\item[{const float}]{angle\+\_\+x, }
+\item[{const float}]{angle\+\_\+y, }
+\item[{const float}]{angle\+\_\+z}
+\end{DoxyParamCaption}
+)}\label{class_transform_a8f20b2aafd83175cb49eee9a14e55513}
+\hypertarget{class_transform_a2b4c1f2d0a62d0c89dedd88dbcdaa2d8}{}\index{Transform@{Transform}!rotate@{rotate}}
+\index{rotate@{rotate}!Transform@{Transform}}
+\subsubsection[{rotate}]{\setlength{\rightskip}{0pt plus 5cm}void Transform\+::rotate (
+\begin{DoxyParamCaption}
+\item[{const glm\+::vec3 \&}]{euler\+\_\+angles}
+\end{DoxyParamCaption}
+)}\label{class_transform_a2b4c1f2d0a62d0c89dedd88dbcdaa2d8}
+\hypertarget{class_transform_ad51b8505353fa221c1a9d44590248e7e}{}\index{Transform@{Transform}!rotate@{rotate}}
+\index{rotate@{rotate}!Transform@{Transform}}
+\subsubsection[{rotate}]{\setlength{\rightskip}{0pt plus 5cm}void Transform\+::rotate (
+\begin{DoxyParamCaption}
+\item[{const glm\+::quat \&}]{quat}
+\end{DoxyParamCaption}
+)}\label{class_transform_ad51b8505353fa221c1a9d44590248e7e}
+\hypertarget{class_transform_aa60a0073e2fd884226624f697ee31fe9}{}\index{Transform@{Transform}!scale@{scale}}
+\index{scale@{scale}!Transform@{Transform}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void Transform\+::scale (
+\begin{DoxyParamCaption}
+\item[{const T \&}]{scale}
+\end{DoxyParamCaption}
+)}\label{class_transform_aa60a0073e2fd884226624f697ee31fe9}
+\hypertarget{class_transform_a80a0d4e1e53facf0576af6c7c0d7b3fe}{}\index{Transform@{Transform}!scale@{scale}}
+\index{scale@{scale}!Transform@{Transform}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void Transform\+::scale (
+\begin{DoxyParamCaption}
+\item[{const glm\+::vec3 \&}]{scale}
+\end{DoxyParamCaption}
+)}\label{class_transform_a80a0d4e1e53facf0576af6c7c0d7b3fe}
+\hypertarget{class_transform_ae246427e89c5a775fbb4981078410e29}{}\index{Transform@{Transform}!scale@{scale}}
+\index{scale@{scale}!Transform@{Transform}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void Transform\+::scale (
+\begin{DoxyParamCaption}
+\item[{const glm\+::vec2 \&}]{scale}
+\end{DoxyParamCaption}
+)}\label{class_transform_ae246427e89c5a775fbb4981078410e29}
+\hypertarget{class_transform_a602ccc5ef9e53683bb7b9c6a4580f680}{}\index{Transform@{Transform}!scale@{scale}}
+\index{scale@{scale}!Transform@{Transform}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void Transform\+::scale (
+\begin{DoxyParamCaption}
+\item[{const float \&}]{scale}
+\end{DoxyParamCaption}
+)}\label{class_transform_a602ccc5ef9e53683bb7b9c6a4580f680}
+\hypertarget{class_transform_aafe00d06850ed594fcf0e44364f29224}{}\index{Transform@{Transform}!translate@{translate}}
+\index{translate@{translate}!Transform@{Transform}}
+\subsubsection[{translate}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void Transform\+::translate (
+\begin{DoxyParamCaption}
+\item[{const T \&}]{translation}
+\end{DoxyParamCaption}
+)}\label{class_transform_aafe00d06850ed594fcf0e44364f29224}
+\hypertarget{class_transform_aa32a94ec80690e270a849b0ae0fd9230}{}\index{Transform@{Transform}!translate@{translate}}
+\index{translate@{translate}!Transform@{Transform}}
+\subsubsection[{translate}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void Transform\+::translate (
+\begin{DoxyParamCaption}
+\item[{const glm\+::vec2 \&}]{translation}
+\end{DoxyParamCaption}
+)}\label{class_transform_aa32a94ec80690e270a849b0ae0fd9230}
+\hypertarget{class_transform_af72de2343b28c920935e085a369618f7}{}\index{Transform@{Transform}!translate@{translate}}
+\index{translate@{translate}!Transform@{Transform}}
+\subsubsection[{translate}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void Transform\+::translate (
+\begin{DoxyParamCaption}
+\item[{const glm\+::vec3 \&}]{translation}
+\end{DoxyParamCaption}
+)}\label{class_transform_af72de2343b28c920935e085a369618f7}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_transform_a22f8ebd97bc4ab75e133d0490d88e240}{}\index{Transform@{Transform}!children@{children}}
+\index{children@{children}!Transform@{Transform}}
+\subsubsection[{children}]{\setlength{\rightskip}{0pt plus 5cm}std\+::list$<$std\+::shared\+\_\+ptr$<${\bf Transform}$>$ $>$ Transform\+::children\hspace{0.3cm}{\ttfamily [private]}}\label{class_transform_a22f8ebd97bc4ab75e133d0490d88e240}
+\hypertarget{class_transform_a363d6f26cde024731741bdfcafd77777}{}\index{Transform@{Transform}!local\+\_\+rotation@{local\+\_\+rotation}}
+\index{local\+\_\+rotation@{local\+\_\+rotation}!Transform@{Transform}}
+\subsubsection[{local\+\_\+rotation}]{\setlength{\rightskip}{0pt plus 5cm}glm\+::quat Transform\+::local\+\_\+rotation\hspace{0.3cm}{\ttfamily [private]}}\label{class_transform_a363d6f26cde024731741bdfcafd77777}
+\hypertarget{class_transform_adc17f89af50a97d875020e34e2b1ca3d}{}\index{Transform@{Transform}!local\+\_\+scale@{local\+\_\+scale}}
+\index{local\+\_\+scale@{local\+\_\+scale}!Transform@{Transform}}
+\subsubsection[{local\+\_\+scale}]{\setlength{\rightskip}{0pt plus 5cm}glm\+::vec3 Transform\+::local\+\_\+scale\hspace{0.3cm}{\ttfamily [private]}}\label{class_transform_adc17f89af50a97d875020e34e2b1ca3d}
+\hypertarget{class_transform_a9cab8178cfc03757f96fb805d3725a2f}{}\index{Transform@{Transform}!local\+\_\+translation@{local\+\_\+translation}}
+\index{local\+\_\+translation@{local\+\_\+translation}!Transform@{Transform}}
+\subsubsection[{local\+\_\+translation}]{\setlength{\rightskip}{0pt plus 5cm}glm\+::vec3 Transform\+::local\+\_\+translation\hspace{0.3cm}{\ttfamily [private]}}\label{class_transform_a9cab8178cfc03757f96fb805d3725a2f}
+\hypertarget{class_transform_a71f8820c3ef3bd92f681bc92d200548f}{}\index{Transform@{Transform}!parent@{parent}}
+\index{parent@{parent}!Transform@{Transform}}
+\subsubsection[{parent}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<${\bf Transform}$>$ Transform\+::parent\hspace{0.3cm}{\ttfamily [private]}}\label{class_transform_a71f8820c3ef3bd92f681bc92d200548f}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{transform_8h}{transform.\+h}\item 
+src/\hyperlink{transform_8cpp}{transform.\+cpp}\end{DoxyCompactItemize}

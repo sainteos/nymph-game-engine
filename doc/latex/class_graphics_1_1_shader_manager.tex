@@ -18,6 +18,8 @@ const bool \hyperlink{class_graphics_1_1_shader_manager_a0cd014938152e36fd81717d
 const std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_shader}{Shader} $>$ \hyperlink{class_graphics_1_1_shader_manager_a4a3c0f369be06a34a8e44ad8a41862a4}{operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&name) const 
 \item 
 const std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_shader}{Shader} $>$ \hyperlink{class_graphics_1_1_shader_manager_a8c82c5f8d73dbb9ec3038b2db71add41}{get\+Shader} (const std\+::string \&name) const 
+\item 
+{\footnotesize template$<$class T $>$ }\\void \hyperlink{class_graphics_1_1_shader_manager_a506437c5209786ccd03c3243de456cd3}{set\+Uniform\+For\+All\+Programs} (const std\+::string \&name, const T \&data)
 \end{DoxyCompactItemize}
 \subsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
@@ -29,6 +31,13 @@ static char const $\ast$ \hyperlink{class_graphics_1_1_shader_manager_aa3ad06b55
 static char const $\ast$ \hyperlink{class_graphics_1_1_shader_manager_a66cf54024f2f1e51db6f5afccbcba67e}{G\+E\+O\+M\+E\+T\+R\+Y\+\_\+\+E\+X\+T\+E\+N\+S\+I\+O\+N} = \char`\"{}.geom\char`\"{}
 \item 
 static char const $\ast$ \hyperlink{class_graphics_1_1_shader_manager_ad3cef3602a2a0205064bdff0ac9437a8}{S\+H\+A\+D\+E\+R\+\_\+\+D\+I\+R\+E\+C\+T\+O\+R\+Y} = \char`\"{}./shaders/\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const bool \hyperlink{class_graphics_1_1_shader_manager_a7c73d370e436f69ee340a0f2b02558fc}{check\+Compilation} (const unsigned int \&shader\+\_\+object)
+\item 
+void \hyperlink{class_graphics_1_1_shader_manager_a2477b4ccc2227086b2759dc95c55005a}{log\+Shader\+Info\+Log} (const unsigned int \&shader\+\_\+object)
 \end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -55,6 +64,13 @@ std\+::map$<$ std\+::string, std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics
 
 
 \subsection{Member Function Documentation}
+\hypertarget{class_graphics_1_1_shader_manager_a7c73d370e436f69ee340a0f2b02558fc}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!check\+Compilation@{check\+Compilation}}
+\index{check\+Compilation@{check\+Compilation}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{check\+Compilation}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Shader\+Manager\+::check\+Compilation (
+\begin{DoxyParamCaption}
+\item[{const unsigned int \&}]{shader\+\_\+object}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_shader_manager_a7c73d370e436f69ee340a0f2b02558fc}
 \hypertarget{class_graphics_1_1_shader_manager_a8c82c5f8d73dbb9ec3038b2db71add41}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!get\+Shader@{get\+Shader}}
 \index{get\+Shader@{get\+Shader}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
 \subsubsection[{get\+Shader}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::shared\+\_\+ptr$<$ {\bf Shader} $>$ Graphics\+::\+Shader\+Manager\+::get\+Shader (
@@ -80,6 +96,13 @@ std\+::map$<$ std\+::string, std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics
 \item[{const std\+::string \&}]{geometry\+\_\+filename}
 \end{DoxyParamCaption}
 )}\label{class_graphics_1_1_shader_manager_a0cd014938152e36fd81717dadd7e390a}
+\hypertarget{class_graphics_1_1_shader_manager_a2477b4ccc2227086b2759dc95c55005a}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!log\+Shader\+Info\+Log@{log\+Shader\+Info\+Log}}
+\index{log\+Shader\+Info\+Log@{log\+Shader\+Info\+Log}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{log\+Shader\+Info\+Log}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Shader\+Manager\+::log\+Shader\+Info\+Log (
+\begin{DoxyParamCaption}
+\item[{const unsigned int \&}]{shader\+\_\+object}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_shader_manager_a2477b4ccc2227086b2759dc95c55005a}
 \hypertarget{class_graphics_1_1_shader_manager_a4a3c0f369be06a34a8e44ad8a41862a4}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
 \index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
 \subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::shared\+\_\+ptr$<$ {\bf Shader} $>$ Graphics\+::\+Shader\+Manager\+::operator\mbox{[}$\,$\mbox{]} (
@@ -87,6 +110,14 @@ std\+::map$<$ std\+::string, std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics
 \item[{const std\+::string \&}]{name}
 \end{DoxyParamCaption}
 ) const}\label{class_graphics_1_1_shader_manager_a4a3c0f369be06a34a8e44ad8a41862a4}
+\hypertarget{class_graphics_1_1_shader_manager_a506437c5209786ccd03c3243de456cd3}{}\index{Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}!set\+Uniform\+For\+All\+Programs@{set\+Uniform\+For\+All\+Programs}}
+\index{set\+Uniform\+For\+All\+Programs@{set\+Uniform\+For\+All\+Programs}!Graphics\+::\+Shader\+Manager@{Graphics\+::\+Shader\+Manager}}
+\subsubsection[{set\+Uniform\+For\+All\+Programs}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void Graphics\+::\+Shader\+Manager\+::set\+Uniform\+For\+All\+Programs (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const T \&}]{data}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_shader_manager_a506437c5209786ccd03c3243de456cd3}
 
 
 \subsection{Member Data Documentation}

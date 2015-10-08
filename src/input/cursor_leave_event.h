@@ -8,6 +8,7 @@ namespace Input {
   class CursorLeaveEvent : public Events::Event {
     public:
       CursorLeaveEvent() : Event(Events::EventType::CURSOR_LEAVE) {}
+      static std::shared_ptr<CursorLeaveEvent> create() { return std::make_shared<CursorLeaveEvent>(); }
   };
 }
 

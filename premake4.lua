@@ -36,32 +36,3 @@ solution "TileEngine"
       flags { "Optimize" }
       targetextension ".out"
 
-  project "TileEngineTests"
-    kind "ConsoleApp"
-    language "C++"
-
-    targetname "TileEngineTests"
-    targetextension ".out"
-
-    libdirs { "./lib" }
-    links { "fmod", "glew", "glfw3", "png", "z", "tmxparser", "IL"}
-
-    includedirs { "./include", "./src" }
-
-    files { "**.h", "**.hpp", "**.cpp" }
-    excludes { "./src/main.cpp" }
-
-    configuration "WindowsDebug"
-      links { "opengl32" }
-      defines { "DEBUG" }
-      flags { "Symbols" }
-
-    configuration "Debug"
-      links { "OpenGL.framework" }
-      defines { "DEBUG" }
-      flags { "Symbols" }
-
-    configuration "Release"
-      links { "OpenGL.framework" }
-      defines { "NDEBUG" }
-      flags { "Optimize" }

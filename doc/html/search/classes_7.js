@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['windowexitfunctor',['WindowExitFunctor',['../class_graphics_1_1_window_exit_functor.html',1,'Graphics']]]
+  ['keydownevent',['KeyDownEvent',['../class_input_1_1_key_down_event.html',1,'Input']]],
+  ['keyupevent',['KeyUpEvent',['../class_input_1_1_key_up_event.html',1,'Input']]]
 ];

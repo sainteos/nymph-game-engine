@@ -1,12 +1,10 @@
 var searchData=
 [
-  ['reserved1',['RESERVED1',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620ea77588319217115a8d9dead081e341e83',1,'Graphics::VertexData']]],
-  ['reserved2',['RESERVED2',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620ea9c6b6dd55ddf236f667e3e4019cda8d7',1,'Graphics::VertexData']]],
-  ['reserved3',['RESERVED3',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620eafc91ad501328ae49126c5d4bf850e537',1,'Graphics::VertexData']]],
-  ['reserved4',['RESERVED4',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620ea2185ed1920c6eeea484c4050e149764d',1,'Graphics::VertexData']]],
-  ['reserved5',['RESERVED5',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620ea92ff06fddd97b8c7d306ff7e912aeaba',1,'Graphics::VertexData']]],
-  ['reserved6',['RESERVED6',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620ea815ed3d3f65efe3a61a3df584a8fad55',1,'Graphics::VertexData']]],
-  ['reserved7',['RESERVED7',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620ead297e598e1a3dd7e9f7f3cc624130de9',1,'Graphics::VertexData']]],
-  ['reserved8',['RESERVED8',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620ea8f0a8e69a480d1dfb0f671acd6f72249',1,'Graphics::VertexData']]],
-  ['reserved9',['RESERVED9',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620eaeef1b1af84ab650ca26fcd90ed548642',1,'Graphics::VertexData']]]
+  ['mouse_5fbutton',['MOUSE_BUTTON',['../namespace_events.html#a85b018e2484fb7e336c3bb03bd41816aac2d747dfb137a8b7718063fe7748b5f4',1,'Events']]],
+  ['mouse_5fcursor',['MOUSE_CURSOR',['../namespace_events.html#a85b018e2484fb7e336c3bb03bd41816aa0cb764fec5c8199714bf03253c59947d',1,'Events']]],
+  ['mouse_5fscroll',['MOUSE_SCROLL',['../namespace_events.html#a85b018e2484fb7e336c3bb03bd41816aab140bcabe8209ca48d5819ea5eec1388',1,'Events']]],
+  ['move_5fdown',['MOVE_DOWN',['../sprite_8h.html#af7ccac6abcbe8bf213b36feaa7b69cdaa8b32429247158c80deab773f4e04e1c2',1,'sprite.h']]],
+  ['move_5fleft',['MOVE_LEFT',['../sprite_8h.html#af7ccac6abcbe8bf213b36feaa7b69cdaad7aa835d76fc894935ade13f4d0624f8',1,'sprite.h']]],
+  ['move_5fright',['MOVE_RIGHT',['../sprite_8h.html#af7ccac6abcbe8bf213b36feaa7b69cdaa3dc5ed1f827e8c9a6392edb90af992d5',1,'sprite.h']]],
+  ['move_5fup',['MOVE_UP',['../sprite_8h.html#af7ccac6abcbe8bf213b36feaa7b69cdaae397b4fa67c25cc1c9eae980cfdd43eb',1,'sprite.h']]]
 ];

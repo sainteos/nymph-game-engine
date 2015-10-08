@@ -18,21 +18,58 @@ namespace Graphics {
     projection_matrix = glm::ortho(viewport_width / -2.0f, viewport_width / 2.0f, viewport_height / -2.0f, viewport_height / 2.0f, near, far);
     shader_manager->setUniformForAllPrograms<glm::mat4>("projection", projection_matrix);
 
-    shader_manager->setUniformForAllPrograms<glm::mat4>("view", negateTransformForScreen(transform).getAbsoluteTransformationMatrix());
+    shader_manager->setUniformForAllPrograms<glm::mat4>("view", negateTransformForScreen(getTransform()).getAbsoluteTransformationMatrix());
     last_projection_matrix = projection_matrix;
-    last_transform = *transform;
-    target_position = glm::vec2(transform->getLocalTranslation());
+    last_transform = *getTransform();
+    target_position = glm::vec2(getTransform()->getLocalTranslation());
     velocity = glm::vec2(0.0, 0.0);
   }
 
   const bool Camera::onUpdate(const double delta) {
+    Component::onUpdate(delta);
+    if(!active)
+      return false;
+    
+    while(!events.empty()) {
+      auto event = events.front();
+      events.pop();
+
+      if(event->getEventCode() == Events::EventType::SPRITE_MOVE) {
+        auto casted_event = std::static_pointer_cast<SpriteMoveEvent>(event);
+
+        if(casted_event->getVelocity().x > 0.0) {
+          if(casted_event->getNextPosition().x > getTransform()->getAbsoluteTranslation().x + viewport_width / 2.0 - screen_padding_in_tiles) {
+            velocity = casted_event->getVelocity();
+            target_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::vec2(1.0, 0.0);
+          }
+        }
+        else if(casted_event->getVelocity().x < 0.0) {
+          if(casted_event->getNextPosition().x < getTransform()->getAbsoluteTranslation().x - viewport_width / 2.0 + screen_padding_in_tiles) {
+            velocity = casted_event->getVelocity();
+            target_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::vec2(-1.0, 0.0);
+          }
+        }
+        else if(casted_event->getVelocity().y > 0.0) {
+          if(casted_event->getNextPosition().y > getTransform()->getAbsoluteTranslation().y + viewport_height / 2.0 - screen_padding_in_tiles) {
+            velocity = casted_event->getVelocity();
+            target_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::vec2(0.0, 1.0);
+          }
+        }
+        else if(casted_event->getVelocity().y < 0.0) {
+          if(casted_event->getNextPosition().y < getTransform()->getAbsoluteTranslation().y - viewport_height / 2.0 + screen_padding_in_tiles) {
+            velocity = casted_event->getVelocity();
+            target_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::vec2(0.0, -1.0);
+          }
+        }
+      }
+    }
     if(velocity != glm::vec2(0.0, 0.0)) {
-      if(glm::distance(target_position, glm::vec2(transform->getLocalTranslation())) < 1.0 / 1000.0 * delta) {
-        transform->translate(target_position - glm::vec2(transform->getLocalTranslation()));
+      if(glm::distance(target_position, glm::vec2(getTransform()->getLocalTranslation())) < 1.0 / 1000.0 * delta) {
+        getTransform()->translate(target_position - glm::vec2(getTransform()->getLocalTranslation()));
         velocity = glm::vec2(0.0, 0.0);
       }
       else {
-        transform->translate(velocity * 1.0 / 1000.0 * delta);
+        getTransform()->translate(velocity * 1.0 / 1000.0 * delta);
       }
     }
     if(projection_matrix != last_projection_matrix) {
@@ -40,46 +77,14 @@ namespace Graphics {
       last_projection_matrix = projection_matrix;
     }
 
-    if(last_transform != *transform) {
-      shader_manager->setUniformForAllPrograms<glm::mat4>("view", negateTransformForScreen(transform).getAbsoluteTransformationMatrix());
-      last_transform = *transform;
+    if(last_transform != *getTransform()) {
+      shader_manager->setUniformForAllPrograms<glm::mat4>("view", negateTransformForScreen(getTransform()).getAbsoluteTransformationMatrix());
+      last_transform = *getTransform();
     }
     return true;
   }
 
   void Camera::onDestroy() {
-    transform = std::make_shared<Transform>();
-  }
-
-  void Camera::onNotify(const Events::Event& event) {
-    if(event.getEventCode() == Events::EventType::SPRITE_MOVE) {
-      auto casted_event = static_cast<const SpriteMoveEvent*>(&event);
-
-      if(casted_event->getVelocity().x > 0.0) {
-        if(casted_event->getNextPosition().x > getTransform()->getAbsoluteTranslation().x + viewport_width / 2.0 - screen_padding_in_tiles) {
-          velocity = casted_event->getVelocity();
-          target_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::vec2(1.0, 0.0);
-        }
-      }
-      else if(casted_event->getVelocity().x < 0.0) {
-        if(casted_event->getNextPosition().x < getTransform()->getAbsoluteTranslation().x - viewport_width / 2.0 + screen_padding_in_tiles) {
-          velocity = casted_event->getVelocity();
-          target_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::vec2(-1.0, 0.0);
-        }
-      }
-      else if(casted_event->getVelocity().y > 0.0) {
-        if(casted_event->getNextPosition().y > getTransform()->getAbsoluteTranslation().y + viewport_height / 2.0 - screen_padding_in_tiles) {
-          velocity = casted_event->getVelocity();
-          target_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::vec2(0.0, 1.0);
-        }
-      }
-      else if(casted_event->getVelocity().y < 0.0) {
-        if(casted_event->getNextPosition().y < getTransform()->getAbsoluteTranslation().y - viewport_height / 2.0 + screen_padding_in_tiles) {
-          velocity = casted_event->getVelocity();
-          target_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::vec2(0.0, -1.0);
-        }
-      }
-    }
   }
 
   void Camera::setScreenPaddingInTiles(const int padding) noexcept {
@@ -122,9 +127,9 @@ namespace Graphics {
     return far;
   }
 
-  const bool Camera::isRenderableWithin(std::shared_ptr<Renderable> renderable) const {
-    auto translation = renderable->getTransform()->getAbsoluteTranslation();
-    auto camera_translation = transform->getAbsoluteTranslation();
+  const bool Camera::isComponentWithin(const Component& component) const {
+    auto translation = component.getTransform()->getAbsoluteTranslation();
+    auto camera_translation = getTransform()->getAbsoluteTranslation();
     
     auto camera_bound_left = -(viewport_width + 2.0) / 2.0 + camera_translation.x;
     auto camera_bound_right = (viewport_width + 2.0) / 2.0 + camera_translation.x;
@@ -139,7 +144,7 @@ namespace Graphics {
 
   Transform Camera::negateTransformForScreen(std::shared_ptr<Transform> trans) {
     //Gotta do this to make the camera move the opposite the renderables
-    Transform negated_for_screen = *transform;
+    Transform negated_for_screen = *trans;
     negated_for_screen.translate(glm::vec3(-2.0, -2.0, 1.0) * negated_for_screen.getAbsoluteTranslation());
     return negated_for_screen;
   }

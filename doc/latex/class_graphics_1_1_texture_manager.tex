@@ -1,0 +1,100 @@
+\hypertarget{class_graphics_1_1_texture_manager}{}\section{Graphics\+:\+:Texture\+Manager Class Reference}
+\label{class_graphics_1_1_texture_manager}\index{Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}}
+
+
+{\ttfamily \#include $<$texture\+\_\+manager.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_graphics_1_1_texture_manager_aa04c4948f0bf5641454b649c8ddd8ebd}{Texture\+Manager} ()
+\item 
+\hyperlink{class_graphics_1_1_texture_manager_a37197d06634adca1715ce58a1d46a98f}{$\sim$\+Texture\+Manager} ()
+\item 
+const bool \hyperlink{class_graphics_1_1_texture_manager_aaf3f4c4eae602c748482950639335dee}{load\+Texture} (const std\+::string \&path, const std\+::string \&texture\+\_\+uniform\+\_\+name, const unsigned int texture\+\_\+unit=0)
+\item 
+const std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_base_texture}{Base\+Texture} $>$ \hyperlink{class_graphics_1_1_texture_manager_ae2c15e90de3a93f02609f5da3a050e5c}{operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&name) const 
+\item 
+const std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_base_texture}{Base\+Texture} $>$ \hyperlink{class_graphics_1_1_texture_manager_a4e969b690676e3f5f764fa2a2c67763b}{get\+Texture} (const std\+::string \&name) const 
+\item 
+const bool \hyperlink{class_graphics_1_1_texture_manager_a7ea7b24ff436064895eece7804e4c18d}{texture\+Exists} (const std\+::string \&name) const noexcept
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static const std\+::string \hyperlink{class_graphics_1_1_texture_manager_a5011ab2205d5dd2e4d0fcecbf91a00cc}{get\+Name\+From\+Path} (const std\+::string \&path) noexcept
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ std\+::string, std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_base_texture}{Base\+Texture} $>$ $>$ \hyperlink{class_graphics_1_1_texture_manager_ac8e9f344711185e1d002b021041d137e}{textures\+\_\+to\+\_\+names}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_graphics_1_1_texture_manager_aa04c4948f0bf5641454b649c8ddd8ebd}{}\index{Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}!Texture\+Manager@{Texture\+Manager}}
+\index{Texture\+Manager@{Texture\+Manager}!Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}}
+\subsubsection[{Texture\+Manager}]{\setlength{\rightskip}{0pt plus 5cm}Graphics\+::\+Texture\+Manager\+::\+Texture\+Manager (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_texture_manager_aa04c4948f0bf5641454b649c8ddd8ebd}
+\hypertarget{class_graphics_1_1_texture_manager_a37197d06634adca1715ce58a1d46a98f}{}\index{Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}!````~Texture\+Manager@{$\sim$\+Texture\+Manager}}
+\index{````~Texture\+Manager@{$\sim$\+Texture\+Manager}!Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}}
+\subsubsection[{$\sim$\+Texture\+Manager}]{\setlength{\rightskip}{0pt plus 5cm}Graphics\+::\+Texture\+Manager\+::$\sim$\+Texture\+Manager (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_texture_manager_a37197d06634adca1715ce58a1d46a98f}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_graphics_1_1_texture_manager_a5011ab2205d5dd2e4d0fcecbf91a00cc}{}\index{Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}!get\+Name\+From\+Path@{get\+Name\+From\+Path}}
+\index{get\+Name\+From\+Path@{get\+Name\+From\+Path}!Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}}
+\subsubsection[{get\+Name\+From\+Path}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string Graphics\+::\+Texture\+Manager\+::get\+Name\+From\+Path (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{path}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [noexcept]}}\label{class_graphics_1_1_texture_manager_a5011ab2205d5dd2e4d0fcecbf91a00cc}
+\hypertarget{class_graphics_1_1_texture_manager_a4e969b690676e3f5f764fa2a2c67763b}{}\index{Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}!get\+Texture@{get\+Texture}}
+\index{get\+Texture@{get\+Texture}!Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}}
+\subsubsection[{get\+Texture}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::shared\+\_\+ptr$<$ {\bf Base\+Texture} $>$ Graphics\+::\+Texture\+Manager\+::get\+Texture (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+) const}\label{class_graphics_1_1_texture_manager_a4e969b690676e3f5f764fa2a2c67763b}
+\hypertarget{class_graphics_1_1_texture_manager_aaf3f4c4eae602c748482950639335dee}{}\index{Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}!load\+Texture@{load\+Texture}}
+\index{load\+Texture@{load\+Texture}!Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}}
+\subsubsection[{load\+Texture}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Texture\+Manager\+::load\+Texture (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{path, }
+\item[{const std\+::string \&}]{texture\+\_\+uniform\+\_\+name, }
+\item[{const unsigned int}]{texture\+\_\+unit = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_texture_manager_aaf3f4c4eae602c748482950639335dee}
+\hypertarget{class_graphics_1_1_texture_manager_ae2c15e90de3a93f02609f5da3a050e5c}{}\index{Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::shared\+\_\+ptr$<$ {\bf Base\+Texture} $>$ Graphics\+::\+Texture\+Manager\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+) const}\label{class_graphics_1_1_texture_manager_ae2c15e90de3a93f02609f5da3a050e5c}
+\hypertarget{class_graphics_1_1_texture_manager_a7ea7b24ff436064895eece7804e4c18d}{}\index{Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}!texture\+Exists@{texture\+Exists}}
+\index{texture\+Exists@{texture\+Exists}!Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}}
+\subsubsection[{texture\+Exists}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Texture\+Manager\+::texture\+Exists (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_texture_manager_a7ea7b24ff436064895eece7804e4c18d}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_graphics_1_1_texture_manager_ac8e9f344711185e1d002b021041d137e}{}\index{Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}!textures\+\_\+to\+\_\+names@{textures\+\_\+to\+\_\+names}}
+\index{textures\+\_\+to\+\_\+names@{textures\+\_\+to\+\_\+names}!Graphics\+::\+Texture\+Manager@{Graphics\+::\+Texture\+Manager}}
+\subsubsection[{textures\+\_\+to\+\_\+names}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$std\+::string, std\+::shared\+\_\+ptr$<${\bf Base\+Texture}$>$ $>$ Graphics\+::\+Texture\+Manager\+::textures\+\_\+to\+\_\+names\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_texture_manager_ac8e9f344711185e1d002b021041d137e}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/graphics/\hyperlink{texture__manager_8h}{texture\+\_\+manager.\+h}\item 
+src/graphics/\hyperlink{texture__manager_8cpp}{texture\+\_\+manager.\+cpp}\end{DoxyCompactItemize}

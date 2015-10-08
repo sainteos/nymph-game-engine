@@ -10,6 +10,7 @@ namespace Input {
       int button;
     public:
       MouseButtonEvent(const int button) : Event(Events::EventType::MOUSE_BUTTON), button(button) {}
+      static std::shared_ptr<MouseButtonEvent> create(const int button) { return std::make_shared<MouseButtonEvent>(button); }
       const int getButton() const noexcept { return button; }
   };
 }

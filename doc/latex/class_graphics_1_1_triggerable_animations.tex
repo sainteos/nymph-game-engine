@@ -1,0 +1,88 @@
+\hypertarget{class_graphics_1_1_triggerable_animations}{}\section{Graphics\+:\+:Triggerable\+Animations$<$ T $>$ Class Template Reference}
+\label{class_graphics_1_1_triggerable_animations}\index{Graphics\+::\+Triggerable\+Animations$<$ T $>$@{Graphics\+::\+Triggerable\+Animations$<$ T $>$}}
+
+
+{\ttfamily \#include $<$triggerable\+\_\+animations.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_graphics_1_1_triggerable_animations_a7efd5e939bef5de77f720f1e5b1114fe}{Triggerable\+Animations} ()=delete
+\item 
+\hyperlink{class_graphics_1_1_triggerable_animations_a8a2e951c4d6897ce273da003de9585ab}{Triggerable\+Animations} (const T \&start\+\_\+state)
+\item 
+void \hyperlink{class_graphics_1_1_triggerable_animations_a21d79b645121d0d316cae1112bddbce4}{initialize\+States} ()
+\item 
+void \hyperlink{class_graphics_1_1_triggerable_animations_ae34239042915beccc4c912f28a1d83e0}{trigger\+Tile} (const T \&state)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_graphics_1_1_triggerable_animations_ad7b21d0e24cfeb6279b91be187ddf2d1}{add\+Tile} (const T \&state, std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_tile}{Graphics\+::\+Tile} $>$ tile)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+T \hyperlink{class_graphics_1_1_triggerable_animations_a0f0e18726e1132c73d2e1d9f99072af1}{current\+\_\+state}
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ T, std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_tile}{Graphics\+::\+Tile} $>$ $>$ \hyperlink{class_graphics_1_1_triggerable_animations_ad1d962d31d0515577f43b5b13b4b5743}{triggerable\+\_\+tiles}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_graphics_1_1_triggerable_animations_a7efd5e939bef5de77f720f1e5b1114fe}{}\index{Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}!Triggerable\+Animations@{Triggerable\+Animations}}
+\index{Triggerable\+Animations@{Triggerable\+Animations}!Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}}
+\subsubsection[{Triggerable\+Animations}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Graphics\+::\+Triggerable\+Animations}$<$ T $>$\+::{\bf Triggerable\+Animations} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\label{class_graphics_1_1_triggerable_animations_a7efd5e939bef5de77f720f1e5b1114fe}
+\hypertarget{class_graphics_1_1_triggerable_animations_a8a2e951c4d6897ce273da003de9585ab}{}\index{Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}!Triggerable\+Animations@{Triggerable\+Animations}}
+\index{Triggerable\+Animations@{Triggerable\+Animations}!Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}}
+\subsubsection[{Triggerable\+Animations}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Graphics\+::\+Triggerable\+Animations}$<$ T $>$\+::{\bf Triggerable\+Animations} (
+\begin{DoxyParamCaption}
+\item[{const T \&}]{start\+\_\+state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_graphics_1_1_triggerable_animations_a8a2e951c4d6897ce273da003de9585ab}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_graphics_1_1_triggerable_animations_ad7b21d0e24cfeb6279b91be187ddf2d1}{}\index{Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}!add\+Tile@{add\+Tile}}
+\index{add\+Tile@{add\+Tile}!Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}}
+\subsubsection[{add\+Tile}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf Graphics\+::\+Triggerable\+Animations}$<$ T $>$\+::add\+Tile (
+\begin{DoxyParamCaption}
+\item[{const T \&}]{state, }
+\item[{std\+::shared\+\_\+ptr$<$ {\bf Graphics\+::\+Tile} $>$}]{tile}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_graphics_1_1_triggerable_animations_ad7b21d0e24cfeb6279b91be187ddf2d1}
+\hypertarget{class_graphics_1_1_triggerable_animations_a21d79b645121d0d316cae1112bddbce4}{}\index{Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}!initialize\+States@{initialize\+States}}
+\index{initialize\+States@{initialize\+States}!Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}}
+\subsubsection[{initialize\+States}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf Graphics\+::\+Triggerable\+Animations}$<$ T $>$\+::initialize\+States (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_graphics_1_1_triggerable_animations_a21d79b645121d0d316cae1112bddbce4}
+\hypertarget{class_graphics_1_1_triggerable_animations_ae34239042915beccc4c912f28a1d83e0}{}\index{Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}!trigger\+Tile@{trigger\+Tile}}
+\index{trigger\+Tile@{trigger\+Tile}!Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}}
+\subsubsection[{trigger\+Tile}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf Graphics\+::\+Triggerable\+Animations}$<$ T $>$\+::trigger\+Tile (
+\begin{DoxyParamCaption}
+\item[{const T \&}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_graphics_1_1_triggerable_animations_ae34239042915beccc4c912f28a1d83e0}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_graphics_1_1_triggerable_animations_a0f0e18726e1132c73d2e1d9f99072af1}{}\index{Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}!current\+\_\+state@{current\+\_\+state}}
+\index{current\+\_\+state@{current\+\_\+state}!Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}}
+\subsubsection[{current\+\_\+state}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T {\bf Graphics\+::\+Triggerable\+Animations}$<$ T $>$\+::current\+\_\+state\hspace{0.3cm}{\ttfamily [protected]}}\label{class_graphics_1_1_triggerable_animations_a0f0e18726e1132c73d2e1d9f99072af1}
+\hypertarget{class_graphics_1_1_triggerable_animations_ad1d962d31d0515577f43b5b13b4b5743}{}\index{Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}!triggerable\+\_\+tiles@{triggerable\+\_\+tiles}}
+\index{triggerable\+\_\+tiles@{triggerable\+\_\+tiles}!Graphics\+::\+Triggerable\+Animations@{Graphics\+::\+Triggerable\+Animations}}
+\subsubsection[{triggerable\+\_\+tiles}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ std\+::map$<$T, std\+::shared\+\_\+ptr$<${\bf Graphics\+::\+Tile}$>$ $>$ {\bf Graphics\+::\+Triggerable\+Animations}$<$ T $>$\+::triggerable\+\_\+tiles\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_triggerable_animations_ad1d962d31d0515577f43b5b13b4b5743}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/graphics/\hyperlink{triggerable__animations_8hpp}{triggerable\+\_\+animations.\+hpp}\end{DoxyCompactItemize}

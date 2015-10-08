@@ -42,6 +42,10 @@ enum \hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e
 \item 
 \hyperlink{class_graphics_1_1_vertex_data_a59b5214fe3d6b6f9425032c86abf65cb}{$\sim$\+Vertex\+Data} ()
 \item 
+const bool \hyperlink{class_graphics_1_1_vertex_data_ad58ef98925908992fcd3ff090f57693f}{operator==} (const \hyperlink{class_graphics_1_1_vertex_data}{Vertex\+Data} \&other)
+\item 
+const bool \hyperlink{class_graphics_1_1_vertex_data_ac03511a02af7005757f60783b73fc51f}{operator!=} (const \hyperlink{class_graphics_1_1_vertex_data}{Vertex\+Data} \&other)
+\item 
 void \hyperlink{class_graphics_1_1_vertex_data_a9d7dfbf44faa4ebeeb052d9a49ec72c4}{add\+Indices} (const std\+::vector$<$ unsigned int $>$ \&\hyperlink{class_graphics_1_1_vertex_data_a9b777aa4bf035e805b2957fbcd158842}{indices})
 \item 
 {\footnotesize template$<$typename T $>$ }\\void \hyperlink{class_graphics_1_1_vertex_data_a1432af05a48b67a06c711910bb495c6e}{add\+Vec} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ T $>$ \&vec)
@@ -53,6 +57,8 @@ const unsigned int \hyperlink{class_graphics_1_1_vertex_data_afc9fb219a54d93cc07
 {\footnotesize template$<$typename T $>$ }\\std\+::map$<$ \hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$ T $>$ $>$ \hyperlink{class_graphics_1_1_vertex_data_a860575a29aa889f2a1028f2b8a255adc}{get\+Collapsed\+Vectors} () const 
 \item 
 std\+::vector$<$ unsigned int $>$ \hyperlink{class_graphics_1_1_vertex_data_a39b62d7b756b924aed1025d725a2316a}{get\+Indices} () const noexcept
+\item 
+unsigned int \hyperlink{class_graphics_1_1_vertex_data_ae46d393d65961b336a380d22bc8e39cb}{number\+Vertex\+Buffer\+Objects} () const noexcept
 \item 
 {\footnotesize template$<$$>$ }\\void \hyperlink{class_graphics_1_1_vertex_data_a3c16815abdf03faa1789af508f378b4a}{add\+Vec} (\hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} data\+\_\+type, const std\+::vector$<$ float $>$ \&vec)
 \item 
@@ -73,7 +79,7 @@ std\+::vector$<$ unsigned int $>$ \hyperlink{class_graphics_1_1_vertex_data_a39b
 \subsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-static const std\+::map$<$ \hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, unsigned char $>$ \hyperlink{class_graphics_1_1_vertex_data_a8b7b2345af2cce65482bf48c503f15f6}{Data\+Width}
+static const std\+::map$<$ \hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, unsigned int $>$ \hyperlink{class_graphics_1_1_vertex_data_af49335b9e9bb94a48d1ade3e798278eb}{Data\+Width}
 \end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -83,6 +89,8 @@ void \hyperlink{class_graphics_1_1_vertex_data_a90ba58b28b6981de0d841dfaff056bd9
 void \hyperlink{class_graphics_1_1_vertex_data_a6bbb857b2a231cd75a236adfb553e976}{check\+Minimum} (const unsigned int size)
 \item 
 void \hyperlink{class_graphics_1_1_vertex_data_ac506af313dd521dfd05c566df3bf41bd}{clear\+Data\+Type} (const \hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} \&type)
+\item 
+{\footnotesize template$<$class T $>$ }\\const bool \hyperlink{class_graphics_1_1_vertex_data_abe21332be8f7e42e9655c3271ddef0c0}{map\+Compare} (std\+::map$<$ \hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$ T $>$$>$ lhs, std\+::map$<$ \hyperlink{class_graphics_1_1_vertex_data_a50e88236939dc2a3ec4df7aeb728620e}{D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$ T $>$$>$ rhs)
 \end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -285,27 +293,6 @@ const std\+::map$<$ G\+Lenum, unsigned char $>$ \hyperlink{class_graphics_1_1_ve
 {}
 \end{DoxyParamCaption}
 ) const}\label{class_graphics_1_1_vertex_data_a860575a29aa889f2a1028f2b8a255adc}
-\hypertarget{class_graphics_1_1_vertex_data_a460ef7490af53909849ede22d63f3144}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}}
-\index{get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
-\subsubsection[{get\+Collapsed\+Vectors}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ std\+::map$<${\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$double$>$ $>$ Graphics\+::\+Vertex\+Data\+::get\+Collapsed\+Vectors (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-) const}\label{class_graphics_1_1_vertex_data_a460ef7490af53909849ede22d63f3144}
-\hypertarget{class_graphics_1_1_vertex_data_a1a056a887e89425563b93c7d14402a21}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}}
-\index{get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
-\subsubsection[{get\+Collapsed\+Vectors}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ std\+::map$<${\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$unsigned int$>$ $>$ Graphics\+::\+Vertex\+Data\+::get\+Collapsed\+Vectors (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-) const}\label{class_graphics_1_1_vertex_data_a1a056a887e89425563b93c7d14402a21}
-\hypertarget{class_graphics_1_1_vertex_data_a198830ed9c9eaadd45776b17bfa2909d}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}}
-\index{get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
-\subsubsection[{get\+Collapsed\+Vectors}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ std\+::map$<${\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$int$>$ $>$ Graphics\+::\+Vertex\+Data\+::get\+Collapsed\+Vectors (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-) const}\label{class_graphics_1_1_vertex_data_a198830ed9c9eaadd45776b17bfa2909d}
 \hypertarget{class_graphics_1_1_vertex_data_a248ab37b8eec5e4befba68c09a56fc1b}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}}
 \index{get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
 \subsubsection[{get\+Collapsed\+Vectors}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ std\+::map$<${\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$float$>$ $>$ Graphics\+::\+Vertex\+Data\+::get\+Collapsed\+Vectors (
@@ -313,6 +300,27 @@ const std\+::map$<$ G\+Lenum, unsigned char $>$ \hyperlink{class_graphics_1_1_ve
 {}
 \end{DoxyParamCaption}
 ) const}\label{class_graphics_1_1_vertex_data_a248ab37b8eec5e4befba68c09a56fc1b}
+\hypertarget{class_graphics_1_1_vertex_data_a460ef7490af53909849ede22d63f3144}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}}
+\index{get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
+\subsubsection[{get\+Collapsed\+Vectors}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ std\+::map$<${\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$double$>$ $>$ Graphics\+::\+Vertex\+Data\+::get\+Collapsed\+Vectors (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{class_graphics_1_1_vertex_data_a460ef7490af53909849ede22d63f3144}
+\hypertarget{class_graphics_1_1_vertex_data_a198830ed9c9eaadd45776b17bfa2909d}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}}
+\index{get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
+\subsubsection[{get\+Collapsed\+Vectors}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ std\+::map$<${\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$int$>$ $>$ Graphics\+::\+Vertex\+Data\+::get\+Collapsed\+Vectors (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{class_graphics_1_1_vertex_data_a198830ed9c9eaadd45776b17bfa2909d}
+\hypertarget{class_graphics_1_1_vertex_data_a1a056a887e89425563b93c7d14402a21}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}}
+\index{get\+Collapsed\+Vectors@{get\+Collapsed\+Vectors}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
+\subsubsection[{get\+Collapsed\+Vectors}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ std\+::map$<${\bf Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$unsigned int$>$ $>$ Graphics\+::\+Vertex\+Data\+::get\+Collapsed\+Vectors (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{class_graphics_1_1_vertex_data_a1a056a887e89425563b93c7d14402a21}
 \hypertarget{class_graphics_1_1_vertex_data_a0c58a46431db14740109e6cadb322e4e}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!get\+Index\+Count@{get\+Index\+Count}}
 \index{get\+Index\+Count@{get\+Index\+Count}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
 \subsubsection[{get\+Index\+Count}]{\setlength{\rightskip}{0pt plus 5cm}const unsigned int Graphics\+::\+Vertex\+Data\+::get\+Index\+Count (
@@ -334,6 +342,28 @@ const std\+::map$<$ G\+Lenum, unsigned char $>$ \hyperlink{class_graphics_1_1_ve
 {}
 \end{DoxyParamCaption}
 ) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_vertex_data_afc9fb219a54d93cc0796424bd9d1a7db}
+\hypertarget{class_graphics_1_1_vertex_data_abe21332be8f7e42e9655c3271ddef0c0}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!map\+Compare@{map\+Compare}}
+\index{map\+Compare@{map\+Compare}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
+\subsubsection[{map\+Compare}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ const bool Graphics\+::\+Vertex\+Data\+::map\+Compare (
+\begin{DoxyParamCaption}
+\item[{std\+::map$<$ {\bf D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$ T $>$$>$}]{lhs, }
+\item[{std\+::map$<$ {\bf D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, std\+::vector$<$ T $>$$>$}]{rhs}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_vertex_data_abe21332be8f7e42e9655c3271ddef0c0}
+\hypertarget{class_graphics_1_1_vertex_data_ae46d393d65961b336a380d22bc8e39cb}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!number\+Vertex\+Buffer\+Objects@{number\+Vertex\+Buffer\+Objects}}
+\index{number\+Vertex\+Buffer\+Objects@{number\+Vertex\+Buffer\+Objects}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
+\subsubsection[{number\+Vertex\+Buffer\+Objects}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Graphics\+::\+Vertex\+Data\+::number\+Vertex\+Buffer\+Objects (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_vertex_data_ae46d393d65961b336a380d22bc8e39cb}
+\hypertarget{class_graphics_1_1_vertex_data_ac03511a02af7005757f60783b73fc51f}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
+\subsubsection[{operator"!=}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Vertex\+Data\+::operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vertex\+Data} \&}]{other}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_vertex_data_ac03511a02af7005757f60783b73fc51f}
 \hypertarget{class_graphics_1_1_vertex_data_abda73a49d1b280ee091afd53973c3448}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!operator=@{operator=}}
 \index{operator=@{operator=}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
 \subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vertex\+Data} Graphics\+::\+Vertex\+Data\+::operator= (
@@ -341,18 +371,25 @@ const std\+::map$<$ G\+Lenum, unsigned char $>$ \hyperlink{class_graphics_1_1_ve
 \item[{const {\bf Vertex\+Data} \&}]{vertex\+\_\+data}
 \end{DoxyParamCaption}
 )}\label{class_graphics_1_1_vertex_data_abda73a49d1b280ee091afd53973c3448}
+\hypertarget{class_graphics_1_1_vertex_data_ad58ef98925908992fcd3ff090f57693f}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!operator==@{operator==}}
+\index{operator==@{operator==}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Vertex\+Data\+::operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vertex\+Data} \&}]{other}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_vertex_data_ad58ef98925908992fcd3ff090f57693f}
 
 
 \subsection{Member Data Documentation}
 \hypertarget{class_graphics_1_1_vertex_data_a0fc546e15f8fc02868e94246b93dd1b5}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!A\+N\+Y@{A\+N\+Y}}
 \index{A\+N\+Y@{A\+N\+Y}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
 \subsubsection[{A\+N\+Y}]{\setlength{\rightskip}{0pt plus 5cm}const unsigned char Graphics\+::\+Vertex\+Data\+::\+A\+N\+Y = 0\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_vertex_data_a0fc546e15f8fc02868e94246b93dd1b5}
-\hypertarget{class_graphics_1_1_vertex_data_a8b7b2345af2cce65482bf48c503f15f6}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!Data\+Width@{Data\+Width}}
+\hypertarget{class_graphics_1_1_vertex_data_af49335b9e9bb94a48d1ade3e798278eb}{}\index{Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}!Data\+Width@{Data\+Width}}
 \index{Data\+Width@{Data\+Width}!Graphics\+::\+Vertex\+Data@{Graphics\+::\+Vertex\+Data}}
-\subsubsection[{Data\+Width}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::map$<$ {\bf Graphics\+::\+Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, unsigned char $>$ Graphics\+::\+Vertex\+Data\+::\+Data\+Width\hspace{0.3cm}{\ttfamily [static]}}\label{class_graphics_1_1_vertex_data_a8b7b2345af2cce65482bf48c503f15f6}
+\subsubsection[{Data\+Width}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::map$<$ {\bf Graphics\+::\+Vertex\+Data\+::\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}, unsigned int $>$ Graphics\+::\+Vertex\+Data\+::\+Data\+Width\hspace{0.3cm}{\ttfamily [static]}}\label{class_graphics_1_1_vertex_data_af49335b9e9bb94a48d1ade3e798278eb}
 {\bfseries Initial value\+:}
 \begin{DoxyCode}
-= std::map<Graphics::VertexData::DATA\_TYPE, unsigned char>  \{
+= std::map<Graphics::VertexData::DATA\_TYPE, unsigned int>  \{
         \{Graphics::VertexData::DATA\_TYPE::GEOMETRY, 3\},
         \{Graphics::VertexData::DATA\_TYPE::TEX\_COORDS, 2\},
         \{Graphics::VertexData::DATA\_TYPE::NORMAL\_COORDS, 3\},

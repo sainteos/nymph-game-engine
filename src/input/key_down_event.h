@@ -10,6 +10,7 @@ namespace Input {
       int key;
     public:
       KeyDownEvent(const int key) : Event(Events::EventType::KEY_DOWN), key(key) {}
+      static std::shared_ptr<KeyDownEvent> create(const int key) { return std::make_shared<KeyDownEvent>(key); }
       const int getKey() const noexcept { return key; }
   };
 }

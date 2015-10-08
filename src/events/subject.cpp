@@ -1,4 +1,5 @@
 #include "events/subject.h"
+#include "events/event_type.h"
 
 namespace Events {
   void Subject::addObserver(std::shared_ptr<Observer> observer) {
@@ -9,7 +10,7 @@ namespace Events {
     observers.remove(observer);
   }
 
-  void Subject::notify(const Events::Event& event) {
+  void Subject::notify(std::shared_ptr<Event> event) {
     for(auto i : observers) {
       i->onNotify(event);
     }

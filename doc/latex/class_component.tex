@@ -7,19 +7,41 @@
 Inheritance diagram for Component\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=2.000000cm]{class_component}
+\includegraphics[height=4.000000cm]{class_component}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\hyperlink{class_component_a8775db6d1a2c1afc2e77cd3c8f39da6f}{Component} ()
+\item 
+virtual void \hyperlink{class_component_a4a528a8790dbc141ffd0aba638b6dcc4}{on\+Start} ()=0
+\item 
 virtual const bool \hyperlink{class_component_a8be284fccf4e97cee6705bd2d8f3705e}{on\+Update} (const double delta)=0
 \item 
+virtual void \hyperlink{class_component_a2b198f27162a6caf63917e304295f892}{on\+Destroy} ()=0
+\item 
+void \hyperlink{class_component_a8842d3ce36b584a3e7d0cb7734232812}{set\+Transform} (std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ \hyperlink{class_component_a02b1c70de1d9e2c6499dff349da1b0ff}{transform})
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ \hyperlink{class_component_a94dfec102ece6b669176f0609b0a5497}{get\+Transform} () const noexcept
+\item 
 virtual \hyperlink{class_component_a2e9aa4348314d981f05f67397ad2f872}{$\sim$\+Component} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_transform}{Transform} $>$ \hyperlink{class_component_a02b1c70de1d9e2c6499dff349da1b0ff}{transform}
 \end{DoxyCompactItemize}
 
 
 \subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_component_a8775db6d1a2c1afc2e77cd3c8f39da6f}{}\index{Component@{Component}!Component@{Component}}
+\index{Component@{Component}!Component@{Component}}
+\subsubsection[{Component}]{\setlength{\rightskip}{0pt plus 5cm}Component\+::\+Component (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_component_a8775db6d1a2c1afc2e77cd3c8f39da6f}
 \hypertarget{class_component_a2e9aa4348314d981f05f67397ad2f872}{}\index{Component@{Component}!````~Component@{$\sim$\+Component}}
 \index{````~Component@{$\sim$\+Component}!Component@{Component}}
 \subsubsection[{$\sim$\+Component}]{\setlength{\rightskip}{0pt plus 5cm}virtual Component\+::$\sim$\+Component (
@@ -30,6 +52,35 @@ virtual \hyperlink{class_component_a2e9aa4348314d981f05f67397ad2f872}{$\sim$\+Co
 
 
 \subsection{Member Function Documentation}
+\hypertarget{class_component_a94dfec102ece6b669176f0609b0a5497}{}\index{Component@{Component}!get\+Transform@{get\+Transform}}
+\index{get\+Transform@{get\+Transform}!Component@{Component}}
+\subsubsection[{get\+Transform}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<$ {\bf Transform} $>$ Component\+::get\+Transform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_component_a94dfec102ece6b669176f0609b0a5497}
+\hypertarget{class_component_a2b198f27162a6caf63917e304295f892}{}\index{Component@{Component}!on\+Destroy@{on\+Destroy}}
+\index{on\+Destroy@{on\+Destroy}!Component@{Component}}
+\subsubsection[{on\+Destroy}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Component\+::on\+Destroy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_component_a2b198f27162a6caf63917e304295f892}
+
+
+Implemented in \hyperlink{class_graphics_1_1_renderable_a6e20996de55215db7ffae2792aaaa88e}{Graphics\+::\+Renderable}, \hyperlink{class_graphics_1_1_camera_a9d8ca67cbd7a586915fc6cfd303406de}{Graphics\+::\+Camera}, \hyperlink{class_graphics_1_1_light_a7d4ce913fcb79612a90937ae75b3ff2e}{Graphics\+::\+Light}, \hyperlink{class_graphics_1_1_animated_tile_a9781b9b256a666a123fd2c050adb5118}{Graphics\+::\+Animated\+Tile}, and \hyperlink{class_graphics_1_1_tile_a28f5bdfa2fc61b292dda7ec15316b981}{Graphics\+::\+Tile}.
+
+\hypertarget{class_component_a4a528a8790dbc141ffd0aba638b6dcc4}{}\index{Component@{Component}!on\+Start@{on\+Start}}
+\index{on\+Start@{on\+Start}!Component@{Component}}
+\subsubsection[{on\+Start}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Component\+::on\+Start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_component_a4a528a8790dbc141ffd0aba638b6dcc4}
+
+
+Implemented in \hyperlink{class_graphics_1_1_renderable_a7433551970cd25e0241a4a5bb756ba50}{Graphics\+::\+Renderable}, \hyperlink{class_graphics_1_1_camera_a37edadff497ff3966c2190b876bfe236}{Graphics\+::\+Camera}, \hyperlink{class_graphics_1_1_light_aa8ff320220d375edddae38daec0b3672}{Graphics\+::\+Light}, and \hyperlink{class_graphics_1_1_animated_tile_ad82e39321244cc2e06ee3df527473aba}{Graphics\+::\+Animated\+Tile}.
+
 \hypertarget{class_component_a8be284fccf4e97cee6705bd2d8f3705e}{}\index{Component@{Component}!on\+Update@{on\+Update}}
 \index{on\+Update@{on\+Update}!Component@{Component}}
 \subsubsection[{on\+Update}]{\setlength{\rightskip}{0pt plus 5cm}virtual const bool Component\+::on\+Update (
@@ -39,10 +90,24 @@ virtual \hyperlink{class_component_a2e9aa4348314d981f05f67397ad2f872}{$\sim$\+Co
 )\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_component_a8be284fccf4e97cee6705bd2d8f3705e}
 
 
-Implemented in \hyperlink{class_graphics_1_1_renderable_a7d0e820c55cb7f5c552aa0c1e846db76}{Graphics\+::\+Renderable}.
+Implemented in \hyperlink{class_graphics_1_1_renderable_a7d0e820c55cb7f5c552aa0c1e846db76}{Graphics\+::\+Renderable}, \hyperlink{class_graphics_1_1_camera_a0bfccb5623342c93f69b408937b87374}{Graphics\+::\+Camera}, \hyperlink{class_graphics_1_1_light_ab208fc670894a75038b0e74a75816b21}{Graphics\+::\+Light}, \hyperlink{class_graphics_1_1_animated_tile_a2c6f7cd3866cad84b73ea5da8b92b76e}{Graphics\+::\+Animated\+Tile}, and \hyperlink{class_graphics_1_1_tile_a0311b1d9548f6badc9e81820b110cbb4}{Graphics\+::\+Tile}.
+
+\hypertarget{class_component_a8842d3ce36b584a3e7d0cb7734232812}{}\index{Component@{Component}!set\+Transform@{set\+Transform}}
+\index{set\+Transform@{set\+Transform}!Component@{Component}}
+\subsubsection[{set\+Transform}]{\setlength{\rightskip}{0pt plus 5cm}void Component\+::set\+Transform (
+\begin{DoxyParamCaption}
+\item[{std\+::shared\+\_\+ptr$<$ {\bf Transform} $>$}]{transform}
+\end{DoxyParamCaption}
+)}\label{class_component_a8842d3ce36b584a3e7d0cb7734232812}
 
 
+\subsection{Member Data Documentation}
+\hypertarget{class_component_a02b1c70de1d9e2c6499dff349da1b0ff}{}\index{Component@{Component}!transform@{transform}}
+\index{transform@{transform}!Component@{Component}}
+\subsubsection[{transform}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<${\bf Transform}$>$ Component\+::transform\hspace{0.3cm}{\ttfamily [protected]}}\label{class_component_a02b1c70de1d9e2c6499dff349da1b0ff}
 
-The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-src/graphics/\hyperlink{component_8h}{component.\+h}\end{DoxyCompactItemize}
+src/\hyperlink{component_8h}{component.\+h}\item 
+src/\hyperlink{component_8cpp}{component.\+cpp}\end{DoxyCompactItemize}

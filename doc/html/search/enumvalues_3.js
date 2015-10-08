@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['one_5fwide',['ONE_WIDE',['../class_graphics_1_1_vertex_data.html#a50e88236939dc2a3ec4df7aeb728620eaca1c371d86cb760f697bc8f9269ccc3a',1,'Graphics::VertexData']]]
+  ['key_5fdown',['KEY_DOWN',['../namespace_events.html#a85b018e2484fb7e336c3bb03bd41816aabfd0602b97b7a8bfdf17ac0ce9906a5b',1,'Events']]],
+  ['key_5fup',['KEY_UP',['../namespace_events.html#a85b018e2484fb7e336c3bb03bd41816aaf029df17599c60ec56183ab424c203f2',1,'Events']]]
 ];

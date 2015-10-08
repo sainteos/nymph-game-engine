@@ -4,6 +4,11 @@
 
 {\ttfamily \#include $<$graphics\+\_\+system.\+h$>$}
 
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_graphics_1_1_graphics_system_1_1_ranked_light}{Ranked\+Light}
+\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -11,11 +16,19 @@
 \item 
 \hyperlink{class_graphics_1_1_graphics_system_a6504df337bfae3a08abc8a63deb6df37}{$\sim$\+Graphics\+System} ()
 \item 
-void \hyperlink{class_graphics_1_1_graphics_system_a0666cab04b1c7f3ca4dac67f7529cace}{initialize} (const int width, const int height, std\+::string name, const \hyperlink{class_graphics_1_1_window_exit_functor}{Window\+Exit\+Functor} \&\hyperlink{class_graphics_1_1_graphics_system_ac31d552052e7afd10043456ee9393e1a}{window\+\_\+exit}, const double \hyperlink{class_graphics_1_1_graphics_system_ad963821cfb09e6a0e672cf6876e944dd}{max\+\_\+fps}=0.\+0)
+void \hyperlink{class_graphics_1_1_graphics_system_a2e43bd2dfdcf734f331d2edb060c2e3e}{initialize} (const int width, const int height, std\+::string name, const bool fullscreen, const \hyperlink{class_graphics_1_1_window_exit_functor}{Window\+Exit\+Functor} \&\hyperlink{class_graphics_1_1_graphics_system_ac31d552052e7afd10043456ee9393e1a}{window\+\_\+exit})
 \begin{DoxyCompactList}\small\item\em Initializes the graphics system. \end{DoxyCompactList}\item 
 const bool \hyperlink{class_graphics_1_1_graphics_system_a1bd027633e66df5a65f2df33952d1dbd}{is\+Initialized} () const noexcept
 \begin{DoxyCompactList}\small\item\em Getter to see if system is initialized. \end{DoxyCompactList}\item 
-void \hyperlink{class_graphics_1_1_graphics_system_af222ab3a8a83796ad1c12ccf95a6f37a}{render\+Loop} ()
+const bool \hyperlink{class_graphics_1_1_graphics_system_a025aee61ac5bee34790c70cee97bac70}{is\+Running} () noexcept
+\item 
+void \hyperlink{class_graphics_1_1_graphics_system_ac556ec7a6814de00a4a139f4fe77c90f}{start\+Render} ()
+\item 
+void \hyperlink{class_graphics_1_1_graphics_system_ab7ce838a5cbca90503b8987a4968417d}{render\+Frame} (const float \hyperlink{class_graphics_1_1_graphics_system_ac2af4e3929076d67c1ac1a891a42d29f}{delta})
+\item 
+void \hyperlink{class_graphics_1_1_graphics_system_ab4a3487deb44f621a78c25d4922fa54b}{stop\+Render} ()
+\item 
+G\+L\+F\+Wwindow $\ast$ \hyperlink{class_graphics_1_1_graphics_system_a21c7c51da977ac170844b4858afc9e21}{get\+Window} () const noexcept
 \item 
 const int \hyperlink{class_graphics_1_1_graphics_system_a09710fc777ac4db1b44c63c2921d217f}{window\+Height} ()
 \begin{DoxyCompactList}\small\item\em Getter for the window width. \end{DoxyCompactList}\item 
@@ -23,17 +36,27 @@ const int \hyperlink{class_graphics_1_1_graphics_system_adab3606d554a85ca13aaaec
 \begin{DoxyCompactList}\small\item\em Getter for the window height. \end{DoxyCompactList}\item 
 const std\+::string \hyperlink{class_graphics_1_1_graphics_system_a691efb4de942f8da79ecbcf626280724}{window\+Name} () const noexcept
 \begin{DoxyCompactList}\small\item\em Getter for the window name. \end{DoxyCompactList}\item 
+void \hyperlink{class_graphics_1_1_graphics_system_ab29908cef9460cc06f49f1b29714748d}{set\+Window\+Name} (const std\+::string \&name)
+\item 
 const int \hyperlink{class_graphics_1_1_graphics_system_ac35c2d3d32e1264b8daad6d59c3aba57}{add\+Renderable} (std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_renderable}{Graphics\+::\+Renderable} $>$ renderable)
 \begin{DoxyCompactList}\small\item\em Adds a renderable to the renderable pool. \end{DoxyCompactList}\item 
 const bool \hyperlink{class_graphics_1_1_graphics_system_a476b0e6945c37c7b2d48bddcf246a389}{remove\+Renderable} (const int id)
 \begin{DoxyCompactList}\small\item\em Removes a renderable from the renderable pool. \end{DoxyCompactList}\item 
 const int \hyperlink{class_graphics_1_1_graphics_system_a2b37c3e6f53707002c72c38062be6617}{renderables\+Count} ()
 \begin{DoxyCompactList}\small\item\em Returns the number of renderables currently in the system. \end{DoxyCompactList}\item 
-const double \hyperlink{class_graphics_1_1_graphics_system_a3266a6af7dd48b4e0501953a5a92d9ee}{get\+Max\+F\+P\+S} () const noexcept
-\begin{DoxyCompactList}\small\item\em Returns the max F\+P\+S set on the graphics system. \end{DoxyCompactList}\item 
-const double \hyperlink{class_graphics_1_1_graphics_system_a155246106fb6bf556caab7ff9e826524}{get\+Current\+F\+P\+S} () const noexcept
-\begin{DoxyCompactList}\small\item\em Returns the current running F\+P\+S on the graphics system. \end{DoxyCompactList}\item 
+void \hyperlink{class_graphics_1_1_graphics_system_af940e335bfde6fdf344466505f685e6b}{set\+Camera} (const std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_camera}{Camera} $>$ \hyperlink{class_graphics_1_1_graphics_system_a6d00900277f81eba008fe030ee6bcb2e}{camera}) noexcept
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_camera}{Camera} $>$ \hyperlink{class_graphics_1_1_graphics_system_a38c09a55355c54a8d72c0107434fb78d}{get\+Camera} () const noexcept
+\item 
 G\+L\+F\+Wwindow $\ast$ \hyperlink{class_graphics_1_1_graphics_system_a0692ae8d8615f820ed36615e9619fe68}{get\+Current\+Window} () noexcept
+\item 
+void \hyperlink{class_graphics_1_1_graphics_system_a0ce4ee8411cfd40964b7953937e03818}{set\+Max\+Influence\+Lights} (const unsigned int number) noexcept
+\item 
+const unsigned int \hyperlink{class_graphics_1_1_graphics_system_a7768af0bfa78b4eafbe6a4126e26e819}{get\+Max\+Influence\+Lights} () const noexcept
+\item 
+void \hyperlink{class_graphics_1_1_graphics_system_ab9f06299b075c0f4ced364160a1e229d}{add\+Light} (std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_light}{Light} $>$ light) noexcept
+\item 
+void \hyperlink{class_graphics_1_1_graphics_system_a03769b3511fc0ada29bd47cbe08c8eb8}{remove\+Light} (std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_light}{Light} $>$ light)
 \item 
 void \hyperlink{class_graphics_1_1_graphics_system_a629d2fe80f761f4f4004ba74ad458e3f}{destroy} ()
 \begin{DoxyCompactList}\small\item\em Closes window, and destroys G\+L\+F\+W context. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -41,6 +64,8 @@ void \hyperlink{class_graphics_1_1_graphics_system_a629d2fe80f761f4f4004ba74ad45
 \begin{DoxyCompactItemize}
 \item 
 static void \hyperlink{class_graphics_1_1_graphics_system_a0e3ea1d3785e868d7a1318b4c9c15878}{error\+Callback} (int error, const char $\ast$description)
+\item 
+static void \hyperlink{class_graphics_1_1_graphics_system_a4e895acf6e87b74e835cdbfaf3daa434}{window\+Size\+Callback} (G\+L\+F\+Wwindow $\ast$\hyperlink{class_graphics_1_1_graphics_system_a4430d61bb3fd528b617e8fea26744a8c}{window}, int width, int height)
 \end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -49,19 +74,23 @@ G\+L\+F\+Wwindow $\ast$ \hyperlink{class_graphics_1_1_graphics_system_a4430d61bb
 \item 
 bool \hyperlink{class_graphics_1_1_graphics_system_a7228e859a8b7da7d9cbc3e151ab2df72}{initialized}
 \item 
+float \hyperlink{class_graphics_1_1_graphics_system_ac2af4e3929076d67c1ac1a891a42d29f}{delta}
+\item 
+float \hyperlink{class_graphics_1_1_graphics_system_aeedd2deb72e532dc037abd30198b598a}{delta\+\_\+accum}
+\item 
 std\+::string \hyperlink{class_graphics_1_1_graphics_system_a7b543ac0f4323ec286519a3dfef0df1c}{window\+\_\+title}
 \item 
 std\+::map$<$ int, std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_renderable}{Graphics\+::\+Renderable} $>$ $>$ \hyperlink{class_graphics_1_1_graphics_system_a5dab770243e04860495f894184ef63bb}{renderables\+\_\+map}
 \item 
-std\+::mutex \hyperlink{class_graphics_1_1_graphics_system_a2e9549405884607a5922a7023a1d2b38}{renderables\+\_\+mutex}
+std\+::list$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_light}{Light} $>$ $>$ \hyperlink{class_graphics_1_1_graphics_system_abae3d590c5e9f0f34f50160e5edda614}{lights}
+\item 
+unsigned int \hyperlink{class_graphics_1_1_graphics_system_a9792bef5166bb5e92305f0ef53582f7f}{max\+\_\+influence\+\_\+lights}
 \item 
 int \hyperlink{class_graphics_1_1_graphics_system_a950f878ddd2ca0b13a715f4300447903}{next\+\_\+id}
 \item 
-double \hyperlink{class_graphics_1_1_graphics_system_ad963821cfb09e6a0e672cf6876e944dd}{max\+\_\+fps}
-\item 
-std\+::atomic$<$ double $>$ \hyperlink{class_graphics_1_1_graphics_system_aa46f6a4cdcae7ff4603c11a650b2986d}{current\+\_\+fps}
-\item 
 \hyperlink{class_graphics_1_1_window_exit_functor}{Window\+Exit\+Functor} \hyperlink{class_graphics_1_1_graphics_system_ac31d552052e7afd10043456ee9393e1a}{window\+\_\+exit}
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_graphics_1_1_camera}{Camera} $>$ \hyperlink{class_graphics_1_1_graphics_system_a6d00900277f81eba008fe030ee6bcb2e}{camera}
 \end{DoxyCompactItemize}
 
 
@@ -83,6 +112,13 @@ std\+::atomic$<$ double $>$ \hyperlink{class_graphics_1_1_graphics_system_aa46f6
 
 
 \subsection{Member Function Documentation}
+\hypertarget{class_graphics_1_1_graphics_system_ab9f06299b075c0f4ced364160a1e229d}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!add\+Light@{add\+Light}}
+\index{add\+Light@{add\+Light}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{add\+Light}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::add\+Light (
+\begin{DoxyParamCaption}
+\item[{std\+::shared\+\_\+ptr$<$ {\bf Light} $>$}]{light}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_ab9f06299b075c0f4ced364160a1e229d}
 \hypertarget{class_graphics_1_1_graphics_system_ac35c2d3d32e1264b8daad6d59c3aba57}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!add\+Renderable@{add\+Renderable}}
 \index{add\+Renderable@{add\+Renderable}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{add\+Renderable}]{\setlength{\rightskip}{0pt plus 5cm}const int Graphics\+::\+Graphics\+System\+::add\+Renderable (
@@ -123,20 +159,13 @@ This closes the window created by G\+L\+F\+W and terminates glfw. Initialize mus
 \item[{const char $\ast$}]{description}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a0e3ea1d3785e868d7a1318b4c9c15878}
-\hypertarget{class_graphics_1_1_graphics_system_a155246106fb6bf556caab7ff9e826524}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!get\+Current\+F\+P\+S@{get\+Current\+F\+P\+S}}
-\index{get\+Current\+F\+P\+S@{get\+Current\+F\+P\+S}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
-\subsubsection[{get\+Current\+F\+P\+S}]{\setlength{\rightskip}{0pt plus 5cm}const double Graphics\+::\+Graphics\+System\+::get\+Current\+F\+P\+S (
+\hypertarget{class_graphics_1_1_graphics_system_a38c09a55355c54a8d72c0107434fb78d}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!get\+Camera@{get\+Camera}}
+\index{get\+Camera@{get\+Camera}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{get\+Camera}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<$ {\bf Camera} $>$ Graphics\+::\+Graphics\+System\+::get\+Camera (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a155246106fb6bf556caab7ff9e826524}
-
-
-Returns the current running F\+P\+S on the graphics system. 
-
-This is the current fps that has been recorded as the graphics system is running. \begin{DoxyReturn}{Returns}
-double containing the current fps 
-\end{DoxyReturn}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a38c09a55355c54a8d72c0107434fb78d}
 \hypertarget{class_graphics_1_1_graphics_system_a0692ae8d8615f820ed36615e9619fe68}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!get\+Current\+Window@{get\+Current\+Window}}
 \index{get\+Current\+Window@{get\+Current\+Window}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{get\+Current\+Window}]{\setlength{\rightskip}{0pt plus 5cm}G\+L\+F\+Wwindow $\ast$ Graphics\+::\+Graphics\+System\+::get\+Current\+Window (
@@ -144,31 +173,31 @@ double containing the current fps
 {}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a0692ae8d8615f820ed36615e9619fe68}
-\hypertarget{class_graphics_1_1_graphics_system_a3266a6af7dd48b4e0501953a5a92d9ee}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!get\+Max\+F\+P\+S@{get\+Max\+F\+P\+S}}
-\index{get\+Max\+F\+P\+S@{get\+Max\+F\+P\+S}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
-\subsubsection[{get\+Max\+F\+P\+S}]{\setlength{\rightskip}{0pt plus 5cm}const double Graphics\+::\+Graphics\+System\+::get\+Max\+F\+P\+S (
+\hypertarget{class_graphics_1_1_graphics_system_a7768af0bfa78b4eafbe6a4126e26e819}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!get\+Max\+Influence\+Lights@{get\+Max\+Influence\+Lights}}
+\index{get\+Max\+Influence\+Lights@{get\+Max\+Influence\+Lights}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{get\+Max\+Influence\+Lights}]{\setlength{\rightskip}{0pt plus 5cm}const unsigned int Graphics\+::\+Graphics\+System\+::get\+Max\+Influence\+Lights (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a3266a6af7dd48b4e0501953a5a92d9ee}
-
-
-Returns the max F\+P\+S set on the graphics system. 
-
-This is the highest frames per second the graphics system can run at (to allow things like vsync) \begin{DoxyReturn}{Returns}
-double containing the max fps 
-\end{DoxyReturn}
-\hypertarget{class_graphics_1_1_graphics_system_a0666cab04b1c7f3ca4dac67f7529cace}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!initialize@{initialize}}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a7768af0bfa78b4eafbe6a4126e26e819}
+\hypertarget{class_graphics_1_1_graphics_system_a21c7c51da977ac170844b4858afc9e21}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!get\+Window@{get\+Window}}
+\index{get\+Window@{get\+Window}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{get\+Window}]{\setlength{\rightskip}{0pt plus 5cm}G\+L\+F\+Wwindow $\ast$ Graphics\+::\+Graphics\+System\+::get\+Window (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a21c7c51da977ac170844b4858afc9e21}
+\hypertarget{class_graphics_1_1_graphics_system_a2e43bd2dfdcf734f331d2edb060c2e3e}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!initialize@{initialize}}
 \index{initialize@{initialize}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{initialize}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::initialize (
 \begin{DoxyParamCaption}
 \item[{const int}]{width, }
 \item[{const int}]{height, }
 \item[{std\+::string}]{name, }
-\item[{const {\bf Window\+Exit\+Functor} \&}]{window\+\_\+exit, }
-\item[{const double}]{max\+\_\+fps = {\ttfamily 0.0}}
+\item[{const bool}]{fullscreen, }
+\item[{const {\bf Window\+Exit\+Functor} \&}]{window\+\_\+exit}
 \end{DoxyParamCaption}
-)}\label{class_graphics_1_1_graphics_system_a0666cab04b1c7f3ca4dac67f7529cace}
+)}\label{class_graphics_1_1_graphics_system_a2e43bd2dfdcf734f331d2edb060c2e3e}
 
 
 Initializes the graphics system. 
@@ -197,9 +226,23 @@ This function initializes the graphics system by creating a G\+L\+F\+W based win
 
 Getter to see if system is initialized. 
 
-Will return true after \hyperlink{class_graphics_1_1_graphics_system_a0666cab04b1c7f3ca4dac67f7529cace}{initialize()} is called. \begin{DoxyReturn}{Returns}
+Will return true after \hyperlink{class_graphics_1_1_graphics_system_a2e43bd2dfdcf734f331d2edb060c2e3e}{initialize()} is called. \begin{DoxyReturn}{Returns}
 true if \hyperlink{class_graphics_1_1_graphics_system_a7228e859a8b7da7d9cbc3e151ab2df72}{initialized()} has been called, false otherwise 
 \end{DoxyReturn}
+\hypertarget{class_graphics_1_1_graphics_system_a025aee61ac5bee34790c70cee97bac70}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!is\+Running@{is\+Running}}
+\index{is\+Running@{is\+Running}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{is\+Running}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Graphics\+System\+::is\+Running (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a025aee61ac5bee34790c70cee97bac70}
+\hypertarget{class_graphics_1_1_graphics_system_a03769b3511fc0ada29bd47cbe08c8eb8}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!remove\+Light@{remove\+Light}}
+\index{remove\+Light@{remove\+Light}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{remove\+Light}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::remove\+Light (
+\begin{DoxyParamCaption}
+\item[{std\+::shared\+\_\+ptr$<$ {\bf Light} $>$}]{light}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_a03769b3511fc0ada29bd47cbe08c8eb8}
 \hypertarget{class_graphics_1_1_graphics_system_a476b0e6945c37c7b2d48bddcf246a389}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!remove\+Renderable@{remove\+Renderable}}
 \index{remove\+Renderable@{remove\+Renderable}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{remove\+Renderable}]{\setlength{\rightskip}{0pt plus 5cm}const bool Graphics\+::\+Graphics\+System\+::remove\+Renderable (
@@ -235,13 +278,48 @@ Returns the number of renderables currently in the system.
 This returns the number of renderables that have been added to the system, and are ready to be updated and rendered. \begin{DoxyReturn}{Returns}
 integer representing number of renderables in the system 
 \end{DoxyReturn}
-\hypertarget{class_graphics_1_1_graphics_system_af222ab3a8a83796ad1c12ccf95a6f37a}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!render\+Loop@{render\+Loop}}
-\index{render\+Loop@{render\+Loop}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
-\subsubsection[{render\+Loop}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::render\+Loop (
+\hypertarget{class_graphics_1_1_graphics_system_ab7ce838a5cbca90503b8987a4968417d}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!render\+Frame@{render\+Frame}}
+\index{render\+Frame@{render\+Frame}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{render\+Frame}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::render\+Frame (
+\begin{DoxyParamCaption}
+\item[{const float}]{delta}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_ab7ce838a5cbca90503b8987a4968417d}
+\hypertarget{class_graphics_1_1_graphics_system_af940e335bfde6fdf344466505f685e6b}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!set\+Camera@{set\+Camera}}
+\index{set\+Camera@{set\+Camera}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{set\+Camera}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::set\+Camera (
+\begin{DoxyParamCaption}
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Camera} $>$}]{camera}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_af940e335bfde6fdf344466505f685e6b}
+\hypertarget{class_graphics_1_1_graphics_system_a0ce4ee8411cfd40964b7953937e03818}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!set\+Max\+Influence\+Lights@{set\+Max\+Influence\+Lights}}
+\index{set\+Max\+Influence\+Lights@{set\+Max\+Influence\+Lights}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{set\+Max\+Influence\+Lights}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::set\+Max\+Influence\+Lights (
+\begin{DoxyParamCaption}
+\item[{const unsigned int}]{number}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [noexcept]}}\label{class_graphics_1_1_graphics_system_a0ce4ee8411cfd40964b7953937e03818}
+\hypertarget{class_graphics_1_1_graphics_system_ab29908cef9460cc06f49f1b29714748d}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!set\+Window\+Name@{set\+Window\+Name}}
+\index{set\+Window\+Name@{set\+Window\+Name}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{set\+Window\+Name}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::set\+Window\+Name (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_ab29908cef9460cc06f49f1b29714748d}
+\hypertarget{class_graphics_1_1_graphics_system_ac556ec7a6814de00a4a139f4fe77c90f}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!start\+Render@{start\+Render}}
+\index{start\+Render@{start\+Render}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{start\+Render}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::start\+Render (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}\label{class_graphics_1_1_graphics_system_af222ab3a8a83796ad1c12ccf95a6f37a}
+)}\label{class_graphics_1_1_graphics_system_ac556ec7a6814de00a4a139f4fe77c90f}
+\hypertarget{class_graphics_1_1_graphics_system_ab4a3487deb44f621a78c25d4922fa54b}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!stop\+Render@{stop\+Render}}
+\index{stop\+Render@{stop\+Render}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{stop\+Render}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::stop\+Render (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_graphics_1_1_graphics_system_ab4a3487deb44f621a78c25d4922fa54b}
 \hypertarget{class_graphics_1_1_graphics_system_a09710fc777ac4db1b44c63c2921d217f}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!window\+Height@{window\+Height}}
 \index{window\+Height@{window\+Height}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{window\+Height}]{\setlength{\rightskip}{0pt plus 5cm}const int Graphics\+::\+Graphics\+System\+::window\+Height (
@@ -270,6 +348,15 @@ Getter for the window name.
 This will return the name of the window \begin{DoxyReturn}{Returns}
 a string that is the name of the window 
 \end{DoxyReturn}
+\hypertarget{class_graphics_1_1_graphics_system_a4e895acf6e87b74e835cdbfaf3daa434}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!window\+Size\+Callback@{window\+Size\+Callback}}
+\index{window\+Size\+Callback@{window\+Size\+Callback}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{window\+Size\+Callback}]{\setlength{\rightskip}{0pt plus 5cm}void Graphics\+::\+Graphics\+System\+::window\+Size\+Callback (
+\begin{DoxyParamCaption}
+\item[{G\+L\+F\+Wwindow $\ast$}]{window, }
+\item[{int}]{width, }
+\item[{int}]{height}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a4e895acf6e87b74e835cdbfaf3daa434}
 \hypertarget{class_graphics_1_1_graphics_system_adab3606d554a85ca13aaaec29ceee68c}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!window\+Width@{window\+Width}}
 \index{window\+Width@{window\+Width}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{window\+Width}]{\setlength{\rightskip}{0pt plus 5cm}const int Graphics\+::\+Graphics\+System\+::window\+Width (
@@ -287,24 +374,30 @@ integer denoting pixel height of window
 
 
 \subsection{Member Data Documentation}
-\hypertarget{class_graphics_1_1_graphics_system_aa46f6a4cdcae7ff4603c11a650b2986d}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!current\+\_\+fps@{current\+\_\+fps}}
-\index{current\+\_\+fps@{current\+\_\+fps}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
-\subsubsection[{current\+\_\+fps}]{\setlength{\rightskip}{0pt plus 5cm}std\+::atomic$<$double$>$ Graphics\+::\+Graphics\+System\+::current\+\_\+fps\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_aa46f6a4cdcae7ff4603c11a650b2986d}
+\hypertarget{class_graphics_1_1_graphics_system_a6d00900277f81eba008fe030ee6bcb2e}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!camera@{camera}}
+\index{camera@{camera}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{camera}]{\setlength{\rightskip}{0pt plus 5cm}std\+::shared\+\_\+ptr$<${\bf Camera}$>$ Graphics\+::\+Graphics\+System\+::camera\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a6d00900277f81eba008fe030ee6bcb2e}
+\hypertarget{class_graphics_1_1_graphics_system_ac2af4e3929076d67c1ac1a891a42d29f}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!delta@{delta}}
+\index{delta@{delta}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{delta}]{\setlength{\rightskip}{0pt plus 5cm}float Graphics\+::\+Graphics\+System\+::delta\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_ac2af4e3929076d67c1ac1a891a42d29f}
+\hypertarget{class_graphics_1_1_graphics_system_aeedd2deb72e532dc037abd30198b598a}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!delta\+\_\+accum@{delta\+\_\+accum}}
+\index{delta\+\_\+accum@{delta\+\_\+accum}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{delta\+\_\+accum}]{\setlength{\rightskip}{0pt plus 5cm}float Graphics\+::\+Graphics\+System\+::delta\+\_\+accum\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_aeedd2deb72e532dc037abd30198b598a}
 \hypertarget{class_graphics_1_1_graphics_system_a7228e859a8b7da7d9cbc3e151ab2df72}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!initialized@{initialized}}
 \index{initialized@{initialized}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{initialized}]{\setlength{\rightskip}{0pt plus 5cm}bool Graphics\+::\+Graphics\+System\+::initialized\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a7228e859a8b7da7d9cbc3e151ab2df72}
-\hypertarget{class_graphics_1_1_graphics_system_ad963821cfb09e6a0e672cf6876e944dd}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!max\+\_\+fps@{max\+\_\+fps}}
-\index{max\+\_\+fps@{max\+\_\+fps}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
-\subsubsection[{max\+\_\+fps}]{\setlength{\rightskip}{0pt plus 5cm}double Graphics\+::\+Graphics\+System\+::max\+\_\+fps\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_ad963821cfb09e6a0e672cf6876e944dd}
+\hypertarget{class_graphics_1_1_graphics_system_abae3d590c5e9f0f34f50160e5edda614}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!lights@{lights}}
+\index{lights@{lights}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{lights}]{\setlength{\rightskip}{0pt plus 5cm}std\+::list$<$std\+::shared\+\_\+ptr$<${\bf Light}$>$ $>$ Graphics\+::\+Graphics\+System\+::lights\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_abae3d590c5e9f0f34f50160e5edda614}
+\hypertarget{class_graphics_1_1_graphics_system_a9792bef5166bb5e92305f0ef53582f7f}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!max\+\_\+influence\+\_\+lights@{max\+\_\+influence\+\_\+lights}}
+\index{max\+\_\+influence\+\_\+lights@{max\+\_\+influence\+\_\+lights}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
+\subsubsection[{max\+\_\+influence\+\_\+lights}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Graphics\+::\+Graphics\+System\+::max\+\_\+influence\+\_\+lights\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a9792bef5166bb5e92305f0ef53582f7f}
 \hypertarget{class_graphics_1_1_graphics_system_a950f878ddd2ca0b13a715f4300447903}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!next\+\_\+id@{next\+\_\+id}}
 \index{next\+\_\+id@{next\+\_\+id}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{next\+\_\+id}]{\setlength{\rightskip}{0pt plus 5cm}int Graphics\+::\+Graphics\+System\+::next\+\_\+id\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a950f878ddd2ca0b13a715f4300447903}
 \hypertarget{class_graphics_1_1_graphics_system_a5dab770243e04860495f894184ef63bb}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!renderables\+\_\+map@{renderables\+\_\+map}}
 \index{renderables\+\_\+map@{renderables\+\_\+map}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{renderables\+\_\+map}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$int, std\+::shared\+\_\+ptr$<${\bf Graphics\+::\+Renderable}$>$ $>$ Graphics\+::\+Graphics\+System\+::renderables\+\_\+map\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a5dab770243e04860495f894184ef63bb}
-\hypertarget{class_graphics_1_1_graphics_system_a2e9549405884607a5922a7023a1d2b38}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!renderables\+\_\+mutex@{renderables\+\_\+mutex}}
-\index{renderables\+\_\+mutex@{renderables\+\_\+mutex}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
-\subsubsection[{renderables\+\_\+mutex}]{\setlength{\rightskip}{0pt plus 5cm}std\+::mutex Graphics\+::\+Graphics\+System\+::renderables\+\_\+mutex\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a2e9549405884607a5922a7023a1d2b38}
 \hypertarget{class_graphics_1_1_graphics_system_a4430d61bb3fd528b617e8fea26744a8c}{}\index{Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}!window@{window}}
 \index{window@{window}!Graphics\+::\+Graphics\+System@{Graphics\+::\+Graphics\+System}}
 \subsubsection[{window}]{\setlength{\rightskip}{0pt plus 5cm}G\+L\+F\+Wwindow$\ast$ Graphics\+::\+Graphics\+System\+::window\hspace{0.3cm}{\ttfamily [private]}}\label{class_graphics_1_1_graphics_system_a4430d61bb3fd528b617e8fea26744a8c}
