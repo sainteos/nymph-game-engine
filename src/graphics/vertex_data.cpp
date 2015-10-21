@@ -64,7 +64,7 @@ namespace Graphics {
         {Graphics::VertexData::DATA_TYPE::GEOMETRY, 3},
         {Graphics::VertexData::DATA_TYPE::TEX_COORDS, 2},
         {Graphics::VertexData::DATA_TYPE::NORMAL_COORDS, 3},
-        {Graphics::VertexData::DATA_TYPE::RESERVED1, 3},
+        {Graphics::VertexData::DATA_TYPE::TEXTURE_UNIT, 1},
         {Graphics::VertexData::DATA_TYPE::RESERVED2, 3},
         {Graphics::VertexData::DATA_TYPE::RESERVED3, 3},
         {Graphics::VertexData::DATA_TYPE::RESERVED4, 3},

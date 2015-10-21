@@ -29,9 +29,9 @@ void ComponentManager::onUpdate(const float delta) {
   if(camera.lock() == nullptr)
     throw Exceptions::NoCameraAttachedException();
   for(auto component : components) {
-    if(camera.lock()->isComponentWithin(*component)) {
+    //if(camera.lock()->isComponentWithin(*component)) {
       component->onUpdate(delta);
-    }
+    //}
   }
 }
 

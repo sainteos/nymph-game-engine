@@ -88,7 +88,7 @@ int main(int argc, char** argv) {
 
   TextureManager texture_manager;
   
-  auto renderables = map_helper.createRenderablesFromMap(*map, texture_manager, shader_manager);
+  auto renderables = map_helper.createRenderablesFromMap(5, 5, *map, texture_manager, shader_manager);
   auto animations = map_helper.createAnimationsFromAnimationMap(*animation_map, texture_manager, shader_manager);
   auto static_animations = map_helper.createStaticallyAnimatedTilesFromMap(*map, texture_manager, shader_manager);
   auto lights = map_helper.createLightsFromMap(*map);

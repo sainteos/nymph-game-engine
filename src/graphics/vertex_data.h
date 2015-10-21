@@ -17,7 +17,7 @@ namespace Graphics {
         GEOMETRY = 0,
         TEX_COORDS = 1,
         NORMAL_COORDS = 2,
-        RESERVED1 = 3,
+        TEXTURE_UNIT = 3,
         RESERVED2 = 4,
         RESERVED3 = 5,
         RESERVED4 = 6,

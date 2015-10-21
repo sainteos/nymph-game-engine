@@ -71,6 +71,13 @@ namespace Graphics {
     glUseProgram(program_object);
   }
 
+  const std::vector<std::string> Shader::getUniformNames() const noexcept {
+    std::vector<std::string> names;
+    for(auto i : name_to_location) 
+      names.push_back(i.first);
+    return names;
+  }
+
   template<>
   void Shader::setUniform<float>(const std::string& name, const float& data) {
     int prev_bound_program;

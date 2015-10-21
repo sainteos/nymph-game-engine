@@ -5,7 +5,7 @@
 #include "exceptions/texture_not_loaded_exception.h"
 
 namespace Graphics {
-  BaseTexture::BaseTexture(const std::string& texture_uniform_name, const GLenum texture_type, const unsigned int unit) : texture_uniform_name(texture_uniform_name), loaded(false), texture_unit(unit), texture_object(0), texture_type(texture_type), sampler(nullptr), width(0), height(0) {
+  BaseTexture::BaseTexture(const std::string& texture_uniform_name, const GLenum texture_type) : texture_uniform_name(texture_uniform_name), loaded(false), texture_object(0), texture_type(texture_type), sampler(nullptr), width(0), height(0) {
 
   }
 
@@ -34,7 +34,6 @@ namespace Graphics {
     auto success = ilLoadImage((const ILstring)filename.c_str());
     if(success) {
       glGenTextures(1, &texture_object);
-      glActiveTexture(GL_TEXTURE0 + texture_unit);
       glBindTexture(texture_type, texture_object);
       width = ilGetInteger(IL_IMAGE_WIDTH);
       height = ilGetInteger(IL_IMAGE_HEIGHT);
@@ -64,7 +63,7 @@ namespace Graphics {
     this->sampler = sampler;
   }
 
-  void BaseTexture::bind() {
+  void BaseTexture::bind(const unsigned int texture_unit) {
     if(!loaded)
       throw Exceptions::TextureNotLoadedException();
 
@@ -76,10 +75,6 @@ namespace Graphics {
 
   const unsigned int BaseTexture::getTextureObject() const noexcept {
     return texture_object;
-  }
-
-  const unsigned int BaseTexture::getTextureUnit() const noexcept {
-    return texture_unit;
   }
 
   const std::shared_ptr<BaseSampler> BaseTexture::getSampler() const noexcept {

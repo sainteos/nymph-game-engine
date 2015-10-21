@@ -57,27 +57,25 @@ namespace Graphics {
     return shader;
   }
 
-  void Renderable::addTexture(std::shared_ptr<BaseTexture> texture_object) noexcept {
-    textures.push_back(texture_object);
+  void Renderable::addTexture(const unsigned int unit, std::shared_ptr<BaseTexture> texture_object) noexcept {
+    textures[unit] = texture_object;
   }
 
-  void Renderable::removeTexture(std::shared_ptr<BaseTexture> texture_object) {
-    auto iter = std::remove(textures.begin(), textures.end(), texture_object);
-    if(iter != textures.end())
-      textures.erase(iter);
+  void Renderable::removeTexture(const unsigned int unit) {
+    textures.erase(unit);
   }
 
-  const std::vector<std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
+  const std::map<unsigned int, std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
     return textures;
   }
 
   const std::shared_ptr<BaseTexture> Renderable::getTextureByUniform(const std::string& uniform_name) {
-    auto tex_iter = std::find_if(textures.begin(), textures.end(), [&](std::shared_ptr<BaseTexture> t) { return t->getTextureUniformName() == uniform_name; });
+    auto tex_iter = std::find_if(textures.begin(), textures.end(), [&](std::pair<unsigned int, std::shared_ptr<BaseTexture>> t) { return t.second->getTextureUniformName() == uniform_name; });
     if(tex_iter == textures.end()) {
       return nullptr;
     }
     else {
-      return *tex_iter;
+      return tex_iter->second;
     }
   }
 
@@ -261,8 +259,8 @@ namespace Graphics {
 
         shader->setUniform<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix());
         for(auto& texture : textures) {
-          shader->setUniform<int>(texture->getTextureUniformName(), texture->getTextureUnit());
-          texture->bind();
+          shader->setUniform<int>(texture.second->getTextureUniformName(), texture.first);
+          texture.second->bind(texture.first);
         }
       }
       else {
