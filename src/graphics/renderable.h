@@ -75,6 +75,9 @@ namespace Graphics {
        * @return true if anything was updated, false if nothing was updated
        */
       virtual const bool onUpdate(const double delta) override;
+
+      void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
+      void onNotifyNow(std::shared_ptr<Events::Event> event) override;
   };
 }
 #endif

@@ -9,25 +9,22 @@ Component::Component() : active(false), id(next_id) {
   next_id++;
 }
 
-const bool Component::onUpdate(const double delta) {
-  std::queue<std::shared_ptr<Events::Event>> unused;
-  while(!events.empty()) {
-    auto event = events.front();
-    events.pop();
-    switch(event->getEventCode()) {
-      case Events::EventType::SET_ACTIVE: {
-        auto casted_event = std::static_pointer_cast<SetActiveEvent>(event);
-        if(casted_event->getComponentId() == id) {
-          setActive(casted_event->getActive());
-        }
+void Component::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
+  switch(event->getEventType()) {
+    case Events::EventType::SET_ACTIVE: {
+      auto casted_event = std::static_pointer_cast<SetActiveEvent>(event);
+      if(casted_event->getComponentId() == id) {
+        setActive(casted_event->getActive());
       }
-      default:
-        unused.push(event);
+      break;
     }
+    default:
+      break;
   }
+}
 
-  events.swap(unused);
-  return true;
+void Component::onNotifyNow(std::shared_ptr<Events::Event> event) {
+  handleQueuedEvent(event);
 }
 
 void Component::setTransform(std::shared_ptr<Transform> transform) {
@@ -53,3 +50,4 @@ const unsigned int Component::getId() const noexcept {
 const bool Component::operator<(const Component& other) const noexcept {
   return id < other.id;
 }
+

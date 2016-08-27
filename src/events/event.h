@@ -8,7 +8,7 @@ namespace Events {
       EventType type;
     public:
       Event(const EventType& type) : type(type) {}
-      const EventType getEventCode() const { return type; }
+      const EventType getEventType() const { return type; }
   };
 }
 

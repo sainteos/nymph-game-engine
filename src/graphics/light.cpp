@@ -19,7 +19,6 @@ namespace Graphics {
   }
 
   const bool Light::onUpdate(const double delta) {
-
   }
 
   void Light::onDestroy() {

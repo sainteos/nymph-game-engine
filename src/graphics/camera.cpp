@@ -26,15 +26,39 @@ namespace Graphics {
   }
 
   const bool Camera::onUpdate(const double delta) {
-    Component::onUpdate(delta);
     if(!active)
       return false;
     
-    while(!events.empty()) {
-      auto event = events.front();
-      events.pop();
+    while(eventsWaiting()) {
+      handleQueuedEvent(getEvent());
+    }
+    if(velocity != glm::vec2(0.0, 0.0)) {
+      if(glm::distance(target_position, glm::vec2(getTransform()->getLocalTranslation())) < 1.0 / 1000.0 * delta) {
+        getTransform()->translate(target_position - glm::vec2(getTransform()->getLocalTranslation()));
+        velocity = glm::vec2(0.0, 0.0);
+      }
+      else {
+        getTransform()->translate(velocity * 1.0 / 1000.0 * delta);
+      }
+    }
+    if(projection_matrix != last_projection_matrix) {
+      shader_manager->setUniformForAllPrograms<glm::mat4>("projection", projection_matrix);
+      last_projection_matrix = projection_matrix;
+    }
 
-      if(event->getEventCode() == Events::EventType::SPRITE_MOVE) {
+    if(last_transform != *getTransform()) {
+      shader_manager->setUniformForAllPrograms<glm::mat4>("view", negateTransformForScreen(getTransform()).getAbsoluteTransformationMatrix());
+      last_transform = *getTransform();
+    }
+    return true;
+  }
+
+  void Camera::onDestroy() {
+  }
+
+  void Camera::handleQueuedEvent(std::shared_ptr<Events::Event> event) { 
+    switch(event->getEventType()) {
+      case Events::EventType::SPRITE_MOVE: {
         auto casted_event = std::static_pointer_cast<SpriteMoveEvent>(event);
 
         if(casted_event->getVelocity().x > 0.0) {
@@ -61,30 +85,15 @@ namespace Graphics {
             target_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::vec2(0.0, -1.0);
           }
         }
+        break;
       }
+      default:
+        Component::handleQueuedEvent(event);
     }
-    if(velocity != glm::vec2(0.0, 0.0)) {
-      if(glm::distance(target_position, glm::vec2(getTransform()->getLocalTranslation())) < 1.0 / 1000.0 * delta) {
-        getTransform()->translate(target_position - glm::vec2(getTransform()->getLocalTranslation()));
-        velocity = glm::vec2(0.0, 0.0);
-      }
-      else {
-        getTransform()->translate(velocity * 1.0 / 1000.0 * delta);
-      }
-    }
-    if(projection_matrix != last_projection_matrix) {
-      shader_manager->setUniformForAllPrograms<glm::mat4>("projection", projection_matrix);
-      last_projection_matrix = projection_matrix;
-    }
-
-    if(last_transform != *getTransform()) {
-      shader_manager->setUniformForAllPrograms<glm::mat4>("view", negateTransformForScreen(getTransform()).getAbsoluteTransformationMatrix());
-      last_transform = *getTransform();
-    }
-    return true;
   }
 
-  void Camera::onDestroy() {
+  void Camera::onNotifyNow(std::shared_ptr<Events::Event> event) {
+    handleQueuedEvent(event);
   }
 
   void Camera::setScreenPaddingInTiles(const int padding) noexcept {
