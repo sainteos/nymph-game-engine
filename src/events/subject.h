@@ -11,6 +11,7 @@ namespace Events {
       std::list<std::shared_ptr<Observer>> observers;
     protected:
       void notify(std::shared_ptr<Event> event);
+      void notifyNow(std::shared_ptr<Event> event);
     public:
       void addObserver(std::shared_ptr<Observer> observer);
       void removeObserver(std::shared_ptr<Observer> observer);

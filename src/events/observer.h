@@ -3,14 +3,34 @@
 #include <memory>
 #include <queue>
 #include "events/event.h"
+#include "events/event_type.h"
 
 namespace Events {
   class Observer {
-    protected:
+    private:
       std::queue<std::shared_ptr<Event>> events;
+    protected:
+      std::shared_ptr<Event> getEvent() {
+        if(eventsWaiting()) {
+          auto e = events.front();
+          events.pop();
+          return e;
+        }
+        else {
+          return std::shared_ptr<Event>();
+        }
+      }
+
+      const bool eventsWaiting() const noexcept {
+        return !events.empty();
+      }
+
     public:
       virtual ~Observer() {}
-      void onNotify(std::shared_ptr<Events::Event> event) { events.push(event); }
+
+      void onNotify(std::shared_ptr<Event> event) { events.push(event); }
+      virtual void onNotifyNow(std::shared_ptr<Event> event) = 0;
+      virtual void handleQueuedEvent(std::shared_ptr<Event> event) = 0;
   };
 }
 

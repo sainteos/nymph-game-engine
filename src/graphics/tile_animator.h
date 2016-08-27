@@ -80,22 +80,11 @@ namespace Graphics {
       }
 
       virtual const bool onUpdate(const double delta) override {
-        Component::onUpdate(delta);
         if(!active)
           return false;
  
-        while(!events.empty()) {
-          auto event = events.front();
-          events.pop();
-          switch(event->getEventCode()) {
-            case Events::EventType::ANIMATION_TRIGGER: {
-              auto casted_event = std::static_pointer_cast<AnimationTriggerEvent>(event);
-              triggerAnimation(casted_event->getState());
-              break;
-            }
-            default:
-              break;
-          }
+        while(eventsWaiting()) {
+          handleQueuedEvent(getEvent());
         }
 
         frame_time_accumulator += delta;
@@ -106,10 +95,10 @@ namespace Graphics {
             frame_time_accumulator = 0.0;
             Uniform tile_coord;
             tile_coord.setData(std::string("tile_coord"), triggerable_animations[current_state].front().first);
-            notify(SetUniformEvent::create(tile_coord));
+            notifyNow(SetUniformEvent::create(tile_coord));
             Uniform tile_coord_multiplier;
             tile_coord_multiplier.setData(std::string("tile_coord_multiplier"), multiplier);
-            notify(SetUniformEvent::create(tile_coord_multiplier));
+            notifyNow(SetUniformEvent::create(tile_coord_multiplier));
           }
 
           return true;
@@ -118,6 +107,23 @@ namespace Graphics {
 
       virtual void onDestroy() override {
         triggerable_animations.clear();
+      }
+
+      void handleQueuedEvent(std::shared_ptr<Events::Event> event) override {
+        switch(event->getEventType()) {
+          case Events::EventType::ANIMATION_TRIGGER: {
+            auto casted_event = std::static_pointer_cast<AnimationTriggerEvent>(event);
+            triggerAnimation(casted_event->getState());
+            break;
+          }
+          default:
+            Component::handleQueuedEvent(event);
+            break;
+        }
+      }
+
+      void onNotifyNow(std::shared_ptr<Events::Event> event) override {
+        handleQueuedEvent(event);
       }
   };
 }

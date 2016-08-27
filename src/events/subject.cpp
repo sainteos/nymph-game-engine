@@ -15,4 +15,10 @@ namespace Events {
       i->onNotify(event);
     }
   }
+
+  void Subject::notifyNow(std::shared_ptr<Event> event) {
+    for(auto i : observers) {
+      i->onNotifyNow(event);
+    }
+  }
 }

@@ -51,6 +51,9 @@ namespace Graphics {
       const float getFar() const noexcept;
 
       const bool isComponentWithin(const Component& component) const;
+
+      virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
+      virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
   };
 }
 #endif

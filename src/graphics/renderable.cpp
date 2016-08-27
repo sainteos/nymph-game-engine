@@ -219,7 +219,6 @@ namespace Graphics {
   }
 
   const bool Renderable::onUpdate(const double delta) {
-    Component::onUpdate(delta);
     if(!active)
       return false;
 
@@ -278,30 +277,38 @@ namespace Graphics {
       }
     }
 
-    while(!events.empty()) {
-      auto event = events.front();
-      events.pop();
-      switch(event->getEventCode()) {
-        case Events::EventType::SET_SHADER:
-          break;
-        case Events::EventType::ADD_TEXTURE:
-          break;
-        case Events::EventType::REMOVE_TEXTURE:
-          break;
-        case Events::EventType::SET_UNIFORM: {
-          auto casted_event = std::static_pointer_cast<Graphics::SetUniformEvent>(event);
-
-          auto insert_success = uniforms.insert(casted_event->getUniform());
-          if(!insert_success.second) {
-            uniforms.erase(insert_success.first);
-            uniforms.insert(casted_event->getUniform());
-          }
-          break;
-        }
-        default:
-          break;
-      }
+    while(eventsWaiting()) {
+      handleQueuedEvent(getEvent());
     }
     return true; 
+  }
+
+
+  void Renderable::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
+    switch(event->getEventType()) {
+      case Events::EventType::SET_SHADER:
+        break;
+      case Events::EventType::ADD_TEXTURE:
+        break;
+      case Events::EventType::REMOVE_TEXTURE:
+        break;
+      case Events::EventType::SET_UNIFORM: {
+        auto casted_event = std::static_pointer_cast<Graphics::SetUniformEvent>(event);
+
+        auto insert_success = uniforms.insert(casted_event->getUniform());
+        if(!insert_success.second) {
+          uniforms.erase(insert_success.first);
+          uniforms.insert(casted_event->getUniform());
+        }
+        break;
+      }
+      default:
+        Component::handleQueuedEvent(event);
+        break;
+    }
+  }
+
+  void Renderable::onNotifyNow(std::shared_ptr<Events::Event> event) {
+    handleQueuedEvent(event);
   }
 }
