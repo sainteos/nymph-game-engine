@@ -18,16 +18,13 @@ namespace Graphics {
       bool loaded;
       unsigned int width;
       unsigned int height;
-      std::string texture_uniform_name;
     public:
       BaseTexture() = delete;
-      BaseTexture(const std::string& texture_uniform_name, const GLenum texture_type);
+      BaseTexture(const GLenum texture_type);
       ~BaseTexture();
 
       const unsigned int getWidth() const noexcept;
       const unsigned int getHeight() const noexcept;
-
-      const std::string getTextureUniformName() const noexcept;
       
       virtual const bool load(const std::string& filename);
       virtual void setSampler(const std::shared_ptr<BaseSampler> sampler);

@@ -136,6 +136,10 @@ namespace Graphics {
     return far;
   }
 
+  const unsigned long long Camera::getValueForSorting() const noexcept {
+    return getId();
+  }
+
   const bool Camera::isComponentWithin(const Component& component) const {
     auto translation = component.getTransform()->getAbsoluteTranslation();
     auto camera_translation = getTransform()->getAbsoluteTranslation();

@@ -125,6 +125,10 @@ namespace Graphics {
       void onNotifyNow(std::shared_ptr<Events::Event> event) override {
         handleQueuedEvent(event);
       }
+
+      virtual const unsigned long long getValueForSorting() const noexcept override {
+        return getId();
+      }
   };
 }
 

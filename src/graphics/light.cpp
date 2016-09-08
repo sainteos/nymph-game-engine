@@ -96,6 +96,10 @@ namespace Graphics {
     return diffuse_coefficient;
   }
 
+  const unsigned long long Light::getValueForSorting() const noexcept {
+    return getId();
+  }
+
   void Light::log(el::base::type::ostream_t& os) const {
     os<<"{Light("<<typeToString(type)<<")} "<<"Color: "<<glm::to_string(color)<<" Intensity: "<<intensity<<" LinearAttenuation: "<<linear_attenuation
       <<" Quadratic Attenuation: "<<quadratic_attenuation<<" Quantized Bands: "<<quantized_bands<<" ConeAngle: "<<cone_angle

@@ -13,11 +13,11 @@
 namespace Graphics {
   class VertexData {
     public:
-      enum DATA_TYPE : unsigned char { 
+      enum DATA_TYPE : unsigned int { 
         GEOMETRY = 0,
         TEX_COORDS = 1,
-        NORMAL_COORDS = 2,
-        TEXTURE_UNIT = 3,
+        TEXTURE_UNIT = 2,
+        NORMAL_COORDS = 3,
         RESERVED2 = 4,
         RESERVED3 = 5,
         RESERVED4 = 6,
@@ -53,6 +53,7 @@ namespace Graphics {
       unsigned int index_count;
       unsigned int vertex_count;
       GLenum primitive_type;
+      float highest_z;
 
       const unsigned char ANY = 0;
 
@@ -80,8 +81,11 @@ namespace Graphics {
       void checkMinimum(const unsigned int size);
       void clearDataType(const DATA_TYPE& type);
 
+      void setHighestZIfHigher(float z) noexcept; 
+
       template<class T>
       const bool mapCompare(std::map<DATA_TYPE, std::vector<T>> lhs, std::map<DATA_TYPE, std::vector<T>> rhs);
+
     public:
       static const std::map<DATA_TYPE, unsigned int> DataWidth;
       
@@ -109,6 +113,8 @@ namespace Graphics {
       std::map<DATA_TYPE, std::vector<T>> getCollapsedVectors() const;
 
       std::vector<unsigned int> getIndices() const noexcept;
+
+      const float highestZ() const noexcept;
 
       unsigned int numberVertexBufferObjects() const noexcept;
       const unsigned int generateVertexArrayObject() const;

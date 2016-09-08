@@ -2,26 +2,32 @@
 #include "exceptions/no_camera_attached_exception.h"
 #include <easylogging++.h>
 #include <typeinfo>
+#include <algorithm>
 
 
 void ComponentManager::addComponent(std::shared_ptr<Component> component) {
-  components.insert(component);
+  components.insert(std::pair<unsigned long long, std::shared_ptr<Component>>(component->getValueForSorting(), component));
 }
 
 void ComponentManager::addComponent(std::shared_ptr<Graphics::Camera> component) {
-  components.insert(component);
+  components.insert(std::pair<unsigned long long, std::shared_ptr<Component>>(component->getValueForSorting(), component));
   camera = component;
 }
 
 void ComponentManager::removeComponent(std::shared_ptr<Component> component) {
-  components.erase(component);
+  auto component_ptr_matcher = [](std::shared_ptr<Component> com, std::pair<unsigned long long, std::shared_ptr<Component>> com_pair) {
+          return com == com_pair.second;
+    };
+  auto component_iter = std::find_if(components.begin(), components.end(), std::bind(component_ptr_matcher, component, std::placeholders::_1));
+  if(component_iter != components.end())
+    components.erase(component_iter);
 }
 
 void ComponentManager::onStart() {
   if(camera.lock() == nullptr)
     throw Exceptions::NoCameraAttachedException();
   for(auto component : components) {
-    component->onStart();
+    component.second->onStart();
   }
 }
 
@@ -30,15 +36,15 @@ void ComponentManager::onUpdate(const float delta) {
     throw Exceptions::NoCameraAttachedException();
   for(auto component : components) {
     //if(camera.lock()->isComponentWithin(*component)) {
-      component->onUpdate(delta);
+      component.second->onUpdate(delta);
     //}
   }
 }
 
 void ComponentManager::destroy() {
   for(auto component : components) {
-    component->onDestroy();
-    component.reset();
+    component.second->onDestroy();
+    component.second.reset();
   }
   components.clear();
 }

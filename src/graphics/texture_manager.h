@@ -13,7 +13,7 @@ namespace Graphics {
       TextureManager();
       ~TextureManager();
 
-      const bool loadTexture(const std::string& path, const std::string& texture_uniform_name);
+      const bool loadTexture(const std::string& path);
 
       const std::shared_ptr<BaseTexture> operator[](const std::string& name) const;
       const std::shared_ptr<BaseTexture> getTexture(const std::string& name) const;

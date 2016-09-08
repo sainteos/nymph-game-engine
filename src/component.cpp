@@ -47,7 +47,7 @@ const unsigned int Component::getId() const noexcept {
   return id;
 }
 
-const bool Component::operator<(const Component& other) const noexcept {
-  return id < other.id;
+const bool Component::operator<(Component& other) noexcept {
+  return getValueForSorting() < other.getValueForSorting();
 }
 

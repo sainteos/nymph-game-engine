@@ -16,7 +16,7 @@
 #include "utility/utility_functions.h"
 
 namespace Graphics {
-  MapHelper::MapHelper(std::shared_ptr<ComponentManager> manager) : component_manager(manager) {
+  MapHelper::MapHelper(std::shared_ptr<ComponentManager> component_manager, std::shared_ptr<TextureManager> texture_manager, std::shared_ptr<ShaderManager> shader_manager) : component_manager(component_manager), texture_manager(texture_manager), shader_manager(shader_manager) {
   }
 
   MapHelper::~MapHelper() {
@@ -70,7 +70,7 @@ namespace Graphics {
     return vert_data;
   }
 
-  std::shared_ptr<BaseTexture> MapHelper::textureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+  std::shared_ptr<BaseTexture> MapHelper::textureFromTileset(const Tmx::Tileset* tileset, const std::string& path) {
     //Get out of the map directory
     auto pos = path.find_last_of("/");
     auto new_path = path.substr(0, pos);
@@ -86,16 +86,16 @@ namespace Graphics {
 
     auto texture_name = TextureManager::getNameFromPath(source);
 
-    if(!texture_manager.textureExists(texture_name)) {
-      if(!texture_manager.loadTexture(source, uniform_name)) {
+    if(!texture_manager.lock()->textureExists(texture_name)) {
+      if(!texture_manager.lock()->loadTexture(source)) {
         throw Exceptions::InvalidFilenameException(source);
       }
     }
 
-    return texture_manager[texture_name];
+    return (*texture_manager.lock())[texture_name];
   }
 
-  std::shared_ptr<BaseTexture> MapHelper::normalTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+  std::shared_ptr<BaseTexture> MapHelper::normalTextureFromTileset(const Tmx::Tileset* tileset, const std::string& path) {
     //Get out of the map directory
     auto pos = path.find_last_of("/");
     auto new_path = path.substr(0, pos);
@@ -116,16 +116,16 @@ namespace Graphics {
 
     auto texture_name = TextureManager::getNameFromPath(source);
 
-    if(!texture_manager.textureExists(texture_name)) {
-      if(!texture_manager.loadTexture(source, uniform_name)) {
+    if(!texture_manager.lock()->textureExists(texture_name)) {
+      if(!texture_manager.lock()->loadTexture(source)) {
         throw Exceptions::InvalidFilenameException(source);
       }
     }
 
-    return texture_manager[texture_name];
+    return (*texture_manager.lock())[texture_name];
   }
 
-  std::shared_ptr<BaseTexture> MapHelper::displacementTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+  std::shared_ptr<BaseTexture> MapHelper::displacementTextureFromTileset(const Tmx::Tileset* tileset, const std::string& path) {
     //Get out of the map directory
     auto pos = path.find_last_of("/");
     auto new_path = path.substr(0, pos);
@@ -146,13 +146,13 @@ namespace Graphics {
 
     auto texture_name = TextureManager::getNameFromPath(source);
 
-    if(!texture_manager.textureExists(texture_name)) {
-      if(!texture_manager.loadTexture(source, uniform_name)) {
+    if(!texture_manager.lock()->textureExists(texture_name)) {
+      if(!texture_manager.lock()->loadTexture(source)) {
         throw Exceptions::InvalidFilenameException(source);
       }
     }
 
-    return texture_manager[texture_name];
+    return (*texture_manager.lock())[texture_name];
   }
 
   std::vector<glm::vec2> MapHelper::generateTextureCoords(const Tmx::TileLayer* layer, const unsigned int x_pos, const unsigned int y_pos, const unsigned int texture_width, const unsigned int texture_height, const unsigned int tile_width, const unsigned int tile_height) {
@@ -298,7 +298,7 @@ namespace Graphics {
     return lights;
   }
 
-  std::vector<std::shared_ptr<Entity>> MapHelper::createStaticallyAnimatedTilesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+  std::vector<std::shared_ptr<Entity>> MapHelper::createStaticallyAnimatedTilesFromMap(const Tmx::Map& map) {
     std::vector<std::shared_ptr<Entity>> animations;
     auto layers = map.GetTileLayers();
     auto tilesets = map.GetTilesets();
@@ -321,16 +321,16 @@ namespace Graphics {
             auto tileset = tilesets[layer->GetTileTilesetIndex(x, y)];
 
             auto tile = tileset->GetTile(layer->GetTileId(x, y));
-            auto texture = textureFromTileset(tileset, texture_manager, path, "tileset0");
+            auto texture = textureFromTileset(tileset, path);
             unsigned int unit = 0;
 
             if(tile != nullptr && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
-              auto renderable = Renderable::create(generateBasisTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
+              auto renderable = Renderable::create(generateBasisTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), 0, 0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
               auto animator = TileAnimator::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
 
               auto frames = tile->GetFrames();
 
-              renderable->addTexture(unit, texture);
+              renderable->addTexture(unit, "tileset0", texture);
               
               for(auto frame : frames) {
                 auto id = frame.GetTileID();
@@ -345,7 +345,7 @@ namespace Graphics {
                 animator->addFrameBack("default", glm::ivec2(x_pos, y_pos), duration, true);
               }
 
-              renderable->setShader((*shader_manager)["tile_animation"]);
+              renderable->setShader((*shader_manager.lock())["tile_animation"]);
               
               //subtract y from layer height, and then subtract an additional 1 to normalize it to 0
               std::shared_ptr<Entity> entity = std::make_shared<Entity>();
@@ -354,7 +354,7 @@ namespace Graphics {
               component_manager->addComponent(renderable);
               component_manager->addComponent(animator);
 
-              entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
+              entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, 0.0f));
               if(layer->IsVisible()) 
                 entity->setActive(true);
               animations.push_back(entity);
@@ -367,128 +367,167 @@ namespace Graphics {
     return animations;
   }
 
-  MapRenderables MapHelper::createRenderablesFromMap(const unsigned int patch_width_tiles, const unsigned int patch_height_tiles, const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
-    std::vector<RenderableInfo> gid_to_vao;
+  MapRenderables MapHelper::createRenderablesFromMap(const unsigned int patch_width_tiles, const unsigned int patch_height_tiles, const Tmx::Map& map) {
     MapRenderables renderables;
     auto layers = map.GetTileLayers();
     auto tilesets = map.GetTilesets();
     auto path = map.GetFilepath();
 
+    //find the min, max z in the given layers
     unsigned int max_z_order = 0;
     unsigned int min_z_order = 0xFFFFFFFF;
 
     for(auto layer : layers) {
-      if(min_z_order > layer->GetZOrder())
+      if(min_z_order > layer->GetZOrder()) {
         min_z_order = layer->GetZOrder();
-      if(max_z_order < layer->GetZOrder())
+      }
+      if(max_z_order < layer->GetZOrder()) {
         max_z_order = layer->GetZOrder();
+      }
     }
 
+    unsigned int width_in_patches = ceil((float)map.GetWidth() / (float)patch_width_tiles);
+    unsigned int height_in_patches = ceil((float)map.GetHeight() / (float)patch_height_tiles);
+
     for(auto layer : layers) {
-      auto width_in_patches = (unsigned int)ceil((float)layer->GetWidth() / (float)patch_width_tiles);
-      auto height_in_patches = (unsigned int)ceil((float)layer->GetHeight() / (float)patch_height_tiles);
-      auto num_patches = width_in_patches * height_in_patches;
       auto layer_entity = std::make_shared<Entity>();
 
-      for(unsigned int patch_iter = 0; patch_iter < num_patches; patch_iter++) {
-        unsigned int patch_x = patch_iter % width_in_patches;
-        unsigned int patch_y = patch_iter / width_in_patches;
-
-        VertexData patch_vertex_data(GL_TRIANGLES);
-        std::vector<glm::vec3> patch_vertices;
-        std::vector<glm::vec2> patch_texture_coords;
-        std::vector<unsigned int> patch_texture_units;
-        std::map<unsigned int, std::shared_ptr<BaseTexture>> patch_textures;
-
-        auto find_texture_by_ptr = [](std::shared_ptr<BaseTexture> tex, std::pair<unsigned int, std::shared_ptr<BaseTexture>> tex_pair) {
-          return tex == tex_pair.second;
-        };
+      for(unsigned int patch_y = 0; patch_y < height_in_patches; patch_y++) {
+        for(unsigned int patch_x = 0; patch_x < width_in_patches; patch_x++) {
+          std::vector<glm::vec3> patch_vertices;
+          std::vector<glm::vec2> patch_texture_coords;
+          std::vector<int> patch_texture_units;
+          std::vector<std::shared_ptr<BaseTexture>> patch_textures;
+          std::map<int, std::string> patch_texture_names;
 
 
-        for(unsigned int y = 0; y < patch_height_tiles; y++) {
-          for(unsigned int x = 0; x < patch_width_tiles; x++) {
-            auto actual_x = patch_x * patch_width_tiles + x;
-            auto actual_y = patch_y * patch_height_tiles + y;
+          for(unsigned int tile_y = 0; tile_y < patch_height_tiles; tile_y++) {
+            for(unsigned int tile_x = 0; tile_x < patch_width_tiles; tile_x++) {
 
-            auto tileset_index = layer->GetTileTilesetIndex(actual_x, actual_y);
+              //Get the actual map-tile coord for calculations
+              auto map_x = patch_x * patch_width_tiles + tile_x;
+              auto map_y = patch_y * patch_height_tiles + tile_y;
+              auto opengl_map_y = map.GetHeight() - map_y - 1;
 
-            if(tileset_index >= 0) {
-              auto tileset = tilesets[tileset_index];
-              auto tile_id = layer->GetTileId(actual_x, actual_y);
-              auto tile = tileset->GetTile(tile_id);
+              
+              //If the generated map tile coord is out of bounds for the map, discard this iteration
+              //This will happen if ASSERT(map.getWidth() % patch_width_tiles != 0 || map.getHeight() % patch_height_tiles != 0]
+              if(map_x >= map.GetWidth() || map_y >= map.GetHeight())
+                continue;
 
-              unsigned int next_texture_unit = patch_textures.size();
-              std::stringstream sampler_name; 
-              sampler_name << "tileset" << next_texture_unit;
+              //Retrieve tileset and tile from layer
+              auto tileset_index = layer->GetTileTilesetIndex(map_x, map_y);
 
-              auto next_texture = textureFromTileset(tileset, texture_manager, path, sampler_name.str());
+              //If there is no tile here on this layer, discard this iteration
+              if(tileset_index < 0) {
+                continue;
+              }
 
+              //Calculate OpenGL compatible z-order
               auto z_order = -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0;
 
-              if(std::find_if(patch_textures.begin(), patch_textures.end(), std::bind(find_texture_by_ptr, next_texture, std::placeholders::_1)) == patch_textures.end())
-                patch_textures.insert(std::pair<unsigned int, std::shared_ptr<BaseTexture>>(next_texture_unit, next_texture));
+              auto tileset = tilesets[tileset_index];
+              auto tile = tileset->GetTile(layer->GetTileId(map_x, map_y));
 
+
+              //Check if this tile has an animated sprite on it, in which case this is taken care of elsewhere, discard this iteration
               if(tile != nullptr && tile->GetProperties().GetStringProperty("AnimatedSprite") == "True") {
                 AnimationPlaceholder placeholder;
                 placeholder.sprite_name = tile->GetProperties().GetStringProperty("CharacterName");
                 placeholder.default_animation = tile->GetProperties().GetStringProperty("DefaultAnimation");
-                placeholder.x_pos = x;
-                placeholder.y_pos = layer->GetHeight() - y - 1;
+                placeholder.x_pos = map_x;
+                placeholder.y_pos = opengl_map_y;
                 placeholder.z_order = z_order;
                 renderables.dynamic_animations.push_back(placeholder);
               }
               else if(!tile) {
-                //GOTTA INVERT THAT Y BECAUSE OF TILED IS SWITCHED
-                auto vertex_coords = generateVertexCoords(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), actual_x, layer->GetHeight() - 1 - actual_y, z_order);
+                //Generate Vertex Coords
+                auto vertex_coords = generateVertexCoords(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), map_x, opengl_map_y, z_order);
                 patch_vertices.insert(patch_vertices.end(), vertex_coords.begin(), vertex_coords.end());
-                auto tex_coords = generateTextureCoords(layer, actual_x, actual_y, next_texture->getWidth(), next_texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
-                patch_texture_coords.insert(patch_texture_coords.end(), tex_coords.begin(), tex_coords.end());
-                for(int i = 0; i < 6; i++) {
-                  patch_texture_units.push_back(next_texture_unit);
+                
+                //Generate Textures
+                auto next_texture = textureFromTileset(tileset, path);
+                int texture_unit;
+                
+                //See if texture already exists on patch
+                auto found_texture = std::find(patch_textures.begin(), patch_textures.end(), next_texture);
+
+                //If it doesn't exist, grab the current number of patch textures for the new texture unit and add the next texture
+                if(found_texture == patch_textures.end()) {
+                  texture_unit = patch_textures.size();
+                  patch_textures.push_back(next_texture);
+
+                  //Set the appropriate sampler name for this tileset
+                  std::stringstream sampler_name;
+                  sampler_name << "tileset" << texture_unit;
+                  patch_texture_names[texture_unit] = sampler_name.str();
                 }
+                //If it does exist, calculate the texture unit
+                else {
+                  texture_unit = (int)(found_texture - patch_textures.begin());
+                }
+                
+                //Generate Texture Unit Vector
+                for(int i = 0; i < 6; i++) {
+                  patch_texture_units.push_back(texture_unit);
+                }
+
+                //Generate Texture Coords
+                auto tex_coords = generateTextureCoords(layer, map_x, map_y, next_texture->getWidth(), next_texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
+                patch_texture_coords.insert(patch_texture_coords.end(), tex_coords.begin(), tex_coords.end());
+
               }
             }
           }
-        }
-        
-        if(patch_vertices.size() > 0 && patch_texture_coords.size() > 0 && patch_texture_units.size() > 0) {
-          patch_vertex_data.addVec(VertexData::DATA_TYPE::GEOMETRY, patch_vertices);
-          patch_vertex_data.addVec(VertexData::DATA_TYPE::TEX_COORDS, patch_texture_coords);
-          patch_vertex_data.addVec(VertexData::DATA_TYPE::TEXTURE_UNIT, patch_texture_units);
 
-          auto renderable = Renderable::create(patch_vertex_data);
+          //If this patch is actually supposed to exist
+          if(patch_vertices.size() > 0 && patch_texture_coords.size() > 0 && patch_texture_units.size() > 0) {
+            //Create vertex data
+            VertexData patch_vertex_data(GL_TRIANGLES);
+            patch_vertex_data.addVec(VertexData::DATA_TYPE::GEOMETRY, patch_vertices);
+            patch_vertex_data.addVec(VertexData::DATA_TYPE::TEX_COORDS, patch_texture_coords);
+            patch_vertex_data.addVec(VertexData::DATA_TYPE::TEXTURE_UNIT, patch_texture_units);
 
-          for(auto texture_pair : patch_textures) {
-            renderable->addTexture(texture_pair.first, texture_pair.second);
+            //Create renderable and populate it with data
+            auto renderable = Renderable::create(patch_vertex_data);
+            for(auto texture_index = 0; texture_index < patch_textures.size(); texture_index++) {
+              renderable->addTexture(texture_index, patch_texture_names[texture_index], patch_textures[texture_index]);
+            }
+
+            //Check if this map is lighted
+            //If it is, give the renderable a diffuse shader, set it's ambient color and intensity, and set it to react to lights
+            if(map.GetProperties().HasProperty("Lighted") && map.GetProperties().GetStringProperty("Lighted") == "True") {
+              renderable->setShader((*shader_manager.lock())["diffuse_lighting"]);
+              renderable->setLightReactive(true);
+              if(map.GetProperties().HasProperty("AmbientColor"))
+                renderable->setAmbientLight(Utility::stringToVec3(map.GetProperties().GetStringProperty("AmbientColor")) / glm::vec3(256.0, 256.0, 256.0));
+              if(map.GetProperties().HasProperty("AmbientIntensity"))
+                renderable->setAmbientIntensity(map.GetProperties().GetFloatProperty("AmbientIntensity"));
+            }
+            //If it isn't, it just needs a simple texturing shader
+            else {
+              renderable->setShader((*shader_manager.lock())["simple_texture"]); 
+            }
+
+            if(layer->IsVisible()) {
+              renderable->setActive(true);
+            }
+            else {
+              renderable->setActive(false);
+            }
+
+            layer_entity->addComponent(renderable);
+            component_manager->addComponent(renderable);
+
           }
-
-          if(map.GetProperties().HasProperty("Lighted") && map.GetProperties().GetStringProperty("Lighted") == "True") {
-            renderable->setShader((*shader_manager)["diffuse_lighting"]);
-            renderable->setLightReactive(true);
-            if(map.GetProperties().HasProperty("AmbientColor"))
-              renderable->setAmbientLight(Utility::stringToVec3(map.GetProperties().GetStringProperty("AmbientColor")) / glm::vec3(256.0, 256.0, 256.0));
-            if(map.GetProperties().HasProperty("AmbientIntensity"))
-              renderable->setAmbientIntensity(map.GetProperties().GetFloatProperty("AmbientIntensity"));
-          }
-          else {
-            renderable->setShader((*shader_manager)["simple_texture"]); 
-          }
-
-          layer_entity->addComponent(renderable);
-          component_manager->addComponent(renderable);
-
         }
       }
-      if(layer->IsVisible())
-        layer_entity->setActive(true);
-
       renderables.entities.push_back(layer_entity);
     }
-
     return renderables;
   }
 
-  std::vector<std::shared_ptr<DynamicAnimation>> MapHelper::createAnimationsFromAnimationMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+  std::vector<std::shared_ptr<DynamicAnimation>> MapHelper::createAnimationsFromAnimationMap(const Tmx::Map& map) {
     std::vector<std::shared_ptr<DynamicAnimation>> animations; 
     auto path = map.GetFilepath();
     for(auto& tileset : map.GetTilesets()) {
@@ -502,12 +541,12 @@ namespace Graphics {
           if(sprite_iter == animations.end()) {
             anim->sprite_name = properties.GetStringProperty("SpriteName");
 
-            auto texture = textureFromTileset(tileset, texture_manager, path, "tileset0");
+            auto texture = textureFromTileset(tileset, path);
             auto renderable = Renderable::create(generateBasisTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
             unsigned int unit = 0;
 
-            renderable->addTexture(unit, texture);
-            renderable->setShader((*shader_manager)["tile_animation"]);
+            renderable->addTexture(unit, "tileset0", texture);
+            renderable->setShader((*shader_manager.lock())["tile_animation"]);
 
             anim->entity = std::make_shared<Entity>();
 

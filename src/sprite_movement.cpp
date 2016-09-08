@@ -149,6 +149,10 @@ void SpriteMovement::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
   }
 }
 
+const unsigned long long SpriteMovement::getValueForSorting() const noexcept {
+  return getId();
+}
+
 void SpriteMovement::setAnimationStringState(const SpriteState& state, const std::string& str) {
   states[state] = str;
 }

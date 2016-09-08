@@ -52,6 +52,8 @@ namespace Graphics {
 
       const bool isComponentWithin(const Component& component) const;
 
+      const unsigned long long getValueForSorting() const noexcept override;
+
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
   };

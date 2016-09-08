@@ -65,9 +65,11 @@ int main(int argc, char** argv) {
 
   std::shared_ptr<ComponentManager> component_manager = std::make_shared<ComponentManager>();
 
-  MapHelper map_helper(component_manager);
 
   std::shared_ptr<ShaderManager> shader_manager = std::make_shared<ShaderManager>();
+
+  std::shared_ptr<TextureManager> texture_manager = std::make_shared<TextureManager>();
+
   shader_manager->loadShader("simple_texture");
   shader_manager->loadShader("tile_animation");
   shader_manager->loadShader("diffuse_lighting");
@@ -86,11 +88,13 @@ int main(int argc, char** argv) {
   UI::FontGenerator font_generator("./project-spero-assets/");
   font_generator.loadFont("Jack.ttf", 64, "jack");
 
-  TextureManager texture_manager;
+
+  MapHelper map_helper(component_manager, texture_manager, shader_manager);
+
   
-  auto renderables = map_helper.createRenderablesFromMap(5, 5, *map, texture_manager, shader_manager);
-  auto animations = map_helper.createAnimationsFromAnimationMap(*animation_map, texture_manager, shader_manager);
-  auto static_animations = map_helper.createStaticallyAnimatedTilesFromMap(*map, texture_manager, shader_manager);
+  auto renderables = map_helper.createRenderablesFromMap(config.getInt("patch_width"), config.getInt("patch_height"), *map);
+  auto animations = map_helper.createAnimationsFromAnimationMap(*animation_map);
+  auto static_animations = map_helper.createStaticallyAnimatedTilesFromMap(*map);
   auto lights = map_helper.createLightsFromMap(*map);
   auto text = map_helper.createText(font_generator.getFont("jack"), glm::vec4(0.1, 0.4, 0.2, 0.5));
 

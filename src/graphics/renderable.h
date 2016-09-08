@@ -14,7 +14,7 @@
 #include "uniform.h"
 
 namespace Graphics {
-  class Renderable : public Component {
+  class Renderable : public Component, public el::Loggable {
     private:
       unsigned int vertex_array_object;
       std::shared_ptr<Shader> shader;
@@ -47,10 +47,9 @@ namespace Graphics {
       void setShader(std::shared_ptr<Shader> shader_object) noexcept;
       const std::shared_ptr<Shader> getShader() const noexcept;
 
-      void addTexture(const unsigned int unit, std::shared_ptr<BaseTexture> texture_object) noexcept;
+      void addTexture(const unsigned int unit, const std::string uniform_name, std::shared_ptr<BaseTexture> texture_object) noexcept;
       void removeTexture(const unsigned int unit);
       const std::map<unsigned int, std::shared_ptr<BaseTexture>> getTextures() const noexcept;
-      const std::shared_ptr<BaseTexture> getTextureByUniform(const std::string& uniform_name);
 
       void setLightReactive(const bool reactive) noexcept;
       const bool isLightReactive() const noexcept;
@@ -62,6 +61,8 @@ namespace Graphics {
 
       void addInfluencingLight(std::shared_ptr<Light> light) noexcept;
       void clearInfluencingLights();
+
+      const float highestZ() const noexcept;
 
       const unsigned int getVertexArrayBinding() const noexcept;
 
@@ -78,6 +79,9 @@ namespace Graphics {
 
       void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
       void onNotifyNow(std::shared_ptr<Events::Event> event) override;
+      virtual const unsigned long long getValueForSorting() const noexcept override;
+
+      virtual void log(el::base::type::ostream_t& os) const;
   };
 }
 #endif

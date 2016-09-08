@@ -56,7 +56,7 @@ namespace Graphics {
       int location = glGetUniformLocation(program_object, name);
       name_to_location[std::string(name)] = location;
       name_to_type[std::string(name)] = type;
-      LOG(INFO)<<"Uniform found: "<<name;
+      LOG(INFO)<<"Uniform found: "<<name<<" Location: "<<location;
     }
   }
 
