@@ -48,7 +48,9 @@ namespace Graphics {
       const Light::Type getType() const noexcept;
 
       const float influenceOnComponent(const Component& component) const;
-      
+
+      const unsigned long long getValueForSorting() const noexcept override;
+
       virtual void log(el::base::type::ostream_t& os) const;
 
       static inline const Light::Type stringToType(const std::string& str) {

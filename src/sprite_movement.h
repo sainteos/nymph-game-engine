@@ -31,6 +31,7 @@ class SpriteMovement : public Component {
 
     virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
     virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
+    virtual const unsigned long long getValueForSorting() const noexcept override;
 
     void setAnimationStringState(const SpriteState& state, const std::string& str);
     void setMovingSpeed(const float speed);

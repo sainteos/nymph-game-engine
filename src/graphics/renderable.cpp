@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <sstream>
+#include <cmath>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/ext.hpp>
 #include "exceptions/invalid_vertex_array_exception.h"
@@ -34,6 +35,7 @@ namespace Graphics {
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
     light_reactive = std::move(renderable.light_reactive);
+    textures = renderable.textures;
   }
 
   Renderable& Renderable::operator=(Renderable&& renderable) { 
@@ -41,6 +43,7 @@ namespace Graphics {
     shader = renderable.shader;
     vertex_data = renderable.vertex_data;
     light_reactive = std::move(renderable.light_reactive);
+    textures = renderable.textures;
 
     return *this;
   }
@@ -57,28 +60,20 @@ namespace Graphics {
     return shader;
   }
 
-  void Renderable::addTexture(std::shared_ptr<BaseTexture> texture_object) noexcept {
-    textures.push_back(texture_object);
+  void Renderable::addTexture(const unsigned int unit, const std::string uniform_name, std::shared_ptr<BaseTexture> texture_object) noexcept {
+    textures[unit] = texture_object;
+    Uniform texture_uniform;
+    //convert unit to int, samplers expect glUniform1i
+    texture_uniform.setData(uniform_name, (int)unit);
+    uniforms.insert(texture_uniform);
   }
 
-  void Renderable::removeTexture(std::shared_ptr<BaseTexture> texture_object) {
-    auto iter = std::remove(textures.begin(), textures.end(), texture_object);
-    if(iter != textures.end())
-      textures.erase(iter);
+  void Renderable::removeTexture(const unsigned int unit) {
+    textures.erase(unit);
   }
 
-  const std::vector<std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
+  const std::map<unsigned int, std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
     return textures;
-  }
-
-  const std::shared_ptr<BaseTexture> Renderable::getTextureByUniform(const std::string& uniform_name) {
-    auto tex_iter = std::find_if(textures.begin(), textures.end(), [&](std::shared_ptr<BaseTexture> t) { return t->getTextureUniformName() == uniform_name; });
-    if(tex_iter == textures.end()) {
-      return nullptr;
-    }
-    else {
-      return *tex_iter;
-    }
   }
 
   void Renderable::setLightReactive(const bool reactive) noexcept {
@@ -113,6 +108,10 @@ namespace Graphics {
     influencing_lights.clear();
   }
   
+  const float Renderable::highestZ() const noexcept {
+    return vertex_data.highestZ();
+  }
+
   const unsigned int Renderable::getVertexArrayBinding() const noexcept {
     return vertex_array_object;
   }
@@ -219,9 +218,6 @@ namespace Graphics {
   }
 
   const bool Renderable::onUpdate(const double delta) {
-    if(!active)
-      return false;
-
     if(isActive()) {
       if(!glIsVertexArray(vertex_array_object)) {
         throw Exceptions::InvalidVertexArrayException(vertex_array_object);
@@ -256,13 +252,13 @@ namespace Graphics {
         //   }
         // }
 
+        shader->useProgram();  
         setUniforms();
-        shader->useProgram();
-
         shader->setUniform<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix());
+
+
         for(auto& texture : textures) {
-          shader->setUniform<int>(texture->getTextureUniformName(), texture->getTextureUnit());
-          texture->bind();
+          texture.second->bind(texture.first);
         }
       }
       else {
@@ -310,5 +306,14 @@ namespace Graphics {
 
   void Renderable::onNotifyNow(std::shared_ptr<Events::Event> event) {
     handleQueuedEvent(event);
+  }
+
+  const unsigned long long Renderable::getValueForSorting() const noexcept {
+    
+    return (unsigned long long)((unsigned long)highestZ() + 20);
+  }
+
+  void Renderable::log(el::base::type::ostream_t& os) const {
+    os<<"id: "<<getId()<<"  vao: "<<vertex_array_object<<"  active: "<<isActive()<<"  "<<"  transform: "<<glm::to_string(getTransform()->getAbsoluteTranslation())<<"  sort value: "<<getValueForSorting();
   }
 }

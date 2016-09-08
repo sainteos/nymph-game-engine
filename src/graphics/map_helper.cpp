@@ -6,6 +6,8 @@
 #include <glew.h>
 #endif
 #include <algorithm>
+#include <sstream>
+#include <functional>
 #include "graphics/map_helper.h"
 #include "graphics/renderable.h"
 #include "transform.h"
@@ -14,13 +16,13 @@
 #include "utility/utility_functions.h"
 
 namespace Graphics {
-  MapHelper::MapHelper(std::shared_ptr<ComponentManager> manager) : component_manager(manager) {
+  MapHelper::MapHelper(std::shared_ptr<ComponentManager> component_manager, std::shared_ptr<TextureManager> texture_manager, std::shared_ptr<ShaderManager> shader_manager) : component_manager(component_manager), texture_manager(texture_manager), shader_manager(shader_manager) {
   }
 
   MapHelper::~MapHelper() {
   }
 
-  const VertexData MapHelper::generateCube() {
+  const VertexData MapHelper::generateBasisCube() {
     std::vector<glm::vec3> verts {
       glm::vec3(0.0, 0.0, 0.0),
       glm::vec3(0.0, 1.0, 0.0),
@@ -50,25 +52,25 @@ namespace Graphics {
     return vertex_data;
   }
 
-  const VertexData MapHelper::generateTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int offset_x, const unsigned int offset_y) {
+  const VertexData MapHelper::generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos, const unsigned int y_pos, const float z_order, const unsigned int offset_x, const unsigned int offset_y) {
     std::vector<glm::vec2> texs {
       glm::vec2(0.0, 0.0),
       glm::vec2(0.0, 1.0),
       glm::vec2(1.0, 1.0),
+      glm::vec2(0.0, 0.0),
+      glm::vec2(1.0, 1.0),
       glm::vec2(1.0, 0.0)
     };
-    std::vector<unsigned int> indices {
-      0, 1, 2, 0, 2, 3
-    };
+
     VertexData vert_data(GL_TRIANGLES);
-    vert_data.addIndices(indices);
-    vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, generateVertexCoords(base_width, base_height, current_width, current_height, offset_x, offset_y));
+    vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, generateVertexCoords(base_width, base_height, current_width, current_height, x_pos, y_pos, z_order, offset_x, offset_y));
     vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
+    vert_data.addVec<unsigned int>(VertexData::DATA_TYPE::TEXTURE_UNIT, std::vector<unsigned int> { 0, 0, 0, 0, 0, 0 });
 
     return vert_data;
   }
 
-  std::shared_ptr<BaseTexture> MapHelper::textureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+  std::shared_ptr<BaseTexture> MapHelper::textureFromTileset(const Tmx::Tileset* tileset, const std::string& path) {
     //Get out of the map directory
     auto pos = path.find_last_of("/");
     auto new_path = path.substr(0, pos);
@@ -84,16 +86,16 @@ namespace Graphics {
 
     auto texture_name = TextureManager::getNameFromPath(source);
 
-    if(!texture_manager.textureExists(texture_name)) {
-      if(!texture_manager.loadTexture(source, uniform_name, 0)) {
+    if(!texture_manager.lock()->textureExists(texture_name)) {
+      if(!texture_manager.lock()->loadTexture(source)) {
         throw Exceptions::InvalidFilenameException(source);
       }
     }
 
-    return texture_manager[texture_name];
+    return (*texture_manager.lock())[texture_name];
   }
 
-  std::shared_ptr<BaseTexture> MapHelper::normalTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+  std::shared_ptr<BaseTexture> MapHelper::normalTextureFromTileset(const Tmx::Tileset* tileset, const std::string& path) {
     //Get out of the map directory
     auto pos = path.find_last_of("/");
     auto new_path = path.substr(0, pos);
@@ -114,16 +116,16 @@ namespace Graphics {
 
     auto texture_name = TextureManager::getNameFromPath(source);
 
-    if(!texture_manager.textureExists(texture_name)) {
-      if(!texture_manager.loadTexture(source, uniform_name, 1)) {
+    if(!texture_manager.lock()->textureExists(texture_name)) {
+      if(!texture_manager.lock()->loadTexture(source)) {
         throw Exceptions::InvalidFilenameException(source);
       }
     }
 
-    return texture_manager[texture_name];
+    return (*texture_manager.lock())[texture_name];
   }
 
-  std::shared_ptr<BaseTexture> MapHelper::displacementTextureFromTileset(const Tmx::Tileset* tileset, TextureManager& texture_manager, const std::string& path, const std::string& uniform_name) {
+  std::shared_ptr<BaseTexture> MapHelper::displacementTextureFromTileset(const Tmx::Tileset* tileset, const std::string& path) {
     //Get out of the map directory
     auto pos = path.find_last_of("/");
     auto new_path = path.substr(0, pos);
@@ -144,13 +146,13 @@ namespace Graphics {
 
     auto texture_name = TextureManager::getNameFromPath(source);
 
-    if(!texture_manager.textureExists(texture_name)) {
-      if(!texture_manager.loadTexture(source, uniform_name, 2)) {
+    if(!texture_manager.lock()->textureExists(texture_name)) {
+      if(!texture_manager.lock()->loadTexture(source)) {
         throw Exceptions::InvalidFilenameException(source);
       }
     }
 
-    return texture_manager[texture_name];
+    return (*texture_manager.lock())[texture_name];
   }
 
   std::vector<glm::vec2> MapHelper::generateTextureCoords(const Tmx::TileLayer* layer, const unsigned int x_pos, const unsigned int y_pos, const unsigned int texture_width, const unsigned int texture_height, const unsigned int tile_width, const unsigned int tile_height) {
@@ -158,56 +160,58 @@ namespace Graphics {
       glm::vec2(-0.5, -0.5),
       glm::vec2(-0.5, 0.5),
       glm::vec2(0.5, 0.5),
+      glm::vec2(-0.5, -0.5),
+      glm::vec2(0.5, 0.5),
       glm::vec2(0.5, -0.5)
     };
     
     //Tile flipping
     if(layer->IsTileFlippedDiagonally(x_pos, y_pos) && layer->IsTileFlippedHorizontally(x_pos, y_pos) && layer->IsTileFlippedVertically(x_pos, y_pos)) {
-      for(int i = 0; i < 4; i++) {
+      for(int i = 0; i < texs.size(); i++) {
         //Reflect across x=y
         texs[i] = texs[i] * glm::mat2(0.0, 1.0, 1.0, 0.0);
       }
     }
     else if(layer->IsTileFlippedDiagonally(x_pos, y_pos) && layer->IsTileFlippedHorizontally(x_pos, y_pos) && !layer->IsTileFlippedVertically(x_pos, y_pos)) {
-      for(int i = 0; i < 4; i++) {
+      for(int i = 0; i < texs.size(); i++) {
         //Rotate 90 Anticlockwise
         texs[i] = texs[i] * glm::mat2(0.0, -1.0, 1.0, 0.0);
       }               
     }
     else if(layer->IsTileFlippedDiagonally(x_pos, y_pos) && !layer->IsTileFlippedHorizontally(x_pos, y_pos) && layer->IsTileFlippedVertically(x_pos, y_pos)) {
-      for(int i = 0; i < 4; i++) {
+      for(int i = 0; i < texs.size(); i++) {
         //Rotate 90 Clockwise
         texs[i] = texs[i] * glm::mat2(0.0, 1.0, -1.0, 0.0);
       }       
     }
     else if(!layer->IsTileFlippedDiagonally(x_pos, y_pos) && layer->IsTileFlippedHorizontally(x_pos, y_pos) && layer->IsTileFlippedVertically(x_pos, y_pos)) {
-      for(int i = 0; i < 4; i++) {
+      for(int i = 0; i < texs.size(); i++) {
         //Rotate 180
         texs[i] = texs[i] * glm::mat2(-1.0, 0.0, 0.0, -1.0);
       }       
     }
     else if(layer->IsTileFlippedDiagonally(x_pos, y_pos) && !layer->IsTileFlippedHorizontally(x_pos, y_pos) && !layer->IsTileFlippedVertically(x_pos, y_pos)) {
-      for(int i = 0; i < 4; i++) {
+      for(int i = 0; i < texs.size(); i++) {
         //rotate anticlockwise 90, reflect across x
         texs[i] = texs[i] * glm::mat2(0.0, -1.0, 1.0, 0.0);
         texs[i] = texs[i] * glm::mat2(1.0, 0.0, 0.0, -1.0);
       }       
     }
     else if(!layer->IsTileFlippedDiagonally(x_pos, y_pos) && !layer->IsTileFlippedHorizontally(x_pos, y_pos) && layer->IsTileFlippedVertically(x_pos, y_pos)) {
-      for(int i = 0; i < 4; i++) {
+      for(int i = 0; i < texs.size(); i++) {
         //Reflect across x
         texs[i] = texs[i] * glm::mat2(1.0, 0.0, 0.0, -1.0);
       }       
     }
     else if(!layer->IsTileFlippedDiagonally(x_pos, y_pos) && layer->IsTileFlippedHorizontally(x_pos, y_pos) && !layer->IsTileFlippedVertically(x_pos, y_pos)) {
-      for(int i = 0; i < 4; i++) {
+      for(int i = 0; i < texs.size(); i++) {
         //Reflect across y
         texs[i] = texs[i] * glm::mat2(-1.0, 0.0, 0.0, 1.0);
       }       
     }
     
     //Translate to bottom left at 0,0
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < texs.size(); i++) {
       texs[i] = texs[i] + glm::vec2(0.5, 0.5);
     }
 
@@ -215,7 +219,7 @@ namespace Graphics {
     float height = (float)tile_height / (float)texture_height;
      
     //scale by width/height
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < texs.size(); i++) {
       texs[i] = texs[i] * glm::vec2(width, height);
     }
 
@@ -227,19 +231,21 @@ namespace Graphics {
     int tileset_y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
     //translate by pos
-    for(int i = 0; i < 4; i++)  {
+    for(int i = 0; i < texs.size(); i++)  {
       texs[i] += glm::vec2(tileset_x_pos * width, tileset_y_pos * height);
     }
 
     return texs;
   }
 
-  std::vector<glm::vec3> MapHelper::generateVertexCoords(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int offset_x, const unsigned int offset_y) {
+  std::vector<glm::vec3> MapHelper::generateVertexCoords(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos, const unsigned int y_pos, const float z_order, const unsigned int offset_x, const unsigned int offset_y) {
     std::vector<glm::vec3> verts {
-      glm::vec3((float)offset_x / (float)base_width, (float)offset_y / (float)base_height, 0.0),
-      glm::vec3((float)offset_x / (float)base_width, (float)offset_y / (float)base_height + (float)current_height / (float)base_height, 0.0),
-      glm::vec3((float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)offset_y / (float)base_height + (float)current_height / (float)base_height, 0.0),
-      glm::vec3((float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)offset_y / (float)base_height, 0.0)
+      glm::vec3((float)x_pos + (float)offset_x / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height, z_order),
+      glm::vec3((float)x_pos + (float)offset_x / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height + (float)current_height / (float)base_height, z_order),
+      glm::vec3((float)x_pos + (float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height + (float)current_height / (float)base_height, z_order),
+      glm::vec3((float)x_pos + (float)offset_x / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height, z_order),
+      glm::vec3((float)x_pos + (float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height + (float)current_height / (float)base_height, z_order),
+      glm::vec3((float)x_pos + (float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height, z_order)
     };
     return verts;
   }
@@ -292,7 +298,7 @@ namespace Graphics {
     return lights;
   }
 
-  std::vector<std::shared_ptr<Entity>> MapHelper::createStaticallyAnimatedTilesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+  std::vector<std::shared_ptr<Entity>> MapHelper::createStaticallyAnimatedTilesFromMap(const Tmx::Map& map) {
     std::vector<std::shared_ptr<Entity>> animations;
     auto layers = map.GetTileLayers();
     auto tilesets = map.GetTilesets();
@@ -315,15 +321,16 @@ namespace Graphics {
             auto tileset = tilesets[layer->GetTileTilesetIndex(x, y)];
 
             auto tile = tileset->GetTile(layer->GetTileId(x, y));
-            auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
+            auto texture = textureFromTileset(tileset, path);
+            unsigned int unit = 0;
 
             if(tile != nullptr && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
-              auto renderable = Renderable::create(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
+              auto renderable = Renderable::create(generateBasisTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), 0, 0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
               auto animator = TileAnimator::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
 
               auto frames = tile->GetFrames();
 
-              renderable->addTexture(texture);
+              renderable->addTexture(unit, "tileset0", texture);
               
               for(auto frame : frames) {
                 auto id = frame.GetTileID();
@@ -338,7 +345,7 @@ namespace Graphics {
                 animator->addFrameBack("default", glm::ivec2(x_pos, y_pos), duration, true);
               }
 
-              renderable->setShader((*shader_manager)["tile_animation"]);
+              renderable->setShader((*shader_manager.lock())["tile_animation"]);
               
               //subtract y from layer height, and then subtract an additional 1 to normalize it to 0
               std::shared_ptr<Entity> entity = std::make_shared<Entity>();
@@ -347,7 +354,7 @@ namespace Graphics {
               component_manager->addComponent(renderable);
               component_manager->addComponent(animator);
 
-              entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
+              entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, 0.0f));
               if(layer->IsVisible()) 
                 entity->setActive(true);
               animations.push_back(entity);
@@ -360,120 +367,167 @@ namespace Graphics {
     return animations;
   }
 
-  MapRenderables MapHelper::createRenderablesFromMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
-    std::vector<RenderableInfo> gid_to_vao;
+  MapRenderables MapHelper::createRenderablesFromMap(const unsigned int patch_width_tiles, const unsigned int patch_height_tiles, const Tmx::Map& map) {
     MapRenderables renderables;
     auto layers = map.GetTileLayers();
     auto tilesets = map.GetTilesets();
     auto path = map.GetFilepath();
 
+    //find the min, max z in the given layers
     unsigned int max_z_order = 0;
     unsigned int min_z_order = 0xFFFFFFFF;
 
     for(auto layer : layers) {
-      if(min_z_order > layer->GetZOrder())
+      if(min_z_order > layer->GetZOrder()) {
         min_z_order = layer->GetZOrder();
-      if(max_z_order < layer->GetZOrder())
+      }
+      if(max_z_order < layer->GetZOrder()) {
         max_z_order = layer->GetZOrder();
-    }
-
-    for(auto layer : layers) {
-      for(int y = 0; y < layer->GetHeight(); y++) {
-        for(int x = 0; x < layer->GetWidth(); x++) {
-
-          if(layer->GetTileTilesetIndex(x, y) >= 0) {
-            auto tileset = tilesets[layer->GetTileTilesetIndex(x, y)];
-
-            auto tile = tileset->GetTile(layer->GetTileId(x, y));
-            auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
-            std::shared_ptr<BaseTexture> normal_texture;
-            if(tileset->GetProperties().HasProperty("UseNormal") && tileset->GetProperties().GetStringProperty("UseNormal") == "True") {
-              normal_texture = normalTextureFromTileset(tileset, texture_manager, path, "normal_texture");
-            }
-
-            if(tile != nullptr && tile->GetProperties().GetStringProperty("AnimatedSprite") == "True") {
-              AnimationPlaceholder placeholder;
-              placeholder.sprite_name = tile->GetProperties().GetStringProperty("CharacterName");
-              placeholder.default_animation = tile->GetProperties().GetStringProperty("DefaultAnimation");
-              placeholder.x_pos = x;
-              placeholder.y_pos = layer->GetHeight() - y - 1;
-              placeholder.z_order = -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0;
-              renderables.dynamic_animations.push_back(placeholder);
-            }
-            else if(!tile) {
-              unsigned int vertex_array_object = 0;
-              VertexData vert_data(GL_TRIANGLES);
-
-              auto id = layer->GetTileId(x, y);
-
-              auto find_pred = [&](const RenderableInfo& info) { return layer->GetTileGid(x,y) == info.gid &&
-                                                                        layer->IsTileFlippedHorizontally(x, y) == info.flip_horizontal &&
-                                                                        layer->IsTileFlippedVertically(x, y) == info.flip_vertical &&
-                                                                        layer->IsTileFlippedDiagonally(x, y) == info.flip_diagonal; };
-              auto iter = std::find_if(gid_to_vao.begin(), gid_to_vao.end(), find_pred);
-
-              if(iter == gid_to_vao.end()) {
-                std::vector<unsigned int> indices {
-                  0, 1, 2, 0, 2, 3
-                };
-                std::vector<glm::vec3> verts;
-                verts = generateVertexCoords(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
-                std::vector<glm::vec2> texs;
-                texs = generateTextureCoords(layer, x, y, texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
-                vert_data.addIndices(indices);
-                vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
-                vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
-
-                vertex_array_object = vert_data.generateVertexArrayObject();
-
-                RenderableInfo info { vert_data, vertex_array_object, layer->GetTileGid(x, y) };
-                info.flip_horizontal = layer->IsTileFlippedHorizontally(x, y);
-                info.flip_vertical = layer->IsTileFlippedVertically(x, y);
-                info.flip_diagonal = layer->IsTileFlippedDiagonally(x, y);
-                gid_to_vao.push_back(info);
-              }
-              else {
-                vertex_array_object = iter->vertex_array_object;
-                vert_data = iter->vertex_data;
-              }
-
-              auto renderable = Renderable::create(vert_data);
-
-              renderable->addTexture(texture);
-              if(normal_texture) {
-                renderable->addTexture(normal_texture);
-              }
-
-              if(map.GetProperties().HasProperty("Lighted") && map.GetProperties().GetStringProperty("Lighted") == "True") {
-                renderable->setShader((*shader_manager)["diffuse_lighting"]);
-                renderable->setLightReactive(true);
-                if(map.GetProperties().HasProperty("AmbientColor"))
-                  renderable->setAmbientLight(Utility::stringToVec3(map.GetProperties().GetStringProperty("AmbientColor")) / glm::vec3(256.0, 256.0, 256.0));
-                if(map.GetProperties().HasProperty("AmbientIntensity"))
-                  renderable->setAmbientIntensity(map.GetProperties().GetFloatProperty("AmbientIntensity"));
-              }
-              else {
-                renderable->setShader((*shader_manager)["simple_texture"]); 
-              }
-              
-              auto entity = std::make_shared<Entity>();
-              entity->addComponent(renderable);
-              component_manager->addComponent(renderable);
-              //subtract y from height and subtract 1 to normalize to 0
-              entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
-              if(layer->IsVisible())
-                entity->setActive(true);
-              renderables.entities.push_back(entity);
-            }
-          }
-        }
       }
     }
 
+    unsigned int width_in_patches = ceil((float)map.GetWidth() / (float)patch_width_tiles);
+    unsigned int height_in_patches = ceil((float)map.GetHeight() / (float)patch_height_tiles);
+
+    for(auto layer : layers) {
+      auto layer_entity = std::make_shared<Entity>();
+
+      for(unsigned int patch_y = 0; patch_y < height_in_patches; patch_y++) {
+        for(unsigned int patch_x = 0; patch_x < width_in_patches; patch_x++) {
+          std::vector<glm::vec3> patch_vertices;
+          std::vector<glm::vec2> patch_texture_coords;
+          std::vector<int> patch_texture_units;
+          std::vector<std::shared_ptr<BaseTexture>> patch_textures;
+          std::map<int, std::string> patch_texture_names;
+
+
+          for(unsigned int tile_y = 0; tile_y < patch_height_tiles; tile_y++) {
+            for(unsigned int tile_x = 0; tile_x < patch_width_tiles; tile_x++) {
+
+              //Get the actual map-tile coord for calculations
+              auto map_x = patch_x * patch_width_tiles + tile_x;
+              auto map_y = patch_y * patch_height_tiles + tile_y;
+              auto opengl_map_y = map.GetHeight() - map_y - 1;
+
+              
+              //If the generated map tile coord is out of bounds for the map, discard this iteration
+              //This will happen if ASSERT(map.getWidth() % patch_width_tiles != 0 || map.getHeight() % patch_height_tiles != 0]
+              if(map_x >= map.GetWidth() || map_y >= map.GetHeight())
+                continue;
+
+              //Retrieve tileset and tile from layer
+              auto tileset_index = layer->GetTileTilesetIndex(map_x, map_y);
+
+              //If there is no tile here on this layer, discard this iteration
+              if(tileset_index < 0) {
+                continue;
+              }
+
+              //Calculate OpenGL compatible z-order
+              auto z_order = -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0;
+
+              auto tileset = tilesets[tileset_index];
+              auto tile = tileset->GetTile(layer->GetTileId(map_x, map_y));
+
+
+              //Check if this tile has an animated sprite on it, in which case this is taken care of elsewhere, discard this iteration
+              if(tile != nullptr && tile->GetProperties().GetStringProperty("AnimatedSprite") == "True") {
+                AnimationPlaceholder placeholder;
+                placeholder.sprite_name = tile->GetProperties().GetStringProperty("CharacterName");
+                placeholder.default_animation = tile->GetProperties().GetStringProperty("DefaultAnimation");
+                placeholder.x_pos = map_x;
+                placeholder.y_pos = opengl_map_y;
+                placeholder.z_order = z_order;
+                renderables.dynamic_animations.push_back(placeholder);
+              }
+              else if(!tile) {
+                //Generate Vertex Coords
+                auto vertex_coords = generateVertexCoords(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), map_x, opengl_map_y, z_order);
+                patch_vertices.insert(patch_vertices.end(), vertex_coords.begin(), vertex_coords.end());
+                
+                //Generate Textures
+                auto next_texture = textureFromTileset(tileset, path);
+                int texture_unit;
+                
+                //See if texture already exists on patch
+                auto found_texture = std::find(patch_textures.begin(), patch_textures.end(), next_texture);
+
+                //If it doesn't exist, grab the current number of patch textures for the new texture unit and add the next texture
+                if(found_texture == patch_textures.end()) {
+                  texture_unit = patch_textures.size();
+                  patch_textures.push_back(next_texture);
+
+                  //Set the appropriate sampler name for this tileset
+                  std::stringstream sampler_name;
+                  sampler_name << "tileset" << texture_unit;
+                  patch_texture_names[texture_unit] = sampler_name.str();
+                }
+                //If it does exist, calculate the texture unit
+                else {
+                  texture_unit = (int)(found_texture - patch_textures.begin());
+                }
+                
+                //Generate Texture Unit Vector
+                for(int i = 0; i < 6; i++) {
+                  patch_texture_units.push_back(texture_unit);
+                }
+
+                //Generate Texture Coords
+                auto tex_coords = generateTextureCoords(layer, map_x, map_y, next_texture->getWidth(), next_texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
+                patch_texture_coords.insert(patch_texture_coords.end(), tex_coords.begin(), tex_coords.end());
+
+              }
+            }
+          }
+
+          //If this patch is actually supposed to exist
+          if(patch_vertices.size() > 0 && patch_texture_coords.size() > 0 && patch_texture_units.size() > 0) {
+            //Create vertex data
+            VertexData patch_vertex_data(GL_TRIANGLES);
+            patch_vertex_data.addVec(VertexData::DATA_TYPE::GEOMETRY, patch_vertices);
+            patch_vertex_data.addVec(VertexData::DATA_TYPE::TEX_COORDS, patch_texture_coords);
+            patch_vertex_data.addVec(VertexData::DATA_TYPE::TEXTURE_UNIT, patch_texture_units);
+
+            //Create renderable and populate it with data
+            auto renderable = Renderable::create(patch_vertex_data);
+            for(auto texture_index = 0; texture_index < patch_textures.size(); texture_index++) {
+              renderable->addTexture(texture_index, patch_texture_names[texture_index], patch_textures[texture_index]);
+            }
+
+            //Check if this map is lighted
+            //If it is, give the renderable a diffuse shader, set it's ambient color and intensity, and set it to react to lights
+            if(map.GetProperties().HasProperty("Lighted") && map.GetProperties().GetStringProperty("Lighted") == "True") {
+              renderable->setShader((*shader_manager.lock())["diffuse_lighting"]);
+              renderable->setLightReactive(true);
+              if(map.GetProperties().HasProperty("AmbientColor"))
+                renderable->setAmbientLight(Utility::stringToVec3(map.GetProperties().GetStringProperty("AmbientColor")) / glm::vec3(256.0, 256.0, 256.0));
+              if(map.GetProperties().HasProperty("AmbientIntensity"))
+                renderable->setAmbientIntensity(map.GetProperties().GetFloatProperty("AmbientIntensity"));
+            }
+            //If it isn't, it just needs a simple texturing shader
+            else {
+              renderable->setShader((*shader_manager.lock())["simple_texture"]); 
+            }
+
+            if(layer->IsVisible()) {
+              renderable->setActive(true);
+            }
+            else {
+              renderable->setActive(false);
+            }
+
+            layer_entity->addComponent(renderable);
+            component_manager->addComponent(renderable);
+
+          }
+        }
+      }
+      renderables.entities.push_back(layer_entity);
+    }
     return renderables;
   }
 
-  std::vector<std::shared_ptr<DynamicAnimation>> MapHelper::createAnimationsFromAnimationMap(const Tmx::Map& map, TextureManager& texture_manager, const std::shared_ptr<ShaderManager> shader_manager) {
+  std::vector<std::shared_ptr<DynamicAnimation>> MapHelper::createAnimationsFromAnimationMap(const Tmx::Map& map) {
     std::vector<std::shared_ptr<DynamicAnimation>> animations; 
     auto path = map.GetFilepath();
     for(auto& tileset : map.GetTilesets()) {
@@ -487,11 +541,12 @@ namespace Graphics {
           if(sprite_iter == animations.end()) {
             anim->sprite_name = properties.GetStringProperty("SpriteName");
 
-            auto texture = textureFromTileset(tileset, texture_manager, path, "tileset");
-            auto renderable = Renderable::create(generateTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
+            auto texture = textureFromTileset(tileset, path);
+            auto renderable = Renderable::create(generateBasisTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight()));
+            unsigned int unit = 0;
 
-            renderable->addTexture(texture);
-            renderable->setShader((*shader_manager)["tile_animation"]);
+            renderable->addTexture(unit, "tileset0", texture);
+            renderable->setShader((*shader_manager.lock())["tile_animation"]);
 
             anim->entity = std::make_shared<Entity>();
 

@@ -1,10 +1,11 @@
 #include <easylogging++.h>
 #include <exception>
 #include <utility>
+#include <limits>
 #include "vertex_data.h"
 
 namespace Graphics {
-  VertexData::VertexData(GLenum primitive_type) : index_count(0), vertex_count(0), primitive_type(primitive_type) {
+  VertexData::VertexData(GLenum primitive_type) : index_count(0), vertex_count(0), primitive_type(primitive_type), highest_z(-1 * std::numeric_limits<float>::infinity()) {
 
   }
 
@@ -30,6 +31,7 @@ namespace Graphics {
     index_count = vertex_data.index_count;
     vertex_count = vertex_data.vertex_count;
     primitive_type = vertex_data.primitive_type;
+    highest_z = vertex_data.highest_z;
   }
 
   VertexData VertexData::operator=(const VertexData& vertex_data) {
@@ -53,18 +55,20 @@ namespace Graphics {
     index_count = vertex_data.index_count;
     vertex_count = vertex_data.vertex_count;
     primitive_type = vertex_data.primitive_type;
+    highest_z = vertex_data.highest_z;
     return *this;
   }
 
   VertexData::~VertexData() {
+    highest_z = -1 * std::numeric_limits<float>::infinity();
   }
 
   //initialize the datawidth
   const std::map<Graphics::VertexData::DATA_TYPE, unsigned int> VertexData::DataWidth = std::map<Graphics::VertexData::DATA_TYPE, unsigned int>  {
         {Graphics::VertexData::DATA_TYPE::GEOMETRY, 3},
         {Graphics::VertexData::DATA_TYPE::TEX_COORDS, 2},
+        {Graphics::VertexData::DATA_TYPE::TEXTURE_UNIT, 1},
         {Graphics::VertexData::DATA_TYPE::NORMAL_COORDS, 3},
-        {Graphics::VertexData::DATA_TYPE::RESERVED1, 3},
         {Graphics::VertexData::DATA_TYPE::RESERVED2, 3},
         {Graphics::VertexData::DATA_TYPE::RESERVED3, 3},
         {Graphics::VertexData::DATA_TYPE::RESERVED4, 3},
@@ -174,6 +178,11 @@ namespace Graphics {
            std::equal(lhs.begin(), lhs.end(), rhs.begin());
   }
 
+  void VertexData::setHighestZIfHigher(float z) noexcept {
+    if(z > highest_z)
+      highest_z = z;
+  }
+
   void VertexData::addIndices(const std::vector<unsigned int>& indices) {
     checkMinimum(indices.size());
     checkDivisibility(indices.size());
@@ -205,6 +214,7 @@ namespace Graphics {
     else {
       throw std::length_error("Vertices size mismatch when adding floatvec1!");
     }
+
   }
   template<>
   void VertexData::addVec<glm::vec2>(VertexData::DATA_TYPE data_type, const std::vector<glm::vec2>& vec){
@@ -241,6 +251,12 @@ namespace Graphics {
     else {
       throw std::length_error("Vertices size mismatch when adding floatvec3!");
     }
+
+    if(data_type == VertexData::DATA_TYPE::GEOMETRY) {
+      for(auto v : vec) {
+        setHighestZIfHigher(v.z);
+      }
+    }
   }
   template<>
   void VertexData::addVec<glm::vec4>(VertexData::DATA_TYPE data_type, const std::vector<glm::vec4>& vec){
@@ -258,6 +274,11 @@ namespace Graphics {
     }
     else {
       throw std::length_error("Vertices size mismatch when adding floatvec4!");
+    }
+    if(data_type == VertexData::DATA_TYPE::GEOMETRY) {
+      for(auto v : vec) {
+        setHighestZIfHigher(v.z);
+      }
     }
   }
   template<>
@@ -313,6 +334,11 @@ namespace Graphics {
     else {
       throw std::length_error("Vertices size mismatch when adding doublevec3!");
     }
+    if(data_type == VertexData::DATA_TYPE::GEOMETRY) {
+      for(auto v : vec) {
+        setHighestZIfHigher(v.z);
+      }
+    }
   }
   template<>
   void VertexData::addVec<glm::dvec4>(VertexData::DATA_TYPE data_type, const std::vector<glm::dvec4>& vec){
@@ -330,6 +356,11 @@ namespace Graphics {
     }
     else {
       throw std::length_error("Vertices size mismatch when adding doublevec4!");
+    }
+    if(data_type == VertexData::DATA_TYPE::GEOMETRY) {
+      for(auto v : vec) {
+        setHighestZIfHigher(v.z);
+      }
     }
   }
   template<>
@@ -385,6 +416,11 @@ namespace Graphics {
     else {
       throw std::length_error("Vertices size mismatch when adding intvec3!");
     }
+    if(data_type == VertexData::DATA_TYPE::GEOMETRY) {
+      for(auto v : vec) {
+        setHighestZIfHigher(v.z);
+      }
+    }
   }
   template<>
   void VertexData::addVec<glm::ivec4>(VertexData::DATA_TYPE data_type, const std::vector<glm::ivec4>& vec){
@@ -402,6 +438,11 @@ namespace Graphics {
     }
     else {
       throw std::length_error("Vertices size mismatch when adding intvec4!");
+    }
+    if(data_type == VertexData::DATA_TYPE::GEOMETRY) {
+      for(auto v : vec) {
+        setHighestZIfHigher(v.z);
+      }
     }
   }
   template<>
@@ -457,6 +498,11 @@ namespace Graphics {
     else {
       throw std::length_error("Vertices size mismatch when adding unsignedintvec3!");
     }
+    if(data_type == VertexData::DATA_TYPE::GEOMETRY) {
+      for(auto v : vec) {
+        setHighestZIfHigher(v.z);
+      }
+    }
   }
   template<>
   void VertexData::addVec<glm::uvec4>(VertexData::DATA_TYPE data_type, const std::vector<glm::uvec4>& vec){
@@ -474,6 +520,11 @@ namespace Graphics {
     }
     else {
       throw std::length_error("Vertices size mismatch when adding unsignedintvec4!");
+    }
+    if(data_type == VertexData::DATA_TYPE::GEOMETRY) {
+      for(auto v : vec) {
+        setHighestZIfHigher(v.z);
+      }
     }
   }
  
@@ -625,6 +676,10 @@ namespace Graphics {
     return out_map;
   } 
 
+  const float VertexData::highestZ() const noexcept {
+    return highest_z;
+  }
+
   unsigned int VertexData::numberVertexBufferObjects() const noexcept {
     return float_vector1s.size() + float_vector2s.size() + float_vector3s.size() + float_vector4s.size() + 
            double_vector1s.size() + double_vector2s.size() + double_vector3s.size() + double_vector4s.size() +
@@ -688,9 +743,12 @@ namespace Graphics {
 
     for(int i = 0; i < num_of_vertex_buffers; i++) {
       glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_objects[i]);
-      glVertexAttribPointer(data_types[i].first, VertexData::DataWidth.at(data_types[i].first), data_types[i].second, GL_FALSE, 0, 0);
+      if(data_types[i].second == GL_FLOAT || data_types[i].second == GL_DOUBLE)
+        glVertexAttribPointer(data_types[i].first, VertexData::DataWidth.at(data_types[i].first), data_types[i].second, GL_FALSE, 0, 0);
+      //VERY IMPORTANT, WITHOUT glVertexAttribIPointer, integers will be destroyed!!
+      if(data_types[i].second == GL_INT || data_types[i].second == GL_UNSIGNED_INT)
+        glVertexAttribIPointer(data_types[i].first, VertexData::DataWidth.at(data_types[i].first), data_types[i].second, 0, 0);
       glEnableVertexAttribArray(data_types[i].first);
-
     }
     
     if(getIndices().size() > 0) {

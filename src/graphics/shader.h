@@ -21,6 +21,8 @@ namespace Graphics {
       const unsigned int getHandle() const noexcept;
       void useProgram() const;
 
+      const std::vector<std::string> getUniformNames() const noexcept;
+      
       template<class T>
       void setUniform(const std::string& name, const T& value);
   };

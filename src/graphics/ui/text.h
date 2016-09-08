@@ -36,6 +36,8 @@ namespace Graphics {
         void setHorizontalAlignment(const HorizontalAlignment& alignment);
         void setVerticalAlignment(const VerticalAlignment& alignment);
         void addCharacterVertexData(const char character, const VertexData& vertex_data, const unsigned int vertex_array_object);
+
+        virtual const unsigned long long getValueForSorting() const noexcept override;
         virtual void onDestroy() override;
         virtual void onStart() override;
         virtual const bool onUpdate(const double delta) override;

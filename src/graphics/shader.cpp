@@ -56,7 +56,7 @@ namespace Graphics {
       int location = glGetUniformLocation(program_object, name);
       name_to_location[std::string(name)] = location;
       name_to_type[std::string(name)] = type;
-      LOG(INFO)<<"Uniform found: "<<name;
+      LOG(INFO)<<"Uniform found: "<<name<<" Location: "<<location;
     }
   }
 
@@ -69,6 +69,13 @@ namespace Graphics {
       throw Exceptions::InvalidShaderProgramException(program_object);
     }
     glUseProgram(program_object);
+  }
+
+  const std::vector<std::string> Shader::getUniformNames() const noexcept {
+    std::vector<std::string> names;
+    for(auto i : name_to_location) 
+      names.push_back(i.first);
+    return names;
   }
 
   template<>

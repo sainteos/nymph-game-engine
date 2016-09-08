@@ -31,8 +31,9 @@ class Component : public Events::Subject, public Events::Observer {
 
 
     const unsigned int getId() const noexcept;
+    virtual const unsigned long long getValueForSorting() const = 0;
 
-    const bool operator<(const Component& other) const noexcept;
+    const bool operator<(Component& other) noexcept;
 
     virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
     virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;

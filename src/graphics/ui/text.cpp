@@ -62,6 +62,10 @@ namespace Graphics {
       }
     }
 
+    const unsigned long long Text::getValueForSorting() const noexcept {
+      return 0;
+    }
+
     void Text::onDestroy() {
 
     }
