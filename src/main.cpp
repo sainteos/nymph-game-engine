@@ -180,7 +180,16 @@ int main(int argc, char** argv) {
   else if(config.getString("text_horizontal_alignment") == "left") {
     text->setHorizontalAlignment(UI::WrappableText::HorizontalAlignment::LEFT);
   }
-  text->setSize(10.0, 10.0);
+  if(config.getString("text_vertical_alignment") == "top") {
+    text->setVerticalAlignment(UI::WrappableText::VerticalAlignment::TOP);
+  }
+  else if(config.getString("text_vertical_alignment") == "center") {
+    text->setVerticalAlignment(UI::WrappableText::VerticalAlignment::CENTER);
+  }
+  else if(config.getString("text_vertical_alignment") == "bottom") {
+    text->setVerticalAlignment(UI::WrappableText::VerticalAlignment::BOTTOM);
+  }
+  text->setSize(10.0, 20.0);
   text->setText("Banana Hammock vagina finder dick asshole bananafan");
   text->setColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
   text->setActive(true);

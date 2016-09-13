@@ -45,13 +45,18 @@ namespace Graphics {
       this->text = text;
       character_transforms.clear();
 
+      unsigned int number_of_lines = 0;
+
       if(horizontal_alignment == HorizontalAlignment::LEFT) {
         Transform t;
         float current_width = 0.0;
+        number_of_lines = 1;
         for(auto character : this->text) {
           if(current_width + font->getCharacter(character).size.x > width) {
               current_width = 0.0;
               t.translate(glm::vec2(-t.getAbsoluteTranslation().x, -font->getOpenGLSize()));
+              number_of_lines++;
+
           }
           character_transforms.insert(std::pair<unsigned char, Transform>(character, t));
           t.translate(glm::vec2(font->getCharacter(character).advance, 0.0));
@@ -73,6 +78,7 @@ namespace Graphics {
           }
           line_number++;
         }
+        number_of_lines = line_number;
       }
       else {
         auto lines = splitTextIntoLines();
@@ -96,7 +102,20 @@ namespace Graphics {
           last_position += line_text.size();
           line_number++;
         }
-      }        
+        number_of_lines = line_number;
+      }
+
+      float text_body_height = number_of_lines * font->getOpenGLSize();
+      float vertical_alignment_y = 0.0;
+
+      if(vertical_alignment == VerticalAlignment::CENTER) {
+        vertical_alignment_y = -0.5 * (height - text_body_height); 
+      }
+      else if(vertical_alignment == VerticalAlignment::BOTTOM) {
+        vertical_alignment_y = -(height - text_body_height);
+      }
+      
+      vertical_alignment_transform.translate(glm::vec2(0.0, vertical_alignment_y));
     }
 
 
@@ -117,7 +136,7 @@ namespace Graphics {
           shader->setUniform<glm::vec4>("color", color);
 
           for(auto transform : character_transforms) {
-            renderCharacter(transform.first, transform.second.getAbsoluteTransformationMatrix());
+            renderCharacter(transform.first, transform.second * vertical_alignment_transform);
           }
         }
         else {

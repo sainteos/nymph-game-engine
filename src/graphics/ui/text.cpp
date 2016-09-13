@@ -28,8 +28,8 @@ namespace Graphics {
       return 0;
     }
 
-    void Text::renderCharacter(unsigned char character, glm::mat4 transform_matrix) {
-      shader->setUniform<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix() * transform_matrix);
+    void Text::renderCharacter(unsigned char character, Transform transform) {
+      shader->setUniform<glm::mat4>("transform", (*getTransform() * transform).getAbsoluteTransformationMatrix());
       shader->setUniform<int>("text_texture", 0);
 
       glActiveTexture(GL_TEXTURE0);
@@ -72,7 +72,7 @@ namespace Graphics {
           shader->setUniform<glm::vec4>("color", color);
 
           for(auto character : text) {
-            renderCharacter(character, character_transform.getAbsoluteTransformationMatrix());
+            renderCharacter(character, character_transform);
             character_transform.translate(glm::vec2(font->getCharacter(character).advance, 0.0));
           }
         }

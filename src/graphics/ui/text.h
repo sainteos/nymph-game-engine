@@ -6,6 +6,7 @@
 #include "graphics/ui/font.h"
 #include "graphics/vertex_data.h"
 #include "graphics/shader.h"
+#include "transform.h"
 
 namespace Graphics {
   namespace UI {
@@ -16,7 +17,7 @@ namespace Graphics {
         glm::vec4 color;
         std::shared_ptr<Shader> shader;
 
-        void renderCharacter(const unsigned char character, glm::mat4 transform_matrix);
+        void renderCharacter(const unsigned char character, Transform transform);
 
       public:
         Text();
