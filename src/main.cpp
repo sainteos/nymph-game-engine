@@ -24,9 +24,12 @@
 #include "graphics/light.h"
 #include "utility/utility_functions.h"
 #include "graphics/ui/font_generator.h"
+#include "graphics/ui/skin.h"
+#include "graphics/ui/area.h"
 #include "entity.h"
 #include "component_manager.h"
 #include "graphics/camera.h"
+#include "graphics/ui/wrappable_text.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -74,6 +77,9 @@ int main(int argc, char** argv) {
   shader_manager->loadShader("tile_animation");
   shader_manager->loadShader("diffuse_lighting");
   shader_manager->loadShader("simple_text");
+  shader_manager->loadShader("simple_ui");
+
+  texture_manager->loadTexture("./project-spero-assets/grayscale_tex.png");
 
   float viewport_tile_width = config.getFloat("screen_width_tiles");
   float viewport_tile_height = config.getFloat("screen_height_tiles");
@@ -85,8 +91,14 @@ int main(int argc, char** argv) {
 
   component_manager->addComponent(camera_component);
 
-  UI::FontGenerator font_generator("./project-spero-assets/");
-  font_generator.loadFont("Jack.ttf", 64, "jack");
+  UI::FontGenerator font_generator("./project-spero-assets/", 32);
+  font_generator.loadFont("Jack.TTF", 64, "jack");
+
+  std::shared_ptr<UI::Skin> skin = std::make_shared<UI::Skin> (UI::Skin { texture_manager->getTexture("grayscale_tex"), (*shader_manager)["simple_ui"] });
+  std::shared_ptr<UI::Area> area = UI::Area::create(skin, glm::vec4(1.0, 1.0, 0.0, 0.5), viewport_tile_width, viewport_tile_height, 0.0, 0.0, 1.0, 1.0);
+  area->setActive(true);
+  auto area_transform = std::make_shared<Transform>();
+  area->setTransform(area_transform);
 
 
   MapHelper map_helper(component_manager, texture_manager, shader_manager);
@@ -96,8 +108,8 @@ int main(int argc, char** argv) {
   auto animations = map_helper.createAnimationsFromAnimationMap(*animation_map);
   auto static_animations = map_helper.createStaticallyAnimatedTilesFromMap(*map);
   auto lights = map_helper.createLightsFromMap(*map);
-  auto text = map_helper.createText(font_generator.getFont("jack"), glm::vec4(0.1, 0.4, 0.2, 0.5));
-
+  auto text = std::make_shared<UI::WrappableText>();
+  text->setFont(font_generator.getFont("jack"));
   
   auto transform = std::make_shared<Transform>();
 
@@ -118,6 +130,7 @@ int main(int argc, char** argv) {
   // }
 
   transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
+  //transform->addChild(area->getTransform());
   
   auto matcher = [](std::shared_ptr<DynamicAnimation> a, const std::string& sprite) {
     return a->sprite_name == sprite;
@@ -155,32 +168,24 @@ int main(int argc, char** argv) {
   transform->addChild(sprite->getTransform());
   camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
 
-  // text->getTransform()->translate(glm::vec3(0.0, 0.0, -0.3));
-  // text->getTransform()->scale(glm::vec2(1.0 / 64.0, 1.0 / 64.0));
-  // text->setShader(shader_manager->getShader("simple_text"));
-  // text->setText("Banana Hammock");
-  // if(config.getString("text_horizontal_alignment") == "left") {
-  //   text->setHorizontalAlignment(UI::Text::HorizontalAlignment::LEFT);
-  // }
-  // else if(config.getString("text_horizontal_alignment") == "center") {
-  //   text->setHorizontalAlignment(UI::Text::HorizontalAlignment::CENTER);
-  // }
-  // else if(config.getString("text_horizontal_alignment") == "right") {
-  //   text->setHorizontalAlignment(UI::Text::HorizontalAlignment::RIGHT);
-  // }
-
-  // if(config.getString("text_vertical_alignment") == "top") {
-  //   text->setVerticalAlignment(UI::Text::VerticalAlignment::TOP);
-  // }
-  // else if(config.getString("text_vertical_alignment") == "center") {
-  //   text->setVerticalAlignment(UI::Text::VerticalAlignment::CENTER);
-  // }
-  // else if(config.getString("text_vertical_alignment") == "bottom") {
-  //   text->setVerticalAlignment(UI::Text::VerticalAlignment::BOTTOM);
-  // }
-  // text->setActive();
-  //camera->getTransform()->addChild(text->getTransform());
-  //graphics.addRenderable(text);
+  auto text_transform = std::make_shared<Transform>();
+  text->setTransform(text_transform);
+  text->setShader(shader_manager->getShader("simple_text"));
+  if(config.getString("text_horizontal_alignment") == "right") {
+    text->setHorizontalAlignment(UI::WrappableText::HorizontalAlignment::RIGHT);
+  }
+  else if(config.getString("text_horizontal_alignment") == "center") {
+    text->setHorizontalAlignment(UI::WrappableText::HorizontalAlignment::CENTER);
+  }
+  else if(config.getString("text_horizontal_alignment") == "left") {
+    text->setHorizontalAlignment(UI::WrappableText::HorizontalAlignment::LEFT);
+  }
+  text->setSize(10.0, 10.0);
+  text->setText("Banana Hammock vagina finder dick asshole bananafan");
+  text->setColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
+  text->setActive(true);
+  component_manager->addComponent(text);
+  component_manager->addComponent(area);
 
   graphics.startRender();
   component_manager->onStart();

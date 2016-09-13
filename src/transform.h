@@ -22,6 +22,8 @@ class Transform : public std::enable_shared_from_this<Transform> {
     //does not take tree properties into account
     const bool operator!=(const Transform& other);
 
+    Transform operator*(const Transform& other) const;
+
     void addChild(std::shared_ptr<Transform> transform);
     void removeChild(std::shared_ptr<Transform> transform);
 

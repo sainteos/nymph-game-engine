@@ -592,31 +592,6 @@ namespace Graphics {
     std::shared_ptr<UI::Text> text = std::make_shared<UI::Text>();
     text->setColor(color);
     text->setFont(font);
-
-    for(auto i : font->getCharacters()) {
-      std::vector<glm::vec2> texs {
-        glm::vec2(0.0, 1.0),
-        glm::vec2(0.0, 0.0),
-        glm::vec2(1.0, 0.0),
-        glm::vec2(1.0, 1.0)
-      };
-      std::vector<unsigned int> indices {
-        0, 1, 2, 0, 2, 3
-      };
-      std::vector<glm::vec3> verts {
-        glm::vec3(i.second.bearing.x, -i.second.size.y + i.second.bearing.y, 0.0),
-        glm::vec3(i.second.bearing.x, i.second.size.y - i.second.size.y + i.second.bearing.y, 0.0),
-        glm::vec3(i.second.bearing.x + i.second.size.x, i.second.size.y - i.second.size.y + i.second.bearing.y, 0.0),
-        glm::vec3(i.second.bearing.x + i.second.size.x, -i.second.size.y + i.second.bearing.y, 0.0)
-      };
-      VertexData vert_data(GL_TRIANGLES);
-      vert_data.addIndices(indices);
-      vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
-      vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
-      auto vao = vert_data.generateVertexArrayObject();
-
-      text->addCharacterVertexData(i.first, vert_data, vao);
-    }
     return text;
   }
 }

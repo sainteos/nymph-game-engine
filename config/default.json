@@ -1,18 +1,18 @@
 {
   "window_title": "Bitches Don't Know Bout My Tiles(tm)",
   "fullscreen": false,
-  "map": "./project-spero-assets/Maps/HollowSprings-Church.tmx",
+  "map": "./project-spero-assets/Maps/Board1.tmx",
   "animation_database": "./project-spero-assets/Maps/Animations.tmx",
   "screen_width": 1280,
   "screen_height": 720,
-  "screen_width_tiles": 30,
-  "screen_height_tiles": 20,
+  "screen_width_tiles": 50,
+  "screen_height_tiles": 50,
   "near_plane": 0.1,
   "far_plane": 40.0,
   "camera_x": 0.0,
   "camera_y": 0.0,
   "patch_width": 25,
   "patch_height": 25,
-  "text_horizontal_alignment": "center",
+  "text_horizontal_alignment": "right",
   "text_vertical_alignment": "center"
 }
