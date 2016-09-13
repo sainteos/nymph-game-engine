@@ -34,16 +34,27 @@ namespace Graphics {
       width = ilGetInteger(IL_IMAGE_WIDTH);
       height = ilGetInteger(IL_IMAGE_HEIGHT);
         
-      if(ilGetInteger(IL_IMAGE_FORMAT) == IL_RGBA)
+      if(ilGetInteger(IL_IMAGE_FORMAT) == IL_RGBA) {
         glTexImage2D(texture_type, 0, GL_RGBA8, width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
-      else
+        glGenerateMipmap(texture_type);
+        glTexParameteri(texture_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+        glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(texture_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      }
+      else if(ilGetInteger(IL_IMAGE_FORMAT) == IL_LUMINANCE) {
+        glTexImage2D(texture_type, 0, GL_R32F, width, height, 0, GL_RED, ilGetInteger(IL_IMAGE_TYPE), ilGetData());
+        glTexParameteri(texture_type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      }
+      else {
         glTexImage2D(texture_type, 0, GL_RGB8, width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
- 
-      glGenerateMipmap(texture_type);
-      glTexParameteri(texture_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-      glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameteri(texture_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glGenerateMipmap(texture_type);
+        glTexParameteri(texture_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+        glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(texture_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      }
       glBindTexture(texture_type, 0);
       loaded = true;
       LOG(INFO)<<"Texture file: "<<filename<<" loaded!";

@@ -5,7 +5,7 @@
 
 unsigned int Component::next_id = 0;
 
-Component::Component() : active(false), id(next_id) {
+Component::Component() : active(false), id(next_id), transform(std::weak_ptr<Transform>()) {
   next_id++;
 }
 
