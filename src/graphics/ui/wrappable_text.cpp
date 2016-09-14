@@ -51,10 +51,11 @@ namespace Graphics {
         Transform t;
         float current_width = 0.0;
         number_of_lines = 1;
+        t.translate(glm::vec2(-width / 2.0, 0.0));
         for(auto character : this->text) {
           if(current_width + font->getCharacter(character).size.x > width) {
               current_width = 0.0;
-              t.translate(glm::vec2(-t.getAbsoluteTranslation().x, -font->getOpenGLSize()));
+              t.translate(glm::vec2(-t.getAbsoluteTranslation().x - width / 2.0, -font->getOpenGLSize()));
               number_of_lines++;
 
           }
@@ -70,7 +71,6 @@ namespace Graphics {
         unsigned int line_number = 0;
         for(auto line : lines) {
           Transform character_transform;
-          character_transform.translate(glm::vec2(width / 2.0, 0.0));
           character_transform.translate(glm::vec2(-line.first / 2.0, -font->getOpenGLSize() * line_number));
           for(auto character : line.second) {
             character_transforms.insert(std::pair<unsigned char, Transform>(this->text[character_index], character_transform));
@@ -90,7 +90,7 @@ namespace Graphics {
         for(auto line : lines) {
           Transform character_transform;
 
-          character_transform.translate(glm::vec2(width, -font->getOpenGLSize() * line_number));
+          character_transform.translate(glm::vec2(width / 2.0, -font->getOpenGLSize() * line_number));
 
           if(line_number > 0) {
             line_text = text.substr(last_position, line.second.size());
@@ -110,14 +110,17 @@ namespace Graphics {
       float text_body_height = number_of_lines * font->getOpenGLSize();
       float vertical_alignment_y = 0.0;
 
-      if(vertical_alignment == VerticalAlignment::CENTER) {
-        vertical_alignment_y = -0.5 * (height - text_body_height); 
+      if(vertical_alignment == VerticalAlignment::TOP) {
+        vertical_alignment_y = 1.5 * text_body_height - 2.0 * height; 
       }
-      else if(vertical_alignment == VerticalAlignment::BOTTOM) {
-        vertical_alignment_y = -(height - text_body_height);
+      else if(vertical_alignment == VerticalAlignment::CENTER) {
+        vertical_alignment_y = text_body_height - 2.0 * height; 
+      }
+      else {
+        vertical_alignment_y = 1.5 * text_body_height - 2.5 * height;
       }
       
-      vertical_alignment_transform.translate(glm::vec2(0.0, vertical_alignment_y - font->getOpenGLSize()));
+      vertical_alignment_transform.translate(glm::vec2(0.0, vertical_alignment_y));
     }
 
 

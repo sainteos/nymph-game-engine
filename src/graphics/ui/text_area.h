@@ -27,6 +27,8 @@ namespace Graphics {
 
         virtual void onLeftClick() override;
         virtual void onRightClick() override;
+        virtual void onLeftClickRelease() override;
+        virtual void onRightClickRelease() override;
         virtual void onCursorEnter() override;
         virtual void onCursorLeave() override;
         virtual void onKeyDown(const int key) override;

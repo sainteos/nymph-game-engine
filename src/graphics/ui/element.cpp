@@ -1,9 +1,11 @@
+#include <easylogging++.h>
 #define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
 #include "element.h"
 #include "input/key_down_event.h"
 #include "input/key_up_event.h"
-#include "input/mouse_button_event.h"
+#include "input/mouse_button_down_event.h"
+#include "input/mouse_button_up_event.h"
 #include "input/mouse_cursor_event.h"
 #include "input/mouse_scroll_event.h"
 
@@ -92,12 +94,30 @@ namespace Graphics {
       this->color = color;
       auto uniform = Uniform();
       uniform.setData("color", color);
+
+      auto find_iter = uniforms.find(uniform);
+
+      if(find_iter != uniforms.end()) {
+        uniforms.erase(find_iter);
+      }
+
       uniforms.insert(uniform);
     }
 
     bool Element::isPointWithin(glm::vec2 point) noexcept {
-      //IMPLEMENT
-      return true;
+      auto translation = getTransform()->getAbsoluteTranslation() + glm::vec3(anchor_point, 0.0);
+      glm::vec2 min_bounds(translation.x - width / 2.5, translation.y - height / 2.5);
+      glm::vec2 max_bounds(translation.x + width / 2.5, translation.y + height / 2.5);
+
+      min_bounds -= anchor_point;
+      max_bounds -= anchor_point;
+
+      if(point.x >= min_bounds.x && point.x <= max_bounds.x && point.y >= min_bounds.y && point.y <= max_bounds.y) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
     void Element::onDestroy() {
@@ -118,7 +138,7 @@ namespace Graphics {
       switch(event->getEventType()) {
         case Events::EventType::MOUSE_CURSOR: {
           auto casted_event = std::static_pointer_cast<Input::MouseCursorEvent>(event);
-          if(isPointWithin(casted_event->getPosition())) {
+          if(cursor_within == false && isPointWithin(casted_event->getPosition())) {
             cursor_within = true;
             onCursorEnter();
           }
@@ -137,12 +157,21 @@ namespace Graphics {
           break;
         }
 
-        case Events::EventType::MOUSE_BUTTON: {
-          auto casted_event = std::static_pointer_cast<Input::MouseButtonEvent>(event);
+        case Events::EventType::MOUSE_BUTTON_DOWN: {
+          auto casted_event = std::static_pointer_cast<Input::MouseButtonDownEvent>(event);
           if(casted_event->getButton() == GLFW_MOUSE_BUTTON_LEFT)
             onLeftClick();
           else if(casted_event->getButton() == GLFW_MOUSE_BUTTON_RIGHT)
             onRightClick();
+          break;
+        }
+
+        case Events::EventType::MOUSE_BUTTON_UP: {
+          auto casted_event = std::static_pointer_cast<Input::MouseButtonUpEvent>(event);
+          if(casted_event->getButton() == GLFW_MOUSE_BUTTON_LEFT)
+            onLeftClickRelease();
+          else if(casted_event->getButton() == GLFW_MOUSE_BUTTON_RIGHT)
+            onRightClickRelease();
           break;
         }
 
@@ -159,8 +188,7 @@ namespace Graphics {
         }
 
         default: {
-          //not renderable for a reason??
-          Renderable::handleQueuedEvent(event);
+          Component::handleQueuedEvent(event);
           break;
         }
 

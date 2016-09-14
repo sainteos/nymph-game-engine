@@ -7,7 +7,8 @@ namespace Events {
   enum EventType {
     MOUSE_CURSOR,
     MOUSE_SCROLL,
-    MOUSE_BUTTON,
+    MOUSE_BUTTON_DOWN,
+    MOUSE_BUTTON_UP,
     CURSOR_ENTER,
     CURSOR_LEAVE,
     KEY_DOWN,
@@ -25,7 +26,8 @@ namespace Events {
     return std::map<EventType, std::string> {
       {MOUSE_CURSOR, "Mouse Cursor"},
       {MOUSE_SCROLL, "Mouse Scroll"},
-      {MOUSE_BUTTON, "Mouse Button"},
+      {MOUSE_BUTTON_DOWN, "Mouse Button Down"},
+      {MOUSE_BUTTON_UP, "Mouse Button Up"},
       {CURSOR_ENTER, "Cursor Enter"},
       {CURSOR_LEAVE, "Cursor Leave"},
       {KEY_DOWN, "Key Down"},

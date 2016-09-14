@@ -53,6 +53,15 @@ namespace Graphics {
     void Area::onRightClick() {
     }
 
+
+    void Area::onLeftClickRelease() {
+
+    }
+
+    void Area::onRightClickRelease() {
+
+    }
+
     void Area::onCursorEnter() {
     }
 

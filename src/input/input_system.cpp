@@ -4,7 +4,8 @@
 #include "cursor_leave_event.h"
 #include "key_down_event.h"
 #include "key_up_event.h"
-#include "mouse_button_event.h"
+#include "mouse_button_up_event.h"
+#include "mouse_button_down_event.h"
 #include "mouse_cursor_event.h"
 #include "mouse_scroll_event.h"
 
@@ -16,17 +17,23 @@ namespace Input {
   bool InputSystem::cursor_entered = false;
   bool InputSystem::cursor_left = false;
 
-  InputSystem::InputSystem(GLFWwindow* window) {
+  InputSystem::InputSystem(GLFWwindow* window, const float viewport_width, const float viewport_height) : viewport_width(viewport_width), viewport_height(viewport_height) {
     glfwSetKeyCallback(window, InputSystem::keyCallback);
     glfwSetCursorPosCallback(window, InputSystem::cursorPositionCallback);
     glfwSetCursorEnterCallback(window, InputSystem::cursorEnterCallback);
     glfwSetMouseButtonCallback(window, InputSystem::mouseButtonCallback);
     glfwSetScrollCallback(window, InputSystem::mouseScrollCallback);
+    int width, height;
+
+    glfwGetWindowSize(window, &width, &height);
+    window_width = width;
+    window_height = height;
   }
 
   void InputSystem::pollForInput() {
     if(cursor_position != glm::dvec2(0.0, 0.0)) {
-      notify(MouseCursorEvent::create(cursor_position));
+      //Transform mouse cursor into GL Space first
+      notify(MouseCursorEvent::create(glm::vec2((cursor_position.x - window_width / 2.0) / viewport_width, -(cursor_position.y - window_height / 2.0) / viewport_height)));
       cursor_position = glm::dvec2(0.0, 0.0);
     }
 
@@ -62,11 +69,11 @@ namespace Input {
     for(auto& button : mouse_buttons_to_actions) {
       if(button.second == GLFW_PRESS && last_mouse_buttons_to_actions.count(button.first) == 0 ||
          button.second == GLFW_PRESS && last_mouse_buttons_to_actions.count(button.first) > 0 && last_mouse_buttons_to_actions[button.first] != button.second) {
-        notify(KeyDownEvent::create(button.first));
+        notify(MouseButtonDownEvent::create(button.first));
       }
       else if(button.second == GLFW_RELEASE && last_mouse_buttons_to_actions.count(button.first) == 0 ||
          button.second == GLFW_RELEASE && last_mouse_buttons_to_actions.count(button.first) > 0 && last_mouse_buttons_to_actions[button.first] != button.second) {
-        notify(KeyUpEvent::create(button.first));
+        notify(MouseButtonUpEvent::create(button.first));
       }
     }
 

@@ -31,6 +31,7 @@
 #include "graphics/camera.h"
 #include "graphics/ui/wrappable_text.h"
 #include "graphics/ui/text_area.h"
+#include "graphics/ui/button.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -65,7 +66,10 @@ int main(int argc, char** argv) {
   GraphicsSystem graphics;
   graphics.initialize(config.getInt("screen_width"), config.getInt("screen_height"), config.getString("window_name"), config.getBool("fullscreen"), Graphics::WindowExitFunctor());
 
-  Input::InputSystem input_system(graphics.getWindow());
+  float viewport_tile_width = config.getFloat("screen_width_tiles");
+  float viewport_tile_height = config.getFloat("screen_height_tiles");
+
+  Input::InputSystem input_system(graphics.getWindow(), viewport_tile_width, viewport_tile_height);
 
   std::shared_ptr<ComponentManager> component_manager = std::make_shared<ComponentManager>();
   std::shared_ptr<ShaderManager> shader_manager = std::make_shared<ShaderManager>();
@@ -79,8 +83,6 @@ int main(int argc, char** argv) {
 
   texture_manager->loadTexture("./project-spero-assets/grayscale_tex.png");
 
-  float viewport_tile_width = config.getFloat("screen_width_tiles");
-  float viewport_tile_height = config.getFloat("screen_height_tiles");
 
   std::shared_ptr<Entity> camera = std::make_shared<Entity>();
   std::shared_ptr<Camera> camera_component = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config.getFloat("near_plane"), config.getFloat("far_plane"));
@@ -90,7 +92,7 @@ int main(int argc, char** argv) {
   component_manager->addComponent(camera_component);
 
   UI::FontGenerator font_generator("./project-spero-assets/", 32);
-  font_generator.loadFont("Jack.TTF", 64, "jack");
+  font_generator.loadFont("Jack.TTF", 40, "jack");
 
   
   auto text = std::make_shared<UI::WrappableText>();
@@ -116,21 +118,21 @@ int main(int argc, char** argv) {
   else if(config.getString("text_vertical_alignment") == "bottom") {
     text->setVerticalAlignment(UI::WrappableText::VerticalAlignment::BOTTOM);
   }
-  text->setColor(glm::vec4(1.0, 0.0, 0.0, 1.0));
   text->setActive(true);
   component_manager->addComponent(text);
 
   std::shared_ptr<UI::Skin> skin = std::make_shared<UI::Skin> (UI::Skin { texture_manager->getTexture("grayscale_tex"), (*shader_manager)["simple_ui"] });
-  std::shared_ptr<UI::TextArea> area = UI::TextArea::create(skin, text, glm::vec4(1.0, 1.0, 0.0, 0.5), glm::vec4(0.0, 0.0, 0.6, 1.0), 2.0, viewport_tile_width, viewport_tile_height, 10.0, 10.0, 20.0, 20.0);
-  area->setActive(true);
-  auto area_transform = std::make_shared<Transform>();
-  area->setTransform(area_transform);
-  area->getTransform()->addChild(text->getTransform());
+  std::shared_ptr<UI::Button> button = UI::Button::create(skin, text, glm::vec4(0.4, 0.4, 0.4, 0.8), glm::vec4(0.8, 0.9, 0.9, 1.0), 0.1, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 4.0, 2.0);
+  button->setActive(true);
+  auto button_transform = std::make_shared<Transform>();
+  button->setTransform(button_transform);
+  button->getTransform()->addChild(text->getTransform());
+  input_system.addObserver(button);
 
-  component_manager->addComponent(area);
+  component_manager->addComponent(button);
 
 
-  text->setText("Banana Hammock vagina finder dick asshole bananafan");
+  text->setText("Butt");
   
 
   MapHelper map_helper(component_manager, texture_manager, shader_manager);
@@ -213,7 +215,6 @@ int main(int argc, char** argv) {
       fps = fps_counter.getCurrentFPS();
     }
 
-    area->getTransform()->translate(glm::vec2(0.01, 0.0));
     graphics.startFrame();
     component_manager->onUpdate(delta);
     graphics.stopFrame();

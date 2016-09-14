@@ -56,6 +56,8 @@ namespace Graphics {
 
         virtual void onLeftClick() = 0;
         virtual void onRightClick() = 0;
+        virtual void onLeftClickRelease() = 0;
+        virtual void onRightClickRelease() = 0;
         virtual void onCursorEnter() = 0;
         virtual void onCursorLeave() = 0;
         virtual void onKeyDown(const int key) = 0;
