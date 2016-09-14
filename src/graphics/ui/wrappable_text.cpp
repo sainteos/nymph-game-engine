@@ -25,15 +25,15 @@ namespace Graphics {
       std::vector<Character> line;
       float current_line_width = 0.0;
       for(auto character : text) {
-        if(current_line_width + font->getCharacter(character).size.x > width) {
+        if(current_line_width + font->getCharacter(character).advance > width) {
           lines.push_back(std::pair<float, std::vector<Character>>(current_line_width, line));
           line.clear();
           line.push_back(font->getCharacter(character));
-          current_line_width = font->getCharacter(character).size.x;
+          current_line_width = font->getCharacter(character).advance;
         }
         else {
           line.push_back(font->getCharacter(character));
-          current_line_width += font->getCharacter(character).size.x;
+          current_line_width += font->getCharacter(character).advance;
         }
       }
       lines.push_back(std::pair<float, std::vector<Character>>(current_line_width, line));
@@ -70,6 +70,7 @@ namespace Graphics {
         unsigned int line_number = 0;
         for(auto line : lines) {
           Transform character_transform;
+          character_transform.translate(glm::vec2(width / 2.0, 0.0));
           character_transform.translate(glm::vec2(-line.first / 2.0, -font->getOpenGLSize() * line_number));
           for(auto character : line.second) {
             character_transforms.insert(std::pair<unsigned char, Transform>(this->text[character_index], character_transform));
@@ -88,6 +89,7 @@ namespace Graphics {
 
         for(auto line : lines) {
           Transform character_transform;
+
           character_transform.translate(glm::vec2(width, -font->getOpenGLSize() * line_number));
 
           if(line_number > 0) {
@@ -115,7 +117,7 @@ namespace Graphics {
         vertical_alignment_y = -(height - text_body_height);
       }
       
-      vertical_alignment_transform.translate(glm::vec2(0.0, vertical_alignment_y));
+      vertical_alignment_transform.translate(glm::vec2(0.0, vertical_alignment_y - font->getOpenGLSize()));
     }
 
 
@@ -124,11 +126,9 @@ namespace Graphics {
     }
 
     void WrappableText::onStart() {
-
     }
 
     const bool WrappableText::onUpdate(const double delta) {
-
       if(isActive()) {
         if(shader != nullptr) {
 
@@ -147,7 +147,6 @@ namespace Graphics {
       else {
         return false;
       }
-
     }
 
     void WrappableText::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
@@ -159,7 +158,7 @@ namespace Graphics {
     }
 
     const unsigned long long WrappableText::getValueForSorting() const noexcept {
-      return 0;
+      return -1;
     }
   }
 }

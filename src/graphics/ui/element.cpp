@@ -18,7 +18,7 @@ namespace Graphics {
 
     }
 
-    std::vector<glm::vec3> Element::generateRect(float screen_width, float screen_height, unsigned int x_pos, unsigned int y_pos, unsigned int width, unsigned height) noexcept {
+    std::vector<glm::vec3> Element::generateRect(float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) noexcept {
       std::vector<glm::vec3> rect_points;
 
       rect_points.push_back(glm::vec3(x_pos, y_pos, -0.1));
@@ -107,6 +107,7 @@ namespace Graphics {
       auto uniform = Uniform();
       uniform.setData("color", color);
       uniforms.insert(uniform);
+      getTransform()->translate(-getAnchorPoint());
     }
 
     const bool Element::onUpdate(const double delta) {
@@ -159,7 +160,7 @@ namespace Graphics {
 
         default: {
           //not renderable for a reason??
-          Component::handleQueuedEvent(event);
+          Renderable::handleQueuedEvent(event);
           break;
         }
 
@@ -167,11 +168,11 @@ namespace Graphics {
     }
 
     void Element::onNotifyNow(std::shared_ptr<Events::Event> event) {
-
+      handleQueuedEvent(event);
     }
 
     const unsigned long long Element::getValueForSorting() const noexcept {
-
+      return 0;
     }
 
     void Element::log(el::base::type::ostream_t& os) const {

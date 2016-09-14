@@ -20,7 +20,7 @@ namespace Graphics {
         bool cursor_within;
         glm::dvec2 last_mouse_scroll_position;
       protected:
-        static std::vector<glm::vec3> generateRect(float screen_width, float screen_height, unsigned int x_pos, unsigned int y_pos, unsigned int width, unsigned height) noexcept;
+        static std::vector<glm::vec3> generateRect(float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) noexcept;
         static std::vector<glm::vec2> basisTexCoords() noexcept;
 
       public:

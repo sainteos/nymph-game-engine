@@ -24,11 +24,11 @@ namespace Graphics {
     }
 
     void Area::onDestroy() {
-      Renderable::onDestroy();
+      Element::onDestroy();
     }
 
     void Area::onStart() {
-      Renderable::onStart();
+      Element::onStart();
     }
 
     const bool Area::onUpdate(const double delta) {
@@ -44,7 +44,7 @@ namespace Graphics {
     }
 
     const unsigned long long Area::getValueForSorting() const noexcept {
-      return -45;
+      return -24;
     }
 
     void Area::onLeftClick() {

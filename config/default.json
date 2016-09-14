@@ -5,14 +5,14 @@
   "animation_database": "./project-spero-assets/Maps/Animations.tmx",
   "screen_width": 1280,
   "screen_height": 720,
-  "screen_width_tiles": 50,
-  "screen_height_tiles": 50,
+  "screen_width_tiles": 40,
+  "screen_height_tiles": 30,
   "near_plane": 0.1,
   "far_plane": 40.0,
   "camera_x": 0.0,
   "camera_y": 0.0,
   "patch_width": 25,
   "patch_height": 25,
-  "text_horizontal_alignment": "right",
-  "text_vertical_alignment": "top"
+  "text_horizontal_alignment": "center",
+  "text_vertical_alignment": "bottom"
 }

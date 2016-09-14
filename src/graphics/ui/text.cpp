@@ -29,7 +29,7 @@ namespace Graphics {
     }
 
     void Text::renderCharacter(unsigned char character, Transform transform) {
-      shader->setUniform<glm::mat4>("transform", (*getTransform() * transform).getAbsoluteTransformationMatrix());
+      shader->setUniform<glm::mat4>("transform", transform.getAbsoluteTransformationMatrix() * getTransform()->getAbsoluteTransformationMatrix());
       shader->setUniform<int>("text_texture", 0);
 
       glActiveTexture(GL_TEXTURE0);
