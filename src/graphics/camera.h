@@ -50,6 +50,8 @@ namespace Graphics {
       void setFar(const float far) noexcept;
       const float getFar() const noexcept;
 
+      const glm::mat4 getProjectionMatrix() const noexcept;
+
       const bool isComponentWithin(const Component& component) const;
 
       const unsigned long long getValueForSorting() const noexcept override;

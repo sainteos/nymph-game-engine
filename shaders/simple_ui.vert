@@ -9,9 +9,10 @@ out vec2 uv;
 uniform mat4 transform;
 uniform mat4 projection;
 uniform mat4 view;
+uniform mat4 anchor_point;
 
 void main()
 {
-  gl_Position = (projection * view * transform) * vec4(vert, 1.0);
+  gl_Position = (projection * view * transform * anchor_point) * vec4(vert, 1.0);
   uv = tex;
 }

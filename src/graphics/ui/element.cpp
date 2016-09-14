@@ -105,12 +105,12 @@ namespace Graphics {
     }
 
     bool Element::isPointWithin(glm::vec2 point) noexcept {
-      auto translation = getTransform()->getAbsoluteTranslation() + glm::vec3(anchor_point, 0.0);
-      glm::vec2 min_bounds(translation.x - width / 2.5, translation.y - height / 2.5);
-      glm::vec2 max_bounds(translation.x + width / 2.5, translation.y + height / 2.5);
+      auto translation = getTransform()->getAbsoluteTranslation();
 
-      min_bounds -= anchor_point;
-      max_bounds -= anchor_point;
+      LOG(INFO)<<glm::to_string(point);
+
+      glm::vec2 min_bounds(translation.x - width / 2.0, translation.y - height / 2.0);
+      glm::vec2 max_bounds(translation.x + width / 2.0, translation.y + height / 2.0);
 
       if(point.x >= min_bounds.x && point.x <= max_bounds.x && point.y >= min_bounds.y && point.y <= max_bounds.y) {
         return true;
@@ -127,7 +127,13 @@ namespace Graphics {
       auto uniform = Uniform();
       uniform.setData("color", color);
       uniforms.insert(uniform);
-      getTransform()->translate(-getAnchorPoint());
+
+      auto anchor_point_transform = Transform();
+      auto anchor_point_uniform = Uniform();
+      
+      anchor_point_transform.translate(-anchor_point);
+      anchor_point_uniform.setData("anchor_point", anchor_point_transform.getAbsoluteTransformationMatrix());
+      uniforms.insert(anchor_point_uniform);
     }
 
     const bool Element::onUpdate(const double delta) {

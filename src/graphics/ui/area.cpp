@@ -11,7 +11,7 @@ namespace Graphics {
 
     std::shared_ptr<Area> Area::create(std::shared_ptr<Skin> skin, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) {
       auto vertex_data = VertexData();
-      vertex_data.addVec(VertexData::DATA_TYPE::GEOMETRY, generateRect(screen_width, screen_height, x_pos, y_pos, width, height));
+      vertex_data.addVec(VertexData::DATA_TYPE::GEOMETRY, generateRect(screen_width, screen_height, 0, 0, width, height));
       vertex_data.addVec(VertexData::DATA_TYPE::TEX_COORDS, basisTexCoords());
 
       auto area = std::make_shared<Area>(vertex_data, skin);

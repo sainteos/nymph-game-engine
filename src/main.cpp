@@ -69,11 +69,21 @@ int main(int argc, char** argv) {
   float viewport_tile_width = config.getFloat("screen_width_tiles");
   float viewport_tile_height = config.getFloat("screen_height_tiles");
 
-  Input::InputSystem input_system(graphics.getWindow(), viewport_tile_width, viewport_tile_height);
 
   std::shared_ptr<ComponentManager> component_manager = std::make_shared<ComponentManager>();
   std::shared_ptr<ShaderManager> shader_manager = std::make_shared<ShaderManager>();
   std::shared_ptr<TextureManager> texture_manager = std::make_shared<TextureManager>();
+
+  std::shared_ptr<Entity> camera = std::make_shared<Entity>();
+  std::shared_ptr<Camera> camera_component = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config.getFloat("near_plane"), config.getFloat("far_plane"));
+  camera->addComponent(camera_component);
+  camera->setActive(true);
+
+  camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
+
+  component_manager->addComponent(camera_component);
+
+  Input::InputSystem input_system(graphics.getWindow(), viewport_tile_width, viewport_tile_height, camera_component->getTransform()->getAbsoluteTransformationMatrix(), camera_component->getProjectionMatrix());
 
   shader_manager->loadShader("simple_texture");
   shader_manager->loadShader("tile_animation");
@@ -83,13 +93,6 @@ int main(int argc, char** argv) {
 
   texture_manager->loadTexture("./project-spero-assets/grayscale_tex.png");
 
-
-  std::shared_ptr<Entity> camera = std::make_shared<Entity>();
-  std::shared_ptr<Camera> camera_component = std::make_shared<Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config.getFloat("near_plane"), config.getFloat("far_plane"));
-  camera->addComponent(camera_component);
-  camera->setActive(true);
-
-  component_manager->addComponent(camera_component);
 
   UI::FontGenerator font_generator("./project-spero-assets/", 32);
   font_generator.loadFont("Jack.TTF", 40, "jack");
@@ -122,14 +125,23 @@ int main(int argc, char** argv) {
   component_manager->addComponent(text);
 
   std::shared_ptr<UI::Skin> skin = std::make_shared<UI::Skin> (UI::Skin { texture_manager->getTexture("grayscale_tex"), (*shader_manager)["simple_ui"] });
-  std::shared_ptr<UI::Button> button = UI::Button::create(skin, text, glm::vec4(0.4, 0.4, 0.4, 0.8), glm::vec4(0.8, 0.9, 0.9, 1.0), 0.1, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 4.0, 2.0);
+  std::shared_ptr<UI::Button> button = UI::Button::create(skin, text, glm::vec4(1.0, 1.0, 1.0, 1.0), glm::vec4(0.8, 0.9, 0.9, 1.0), 0.1, viewport_tile_width, viewport_tile_height, 2.0, 1.0, 4.0, 2.0);
+  std::shared_ptr<UI::Area> area = UI::Area::create(skin, glm::vec4(0.8, 0.3, 0.0, 0.7), viewport_tile_width, viewport_tile_height, 5.0, 5.0, 10.0, 10.0);
   button->setActive(true);
+  area->setActive(true);
   auto button_transform = std::make_shared<Transform>();
+  auto area_transform = std::make_shared<Transform>();
   button->setTransform(button_transform);
   button->getTransform()->addChild(text->getTransform());
+  area->setTransform(area_transform);
+
+  area->getTransform()->addChild(button->getTransform());
   input_system.addObserver(button);
 
   component_manager->addComponent(button);
+  component_manager->addComponent(area);
+
+  area->getTransform()->translate(glm::vec2(4.0, 3.0));
 
 
   text->setText("Butt");
@@ -198,7 +210,6 @@ int main(int argc, char** argv) {
   sprite->setActive(true);
 
   transform->addChild(sprite->getTransform());
-  camera->getTransform()->translate(glm::vec2(config.getFloat("camera_x"), config.getFloat("camera_y")));
 
   graphics.startRender();
   component_manager->onStart();

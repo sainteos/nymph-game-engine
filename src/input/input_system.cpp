@@ -1,4 +1,6 @@
+#include <easylogging++.h>
 #include <glfw3.h>
+#include <glm/ext.hpp>
 #include "input_system.h"
 #include "cursor_enter_event.h"
 #include "cursor_leave_event.h"
@@ -17,7 +19,7 @@ namespace Input {
   bool InputSystem::cursor_entered = false;
   bool InputSystem::cursor_left = false;
 
-  InputSystem::InputSystem(GLFWwindow* window, const float viewport_width, const float viewport_height) : viewport_width(viewport_width), viewport_height(viewport_height) {
+  InputSystem::InputSystem(GLFWwindow* window, float viewport_width, float viewport_height, glm::mat4 camera_transform_matrix, glm::mat4 projection_matrix) : viewport_width(viewport_width), viewport_height(viewport_height), camera_transform_matrix(camera_transform_matrix), projection_matrix(projection_matrix) {
     glfwSetKeyCallback(window, InputSystem::keyCallback);
     glfwSetCursorPosCallback(window, InputSystem::cursorPositionCallback);
     glfwSetCursorEnterCallback(window, InputSystem::cursorEnterCallback);
@@ -32,8 +34,11 @@ namespace Input {
 
   void InputSystem::pollForInput() {
     if(cursor_position != glm::dvec2(0.0, 0.0)) {
+
       //Transform mouse cursor into GL Space first
-      notify(MouseCursorEvent::create(glm::vec2((cursor_position.x - window_width / 2.0) / viewport_width, -(cursor_position.y - window_height / 2.0) / viewport_height)));
+      auto transformed_cursor_3d = glm::unProject(glm::vec3(cursor_position, 0.0), camera_transform_matrix, projection_matrix, glm::vec4(0.0, 0.0, window_width, window_height));
+      auto transformed_cursor = glm::vec2(transformed_cursor_3d.x * viewport_width / 2.0, -transformed_cursor_3d.y * viewport_height / 2.0);
+      notify(MouseCursorEvent::create(transformed_cursor));;
       cursor_position = glm::dvec2(0.0, 0.0);
     }
 

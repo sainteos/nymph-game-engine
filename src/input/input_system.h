@@ -16,10 +16,12 @@ namespace Input {
       static bool cursor_left;
       std::map<int, int> last_keys_to_actions;
       std::map<int, int> last_mouse_buttons_to_actions;
-      float viewport_width;
-      float viewport_height;
+      glm::mat4 camera_transform_matrix;
+      glm::mat4 projection_matrix;
       int window_width;
       int window_height;
+      float viewport_width;
+      float viewport_height;
 
       static void keyCallback(GLFWwindow* window, int key, int scan_code, int action, int mods);
       static void cursorPositionCallback(GLFWwindow* window, double x_pos, double y_pos);
@@ -27,7 +29,7 @@ namespace Input {
       static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
       static void mouseScrollCallback(GLFWwindow* window, double x_offset, double y_offset);
     public:
-      InputSystem(GLFWwindow* window, const float viewport_width, const float viewport_height);
+      InputSystem(GLFWwindow* window, float viewport_width, float viewport_height, glm::mat4 camera_transform_matrix, glm::mat4 projection_matrix);
       void pollForInput();
   };
 }
