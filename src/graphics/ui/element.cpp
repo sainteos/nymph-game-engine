@@ -107,8 +107,6 @@ namespace Graphics {
     bool Element::isPointWithin(glm::vec2 point) noexcept {
       auto translation = getTransform()->getAbsoluteTranslation();
 
-      LOG(INFO)<<glm::to_string(point);
-
       glm::vec2 min_bounds(translation.x - width / 2.0, translation.y - height / 2.0);
       glm::vec2 max_bounds(translation.x + width / 2.0, translation.y + height / 2.0);
 
