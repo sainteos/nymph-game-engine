@@ -23,7 +23,9 @@ namespace Graphics {
         Text();
         void setFont(const std::shared_ptr<Font> font);
         virtual void setText(const std::string& text);
+        const std::string getText() const noexcept;
         void setColor(const glm::vec4& color);
+        const glm::vec4 getColor() const noexcept;
         void setShader(std::shared_ptr<Shader> shader);
 
         virtual void onDestroy() override;

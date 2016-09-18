@@ -156,7 +156,7 @@ const glm::vec3 Transform::getLocalScale() const noexcept {
 
 const glm::mat4 Transform::getAbsoluteTransformationMatrix() const noexcept {
   if(parent.lock() != nullptr)
-    return parent.lock()->getAbsoluteTransformationMatrix() * getLocalTransformationMatrix();
+    return getLocalTransformationMatrix() * parent.lock()->getAbsoluteTransformationMatrix();
   else
     return getLocalTransformationMatrix();
 }

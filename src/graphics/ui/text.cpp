@@ -1,4 +1,5 @@
 #include <easylogging++.h>
+#include <glm/ext.hpp>
 #include "text.h"
 
 namespace Graphics {
@@ -15,9 +16,17 @@ namespace Graphics {
     void Text::setText(const std::string& text) {
       this->text = text;
     }
+    
+    const std::string Text::getText() const noexcept {
+      return text;
+    }
 
     void Text::setColor(const glm::vec4& color) {
       this->color = color;
+    }
+
+    const glm::vec4 Text::getColor() const noexcept {
+      return color;
     }
 
     void Text::setShader(std::shared_ptr<Shader> shader) {
@@ -29,7 +38,7 @@ namespace Graphics {
     }
 
     void Text::renderCharacter(unsigned char character, Transform transform) {
-      shader->setUniform<glm::mat4>("transform", transform.getAbsoluteTransformationMatrix() * getTransform()->getAbsoluteTransformationMatrix());
+      shader->setUniform<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix() * transform.getAbsoluteTransformationMatrix());
       shader->setUniform<int>("text_texture", 0);
 
       glActiveTexture(GL_TEXTURE0);

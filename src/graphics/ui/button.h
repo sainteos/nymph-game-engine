@@ -24,6 +24,7 @@ namespace Graphics {
         virtual void onCursorLeave() override;
         virtual void onKeyDown(const int key) override;
         virtual void onKeyUp(const int key) override;
+        virtual void onKeyRepeat(const int key) override;
         virtual void onScroll(const glm::dvec2 position_change) override;
     };
   }

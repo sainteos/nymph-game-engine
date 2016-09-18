@@ -74,6 +74,9 @@ namespace Graphics {
     void Area::onKeyUp(const int key) {
     }
 
+    void Area::onKeyRepeat(const int key) {
+    }
+
     void Area::onScroll(const glm::dvec2 position_change) {
     }
 

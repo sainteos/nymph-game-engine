@@ -70,6 +70,10 @@ namespace Graphics {
 
     }
 
+    void Button::onKeyRepeat(const int key) {
+
+    }
+
     void Button::onScroll(const glm::dvec2 position_change) {
 
     }

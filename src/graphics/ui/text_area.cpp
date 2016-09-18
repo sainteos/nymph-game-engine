@@ -27,12 +27,16 @@ namespace Graphics {
       return area;
     }
 
+    void TextArea::setText(std::shared_ptr<WrappableText> text) {
+      this->text = text;
+    }
+
     void TextArea::onDestroy() {
       Area::onDestroy();
     }
 
     void TextArea::onStart() {
-      text->getTransform()->translate(glm::vec2(getTextPadding(), getHeight() - getTextPadding()));
+      //text->getTransform()->translate(glm::vec2(getTextPadding(), getHeight() - getTextPadding()));
       Area::onStart();
     }
 
@@ -76,6 +80,9 @@ namespace Graphics {
     }
 
     void TextArea::onKeyUp(const int key) {
+    }
+
+    void TextArea::onKeyRepeat(const int key) {
     }
 
     void TextArea::onScroll(const glm::dvec2 position_change) {

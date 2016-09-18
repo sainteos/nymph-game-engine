@@ -32,6 +32,7 @@
 #include "graphics/ui/wrappable_text.h"
 #include "graphics/ui/text_area.h"
 #include "graphics/ui/button.h"
+#include "graphics/ui/text_field.h"
 
 INITIALIZE_EASYLOGGINGPP
 #define ELPP_THREAD_SAFE
@@ -83,7 +84,7 @@ int main(int argc, char** argv) {
 
   component_manager->addComponent(camera_component);
 
-  Input::InputSystem input_system(graphics.getWindow(), viewport_tile_width, viewport_tile_height, camera_component->getTransform()->getAbsoluteTransformationMatrix(), camera_component->getProjectionMatrix());
+  std::shared_ptr<Input::InputSystem> input_system = std::make_shared<Input::InputSystem>(graphics.getWindow(), viewport_tile_width, viewport_tile_height, camera_component->getTransform()->getAbsoluteTransformationMatrix(), camera_component->getProjectionMatrix());
 
   shader_manager->loadShader("simple_texture");
   shader_manager->loadShader("tile_animation");
@@ -95,56 +96,50 @@ int main(int argc, char** argv) {
 
 
   UI::FontGenerator font_generator("./project-spero-assets/", 32);
-  font_generator.loadFont("Jack.TTF", 40, "jack");
+  font_generator.loadFont("Jack.TTF", 18, "jack");
 
   
+  auto default_text = std::make_shared<UI::WrappableText>();
+  default_text->setFont(font_generator.getFont("jack"));
   auto text = std::make_shared<UI::WrappableText>();
   text->setFont(font_generator.getFont("jack"));
+
   auto text_transform = std::make_shared<Transform>();
   text->setTransform(text_transform);
   text->setShader(shader_manager->getShader("simple_text"));
-  if(config.getString("text_horizontal_alignment") == "right") {
-    text->setHorizontalAlignment(UI::WrappableText::HorizontalAlignment::RIGHT);
-  }
-  else if(config.getString("text_horizontal_alignment") == "center") {
-    text->setHorizontalAlignment(UI::WrappableText::HorizontalAlignment::CENTER);
-  }
-  else if(config.getString("text_horizontal_alignment") == "left") {
-    text->setHorizontalAlignment(UI::WrappableText::HorizontalAlignment::LEFT);
-  }
-  if(config.getString("text_vertical_alignment") == "top") {
-    text->setVerticalAlignment(UI::WrappableText::VerticalAlignment::TOP);
-  }
-  else if(config.getString("text_vertical_alignment") == "center") {
-    text->setVerticalAlignment(UI::WrappableText::VerticalAlignment::CENTER);
-  }
-  else if(config.getString("text_vertical_alignment") == "bottom") {
-    text->setVerticalAlignment(UI::WrappableText::VerticalAlignment::BOTTOM);
-  }
-  text->setActive(true);
+  text->setHorizontalAlignment(UI::WrappableText::HorizontalAlignment::LEFT);
+  text->setVerticalAlignment(UI::WrappableText::VerticalAlignment::CENTER);
+  text->setColor(glm::vec4(0.9, 0.8, 0.8, 1.0));
+
+  auto default_text_transform = std::make_shared<Transform>();
+  default_text->setTransform(default_text_transform);
+  default_text->setShader(shader_manager->getShader("simple_text"));
+  default_text->setHorizontalAlignment(UI::WrappableText::HorizontalAlignment::LEFT);
+  default_text->setVerticalAlignment(UI::WrappableText::VerticalAlignment::CENTER);
+  default_text->setColor(glm::vec4(0.7, 0.7, 0.7, 1.0));
+
+  text->setActive(false);
+  default_text->setActive(true);
   component_manager->addComponent(text);
+  component_manager->addComponent(default_text);
 
   std::shared_ptr<UI::Skin> skin = std::make_shared<UI::Skin> (UI::Skin { texture_manager->getTexture("grayscale_tex"), (*shader_manager)["simple_ui"] });
-  std::shared_ptr<UI::Button> button = UI::Button::create(skin, text, glm::vec4(1.0, 1.0, 1.0, 1.0), glm::vec4(0.8, 0.9, 0.9, 1.0), 0.1, viewport_tile_width, viewport_tile_height, 2.0, 1.0, 4.0, 2.0);
-  std::shared_ptr<UI::Area> area = UI::Area::create(skin, glm::vec4(0.8, 0.3, 0.0, 0.7), viewport_tile_width, viewport_tile_height, 5.0, 5.0, 10.0, 10.0);
-  button->setActive(true);
-  area->setActive(true);
-  auto button_transform = std::make_shared<Transform>();
-  auto area_transform = std::make_shared<Transform>();
-  button->setTransform(button_transform);
-  button->getTransform()->addChild(text->getTransform());
-  area->setTransform(area_transform);
+  std::shared_ptr<UI::TextField> field = UI::TextField::create(skin, default_text, text, glm::vec4(0.2, 0.2, 0.2, 0.8), 0.3, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 8.0, 2.0);
+  
+  field->setActive(true);
+  auto field_transform = std::make_shared<Transform>();
+  field->setTransform(field_transform);
+  field->getTransform()->addChild(text->getTransform());
+  field->getTransform()->addChild(default_text->getTransform());
 
-  area->getTransform()->addChild(button->getTransform());
-  input_system.addObserver(button);
+  input_system->addObserver(field);
+  field->addObserver(input_system);
 
-  component_manager->addComponent(button);
-  component_manager->addComponent(area);
+  component_manager->addComponent(field);
 
-  area->getTransform()->translate(glm::vec2(4.0, 3.0));
+  default_text->setText("click to type");
 
-
-  text->setText("Butt");
+  camera->getTransform()->addChild(field->getTransform());
   
 
   MapHelper map_helper(component_manager, texture_manager, shader_manager);
@@ -174,7 +169,6 @@ int main(int argc, char** argv) {
   // }
 
   transform->translate(glm::vec2(-map->GetWidth() / 2.0, -map->GetHeight() / 2.0));
-  //transform->addChild(area->getTransform());
   
   auto matcher = [](std::shared_ptr<DynamicAnimation> a, const std::string& sprite) {
     return a->sprite_name == sprite;
@@ -205,11 +199,12 @@ int main(int argc, char** argv) {
   component_manager->addComponent(sprite_movement);
 
   sprite->addComponent(sprite_movement);
-  input_system.addObserver(sprite_movement);
+  input_system->addObserver(sprite_movement);
 
   sprite->setActive(true);
 
   transform->addChild(sprite->getTransform());
+
 
   graphics.startRender();
   component_manager->onStart();
@@ -225,11 +220,10 @@ int main(int argc, char** argv) {
       graphics.setWindowName(window_name.str());
       fps = fps_counter.getCurrentFPS();
     }
-
     graphics.startFrame();
     component_manager->onUpdate(delta);
     graphics.stopFrame();
-    input_system.pollForInput();
+    input_system->pollForInput();
     delta = fps_counter.assessCountAndGetDelta();
   }
 

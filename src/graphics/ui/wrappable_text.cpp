@@ -1,4 +1,5 @@
 #include <easylogging++.h>
+#include <glm/ext.hpp>
 #include "graphics/ui/wrappable_text.h"
 
 namespace Graphics {
@@ -54,10 +55,9 @@ namespace Graphics {
         t.translate(glm::vec2(-width / 2.0, 0.0));
         for(auto character : this->text) {
           if(current_width + font->getCharacter(character).size.x > width) {
-              current_width = 0.0;
-              t.translate(glm::vec2(-t.getAbsoluteTranslation().x - width / 2.0, -font->getOpenGLSize()));
-              number_of_lines++;
-
+            current_width = 0.0;
+            t.translate(glm::vec2(-t.getAbsoluteTranslation().x - width / 2.0, -font->getOpenGLSize()));
+            number_of_lines++;
           }
           character_transforms.insert(std::pair<unsigned char, Transform>(character, t));
           t.translate(glm::vec2(font->getCharacter(character).advance, 0.0));
@@ -71,7 +71,7 @@ namespace Graphics {
         unsigned int line_number = 0;
         for(auto line : lines) {
           Transform character_transform;
-          character_transform.translate(glm::vec2(-line.first / 2.0, -font->getOpenGLSize() * line_number));
+          character_transform.translate(glm::vec2(-line.first / 2.0, -font->getOpenGLSize() * line_number + -font->getOpenGLSize() / 2.0));
           for(auto character : line.second) {
             character_transforms.insert(std::pair<unsigned char, Transform>(this->text[character_index], character_transform));
             character_index++;
@@ -109,15 +109,16 @@ namespace Graphics {
 
       float text_body_height = number_of_lines * font->getOpenGLSize();
       float vertical_alignment_y = 0.0;
+      vertical_alignment_transform = Transform();
 
       if(vertical_alignment == VerticalAlignment::TOP) {
-        vertical_alignment_y = 1.5 * text_body_height - 2.0 * height; 
+        vertical_alignment_y = (height - font->getOpenGLSize()) / 2.0;
       }
       else if(vertical_alignment == VerticalAlignment::CENTER) {
-        vertical_alignment_y = text_body_height - 2.0 * height; 
+        vertical_alignment_y = 0; 
       }
       else {
-        vertical_alignment_y = 1.5 * text_body_height - 2.5 * height;
+        vertical_alignment_y = -height / 2.0;
       }
       
       vertical_alignment_transform.translate(glm::vec2(0.0, vertical_alignment_y));
@@ -137,9 +138,8 @@ namespace Graphics {
 
           shader->useProgram();
           shader->setUniform<glm::vec4>("color", color);
-
           for(auto transform : character_transforms) {
-            renderCharacter(transform.first, transform.second * vertical_alignment_transform);
+            renderCharacter(transform.first, vertical_alignment_transform * transform.second);
           }
         }
         else {

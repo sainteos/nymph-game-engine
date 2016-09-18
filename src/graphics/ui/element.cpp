@@ -4,6 +4,7 @@
 #include "element.h"
 #include "input/key_down_event.h"
 #include "input/key_up_event.h"
+#include "input/key_repeat_event.h"
 #include "input/mouse_button_down_event.h"
 #include "input/mouse_button_up_event.h"
 #include "input/mouse_cursor_event.h"
@@ -23,12 +24,12 @@ namespace Graphics {
     std::vector<glm::vec3> Element::generateRect(float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) noexcept {
       std::vector<glm::vec3> rect_points;
 
-      rect_points.push_back(glm::vec3(x_pos, y_pos, -0.1));
-      rect_points.push_back(glm::vec3(x_pos, y_pos + height, -0.1));
-      rect_points.push_back(glm::vec3(x_pos + width, y_pos + height, -0.1));
-      rect_points.push_back(glm::vec3(x_pos, y_pos, -0.1));
-      rect_points.push_back(glm::vec3(x_pos + width, y_pos + height, -0.1));
-      rect_points.push_back(glm::vec3(x_pos + width, y_pos, -0.1));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.2));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos + height / 2.0, -0.2));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.2));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.2));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.2));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos - height / 2.0, -0.2));
 
       return rect_points;
     }
@@ -188,6 +189,12 @@ namespace Graphics {
         case Events::EventType::KEY_UP: {
           auto casted_event = std::static_pointer_cast<Input::KeyUpEvent>(event);
           onKeyUp(casted_event->getKey());
+          break;
+        }
+
+        case Events::EventType::KEY_REPEAT: {
+          auto casted_event = std::static_pointer_cast<Input::KeyRepeatEvent>(event);
+          onKeyRepeat(casted_event->getKey());
           break;
         }
 

@@ -62,6 +62,7 @@ namespace Graphics {
         virtual void onCursorLeave() = 0;
         virtual void onKeyDown(const int key) = 0;
         virtual void onKeyUp(const int key) = 0;
+        virtual void onKeyRepeat(const int key) = 0;
         virtual void onScroll(const glm::dvec2 position_change) = 0;
 
         virtual void log(el::base::type::ostream_t& os) const;

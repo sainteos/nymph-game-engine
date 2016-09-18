@@ -17,6 +17,7 @@ namespace Graphics {
         TextArea(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin);
         static std::shared_ptr<TextArea> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
 
+        void setText(std::shared_ptr<WrappableText> text);
         virtual void onDestroy() override;
         virtual void onStart() override;
         virtual const bool onUpdate(const double delta) override;
@@ -33,6 +34,7 @@ namespace Graphics {
         virtual void onCursorLeave() override;
         virtual void onKeyDown(const int key) override;
         virtual void onKeyUp(const int key) override;
+        virtual void onKeyRepeat(const int key) override;
         virtual void onScroll(const glm::dvec2 position_change) override;
 
         virtual void log(el::base::type::ostream_t& os) const;
