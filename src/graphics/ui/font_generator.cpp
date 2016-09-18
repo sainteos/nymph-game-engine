@@ -39,7 +39,7 @@ namespace Graphics {
       glGetIntegerv(GL_UNPACK_ALIGNMENT, &unpack_alignment_before);
       glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-      std::shared_ptr<Font> font = std::make_shared<Font>(size);
+      std::shared_ptr<Font> font = std::make_shared<Font>(size, pixels_per_unit);
 
       for (unsigned char c = 0; c < 128; c++)
       {
@@ -65,18 +65,50 @@ namespace Graphics {
           face->glyph->bitmap.buffer
         );
         // Set texture options
-        glGenerateMipmap(GL_TEXTURE_2D);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        
+        float advance = (face->glyph->advance.x >> 6) / (float)pixels_per_unit;
+
+        auto char_pos = glm::vec2(face->glyph->bitmap_left / (float)pixels_per_unit, ((float)face->glyph->bitmap_top - (float)face->glyph->bitmap.rows) / (float)pixels_per_unit);
+        auto char_size = glm::vec2(face->glyph->bitmap.width / (float)pixels_per_unit, face->glyph->bitmap.rows / (float)pixels_per_unit);
+
+        //Generate geometry
+        std::vector<glm::vec2> texs {
+          glm::vec2(0.0, 0.0),
+          glm::vec2(0.0, 1.0),
+          glm::vec2(1.0, 1.0),
+          glm::vec2(1.0, 0.0)
+        };
+        std::vector<unsigned int> indices {
+          0, 1, 2, 0, 2, 3
+        };
+        std::vector<glm::vec3> verts {
+          glm::vec3(char_pos.x, char_pos.y + char_size.y, -0.1),
+          glm::vec3(char_pos.x, char_pos.y, -0.1),
+          glm::vec3(char_pos.x + char_size.x, char_pos.y, -0.1),
+          glm::vec3(char_pos.x + char_size.x, char_pos.y + char_size.y, -0.1)
+        };
+
+        float added_width = char_pos.x + char_size.x;
+        float added_height = char_pos.y + char_size.y;
+
+        VertexData vert_data(GL_TRIANGLES);
+        vert_data.addIndices(indices);
+        vert_data.addVec<glm::vec3>(VertexData::DATA_TYPE::GEOMETRY, verts);
+        vert_data.addVec<glm::vec2>(VertexData::DATA_TYPE::TEX_COORDS, texs);
 
         // Now store character for later use
         Character character = {
           texture, 
-          glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-          glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-          face->glyph->advance.x
+          char_pos,
+          char_size,
+          advance,
+          vert_data,
+          vert_data.generateVertexArrayObject()
         };
 
         font->addCharacter(c, character);

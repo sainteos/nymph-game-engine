@@ -1,7 +1,7 @@
 #include <easylogging++.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/ext.hpp>
-#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include "transform.h"
 #include "exceptions/child_does_not_exist_exception.h"
 
@@ -36,6 +36,14 @@ const bool Transform::operator==(const Transform& other) {
 
 const bool Transform::operator!=(const Transform& other) {
   return !(*this == other);
+}
+
+Transform Transform::operator*(const Transform& other) const {
+  Transform t;
+  t.local_translation = local_translation + other.local_translation;
+  t.local_rotation = glm::slerp(local_rotation, other.local_rotation, 0.5f);
+  t.local_scale = local_scale * other.local_scale;
+  return t;
 }
 
 const unsigned int Transform::getTreeSize() const {
@@ -148,7 +156,7 @@ const glm::vec3 Transform::getLocalScale() const noexcept {
 
 const glm::mat4 Transform::getAbsoluteTransformationMatrix() const noexcept {
   if(parent.lock() != nullptr)
-    return parent.lock()->getAbsoluteTransformationMatrix() * getLocalTransformationMatrix();
+    return getLocalTransformationMatrix() * parent.lock()->getAbsoluteTransformationMatrix();
   else
     return getLocalTransformationMatrix();
 }

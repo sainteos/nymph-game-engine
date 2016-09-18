@@ -136,6 +136,10 @@ namespace Graphics {
     return far;
   }
 
+  const glm::mat4 Camera::getProjectionMatrix() const noexcept {
+    return projection_matrix;
+  }
+
   const unsigned long long Camera::getValueForSorting() const noexcept {
     return getId();
   }

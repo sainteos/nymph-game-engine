@@ -14,7 +14,7 @@
 #include "uniform.h"
 
 namespace Graphics {
-  class Renderable : public Component, public el::Loggable {
+  class Renderable : public Component, virtual public el::Loggable {
     private:
       unsigned int vertex_array_object;
       std::shared_ptr<Shader> shader;
@@ -27,14 +27,15 @@ namespace Graphics {
       glm::vec3 ambient_light;
       float ambient_intensity;
 
-      std::set<Uniform> uniforms;
       void setUniforms();
+    protected:
+      std::set<Uniform> uniforms;
+      Renderable() {}
 
     public:
       Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data);
       static std::shared_ptr<Renderable> create(const VertexData& vertex_data);
  
-      Renderable() = delete;
       //Remove copy constructor and assignment
       Renderable(const Renderable&) = delete;
       Renderable operator=(Renderable&) = delete;

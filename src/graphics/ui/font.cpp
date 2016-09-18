@@ -2,7 +2,7 @@
 
 namespace Graphics {
   namespace UI {
-    Font::Font(const unsigned int size) : size(size) {
+    Font::Font(const unsigned int size, const unsigned int pixels_per_unit) : size(size), pixels_per_unit(pixels_per_unit) {
 
     }
 
@@ -20,6 +20,10 @@ namespace Graphics {
 
     const unsigned int Font::getSize() const noexcept {
       return size;
+    }
+
+    const float Font::getOpenGLSize() const noexcept { 
+      return (float)size / (float)pixels_per_unit;
     }
   }
 }

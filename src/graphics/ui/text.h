@@ -5,42 +5,35 @@
 #include "component.h"
 #include "graphics/ui/font.h"
 #include "graphics/vertex_data.h"
+#include "graphics/shader.h"
+#include "transform.h"
 
 namespace Graphics {
   namespace UI {
     class Text : public Component {
-      public:
-        enum class HorizontalAlignment {LEFT, CENTER, RIGHT};
-        enum class VerticalAlignment { TOP, CENTER, BOTTOM};
-      private:
+      protected:
         std::shared_ptr<Font> font;
         std::string text;
         glm::vec4 color;
-        VerticalAlignment vertical_alignment;
-        HorizontalAlignment horizontal_alignment;
-        Transform horizontal_alignment_transform;
-        Transform vertical_alignment_transform;
+        std::shared_ptr<Shader> shader;
 
-        struct TextData {
-          VertexData vertex_data;
-          unsigned int vertex_array_object;
-        };
+        void renderCharacter(const unsigned char character, Transform transform);
 
-        std::map<char, TextData> character_vertex_data;
       public:
-
         Text();
         void setFont(const std::shared_ptr<Font> font);
-        void setText(const std::string& text);
+        virtual void setText(const std::string& text);
+        const std::string getText() const noexcept;
         void setColor(const glm::vec4& color);
-        void setHorizontalAlignment(const HorizontalAlignment& alignment);
-        void setVerticalAlignment(const VerticalAlignment& alignment);
-        void addCharacterVertexData(const char character, const VertexData& vertex_data, const unsigned int vertex_array_object);
+        const glm::vec4 getColor() const noexcept;
+        void setShader(std::shared_ptr<Shader> shader);
 
-        virtual const unsigned long long getValueForSorting() const noexcept override;
         virtual void onDestroy() override;
         virtual void onStart() override;
         virtual const bool onUpdate(const double delta) override;
+        void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
+        void onNotifyNow(std::shared_ptr<Events::Event> event) override;
+        virtual const unsigned long long getValueForSorting() const noexcept override;
     };
   }
 }
