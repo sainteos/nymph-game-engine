@@ -26,7 +26,7 @@ void Entity::removeComponent(std::shared_ptr<Component> component) {
   }
 }
 
-std::list<std::shared_ptr<Component>> Entity::getComponents() const noexcept {
+std::list<std::shared_ptr<Component>>& Entity::getComponents() noexcept {
   return components;
 }
 

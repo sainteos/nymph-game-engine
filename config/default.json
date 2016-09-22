@@ -9,10 +9,10 @@
   "screen_height_tiles": 12,
   "near_plane": 0.1,
   "far_plane": 40.0,
-  "camera_x": 0.0,
-  "camera_y": 0.0,
+  "camera_x": -20.0,
+  "camera_y": -17.0,
   "patch_width": 25,
   "patch_height": 25,
-  "text_horizontal_alignment": "center",
-  "text_vertical_alignment": "center"
+  "fonts_location": "./project-spero-assets/",
+  "pixels_per_unit": 32
 }
