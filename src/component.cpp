@@ -5,7 +5,8 @@
 
 unsigned int Component::next_id = 0;
 
-Component::Component() : active(false), id(next_id), transform(std::weak_ptr<Transform>()) {
+Component::Component() : active(false), id(next_id) {
+  transform = std::make_shared<Transform>();
   next_id++;
 }
 
@@ -32,7 +33,7 @@ void Component::setTransform(std::shared_ptr<Transform> transform) {
 }
 
 std::shared_ptr<Transform> Component::getTransform() const noexcept {
-  return transform.lock();
+  return transform;
 }
   
 void Component::setActive(const bool active) noexcept {

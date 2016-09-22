@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <list>
+#include <vector>
 #include <memory>
 #include "component.h"
 #include "transform.h"
@@ -17,7 +17,7 @@ class Entity {
     Entity();
     void addComponent(std::shared_ptr<Component> component);
     void removeComponent(std::shared_ptr<Component> component);
-    std::list<std::shared_ptr<Component>> getComponents() const noexcept;
+    std::list<std::shared_ptr<Component>>& getComponents() noexcept;
     std::shared_ptr<Transform> getTransform() const noexcept;
     void setActive(const bool active) noexcept;
     const bool isActive() const noexcept;

@@ -12,6 +12,7 @@ class ComponentManager {
   public:
     void addComponent(std::shared_ptr<Component> component);
     void addComponent(std::shared_ptr<Graphics::Camera> component);
+    void addComponents(std::vector<std::shared_ptr<Component>> components);
     void removeComponent(std::shared_ptr<Component> component);
     void onStart();
     void onUpdate(const float delta);

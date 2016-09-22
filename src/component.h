@@ -11,7 +11,7 @@ class ComponentManager;
 
 class Component : public Events::Subject, public Events::Observer {
   protected:
-    std::weak_ptr<Transform> transform;
+    std::shared_ptr<Transform> transform;
     bool active;
     unsigned int id;
 

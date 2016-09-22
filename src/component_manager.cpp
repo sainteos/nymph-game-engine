@@ -14,6 +14,12 @@ void ComponentManager::addComponent(std::shared_ptr<Graphics::Camera> component)
   camera = component;
 }
 
+void ComponentManager::addComponents(std::vector<std::shared_ptr<Component>> components) {
+  for(auto c : components) {
+    this->components.insert(std::pair<unsigned long long, std::shared_ptr<Component>>(c->getValueForSorting(), c));
+  }
+}
+
 void ComponentManager::removeComponent(std::shared_ptr<Component> component) {
   auto component_ptr_matcher = [](std::shared_ptr<Component> com, std::pair<unsigned long long, std::shared_ptr<Component>> com_pair) {
           return com == com_pair.second;
