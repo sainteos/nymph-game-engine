@@ -289,6 +289,13 @@ std::shared_ptr<Entity> SceneGenerator::getDynamicEntityByName(const std::string
   }
 }
 
+std::vector<std::string> SceneGenerator::getDynamicEntityNames() const noexcept {
+  std::vector<std::string> names;
+  for(auto dynamic_entity : dynamic_animations) 
+    names.push_back(dynamic_entity.first);
+  return names;
+}
+
 std::vector<std::shared_ptr<Component>> SceneGenerator::createLightsFromMap(const Tmx::Map& map) {
   std::vector<std::shared_ptr<Component>> lights;
   std::vector<Tmx::Object*> light_map_objects;

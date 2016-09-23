@@ -24,6 +24,15 @@ namespace Events {
     ANIMATION_TRIGGER,
     SUSPEND_KEY_INPUT,
     RESUME_KEY_INPUT,
+    DEBUG_COMMAND,
+    LOAD_MAP,
+    LOAD_CHARACTER,
+    TOGGLE_FREE_CAMERA,
+    LIST_MAPS,
+    LIST_CHARACTERS,
+    LIST_LAYERS,
+    TOGGLE_LIGHTS,
+    TOGGLE_LAYER
   };
 
   inline std::map<EventType, std::string> EventTypesToString() {
@@ -46,7 +55,16 @@ namespace Events {
       {SET_UNIFORM, "Set Uniform"},
       {ANIMATION_TRIGGER, "Animation Trigger"},
       {SUSPEND_KEY_INPUT, "Suspend Key Input"},
-      {RESUME_KEY_INPUT, "Resume Key Input"}
+      {RESUME_KEY_INPUT, "Resume Key Input"},
+      {DEBUG_COMMAND, "Debug Command"},
+      {LOAD_MAP, "Load Map"},
+      {LOAD_CHARACTER, "Load Character"},
+      {TOGGLE_FREE_CAMERA, "Toggle Free Camera"},
+      {LIST_MAPS, "List Maps"},
+      {LIST_CHARACTERS, "List Characters"},
+      {LIST_LAYERS, "List Layers"},
+      {TOGGLE_LIGHTS, "Toggle Lights"},
+      {TOGGLE_LAYER, "Toggle Layer"}
     };
   }
 }

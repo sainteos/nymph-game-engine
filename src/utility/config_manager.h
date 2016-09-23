@@ -1,6 +1,7 @@
 #ifndef CONFIG_MANAGER_H
 #define CONFIG_MANAGER_H
 #include <json/json.h>
+#include <vector>
 
 namespace Utility {
   class ConfigManager {
@@ -17,6 +18,8 @@ namespace Utility {
       const float getFloat(const std::string& key);
       const double getDouble(const std::string& key);
       const bool getBool(const std::string& key);
+      const std::vector<std::string> getStringVector(const std::string& key);
+      const std::vector<unsigned int> getUnsignedIntVector(const std::string& key);
   };
 }
 

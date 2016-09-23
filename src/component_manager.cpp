@@ -29,6 +29,11 @@ void ComponentManager::removeComponent(std::shared_ptr<Component> component) {
     components.erase(component_iter);
 }
 
+void ComponentManager::removeComponents(std::vector<std::shared_ptr<Component>> components) {
+  for(auto component : components) 
+    removeComponent(component);
+}
+
 void ComponentManager::onStart() {
   if(camera.lock() == nullptr)
     throw Exceptions::NoCameraAttachedException();
