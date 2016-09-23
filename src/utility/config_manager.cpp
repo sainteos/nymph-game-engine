@@ -19,6 +19,36 @@ namespace Utility {
     return true;
   }
 
+  const std::vector<std::string> ConfigManager::getStringVector(const std::string& key) {
+    if(!config_handle)
+      throw Exceptions::ConfigNotLoadedException();
+
+    std::vector<std::string> strings;
+
+    if(config_handle[key].isArray()) {
+      for(unsigned int i = 0; i < config_handle[key].size(); i++) {
+        strings.push_back(config_handle[key][i].asString());
+      }
+    }
+
+    return strings;
+  }
+
+  const std::vector<unsigned int> ConfigManager::getUnsignedIntVector(const std::string& key) {
+    if(!config_handle)
+      throw Exceptions::ConfigNotLoadedException();
+    
+    std::vector<unsigned int> uints;
+
+    if(config_handle[key].isArray()) {
+      for(unsigned int i = 0; i < config_handle[key].size(); i++) {
+        uints.push_back(config_handle[key][i].asUInt());
+      }
+    }
+
+    return uints;
+  }
+
   const int ConfigManager::getInt(const std::string& key) {
     if(!config_handle)
       throw Exceptions::ConfigNotLoadedException();

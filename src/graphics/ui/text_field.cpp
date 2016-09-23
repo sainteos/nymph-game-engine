@@ -6,6 +6,7 @@
 #include "events/event_type.h"
 #include "graphics/ui/suspend_key_input_event.h"
 #include "graphics/ui/resume_key_input_event.h"
+#include "utility/debug_command_event.h"
 
 namespace Graphics {
   namespace UI {
@@ -105,6 +106,13 @@ namespace Graphics {
           in_focus = false;
           typed_text->setColor(default_text->getColor());
           notifyNow(std::make_shared<ResumeKeyInputEvent>());
+        }
+        else if(key == GLFW_KEY_ENTER) {
+          in_focus = false;
+          notifyNow(Utility::DebugCommandEvent::create(typed_text->getText()));
+          typed_text->setActive(false);
+          typed_text->setText("");
+          default_text->setActive(true);
         }
       }
     }

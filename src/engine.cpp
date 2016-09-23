@@ -4,6 +4,7 @@
 #include "graphics/ui/text_field.h"
 #include "graphics/ui/skin.h"
 #include "sprite_movement.h"
+#include "utility/load_map_event.h"
 
 
 Engine::Engine() {
@@ -12,6 +13,59 @@ Engine::Engine() {
   component_manager = std::make_shared<ComponentManager>();
   shader_manager = std::make_shared<Graphics::ShaderManager>();
   texture_manager = std::make_shared<Graphics::TextureManager>();
+  debug = std::make_shared<Utility::DebugParser>();
+}
+
+void Engine::onNotifyNow(std::shared_ptr<Events::Event> event) {
+  handleQueuedEvent(event);
+}
+
+void Engine::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
+  switch(event->getEventType()) {
+    case Events::EventType::LIST_CHARACTERS:
+      //showCharacterList();
+      break;
+
+    case Events::EventType::LIST_MAPS:
+      //showSceneList();
+      break;
+
+    case Events::EventType::LIST_LAYERS:
+      //showLayerList();
+      break;
+
+    case Events::EventType::LOAD_MAP: {
+      auto casted_event = std::static_pointer_cast<Utility::LoadMapEvent>(event);
+      LOG(INFO)<<casted_event->getName();
+      deactivateScene(active_scenes.begin()->first);
+      activateScene(casted_event->getName());
+      break;
+    }
+    case Events::EventType::LOAD_CHARACTER:
+      break;
+    case Events::EventType::TOGGLE_FREE_CAMERA:
+      break;
+    case Events::EventType::TOGGLE_LAYER:
+      break;
+    case Events::EventType::TOGGLE_LIGHTS:
+      break;
+
+  }
+}
+
+
+void Engine::activateScene(const std::string& name) {
+  if(active_scenes.count(name) == 0 && scenes.count(name) > 0) {
+    active_scenes[name] = scenes[name];
+    component_manager->addComponents(active_scenes[name]->getComponents());
+  }
+}
+
+void Engine::deactivateScene(const std::string& name) {
+  if(active_scenes.count(name) > 0) {
+    component_manager->removeComponents(active_scenes[name]->getComponents());
+    active_scenes.erase(name);
+  }
 }
 
 void Engine::setup(const std::string config_path) {
@@ -40,12 +94,12 @@ void Engine::setup(const std::string config_path) {
   //Initialize fps counter
   fps_counter = std::make_shared<Utility::FPSCounter>(60.0f);
 
+  debug->addObserver(shared_from_this());
+
 
   camera_component->getTransform()->translate(glm::vec2(config_manager->getFloat("camera_x"), config_manager->getFloat("camera_y")));
   ///THIS WILL ALL BE MOVED TO SCRIPTING
 
-  Tmx::Map *map = new Tmx::Map();
-  map->ParseFile(config_manager->getString("map"));
 
   Tmx::Map *animation_map = new Tmx::Map();
   animation_map->ParseFile(config_manager->getString("animation_database"));
@@ -63,7 +117,20 @@ void Engine::setup(const std::string config_path) {
 
   font_generator->loadFont("Jack.TTF", 18, "jack");
 
-  auto scene = scene_generator.createSceneFromMap(config_manager->getInt("patch_width"), config_manager->getInt("patch_height"), *map);
+  for(auto map_name : config_manager->getStringVector("maps")) {
+    Tmx::Map *map = new Tmx::Map();
+    map->ParseFile(map_name);
+
+    auto stripped_name = map_name.substr(map_name.find_last_of("/") + 1, map_name.size() - map_name.find_last_of("/") - 5);
+    
+    auto scene = scene_generator.createSceneFromMap(config_manager->getInt("patch_width"), config_manager->getInt("patch_height"), *map);
+    
+    LOG(INFO)<<stripped_name;
+
+    scenes[stripped_name] = scene;
+
+    delete map;
+  }
   
   auto default_text = std::make_shared<Graphics::UI::WrappableText>();
   default_text->setFont(font_generator->getFont("jack"));
@@ -92,6 +159,8 @@ void Engine::setup(const std::string config_path) {
 
   input_system->addObserver(field);
   field->addObserver(input_system);
+  field->addObserver(debug);
+
 
   default_text->setText("click to type");
 
@@ -112,13 +181,23 @@ void Engine::setup(const std::string config_path) {
   sprite_movement->setMovingSpeed(2.0);
 
   sprite->addComponent(sprite_movement);
-  scene->addComponent(sprite_movement);
   input_system->addObserver(sprite_movement);
 
   sprite->setActive(true);
 
-  scenes[config_manager->getString("map")] = scene;
-  component_manager->addComponents(scene->getComponents());
+  auto stripped_name = config_manager->getString("active_map").substr(config_manager->getString("active_map").find_last_of("/") + 1, config_manager->getString("active_map").size() - config_manager->getString("active_map").find_last_of("/") - 5);
+
+  active_scenes[stripped_name] = scenes[stripped_name];
+
+  active_scenes[stripped_name]->addComponent(text);
+  active_scenes[stripped_name]->addComponent(default_text);
+  active_scenes[stripped_name]->addComponent(field);
+  active_scenes[stripped_name]->addEntity(sprite);
+
+  for(auto scene : active_scenes) {
+    activateScene(scene.first);
+  }
+  debug->parseCommand("load map Cave");
 }
 
 void Engine::mainLoop() {
@@ -139,6 +218,10 @@ void Engine::mainLoop() {
     component_manager->onUpdate(delta);
     graphics_system->stopFrame();
     input_system->pollForInput();
+    debug->handleEvents();
+    while(eventsWaiting()) {
+      handleQueuedEvent(getEvent());
+    }
     delta = fps_counter->assessCountAndGetDelta();
   }
 }

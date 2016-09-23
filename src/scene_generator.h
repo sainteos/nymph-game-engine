@@ -60,6 +60,8 @@ class SceneGenerator {
     std::shared_ptr<Scene> createSceneFromMap(const unsigned int patch_width_tiles, const unsigned int patch_height_tiles, const Tmx::Map& map);
 
     std::shared_ptr<Entity> getDynamicEntityByName(const std::string& name);
+
+    std::vector<std::string> getDynamicEntityNames() const noexcept;
 };
 
 #endif
