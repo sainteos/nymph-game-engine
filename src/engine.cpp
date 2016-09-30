@@ -10,7 +10,7 @@
 #include "input/key_down_event.h"
 
 
-Engine::Engine() : time_to_exit(false) {
+Engine::Engine() : time_to_exit(false), free_camera(false) {
   config_manager = std::make_shared<Utility::ConfigManager>();
   graphics_system = std::make_shared<Graphics::GraphicsSystem>();
   component_manager = std::make_shared<ComponentManager>();
@@ -54,8 +54,22 @@ void Engine::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
     }
     case Events::EventType::LOAD_CHARACTER:
       break;
-    case Events::EventType::TOGGLE_FREE_CAMERA:
+    case Events::EventType::TOGGLE_FREE_CAMERA: {
+      LOG(INFO)<<"Spong";
+      if(free_camera) {
+        free_camera = false;
+        input_system->removeObserver(camera_component);
+        input_system->addObserver(sprite_movement);
+      }
+      else {
+        LOG(INFO)<<"FARP";
+        free_camera = true;
+        input_system->removeObserver(sprite_movement);
+        input_system->addObserver(camera_component);
+      }
       break;
+    }
+
     case Events::EventType::TOGGLE_LAYER:
       break;
     case Events::EventType::TOGGLE_LIGHTS:
@@ -100,8 +114,9 @@ void Engine::setup(const std::string config_path) {
   viewport_tile_height = config_manager->getFloat("screen_height_tiles");
 
   //Initizlie camera
-  std::shared_ptr<Graphics::Camera> camera_component = std::make_shared<Graphics::Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config_manager->getFloat("near_plane"), config_manager->getFloat("far_plane"));
+  camera_component = std::make_shared<Graphics::Camera>(shader_manager, viewport_tile_width, viewport_tile_height, config_manager->getFloat("near_plane"), config_manager->getFloat("far_plane"));
   camera_component->setActive(true);
+  camera_component->setFreeCameraSpeed(config_manager->getFloat("camera_speed"));
   component_manager->addComponent(camera_component);
   //Initialize input system
   input_system = std::make_shared<Input::InputSystem>(graphics_system->getWindow(), viewport_tile_width, viewport_tile_height, camera_component->getTransform()->getAbsoluteTransformationMatrix(), camera_component->getProjectionMatrix());
@@ -220,7 +235,7 @@ void Engine::setup(const std::string config_path) {
 
   auto sprite = scene_generator.getDynamicEntityByName("Aidan");
 
-  std::shared_ptr<SpriteMovement> sprite_movement = std::make_shared<SpriteMovement>();
+  sprite_movement = std::make_shared<SpriteMovement>();
   sprite_movement->setAnimationStringState(SpriteState::MOVE_UP, "Up_Movement");
   sprite_movement->setAnimationStringState(SpriteState::MOVE_DOWN, "Down_Movement");
   sprite_movement->setAnimationStringState(SpriteState::MOVE_LEFT, "Left_Movement");

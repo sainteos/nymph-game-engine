@@ -29,6 +29,8 @@ namespace Graphics {
       glm::vec2 target_position;
 
       int screen_padding_in_tiles;
+      bool free_camera;
+      float free_camera_speed;
 
       Transform negateTransformForScreen(std::shared_ptr<Transform> trans);
     public:
@@ -49,6 +51,8 @@ namespace Graphics {
       const float getNear() const noexcept;
       void setFar(const float far) noexcept;
       const float getFar() const noexcept;
+      void setFreeCameraSpeed(const float speed) noexcept;
+      const float getFreeCameraSpeed() const noexcept;
 
       const glm::mat4 getProjectionMatrix() const noexcept;
 

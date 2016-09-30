@@ -43,6 +43,7 @@ namespace Graphics {
       typed_text->setActive(false);
       default_text->setActive(false);
       setText(default_text);
+      notifyNow(std::make_shared<ResumeKeyInputEvent>());
     }
 
     void TextField::onDestroy() {

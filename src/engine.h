@@ -17,6 +17,7 @@
 #include "events/subject.h"
 #include "events/observer.h"
 #include "graphics/ui/text_area.h"
+#include "sprite_movement.h"
 
 class Engine : public std::enable_shared_from_this<Engine>, public Events::Subject, public Events::Observer {
   private:
@@ -37,6 +38,7 @@ class Engine : public std::enable_shared_from_this<Engine>, public Events::Subje
     float viewport_tile_height;
 
     bool time_to_exit;
+    bool free_camera;
 
     std::shared_ptr<Utility::DebugParser> debug;
     std::shared_ptr<Entity> debug_console;
@@ -44,6 +46,9 @@ class Engine : public std::enable_shared_from_this<Engine>, public Events::Subje
     std::shared_ptr<Graphics::UI::TextArea> map_list_text_area;
     std::shared_ptr<Entity> character_list_ui;
     std::shared_ptr<Entity> layer_list_ui;
+
+    std::shared_ptr<SpriteMovement> sprite_movement;
+    std::shared_ptr<Graphics::Camera> camera_component;
 
     void activateScene(const std::string& name);
     void deactivateScene(const std::string& name);

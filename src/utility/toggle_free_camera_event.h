@@ -6,12 +6,9 @@
 
 namespace Utility {
   class ToggleFreeCameraEvent : public Events::Event {
-    private:
-      bool on;
     public:
-      ToggleFreeCameraEvent(const bool on) : Event(Events::EventType::TOGGLE_FREE_CAMERA), on(on) {}
-      static std::shared_ptr<ToggleFreeCameraEvent> create(const bool on) { return std::make_shared<ToggleFreeCameraEvent>(on); }
-      const bool turnOn() const noexcept { return on; }
+      ToggleFreeCameraEvent() : Event(Events::EventType::TOGGLE_FREE_CAMERA) {}
+      static std::shared_ptr<ToggleFreeCameraEvent> create() { return std::make_shared<ToggleFreeCameraEvent>(); }
   };
 }
 
