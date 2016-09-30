@@ -18,11 +18,13 @@ namespace Graphics {
         Transform horizontal_alignment_transform;
         Transform vertical_alignment_transform;
         std::multimap<unsigned char, Transform> character_transforms;
+        float line_spacing;
       protected:
         std::vector<std::pair<float, std::vector<Character>>> splitTextIntoLines();
       public:
         WrappableText();
         void setSize(float width, float height);
+        void setLineSpacing(float spacing);
         void setHorizontalAlignment(const HorizontalAlignment& alignment);
         void setVerticalAlignment(const VerticalAlignment& alignment);
 

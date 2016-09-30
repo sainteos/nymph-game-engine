@@ -15,6 +15,10 @@ namespace Graphics {
         bool in_focus;
         std::string current_typed;
         glm::vec4 typed_color;
+
+        void reset();
+      protected:
+        const glm::vec4 mouse_over_dim = glm::vec4(0.1, 0.1, 0.1, 0.0);
       public:
         TextField(std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, VertexData vertex_data, std::shared_ptr<Skin> skin);
         static std::shared_ptr<TextField> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, glm::vec4 background_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);

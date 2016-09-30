@@ -33,8 +33,6 @@ class SceneGenerator {
       std::shared_ptr<Graphics::TileAnimator> animator;
     };
 
-
-    std::shared_ptr<ComponentManager> component_manager;
     std::weak_ptr<Graphics::TextureManager> texture_manager;
     std::weak_ptr<Graphics::ShaderManager> shader_manager;
     std::map<std::string, DynamicAnimation> dynamic_animations;
@@ -53,7 +51,7 @@ class SceneGenerator {
     std::map<std::string, DynamicAnimation> createAnimationsFromAnimationMap(const Tmx::Map& map);
     std::vector<std::shared_ptr<Component>> createLightsFromMap(const Tmx::Map& map);
   public:
-    SceneGenerator(const Tmx::Map& animation_index, std::shared_ptr<ComponentManager> component_manager, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager);
+    SceneGenerator(const Tmx::Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager);
     SceneGenerator() = delete;
     ~SceneGenerator();
     

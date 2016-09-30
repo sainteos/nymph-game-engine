@@ -9,7 +9,7 @@ namespace Graphics {
       bool operator()(GLFWwindow* window) {
         //TODO Move poll events to a more logical place
         glfwPollEvents();
-        return (glfwGetKey(window, GLFW_KEY_ESCAPE ) == GLFW_PRESS) || glfwWindowShouldClose(window);
+        return (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS) || glfwWindowShouldClose(window);
       }
   };
 }

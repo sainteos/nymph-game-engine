@@ -7,7 +7,7 @@
 #include "transform.h"
 #include "graphics/camera.h"
 
-class Entity {
+class Entity  : public std::enable_shared_from_this<Entity>  {
   private:
     std::shared_ptr<Transform> transform;
     bool active;

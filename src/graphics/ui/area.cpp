@@ -48,6 +48,7 @@ namespace Graphics {
     }
 
     void Area::onLeftClick() {
+      LOG(INFO)<<"Area left click";
     }
 
     void Area::onRightClick() {

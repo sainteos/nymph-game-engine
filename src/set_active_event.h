@@ -6,12 +6,10 @@
 
 class SetActiveEvent : public Events::Event {
   private:
-    unsigned int component_id;
     bool active;
   public:
-    SetActiveEvent(const unsigned int id, const bool active) : Event(Events::EventType::SET_ACTIVE), component_id(id), active(active) {}
-    static std::shared_ptr<SetActiveEvent> create(const unsigned int id, const bool active) { return std::make_shared<SetActiveEvent>(id, active); }
-    const unsigned getComponentId() const noexcept { return component_id; }
+    SetActiveEvent(const bool active) : Event(Events::EventType::SET_ACTIVE), active(active) {}
+    static std::shared_ptr<SetActiveEvent> create(const bool active) { return std::make_shared<SetActiveEvent>(active); }
     const bool getActive() const noexcept { return active; }
 };
 

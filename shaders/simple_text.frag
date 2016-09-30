@@ -12,5 +12,5 @@ void main()
   vec4 texel = vec4(color.rgb, color.a * texture(text_texture, uv).r); 
   if(texel.a == 0)
     discard;
-  fragColor = texel * color;
+  fragColor = texel;
 }

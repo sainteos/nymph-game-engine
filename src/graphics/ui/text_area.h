@@ -13,11 +13,13 @@ namespace Graphics {
     class TextArea : public Area, virtual public el::Loggable  {
       private:
         std::shared_ptr<WrappableText> text;
+        const glm::vec4 mouse_over_dim = glm::vec4(0.2, 0.2, 0.2, 0.0);
       public:
         TextArea(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin);
         static std::shared_ptr<TextArea> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
 
         void setText(std::shared_ptr<WrappableText> text);
+        std::shared_ptr<WrappableText> getText() const noexcept;
         virtual void onDestroy() override;
         virtual void onStart() override;
         virtual const bool onUpdate(const double delta) override;

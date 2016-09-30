@@ -24,12 +24,12 @@ namespace Graphics {
     std::vector<glm::vec3> Element::generateRect(float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) noexcept {
       std::vector<glm::vec3> rect_points;
 
-      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.2));
-      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos + height / 2.0, -0.2));
-      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.2));
-      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.2));
-      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.2));
-      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos - height / 2.0, -0.2));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.9));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos + height / 2.0, -0.9));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.9));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.9));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.9));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos - height / 2.0, -0.9));
 
       return rect_points;
     }
@@ -63,27 +63,27 @@ namespace Graphics {
       this->anchor_point = anchor_point;
     }
 
-    const unsigned int Element::getWidth() const noexcept {
+    const float Element::getWidth() const noexcept {
       return width;
     }
 
-    const unsigned int Element::getHeight() const noexcept {
+    const float Element::getHeight() const noexcept {
       return height;
     }
 
-    void Element::setWidth(const unsigned int width) noexcept {
+    void Element::setWidth(const float width) noexcept {
       this->width = width;
     }
 
-    void Element::setHeight(const unsigned int height) noexcept {
+    void Element::setHeight(const float height) noexcept {
       this->height = height;
     }
 
-    const unsigned int Element::getTextPadding() const noexcept {
+    const float Element::getTextPadding() const noexcept {
       return this->text_padding;
     }
 
-    void Element::setTextPadding(const unsigned int text_padding) noexcept {
+    void Element::setTextPadding(const float text_padding) noexcept {
       this->text_padding = text_padding;
     }
 
@@ -110,6 +110,8 @@ namespace Graphics {
 
       glm::vec2 min_bounds(translation.x - width / 2.0, translation.y - height / 2.0);
       glm::vec2 max_bounds(translation.x + width / 2.0, translation.y + height / 2.0);
+      min_bounds -= anchor_point;
+      max_bounds -= anchor_point;
 
       if(point.x >= min_bounds.x && point.x <= max_bounds.x && point.y >= min_bounds.y && point.y <= max_bounds.y) {
         return true;
@@ -143,11 +145,11 @@ namespace Graphics {
       switch(event->getEventType()) {
         case Events::EventType::MOUSE_CURSOR: {
           auto casted_event = std::static_pointer_cast<Input::MouseCursorEvent>(event);
-          if(cursor_within == false && isPointWithin(casted_event->getPosition())) {
+          if(cursor_within == false && isActive() && isPointWithin(casted_event->getPosition())) {
             cursor_within = true;
             onCursorEnter();
           }
-          else if(cursor_within == true && !isPointWithin(casted_event->getPosition())) {
+          else if(cursor_within == true && isActive() && !isPointWithin(casted_event->getPosition())) {
             cursor_within = false;
             onCursorLeave();
           }
@@ -164,18 +166,19 @@ namespace Graphics {
 
         case Events::EventType::MOUSE_BUTTON_DOWN: {
           auto casted_event = std::static_pointer_cast<Input::MouseButtonDownEvent>(event);
-          if(casted_event->getButton() == GLFW_MOUSE_BUTTON_LEFT)
+          if(cursor_within && isActive() && casted_event->getButton() == GLFW_MOUSE_BUTTON_LEFT) {
             onLeftClick();
-          else if(casted_event->getButton() == GLFW_MOUSE_BUTTON_RIGHT)
+          }
+          else if(cursor_within && isActive() && casted_event->getButton() == GLFW_MOUSE_BUTTON_RIGHT)
             onRightClick();
           break;
         }
 
         case Events::EventType::MOUSE_BUTTON_UP: {
           auto casted_event = std::static_pointer_cast<Input::MouseButtonUpEvent>(event);
-          if(casted_event->getButton() == GLFW_MOUSE_BUTTON_LEFT)
+          if(cursor_within && isActive() && casted_event->getButton() == GLFW_MOUSE_BUTTON_LEFT)
             onLeftClickRelease();
-          else if(casted_event->getButton() == GLFW_MOUSE_BUTTON_RIGHT)
+          else if(cursor_within && isActive() && casted_event->getButton() == GLFW_MOUSE_BUTTON_RIGHT)
             onRightClickRelease();
           break;
         }
@@ -199,7 +202,7 @@ namespace Graphics {
         }
 
         default: {
-          Component::handleQueuedEvent(event);
+          Renderable::handleQueuedEvent(event);
           break;
         }
 

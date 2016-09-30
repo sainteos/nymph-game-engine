@@ -1,5 +1,6 @@
 #ifndef OBSERVER_H
 #define OBSERVER_H
+#include <easylogging++.h>
 #include <memory>
 #include <queue>
 #include "events/event.h"
@@ -17,7 +18,7 @@ namespace Events {
           return e;
         }
         else {
-          return std::shared_ptr<Event>();
+          return nullptr;
         }
       }
 
@@ -31,6 +32,11 @@ namespace Events {
       void onNotify(std::shared_ptr<Event> event) { events.push(event); }
       virtual void onNotifyNow(std::shared_ptr<Event> event) = 0;
       virtual void handleQueuedEvent(std::shared_ptr<Event> event) = 0;
+      void processEventQueue() {
+        while(eventsWaiting()) {
+          handleQueuedEvent(getEvent());
+        }
+      }
   };
 }
 

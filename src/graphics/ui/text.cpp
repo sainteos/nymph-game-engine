@@ -5,7 +5,7 @@
 namespace Graphics {
   namespace UI {
   
-    Text::Text() : text("text"), font(nullptr), color(1.0) {
+    Text::Text() : text("text"), font(nullptr), color(1.0), kerning(0.0) {
 
     }
 
@@ -31,6 +31,14 @@ namespace Graphics {
 
     void Text::setShader(std::shared_ptr<Shader> shader) {
       this->shader = shader;
+    }
+
+    void Text::setKerning(const float amount) noexcept {
+      this->kerning = amount;
+    }
+
+    const float Text::getKerning() const noexcept {
+      return kerning;
     }
 
     const unsigned long long Text::getValueForSorting() const noexcept {
@@ -82,7 +90,7 @@ namespace Graphics {
 
           for(auto character : text) {
             renderCharacter(character, character_transform);
-            character_transform.translate(glm::vec2(font->getCharacter(character).advance, 0.0));
+            character_transform.translate(glm::vec2(font->getCharacter(character).advance + kerning, 0.0));
           }
         }
         else {

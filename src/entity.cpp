@@ -2,12 +2,15 @@
 #include <typeinfo>
 #include "entity.h"
 
-Entity::Entity() : active(false) {
+Entity::Entity() : active(true) {
   transform = std::make_shared<Transform>();
 }
 
 void Entity::addComponent(std::shared_ptr<Component> component) {
-  component->setTransform(transform);
+  if(component->getTransform()->getParent() == nullptr) {
+    transform->addChild(component->getTransform());
+  }
+  component->entity = shared_from_this();
   components.push_back(component);
   components.unique();
 
@@ -18,8 +21,9 @@ void Entity::addComponent(std::shared_ptr<Component> component) {
 }
 
 void Entity::removeComponent(std::shared_ptr<Component> component) {
-  component->setTransform(nullptr);
+  transform->removeChild(component->getTransform());
   components.remove(component);
+  component->entity.reset();
   for(auto& i : components) {
     component->removeObserver(i);
     i->removeObserver(component);

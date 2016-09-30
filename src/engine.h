@@ -16,6 +16,7 @@
 #include "utility/debug_parser.h"
 #include "events/subject.h"
 #include "events/observer.h"
+#include "graphics/ui/text_area.h"
 
 class Engine : public std::enable_shared_from_this<Engine>, public Events::Subject, public Events::Observer {
   private:
@@ -35,7 +36,14 @@ class Engine : public std::enable_shared_from_this<Engine>, public Events::Subje
     float viewport_tile_width;
     float viewport_tile_height;
 
+    bool time_to_exit;
+
     std::shared_ptr<Utility::DebugParser> debug;
+    std::shared_ptr<Entity> debug_console;
+    std::shared_ptr<Entity> map_list_ui;
+    std::shared_ptr<Graphics::UI::TextArea> map_list_text_area;
+    std::shared_ptr<Entity> character_list_ui;
+    std::shared_ptr<Entity> layer_list_ui;
 
     void activateScene(const std::string& name);
     void deactivateScene(const std::string& name);

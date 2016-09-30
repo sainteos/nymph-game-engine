@@ -68,7 +68,7 @@ namespace Input {
 
     for(auto& key : keys_to_actions) {
       if(key.second == GLFW_PRESS && last_keys_to_actions.count(key.first) == 0 ||
-         key.second == GLFW_PRESS && last_keys_to_actions.count(key.first) > 0 && last_keys_to_actions[key.first] != key.second) {
+         key.second == GLFW_PRESS && last_keys_to_actions.count(key.first) > 0 && last_keys_to_actions[key.first] != key.second && last_keys_to_actions[key.first] != GLFW_REPEAT) {
         notify(KeyDownEvent::create(key.first));
       }
       else if(key.second == GLFW_RELEASE && last_keys_to_actions.count(key.first) == 0 ||
