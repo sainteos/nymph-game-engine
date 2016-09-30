@@ -4,7 +4,7 @@
 
 namespace Graphics {
   namespace UI {
-    WrappableText::WrappableText() : horizontal_alignment(HorizontalAlignment::LEFT), vertical_alignment(VerticalAlignment::TOP), horizontal_alignment_transform(Transform()), vertical_alignment_transform(Transform()) {
+    WrappableText::WrappableText() : line_spacing(0.175), horizontal_alignment(HorizontalAlignment::LEFT), vertical_alignment(VerticalAlignment::TOP), horizontal_alignment_transform(Transform()), vertical_alignment_transform(Transform()) {
       
     }
 
@@ -21,20 +21,29 @@ namespace Graphics {
       this->height = height;
     }
 
+    void WrappableText::setLineSpacing(float spacing) {
+      this->line_spacing = spacing;
+    }
+
     std::vector<std::pair<float, std::vector<Character>>> WrappableText::splitTextIntoLines() {
       std::vector<std::pair<float, std::vector<Character>>> lines;
       std::vector<Character> line;
       float current_line_width = 0.0;
       for(auto character : text) {
-        if(current_line_width + font->getCharacter(character).advance > width) {
+        if(character != '\n' && current_line_width + font->getCharacter(character).advance + kerning > width || character == '\n') {
           lines.push_back(std::pair<float, std::vector<Character>>(current_line_width, line));
           line.clear();
-          line.push_back(font->getCharacter(character));
-          current_line_width = font->getCharacter(character).advance;
+          if(character != '\n') {
+            line.push_back(font->getCharacter(character));
+            current_line_width = font->getCharacter(character).advance + kerning;
+          }
+          else {
+            current_line_width = 0.0;
+          }
         }
         else {
           line.push_back(font->getCharacter(character));
-          current_line_width += font->getCharacter(character).advance;
+          current_line_width += font->getCharacter(character).advance + kerning;
         }
       }
       lines.push_back(std::pair<float, std::vector<Character>>(current_line_width, line));
@@ -48,19 +57,24 @@ namespace Graphics {
 
       unsigned int number_of_lines = 0;
 
+      std::string text_without_newlines = text;
+      while(text_without_newlines.find_first_of('\n') != std::string::npos) {
+        text_without_newlines.erase(text_without_newlines.find_first_of('\n'), 1);
+      }
+
       if(horizontal_alignment == HorizontalAlignment::LEFT) {
         Transform t;
         float current_width = 0.0;
         number_of_lines = 1;
         t.translate(glm::vec2(-width / 2.0, 0.0));
         for(auto character : this->text) {
-          if(current_width + font->getCharacter(character).size.x > width) {
+          if(current_width + font->getCharacter(character).size.x > width || character == '\n') {
             current_width = 0.0;
-            t.translate(glm::vec2(-t.getAbsoluteTranslation().x - width / 2.0, -font->getOpenGLSize()));
+            t.translate(glm::vec2(-t.getAbsoluteTranslation().x - width / 2.0, -font->getOpenGLSize() - line_spacing));
             number_of_lines++;
           }
           character_transforms.insert(std::pair<unsigned char, Transform>(character, t));
-          t.translate(glm::vec2(font->getCharacter(character).advance, 0.0));
+          t.translate(glm::vec2(font->getCharacter(character).advance + kerning, 0.0));
           current_width += font->getCharacter(character).advance;
         }
       }
@@ -71,11 +85,11 @@ namespace Graphics {
         unsigned int line_number = 0;
         for(auto line : lines) {
           Transform character_transform;
-          character_transform.translate(glm::vec2(-line.first / 2.0, -font->getOpenGLSize() * line_number + -font->getOpenGLSize() / 2.0));
+          character_transform.translate(glm::vec2(-line.first / 2.0, -(font->getOpenGLSize() + line_spacing) * line_number));
           for(auto character : line.second) {
-            character_transforms.insert(std::pair<unsigned char, Transform>(this->text[character_index], character_transform));
+            character_transforms.insert(std::pair<unsigned char, Transform>(text_without_newlines[character_index], character_transform));
             character_index++;
-            character_transform.translate(glm::vec2(character.advance, 0.0));
+            character_transform.translate(glm::vec2(character.advance + kerning, 0.0));
           }
           line_number++;
         }
@@ -90,7 +104,7 @@ namespace Graphics {
         for(auto line : lines) {
           Transform character_transform;
 
-          character_transform.translate(glm::vec2(width / 2.0, -font->getOpenGLSize() * line_number));
+          character_transform.translate(glm::vec2(width / 2.0, -font->getOpenGLSize() * line_number - line_spacing));
 
           if(line_number > 0) {
             line_text = text.substr(last_position, line.second.size());
@@ -98,7 +112,7 @@ namespace Graphics {
  
           for(struct {std::vector<Character>::reverse_iterator character; std::string::reverse_iterator text_char;} iter = {line.second.rbegin(), line_text.rbegin()};
                       iter.character != line.second.rend() && iter.text_char != line_text.rend(); iter.character++, iter.text_char++) {
-            character_transform.translate(glm::vec2(-iter.character->advance, 0.0));
+            character_transform.translate(glm::vec2(-iter.character->advance - kerning, 0.0));
             character_transforms.insert(std::pair<unsigned char, Transform>(*iter.text_char, character_transform));
           }
           last_position += line_text.size();
@@ -107,7 +121,7 @@ namespace Graphics {
         number_of_lines = line_number;
       }
 
-      float text_body_height = number_of_lines * font->getOpenGLSize();
+      float text_body_height = number_of_lines * (font->getOpenGLSize() + line_spacing) ;
       float vertical_alignment_y = 0.0;
       vertical_alignment_transform = Transform();
 
@@ -115,7 +129,7 @@ namespace Graphics {
         vertical_alignment_y = (height - font->getOpenGLSize()) / 2.0;
       }
       else if(vertical_alignment == VerticalAlignment::CENTER) {
-        vertical_alignment_y = 0; 
+        vertical_alignment_y = -font->getOpenGLSize() / 2.0; 
       }
       else {
         vertical_alignment_y = -height / 2.0;

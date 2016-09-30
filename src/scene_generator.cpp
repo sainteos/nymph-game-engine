@@ -15,7 +15,7 @@
 #include "graphics/light.h"
 #include "utility/utility_functions.h"
 
-SceneGenerator::SceneGenerator(const Tmx::Map& animation_index, std::shared_ptr<ComponentManager> component_manager, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager) : component_manager(component_manager), texture_manager(texture_manager), shader_manager(shader_manager) {
+SceneGenerator::SceneGenerator(const Tmx::Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager) : texture_manager(texture_manager), shader_manager(shader_manager) {
   dynamic_animations = createAnimationsFromAnimationMap(animation_index);
 }
 
@@ -397,8 +397,6 @@ std::vector<std::shared_ptr<Entity>> SceneGenerator::createStaticallyAnimatedTil
             std::shared_ptr<Entity> entity = std::make_shared<Entity>();
             entity->addComponent(renderable);
             entity->addComponent(animator);
-            component_manager->addComponent(renderable);
-            component_manager->addComponent(animator);
 
             entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, 0.0f));
             if(layer->IsVisible()) 
@@ -437,6 +435,7 @@ SceneGenerator::MapRenderables SceneGenerator::createRenderablesFromMap(const un
 
   for(auto layer : layers) {
     auto layer_entity = std::make_shared<Entity>();
+    layer_entity->setActive(true);
 
     for(unsigned int patch_y = 0; patch_y < height_in_patches; patch_y++) {
       for(unsigned int patch_x = 0; patch_x < width_in_patches; patch_x++) {
@@ -563,7 +562,6 @@ SceneGenerator::MapRenderables SceneGenerator::createRenderablesFromMap(const un
           }
 
           layer_entity->addComponent(renderable);
-          component_manager->addComponent(renderable);
 
         }
       }
@@ -605,7 +603,6 @@ std::map<std::string, SceneGenerator::DynamicAnimation> SceneGenerator::createAn
         if(animations[sprite_name].animator == nullptr) {
           animations[sprite_name].animator = Graphics::TileAnimator::create(tileset->GetImage()->GetWidth(), tileset->GetImage()->GetHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
           animations[sprite_name].entity->addComponent(animations[sprite_name].animator);
-          component_manager->addComponent(animations[sprite_name].animator);
         }
          
         for(auto frame : frames) {

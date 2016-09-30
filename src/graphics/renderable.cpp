@@ -272,10 +272,6 @@ namespace Graphics {
         glDrawArrays(GL_TRIANGLES, 0, vertex_data.getVertexCount());
       }
     }
-
-    while(eventsWaiting()) {
-      handleQueuedEvent(getEvent());
-    }
     return true; 
   }
 

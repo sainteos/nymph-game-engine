@@ -23,6 +23,5 @@ int main(int argc, char** argv) {
   engine->setup(config_path);
   engine->mainLoop();
   engine->cleanUp();
-
   return 0;
 }

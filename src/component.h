@@ -8,9 +8,11 @@
 #include "events/event.h"
 
 class ComponentManager;
+class Entity;
 
 class Component : public Events::Subject, public Events::Observer {
   protected:
+    std::weak_ptr<Entity> entity;
     std::shared_ptr<Transform> transform;
     bool active;
     unsigned int id;
@@ -18,6 +20,7 @@ class Component : public Events::Subject, public Events::Observer {
     static unsigned int next_id;
 
     friend class ComponentManager;
+    friend class Entity;
   public:
     Component();
     virtual void onStart() = 0;

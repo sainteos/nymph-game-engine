@@ -15,6 +15,7 @@ namespace Graphics {
       setShader(skin->shader.lock());
       addTexture(0, "skin0", skin->texture.lock());
       typed_color = typed_text->getColor();
+      setText(default_text);
     }
 
     std::shared_ptr<TextField> TextField::create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, glm::vec4 background_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) {
@@ -36,16 +37,24 @@ namespace Graphics {
       return field;
     }
 
+    void TextField::reset() {
+      in_focus = false;
+      typed_text->setText("");
+      typed_text->setActive(false);
+      default_text->setActive(false);
+      setText(default_text);
+    }
+
     void TextField::onDestroy() {
       TextArea::onDestroy();
     }
 
     void TextField::onStart() {
-      default_text->setActive(true);
       getTransform()->addChild(default_text->getTransform());
-      setText(default_text);
-      typed_text->setActive(false);
       getTransform()->addChild(typed_text->getTransform());
+      
+      reset();
+
       TextArea::onStart();
     }
 
@@ -92,27 +101,34 @@ namespace Graphics {
     }
 
     void TextField::onCursorEnter() {
+      setColor(getColor() - mouse_over_dim);
     }
 
     void TextField::onCursorLeave() {
+      setColor(getColor() + mouse_over_dim);
     }
 
     void TextField::onKeyDown(const int key) {
+
+      if(key == GLFW_KEY_ESCAPE) {
+        if(isActive()) {
+          reset();
+          setActive(false);
+        }
+        else if(!isActive()) {
+          default_text->setActive(true);
+          setActive(true);
+        }
+      }
+
       if(in_focus) {
         if(key == GLFW_KEY_BACKSPACE) {
           typed_text->setText(typed_text->getText().substr(0, typed_text->getText().size() - 1));
         }
-        else if(key == GLFW_KEY_TAB) {
-          in_focus = false;
-          typed_text->setColor(default_text->getColor());
-          notifyNow(std::make_shared<ResumeKeyInputEvent>());
-        }
         else if(key == GLFW_KEY_ENTER) {
-          in_focus = false;
           notifyNow(Utility::DebugCommandEvent::create(typed_text->getText()));
-          typed_text->setActive(false);
-          typed_text->setText("");
-          default_text->setActive(true);
+          reset();
+          setActive(false);
         }
       }
     }

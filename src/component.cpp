@@ -1,11 +1,13 @@
 #include "component.h"
 #include "set_active_event.h"
+#include "set_entity_active_event.h"
+#include "entity.h"
 #include <easylogging++.h>
 
 
 unsigned int Component::next_id = 0;
 
-Component::Component() : active(false), id(next_id) {
+Component::Component() : active(true), id(next_id) {
   transform = std::make_shared<Transform>();
   next_id++;
 }
@@ -14,8 +16,13 @@ void Component::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
   switch(event->getEventType()) {
     case Events::EventType::SET_ACTIVE: {
       auto casted_event = std::static_pointer_cast<SetActiveEvent>(event);
-      if(casted_event->getComponentId() == id) {
-        setActive(casted_event->getActive());
+      setActive(casted_event->getActive());
+      break;
+    }
+    case Events::EventType::SET_ENTITY_ACTIVE: {
+      auto casted_event = std::static_pointer_cast<SetEntityActiveEvent>(event);
+      if(entity.lock() != nullptr) {
+        entity.lock()->setActive(casted_event->getActive());
       }
       break;
     }

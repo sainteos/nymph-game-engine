@@ -28,8 +28,8 @@ std::vector<std::shared_ptr<Component>> Scene::getComponents() const noexcept {
 
 void Scene::addEntity(std::shared_ptr<Entity> entity) noexcept {
   this->entities.push_back(entity);
+  this->transform->addChild(entity->getTransform());
   for(auto component : entity->getComponents()) {
-    this->transform->addChild(component->getTransform());
     this->components.push_back(component);
   }
 }
@@ -37,8 +37,8 @@ void Scene::addEntity(std::shared_ptr<Entity> entity) noexcept {
 void Scene::addEntities(std::vector<std::shared_ptr<Entity>> entities) noexcept {
   this->entities.insert(this->entities.end(), entities.begin(), entities.end());
   for(auto entity : entities) {
+    this->transform->addChild(entity->getTransform());
     for(auto component : entity->getComponents()) {
-      this->transform->addChild(component->getTransform());
       this->components.push_back(component);
     }
   }

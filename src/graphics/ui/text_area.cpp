@@ -7,6 +7,7 @@ namespace Graphics {
     TextArea::TextArea(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin) : Area(vertex_data, skin), text(text) {
       setShader(skin->shader.lock());
       addTexture(0, "skin0", skin->texture.lock());
+      getTransform()->addChild(text->getTransform());
     }
 
     std::shared_ptr<TextArea> TextArea::create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) {
@@ -31,12 +32,16 @@ namespace Graphics {
       this->text = text;
     }
 
+    std::shared_ptr<WrappableText> TextArea::getText() const noexcept {
+      return this->text;
+    }
+
     void TextArea::onDestroy() {
       Area::onDestroy();
     }
 
     void TextArea::onStart() {
-      //text->getTransform()->translate(glm::vec2(getTextPadding(), getHeight() - getTextPadding()));
+      getText()->getTransform()->translate(-getAnchorPoint());
       Area::onStart();
     }
 
@@ -89,7 +94,8 @@ namespace Graphics {
     }
 
     void TextArea::log(el::base::type::ostream_t& os) const {
-      Element::log(os);
+      os << "Text: "<<this->text->getText();
+      Area::log(os);
     }
   }
 }

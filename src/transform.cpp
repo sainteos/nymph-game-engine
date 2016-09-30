@@ -181,3 +181,12 @@ void Transform::removeChild(std::shared_ptr<Transform> transform) {
 std::list<std::shared_ptr<Transform>> Transform::getChildren() const {
   return children;
 }
+
+std::shared_ptr<Transform> Transform::getParent() const {
+  if(!parent.expired()) {
+    return parent.lock();
+  }
+  else {
+    return nullptr;
+  }
+}

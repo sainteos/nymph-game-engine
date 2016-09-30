@@ -28,6 +28,7 @@ class Transform : public std::enable_shared_from_this<Transform> {
     void removeChild(std::shared_ptr<Transform> transform);
 
     std::list<std::shared_ptr<Transform>> getChildren() const;
+    std::shared_ptr<Transform> getParent() const;
 
     const unsigned int getTreeSize() const;
 

@@ -20,6 +20,7 @@ namespace Events {
     ADD_TEXTURE,
     REMOVE_TEXTURE,
     SET_ACTIVE,
+    SET_ENTITY_ACTIVE,
     SET_UNIFORM,
     ANIMATION_TRIGGER,
     SUSPEND_KEY_INPUT,
@@ -32,7 +33,8 @@ namespace Events {
     LIST_CHARACTERS,
     LIST_LAYERS,
     TOGGLE_LIGHTS,
-    TOGGLE_LAYER
+    TOGGLE_LAYER,
+    WINDOW_EXIT
   };
 
   inline std::map<EventType, std::string> EventTypesToString() {
@@ -52,6 +54,7 @@ namespace Events {
       {ADD_TEXTURE, "Add Texture"},
       {REMOVE_TEXTURE, "Remove Texture"},
       {SET_ACTIVE, "Set Active"},
+      {SET_ENTITY_ACTIVE, "Set Entity Active"},
       {SET_UNIFORM, "Set Uniform"},
       {ANIMATION_TRIGGER, "Animation Trigger"},
       {SUSPEND_KEY_INPUT, "Suspend Key Input"},
@@ -64,7 +67,8 @@ namespace Events {
       {LIST_CHARACTERS, "List Characters"},
       {LIST_LAYERS, "List Layers"},
       {TOGGLE_LIGHTS, "Toggle Lights"},
-      {TOGGLE_LAYER, "Toggle Layer"}
+      {TOGGLE_LAYER, "Toggle Layer"},
+      {WINDOW_EXIT, "Window Exit"}
     };
   }
 }

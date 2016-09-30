@@ -16,6 +16,7 @@ namespace Graphics {
         std::string text;
         glm::vec4 color;
         std::shared_ptr<Shader> shader;
+        float kerning;
 
         void renderCharacter(const unsigned char character, Transform transform);
 
@@ -27,6 +28,8 @@ namespace Graphics {
         void setColor(const glm::vec4& color);
         const glm::vec4 getColor() const noexcept;
         void setShader(std::shared_ptr<Shader> shader);
+        void setKerning(const float amount) noexcept;
+        const float getKerning() const noexcept;
 
         virtual void onDestroy() override;
         virtual void onStart() override;

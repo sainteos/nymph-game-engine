@@ -14,9 +14,9 @@ namespace Graphics {
         std::shared_ptr<Skin> skin;
         glm::vec4 color;
         glm::vec2 anchor_point;
-        unsigned int width;
-        unsigned int height;
-        unsigned int text_padding;
+        float width;
+        float height;
+        float text_padding;
         bool cursor_within;
         glm::dvec2 last_mouse_scroll_position;
       protected:
@@ -33,13 +33,13 @@ namespace Graphics {
         const glm::vec2 getAnchorPoint() const noexcept;
         void setAnchorPoint(const glm::vec2 anchor_point);
 
-        const unsigned int getWidth() const noexcept;
-        const unsigned int getHeight() const noexcept;
-        void setWidth(const unsigned int width) noexcept;
-        void setHeight(const unsigned int height) noexcept;
+        const float getWidth() const noexcept;
+        const float getHeight() const noexcept;
+        void setWidth(const float width) noexcept;
+        void setHeight(const float height) noexcept;
 
-        const unsigned int getTextPadding() const noexcept;
-        void setTextPadding(const unsigned int text_padding) noexcept;
+        const float getTextPadding() const noexcept;
+        void setTextPadding(const float text_padding) noexcept;
 
         const glm::vec4 getColor() const noexcept;
         void setColor(const glm::vec4 color) noexcept;

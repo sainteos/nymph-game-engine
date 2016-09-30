@@ -56,10 +56,12 @@ namespace Graphics {
 
     void Button::onCursorEnter() {
       cursor_over = true;
+      setColor(getColor() - mouse_over_dim);
     }
 
     void Button::onCursorLeave() {
       cursor_over = false;
+      setColor(getColor() + mouse_over_dim);
     }
 
     void Button::onKeyDown(const int key) {
@@ -76,6 +78,11 @@ namespace Graphics {
 
     void Button::onScroll(const glm::dvec2 position_change) {
 
+    }
+
+    void Button::log(el::base::type::ostream_t& os) const {
+      os << "Cursor over: "<<cursor_over;
+      TextArea::log(os);
     }
   }
 }

@@ -11,6 +11,7 @@
 #include "load_map_event.h"
 #include "load_character_event.h"
 #include "debug_command_event.h"
+#include "window_exit_event.h"
 
 namespace Utility {
   void DebugParser::onNotifyNow(std::shared_ptr<Events::Event> event) {
@@ -88,6 +89,9 @@ namespace Utility {
       unsigned int layer_number = std::stoul(tokens.front());
       tokens.pop();
       notify(ToggleLayerEvent::create(layer_number, tokens.front() == "on"));
+    }
+    else if(tokens.front() == "exit" || tokens.front() == "quit") {
+      notify(WindowExitEvent::create());
     }
   }
 }

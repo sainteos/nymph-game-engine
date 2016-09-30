@@ -87,10 +87,10 @@ namespace Graphics {
           0, 1, 2, 0, 2, 3
         };
         std::vector<glm::vec3> verts {
-          glm::vec3(char_pos.x, char_pos.y + char_size.y, -0.1),
-          glm::vec3(char_pos.x, char_pos.y, -0.1),
-          glm::vec3(char_pos.x + char_size.x, char_pos.y, -0.1),
-          glm::vec3(char_pos.x + char_size.x, char_pos.y + char_size.y, -0.1)
+          glm::vec3(char_pos.x, char_pos.y + char_size.y, -0.7),
+          glm::vec3(char_pos.x, char_pos.y, -0.7),
+          glm::vec3(char_pos.x + char_size.x, char_pos.y, -0.7),
+          glm::vec3(char_pos.x + char_size.x, char_pos.y + char_size.y, -0.7)
         };
 
         float added_width = char_pos.x + char_size.x;
