@@ -106,7 +106,7 @@ namespace Graphics {
     }
 
     bool Element::isPointWithin(glm::vec2 point) noexcept {
-      auto translation = getTransform()->getAbsoluteTranslation();
+      auto translation = getTransform()->getLocalTranslation();
 
       glm::vec2 min_bounds(translation.x - width / 2.0, translation.y - height / 2.0);
       glm::vec2 max_bounds(translation.x + width / 2.0, translation.y + height / 2.0);
@@ -166,6 +166,7 @@ namespace Graphics {
 
         case Events::EventType::MOUSE_BUTTON_DOWN: {
           auto casted_event = std::static_pointer_cast<Input::MouseButtonDownEvent>(event);
+          LOG(INFO)<<cursor_within<<" "<<isActive()<<" "<<casted_event->getButton();
           if(cursor_within && isActive() && casted_event->getButton() == GLFW_MOUSE_BUTTON_LEFT) {
             onLeftClick();
           }

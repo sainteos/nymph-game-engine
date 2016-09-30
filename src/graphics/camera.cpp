@@ -3,15 +3,20 @@
 #include "glm/ext.hpp"
 #include "graphics/shader_manager.h"
 #include "sprite_move_event.h"
+#include "input/key_down_event.h"
+#include "input/key_repeat_event.h"
+#include "input/key_up_event.h"
+#define GLFW_INCLUDE_GLCOREARB
+#include <glfw3.h>
 
 namespace Graphics {
   
-  Camera::Camera(const std::shared_ptr<ShaderManager> shader_manager) : shader_manager(shader_manager), projection_matrix(1.0), screen_padding_in_tiles(2) {
+  Camera::Camera(const std::shared_ptr<ShaderManager> shader_manager) : shader_manager(shader_manager), projection_matrix(1.0), screen_padding_in_tiles(2), free_camera(false), free_camera_speed(1.0) {
 
   }
 
   Camera::Camera(const std::shared_ptr<ShaderManager> shader_manager, const float viewport_width, const float viewport_height, const float near, const float far) 
-    : viewport_width(viewport_width), viewport_height(viewport_height), near(near), far(far), projection_matrix(1.0), shader_manager(shader_manager), screen_padding_in_tiles(2) {
+    : viewport_width(viewport_width), viewport_height(viewport_height), near(near), far(far), projection_matrix(1.0), shader_manager(shader_manager), screen_padding_in_tiles(2), free_camera_speed(1.0) {
   }
 
   void Camera::onStart() { 
@@ -29,18 +34,21 @@ namespace Graphics {
     if(!active)
       return false;
     
-    while(eventsWaiting()) {
-      handleQueuedEvent(getEvent());
+    if(free_camera) {
+      getTransform()->translate(velocity * 1.0 / 1000.0 * delta);
     }
-    if(velocity != glm::vec2(0.0, 0.0)) {
-      if(glm::distance(target_position, glm::vec2(getTransform()->getLocalTranslation())) < 1.0 / 1000.0 * delta) {
-        getTransform()->translate(target_position - glm::vec2(getTransform()->getLocalTranslation()));
-        velocity = glm::vec2(0.0, 0.0);
-      }
-      else {
-        getTransform()->translate(velocity * 1.0 / 1000.0 * delta);
+    else {
+      if(velocity != glm::vec2(0.0, 0.0)) {
+        if(glm::distance(target_position, glm::vec2(getTransform()->getLocalTranslation())) < 1.0 / 1000.0 * delta) {
+          getTransform()->translate(target_position - glm::vec2(getTransform()->getLocalTranslation()));
+          velocity = glm::vec2(0.0, 0.0);
+        }
+        else {
+          getTransform()->translate(velocity * 1.0 / 1000.0 * delta);
+        }
       }
     }
+    
     if(projection_matrix != last_projection_matrix) {
       shader_manager->setUniformForAllPrograms<glm::mat4>("projection", projection_matrix);
       last_projection_matrix = projection_matrix;
@@ -59,6 +67,7 @@ namespace Graphics {
   void Camera::handleQueuedEvent(std::shared_ptr<Events::Event> event) { 
     switch(event->getEventType()) {
       case Events::EventType::SPRITE_MOVE: {
+        free_camera = false;
         auto casted_event = std::static_pointer_cast<SpriteMoveEvent>(event);
 
         if(casted_event->getVelocity().x > 0.0) {
@@ -87,6 +96,56 @@ namespace Graphics {
         }
         break;
       }
+      case Events::EventType::KEY_DOWN: {
+        free_camera = true;
+        auto casted_event = std::static_pointer_cast<Input::KeyDownEvent>(event);
+        if(casted_event->getKey() == GLFW_KEY_W) {
+          velocity = glm::vec2(velocity.x, free_camera_speed);
+        }
+        else if(casted_event->getKey() == GLFW_KEY_A) {
+          velocity = glm::vec2(-free_camera_speed, velocity.y);
+        }
+        else if(casted_event->getKey() == GLFW_KEY_S) {
+          velocity = glm::vec2(velocity.x, -free_camera_speed);
+        }
+        else if(casted_event->getKey() == GLFW_KEY_D) {
+          velocity = glm::vec2(free_camera_speed, velocity.y);
+        }
+        break;
+      }
+      case Events::EventType::KEY_REPEAT: {
+        auto casted_event = std::static_pointer_cast<Input::KeyRepeatEvent>(event);
+        if(casted_event->getKey() == GLFW_KEY_W) {
+          velocity = glm::vec2(velocity.x, free_camera_speed);
+        }
+        else if(casted_event->getKey() == GLFW_KEY_A) {
+          velocity = glm::vec2(-free_camera_speed, velocity.y);
+        }
+        else if(casted_event->getKey() == GLFW_KEY_S) {
+          velocity = glm::vec2(velocity.x, -free_camera_speed);
+        }
+        else if(casted_event->getKey() == GLFW_KEY_D) {
+          velocity = glm::vec2(free_camera_speed, velocity.y);
+        }
+        break;
+      }
+      case Events::EventType::KEY_UP: {
+        auto casted_event = std::static_pointer_cast<Input::KeyUpEvent>(event);
+        if(casted_event->getKey() == GLFW_KEY_W) {
+          velocity = glm::vec2(velocity.x, 0.0);
+        }
+        else if(casted_event->getKey() == GLFW_KEY_A) {
+          velocity = glm::vec2(0.0, velocity.y);
+        }
+        else if(casted_event->getKey() == GLFW_KEY_S) {
+          velocity = glm::vec2(velocity.x, 0.0);
+        }
+        else if(casted_event->getKey() == GLFW_KEY_D) {
+          velocity = glm::vec2(0.0, velocity.y);
+        }
+        break;
+      }
+
       default:
         Component::handleQueuedEvent(event);
     }
@@ -134,6 +193,14 @@ namespace Graphics {
 
   const float Camera::getFar() const noexcept {
     return far;
+  }
+
+  void Camera::setFreeCameraSpeed(const float speed) noexcept {
+    this->free_camera_speed = speed;
+  }
+
+  const float Camera::getFreeCameraSpeed() const noexcept {
+    return this->free_camera_speed;
   }
 
   const glm::mat4 Camera::getProjectionMatrix() const noexcept {

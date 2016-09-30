@@ -59,9 +59,9 @@ namespace Utility {
         notify(LoadCharacterEvent::create(tokens.front()));
       }
     }
-    else if(tokens.front() == "free_camera") {
+    else if(tokens.front() == "camera") {
       tokens.pop();
-      notify(ToggleFreeCameraEvent::create(tokens.front() == "on"));
+      notify(ToggleFreeCameraEvent::create());
     }
     else if(tokens.front() == "list") {
       tokens.pop();
