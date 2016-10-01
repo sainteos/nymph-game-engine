@@ -1,5 +1,5 @@
 {
-  "window_title": "Bitches Don't Know Bout My Tiles(tm)",
+  "window_title": "Spero Engine",
   "fullscreen": false,
   "active_map": "./project-spero-assets/Maps/Board1.tmx",
   "maps": [
@@ -31,6 +31,6 @@
   "patch_width": 25,
   "patch_height": 25,
   "fonts_location": "./project-spero-assets/Fonts/",
-  "pixels_per_unit": 32,
+  "pixels_per_unit": 128,
   "camera_speed": 3.0
 }

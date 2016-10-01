@@ -1,5 +1,6 @@
 #include <easylogging++.h>
 #include "text_area.h"
+#include "change_text_event.h"
 
 namespace Graphics {
   namespace UI {
@@ -50,7 +51,15 @@ namespace Graphics {
     }
     
     void TextArea::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
-      Area::handleQueuedEvent(event);
+      switch(event->getEventType()) {
+        case Events::EventType::CHANGE_TEXT: {
+          auto casted_event = std::static_pointer_cast<ChangeTextEvent>(event);
+          getText()->setText(casted_event->getText());
+          break;
+        }
+        default:
+          Area::handleQueuedEvent(event);
+      }
     }
 
     void TextArea::onNotifyNow(std::shared_ptr<Events::Event> event) {
