@@ -8,6 +8,7 @@
 #include "sprite_movement.h"
 #include "utility/load_map_event.h"
 #include "input/key_down_event.h"
+#include "graphics/ui/change_text_event.h"
 
 
 Engine::Engine() : time_to_exit(false), free_camera(false) {
@@ -87,6 +88,7 @@ void Engine::activateScene(const std::string& name) {
   if(active_scenes.count(name) == 0 && scenes.count(name) > 0) {
     active_scenes[name] = scenes[name];
     component_manager->addComponents(active_scenes[name]->getComponents());
+    notify(Graphics::UI::ChangeTextEvent::create(name));
   }
 }
 
@@ -105,7 +107,7 @@ void Engine::setup(const std::string config_path) {
   }
 
   //Initialize graphics system
-  graphics_system->initialize(config_manager->getInt("screen_width"), config_manager->getInt("screen_height"), config_manager->getString("window_name"), config_manager->getBool("fullscreen"), Graphics::WindowExitFunctor());
+  graphics_system->initialize(config_manager->getInt("screen_width"), config_manager->getInt("screen_height"), config_manager->getString("window_title"), config_manager->getBool("fullscreen"), Graphics::WindowExitFunctor());
   
   //Initialize font generator
   font_generator = std::make_shared<Graphics::UI::FontGenerator>(config_manager->getString("fonts_location"), config_manager->getInt("pixels_per_unit"));
@@ -128,7 +130,7 @@ void Engine::setup(const std::string config_path) {
 
   texture_manager->loadTexture("./project-spero-assets/grayscale_tex.png");
 
-  font_generator->loadFont("8bit.ttf", 18, "8bit");
+  font_generator->loadFont("8bit.ttf", 48, "8bit");
 
   //Shader loading will be done elsewhere
 
@@ -161,7 +163,7 @@ void Engine::setup(const std::string config_path) {
   default_text->setActive(true);
 
   auto skin = std::make_shared<Graphics::UI::Skin>(Graphics::UI::Skin { texture_manager->getTexture("grayscale_tex"), (*shader_manager)["simple_ui"] });
-  auto field = Graphics::UI::TextField::create(skin, default_text, text, glm::vec4(0.2, 0.2, 0.2, 0.8), 0.1, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 16.0, 1.5);
+  auto field = Graphics::UI::TextField::create(skin, default_text, text, glm::vec4(0.2, 0.2, 0.2, 0.8), 0.1, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 16.0, 0.75);
   
   field->setActive(false);
   field->getTransform()->addChild(text->getTransform());
@@ -209,6 +211,53 @@ void Engine::setup(const std::string config_path) {
   map_list_ui->setActive(false);
 
   component_manager->addComponents(std::vector<std::shared_ptr<Component>> { map_list_ui->getComponents().begin(), map_list_ui->getComponents().end()});
+
+  //Setup Debug HUD Entity
+  auto hud_entity = std::make_shared<Entity>();
+  auto fps_text = std::make_shared<Graphics::UI::WrappableText>();
+  fps_text->setFont(font_generator->getFont("8bit"));
+  fps_text->setShader(shader_manager->getShader("simple_text"));
+  fps_text->setKerning(0.0);
+
+  auto fps_area = Graphics::UI::TextArea::create(skin, fps_text, glm::vec4(0.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.8), 0.1, viewport_tile_width, viewport_tile_height, -2.0, 0.0, 5.0, 1.0);
+  
+  fps_area->getTransform()->translate(glm::vec2(-9.5, 5.0));
+  fps_counter->addObserver(fps_area);
+
+  hud_entity->addComponent(fps_text);
+  hud_entity->addComponent(fps_area);
+
+  auto name_text = std::make_shared<Graphics::UI::WrappableText>();
+  name_text->setFont(font_generator->getFont("8bit"));
+  name_text->setShader(shader_manager->getShader("simple_text"));
+  name_text->setHorizontalAlignment(Graphics::UI::WrappableText::HorizontalAlignment::CENTER);
+
+  auto name_area = Graphics::UI::TextArea::create(skin, name_text, glm::vec4(0.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.8), 0.1, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 10.0, 1.0);
+
+  name_area->getTransform()->translate(glm::vec2(0.0, 5.0));
+  this->addObserver(name_area);
+
+  hud_entity->addComponent(name_text);
+  hud_entity->addComponent(name_area);
+
+  auto pos_text = std::make_shared<Graphics::UI::WrappableText>();
+  pos_text->setFont(font_generator->getFont("8bit"));
+  pos_text->setShader(shader_manager->getShader("simple_text"));
+  pos_text->setHorizontalAlignment(Graphics::UI::WrappableText::HorizontalAlignment::RIGHT);
+
+  auto pos_area = Graphics::UI::TextArea::create(skin, pos_text, glm::vec4(0.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.8), 0.0, viewport_tile_height, viewport_tile_height, 2.5, 0.0, 5.0, 1.0);
+
+  pos_area->getTransform()->translate(glm::vec2(9.5, 5.0));
+  camera_component->addObserver(pos_area);
+
+  hud_entity->addComponent(pos_text);
+  hud_entity->addComponent(pos_area);
+  
+
+  camera_component->getTransform()->addChild(hud_entity->getTransform());
+
+
+  component_manager->addComponents(std::vector<std::shared_ptr<Component>> { hud_entity->getComponents().begin(), hud_entity->getComponents().end()});
 
   camera_component->getTransform()->translate(glm::vec2(config_manager->getFloat("camera_x"), config_manager->getFloat("camera_y")));
   ///THIS WILL ALL BE MOVED TO SCRIPTING
@@ -261,17 +310,10 @@ void Engine::setup(const std::string config_path) {
 void Engine::mainLoop() {
 
   float delta = 0.0f;
-  float fps = fps_counter->getCurrentFPS();
   graphics_system->startRender();
   component_manager->onStart();
 
   while(graphics_system->isRunning() && !time_to_exit) {
-    if(fps != fps_counter->getCurrentFPS()) {
-      std::stringstream window_name;
-      window_name <<config_manager->getString("window_title")<<" "<<fps_counter->getCurrentFPS();
-      graphics_system->setWindowName(window_name.str());
-      fps = fps_counter->getCurrentFPS();
-    }
     graphics_system->startFrame();
     component_manager->onUpdate(delta);
     graphics_system->stopFrame();

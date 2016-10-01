@@ -1,5 +1,8 @@
 #include "utility/fps_counter.h"
 #include <easylogging++.h>
+#include <sstream>
+#include <iomanip>
+#include "graphics/ui/change_text_event.h"
 
 namespace Utility {
   using clock = std::chrono::high_resolution_clock;
@@ -54,6 +57,9 @@ namespace Utility {
       frame_count++;
       fps_accum += current_fps;
     }
+    std::stringstream fps_string;
+    fps_string << std::fixed << std::setprecision(2) << current_fps;
+    notifyNow(Graphics::UI::ChangeTextEvent::create(fps_string.str()));
     //set last time to the now time
     delta = std::chrono::duration_cast<microseconds>(current_time - last_time).count() / 1000.0f;
     last_time = current_time;

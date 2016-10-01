@@ -1,9 +1,10 @@
 #ifndef FPS_COUNTER_H
 #define FPS_COUNTER_H
 #include <chrono>
+#include "events/subject.h"
 
 namespace Utility {
-  class FPSCounter {
+  class FPSCounter : public Events::Subject {
     private:
       float max_fps;
       float current_fps;

@@ -1,4 +1,6 @@
 #include <easylogging++.h>
+#include <sstream>
+#include <iomanip>
 #include "camera.h"
 #include "glm/ext.hpp"
 #include "graphics/shader_manager.h"
@@ -6,6 +8,7 @@
 #include "input/key_down_event.h"
 #include "input/key_repeat_event.h"
 #include "input/key_up_event.h"
+#include "graphics/ui/change_text_event.h"
 #define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
 
@@ -28,9 +31,20 @@ namespace Graphics {
     last_transform = *getTransform();
     target_position = glm::vec2(getTransform()->getLocalTranslation());
     velocity = glm::vec2(0.0, 0.0);
+    std::stringstream pos_string;
+
+    pos_string << getTransform()->getAbsoluteTranslation().x << ", "<<getTransform()->getAbsoluteTranslation().y;
+
+    notify(Graphics::UI::ChangeTextEvent::create(pos_string.str()));
   }
 
   const bool Camera::onUpdate(const double delta) {
+    std::stringstream pos_string;
+
+    pos_string << std::fixed << std::setprecision(2) << getTransform()->getAbsoluteTranslation().x << ", "<<getTransform()->getAbsoluteTranslation().y;
+
+    notify(Graphics::UI::ChangeTextEvent::create(pos_string.str()));
+
     if(!active)
       return false;
     
