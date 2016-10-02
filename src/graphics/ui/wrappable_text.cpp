@@ -147,6 +147,10 @@ namespace Graphics {
     }
 
     const bool WrappableText::onUpdate(const double delta) {
+      Uniform color_uniform;
+      color_uniform.setData<glm::vec4>("color", color);
+      shader->setUniform(color_uniform);
+
       if(isActive()) {
         if(shader != nullptr) {
 

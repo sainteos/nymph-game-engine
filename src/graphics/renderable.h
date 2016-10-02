@@ -30,6 +30,7 @@ namespace Graphics {
       void setUniforms();
     protected:
       std::set<Uniform> uniforms;
+      void setUniform(const Uniform& uniform) noexcept;
       Renderable() {}
 
     public:

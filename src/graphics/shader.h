@@ -7,6 +7,7 @@
 #else
 #include <glew.h>
 #endif
+#include "uniform.h"
 
 namespace Graphics {
   class Shader {
@@ -25,6 +26,8 @@ namespace Graphics {
       
       template<class T>
       void setUniform(const std::string& name, const T& value);
+
+      void setUniform(const Uniform& uniform);
   };
 }
 

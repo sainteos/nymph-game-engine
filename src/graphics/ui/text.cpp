@@ -1,6 +1,7 @@
 #include <easylogging++.h>
 #include <glm/ext.hpp>
 #include "text.h"
+#include "graphics/uniform.h"
 
 namespace Graphics {
   namespace UI {
@@ -46,8 +47,13 @@ namespace Graphics {
     }
 
     void Text::renderCharacter(unsigned char character, Transform transform) {
-      shader->setUniform<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix() * transform.getAbsoluteTransformationMatrix());
-      shader->setUniform<int>("text_texture", 0);
+      Uniform text_texture_uniform;
+      text_texture_uniform.setData<int>("text_texture", 0);
+      shader->setUniform(text_texture_uniform);
+
+      Uniform transform_uniform;
+      transform_uniform.setData<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix() * transform.getAbsoluteTransformationMatrix());
+      shader->setUniform(transform_uniform);
 
       glActiveTexture(GL_TEXTURE0);
       glBindTexture(GL_TEXTURE_2D, font->getCharacter(character).texture_handle);
@@ -79,6 +85,9 @@ namespace Graphics {
     }
 
     const bool Text::onUpdate(const double delta) {
+      Uniform color_uniform;
+      color_uniform.setData<glm::vec4>("color", color);
+      shader->setUniform(color_uniform);
 
       if(isActive()) {
         if(shader != nullptr) {
@@ -86,7 +95,6 @@ namespace Graphics {
           auto character_transform = *getTransform();
 
           shader->useProgram();
-          shader->setUniform<glm::vec4>("color", color);
 
           for(auto character : text) {
             renderCharacter(character, character_transform);

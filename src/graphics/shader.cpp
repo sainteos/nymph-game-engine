@@ -407,4 +407,86 @@ namespace Graphics {
     if(prev_bound_program != program_object)
       glUseProgram(prev_bound_program);
   }
+  
+  void Shader::setUniform(const Uniform& uniform) {
+    switch(uniform.getType()) {
+      case Graphics::Uniform::UniformTypes::FLOAT:
+        setUniform(uniform.getName(), uniform.getData<float>());
+        break;
+      case Graphics::Uniform::UniformTypes::VEC2:
+        setUniform(uniform.getName(), uniform.getData<glm::vec2>());
+        break;
+      case Graphics::Uniform::UniformTypes::VEC3:
+        setUniform(uniform.getName(), uniform.getData<glm::vec2>());
+        break;
+      case Graphics::Uniform::UniformTypes::VEC4:
+        setUniform(uniform.getName(), uniform.getData<glm::vec4>());
+        break;
+      case Graphics::Uniform::UniformTypes::INT:
+        setUniform(uniform.getName(), uniform.getData<int>());
+        break;
+      case Graphics::Uniform::UniformTypes::IVEC2:
+        setUniform(uniform.getName(), uniform.getData<glm::ivec2>());
+        break;
+      case Graphics::Uniform::UniformTypes::IVEC3:
+        setUniform(uniform.getName(), uniform.getData<glm::ivec3>());
+        break;
+      case Graphics::Uniform::UniformTypes::IVEC4:
+        setUniform(uniform.getName(), uniform.getData<glm::ivec4>());
+        break;
+      case Graphics::Uniform::UniformTypes::UINT:
+        setUniform(uniform.getName(), uniform.getData<unsigned int>());
+        break;
+      case Graphics::Uniform::UniformTypes::UVEC2:
+        setUniform(uniform.getName(), uniform.getData<glm::uvec2>());
+        break;
+      case Graphics::Uniform::UniformTypes::UVEC3:
+        setUniform(uniform.getName(), uniform.getData<glm::uvec3>());
+        break;
+      case Graphics::Uniform::UniformTypes::UVEC4:
+        setUniform(uniform.getName(), uniform.getData<glm::uvec4>());
+        break;
+      case Graphics::Uniform::UniformTypes::BOOL:
+        setUniform(uniform.getName(), uniform.getData<bool>());
+        break;
+      case Graphics::Uniform::UniformTypes::BVEC2:
+        setUniform(uniform.getName(), uniform.getData<glm::bvec2>());
+        break;
+      case Graphics::Uniform::UniformTypes::BVEC3:
+        setUniform(uniform.getName(), uniform.getData<glm::bvec3>());
+        break;
+      case Graphics::Uniform::UniformTypes::BVEC4:
+        setUniform(uniform.getName(), uniform.getData<glm::bvec4>());
+        break;
+      case Graphics::Uniform::UniformTypes::MAT2:
+        setUniform(uniform.getName(), uniform.getData<glm::mat2>());
+        break;
+      case Graphics::Uniform::UniformTypes::MAT3:
+        setUniform(uniform.getName(), uniform.getData<glm::mat3>());
+        break;
+      case Graphics::Uniform::UniformTypes::MAT4:
+        setUniform(uniform.getName(), uniform.getData<glm::mat4>());
+        break;
+      case Graphics::Uniform::UniformTypes::MAT23:
+        setUniform(uniform.getName(), uniform.getData<glm::mat2x3>());
+        break;
+      case Graphics::Uniform::UniformTypes::MAT32:
+        setUniform(uniform.getName(), uniform.getData<glm::mat3x2>());
+        break;
+      case Graphics::Uniform::UniformTypes::MAT24:
+        setUniform(uniform.getName(), uniform.getData<glm::mat2x4>());
+        break;
+      case Graphics::Uniform::UniformTypes::MAT42:
+        setUniform(uniform.getName(), uniform.getData<glm::mat4x2>());
+        break;
+      case Graphics::Uniform::UniformTypes::MAT34:
+        setUniform(uniform.getName(), uniform.getData<glm::mat3x4>());
+        break;
+      case Graphics::Uniform::UniformTypes::MAT43:
+        setUniform(uniform.getName(), uniform.getData<glm::mat4x3>());
+        break;
+      default:
+        break;
+    }
+  }
 }

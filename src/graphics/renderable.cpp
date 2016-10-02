@@ -122,85 +122,24 @@ namespace Graphics {
 
   void Renderable::setUniforms() {
     for(auto i : uniforms) {
-      switch(i.getType()) {
-        case Graphics::Uniform::UniformTypes::FLOAT:
-          getShader()->setUniform(i.getName(), i.getData<float>());
-          break;
-        case Graphics::Uniform::UniformTypes::VEC2:
-          getShader()->setUniform(i.getName(), i.getData<glm::vec2>());
-          break;
-        case Graphics::Uniform::UniformTypes::VEC3:
-          getShader()->setUniform(i.getName(), i.getData<glm::vec2>());
-          break;
-        case Graphics::Uniform::UniformTypes::VEC4:
-          getShader()->setUniform(i.getName(), i.getData<glm::vec4>());
-          break;
-        case Graphics::Uniform::UniformTypes::INT:
-          getShader()->setUniform(i.getName(), i.getData<int>());
-          break;
-        case Graphics::Uniform::UniformTypes::IVEC2:
-          getShader()->setUniform(i.getName(), i.getData<glm::ivec2>());
-          break;
-        case Graphics::Uniform::UniformTypes::IVEC3:
-          getShader()->setUniform(i.getName(), i.getData<glm::ivec3>());
-          break;
-        case Graphics::Uniform::UniformTypes::IVEC4:
-          getShader()->setUniform(i.getName(), i.getData<glm::ivec4>());
-          break;
-        case Graphics::Uniform::UniformTypes::UINT:
-          getShader()->setUniform(i.getName(), i.getData<unsigned int>());
-          break;
-        case Graphics::Uniform::UniformTypes::UVEC2:
-          getShader()->setUniform(i.getName(), i.getData<glm::uvec2>());
-          break;
-        case Graphics::Uniform::UniformTypes::UVEC3:
-          getShader()->setUniform(i.getName(), i.getData<glm::uvec3>());
-          break;
-        case Graphics::Uniform::UniformTypes::UVEC4:
-          getShader()->setUniform(i.getName(), i.getData<glm::uvec4>());
-          break;
-        case Graphics::Uniform::UniformTypes::BOOL:
-          getShader()->setUniform(i.getName(), i.getData<bool>());
-          break;
-        case Graphics::Uniform::UniformTypes::BVEC2:
-          getShader()->setUniform(i.getName(), i.getData<glm::bvec2>());
-          break;
-        case Graphics::Uniform::UniformTypes::BVEC3:
-          getShader()->setUniform(i.getName(), i.getData<glm::bvec3>());
-          break;
-        case Graphics::Uniform::UniformTypes::BVEC4:
-          getShader()->setUniform(i.getName(), i.getData<glm::bvec4>());
-          break;
-        case Graphics::Uniform::UniformTypes::MAT2:
-          getShader()->setUniform(i.getName(), i.getData<glm::mat2>());
-          break;
-        case Graphics::Uniform::UniformTypes::MAT3:
-          getShader()->setUniform(i.getName(), i.getData<glm::mat3>());
-          break;
-        case Graphics::Uniform::UniformTypes::MAT4:
-          getShader()->setUniform(i.getName(), i.getData<glm::mat4>());
-          break;
-        case Graphics::Uniform::UniformTypes::MAT23:
-          getShader()->setUniform(i.getName(), i.getData<glm::mat2x3>());
-          break;
-        case Graphics::Uniform::UniformTypes::MAT32:
-          getShader()->setUniform(i.getName(), i.getData<glm::mat3x2>());
-          break;
-        case Graphics::Uniform::UniformTypes::MAT24:
-          getShader()->setUniform(i.getName(), i.getData<glm::mat2x4>());
-          break;
-        case Graphics::Uniform::UniformTypes::MAT42:
-          getShader()->setUniform(i.getName(), i.getData<glm::mat4x2>());
-          break;
-        case Graphics::Uniform::UniformTypes::MAT34:
-          getShader()->setUniform(i.getName(), i.getData<glm::mat3x4>());
-          break;
-        case Graphics::Uniform::UniformTypes::MAT43:
-          getShader()->setUniform(i.getName(), i.getData<glm::mat4x3>());
-          break;
-        default:
-          break;
+      if(i.isDirty()) {
+        getShader()->setUniform(i);
+        i.clean();
       }
+    }
+  }
+
+  void Renderable::setUniform(const Uniform& uniform) noexcept {
+    auto find_iter = uniforms.find(uniform);
+
+    if(find_iter != uniforms.end()) {
+      if(*find_iter != uniform) {
+        uniforms.erase(find_iter);
+        uniforms.insert(uniform);
+      }
+    }
+    else {
+      uniforms.insert(uniform);
     }
   }
 
@@ -212,8 +151,14 @@ namespace Graphics {
 
   void Renderable::onStart() {
     if(light_reactive) {
-      shader->setUniform("ambient_color", ambient_light);
-      shader->setUniform("ambient_intensity", ambient_intensity);
+      Uniform ambient_uniform;
+      ambient_uniform.setData<glm::vec3>("ambient_color", ambient_light);
+      
+      Uniform ambient_intensity_uniform;
+      ambient_intensity_uniform.setData<float>("ambient_intensity", ambient_intensity);
+      
+      setUniform(ambient_uniform);
+      setUniform(ambient_intensity_uniform);
     }
   }
 
@@ -223,10 +168,15 @@ namespace Graphics {
         throw Exceptions::InvalidVertexArrayException(vertex_array_object);
       }
 
+      Uniform transform_uniform;
+      transform_uniform.setData<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix());
+      setUniform(transform_uniform);
+
 
       glBindVertexArray(vertex_array_object);
 
       if(shader != nullptr) {
+        setUniforms();
         // if(light_reactive) {
         //   shader->setUniform("num_lights", (int)influencing_lights.size());
         //   int index = 0;
@@ -253,9 +203,6 @@ namespace Graphics {
         // }
 
         shader->useProgram();  
-        setUniforms();
-        shader->setUniform<glm::mat4>("transform", getTransform()->getAbsoluteTransformationMatrix());
-
 
         for(auto& texture : textures) {
           texture.second->bind(texture.first);
@@ -286,12 +233,8 @@ namespace Graphics {
         break;
       case Events::EventType::SET_UNIFORM: {
         auto casted_event = std::static_pointer_cast<Graphics::SetUniformEvent>(event);
-
-        auto insert_success = uniforms.insert(casted_event->getUniform());
-        if(!insert_success.second) {
-          uniforms.erase(insert_success.first);
-          uniforms.insert(casted_event->getUniform());
-        }
+        
+        setUniform(casted_event->getUniform());
         break;
       }
       default:
