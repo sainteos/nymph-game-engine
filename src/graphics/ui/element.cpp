@@ -96,13 +96,7 @@ namespace Graphics {
       auto uniform = Uniform();
       uniform.setData("color", color);
 
-      auto find_iter = uniforms.find(uniform);
-
-      if(find_iter != uniforms.end()) {
-        uniforms.erase(find_iter);
-      }
-
-      uniforms.insert(uniform);
+      setUniform(uniform);
     }
 
     bool Element::isPointWithin(glm::vec2 point) noexcept {
@@ -127,14 +121,14 @@ namespace Graphics {
     void Element::onStart() {
       auto uniform = Uniform();
       uniform.setData("color", color);
-      uniforms.insert(uniform);
+      setUniform(uniform);
 
       auto anchor_point_transform = Transform();
       auto anchor_point_uniform = Uniform();
       
       anchor_point_transform.translate(-anchor_point);
       anchor_point_uniform.setData("anchor_point", anchor_point_transform.getAbsoluteTransformationMatrix());
-      uniforms.insert(anchor_point_uniform);
+      setUniform(anchor_point_uniform);
     }
 
     const bool Element::onUpdate(const double delta) {

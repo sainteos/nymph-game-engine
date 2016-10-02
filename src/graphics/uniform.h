@@ -36,16 +36,23 @@ namespace Graphics {
       glm::mat4x2 mat42_data;
       glm::mat3x4 mat34_data;
       glm::mat4x3 mat43_data;
+
+      bool dirty;
     public:
       Uniform();
       template<typename T>
       void setData(const std::string& name, const T& data);
       const UniformTypes getType() const noexcept;
       const std::string getName() const noexcept;
+      const bool isDirty() const noexcept;
+      void clean() noexcept;
+
       template<typename T>
       const T getData() const noexcept;
 
       const bool operator<(const Uniform& right) const noexcept;
+      const bool operator==(const Uniform& right) const noexcept;
+      const bool operator!=(const Uniform& right) const noexcept;
   };
 }
 
