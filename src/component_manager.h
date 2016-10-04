@@ -15,6 +15,7 @@ class ComponentManager {
     void addComponents(std::vector<std::shared_ptr<Component>> components);
     void removeComponent(std::shared_ptr<Component> component);
     void removeComponents(std::vector<std::shared_ptr<Component>> components);
+    const unsigned int count() const noexcept;
     void onStart();
     void onUpdate(const float delta);
     void destroy();

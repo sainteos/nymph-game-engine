@@ -10,7 +10,7 @@
 class ComponentManager;
 class Entity;
 
-class Component : public Events::Subject, public Events::Observer {
+class Component : public Events::Subject, public Events::Observer, virtual public el::Loggable  {
   protected:
     std::weak_ptr<Entity> entity;
     std::shared_ptr<Transform> transform;
@@ -40,6 +40,8 @@ class Component : public Events::Subject, public Events::Observer {
 
     virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
     virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
+
+    virtual void log(el::base::type::ostream_t& os) const;
 
     virtual ~Component() {}
 };

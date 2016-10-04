@@ -181,5 +181,10 @@ namespace Graphics {
     const unsigned long long WrappableText::getValueForSorting() const noexcept {
       return -1;
     }
+
+    void WrappableText::log(el::base::type::ostream_t& os) const {
+      os << "Width: "<<width<<" Height: "<<height<<" Line Spacing: "<<line_spacing;
+      Text::log(os);
+    }
   }
 }

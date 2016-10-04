@@ -59,3 +59,7 @@ const bool Component::operator<(Component& other) noexcept {
   return getValueForSorting() < other.getValueForSorting();
 }
 
+void Component::log(el::base::type::ostream_t& os) const {
+  os<<"id: "<<getId()<<"  active: "<<isActive()<<"  "<<"  transform: "<<glm::to_string(getTransform()->getAbsoluteTranslation())<<"  sort value: "<<getValueForSorting();
+}
+

@@ -1,4 +1,5 @@
 #include <easylogging++.h>
+#include <algorithm>
 #include "engine.h"
 #include "scene_generator.h"
 #include "graphics/ui/text_field.h"
@@ -36,7 +37,7 @@ void Engine::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
       std::stringstream map_list;
 
       for(auto scene : scenes) {
-        map_list << scene.first << '\n';
+        map_list << scene.first->getName() << '\n';
       }
       map_list_text_area->getText()->setText(map_list.str());
       map_list_ui->setActive(true);
@@ -49,21 +50,19 @@ void Engine::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
 
     case Events::EventType::LOAD_MAP: {
       auto casted_event = std::static_pointer_cast<Utility::LoadMapEvent>(event);
-      deactivateScene(active_scenes.begin()->first);
+      deactivateScene(name_area->getText()->getText());
       activateScene(casted_event->getName());
       break;
     }
     case Events::EventType::LOAD_CHARACTER:
       break;
     case Events::EventType::TOGGLE_FREE_CAMERA: {
-      LOG(INFO)<<"Spong";
       if(free_camera) {
         free_camera = false;
         input_system->removeObserver(camera_component);
         input_system->addObserver(sprite_movement);
       }
       else {
-        LOG(INFO)<<"FARP";
         free_camera = true;
         input_system->removeObserver(sprite_movement);
         input_system->addObserver(camera_component);
@@ -83,19 +82,50 @@ void Engine::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
 }
 
 
+std::shared_ptr<Scene> Engine::findSceneByName(const std::string& name) noexcept {
+  auto find_by_name = [&](std::pair<std::shared_ptr<Scene>, bool> pair) {
+    return pair.first->getName() == name;
+  };
+
+  auto scene_iter = std::find_if(scenes.begin(), scenes.end(), find_by_name);
+
+  if(scene_iter == scenes.end()) {
+    return nullptr;
+  }
+  else {
+    return scene_iter->first;
+  }
+}
+
+
 void Engine::activateScene(const std::string& name) {
-  LOG(INFO)<<name;
-  if(active_scenes.count(name) == 0 && scenes.count(name) > 0) {
-    active_scenes[name] = scenes[name];
-    component_manager->addComponents(active_scenes[name]->getComponents());
+  auto scene = findSceneByName(name);
+
+  LOG(INFO)<<"Activating: "<<name;
+  LOG(INFO)<<"Adding Components: "<<scene->getComponents().size();
+
+  if(scene != nullptr) {
+    scenes[scene] = true;
+    component_manager->addComponents(scene->getComponents());
+    for(auto c : scene->getComponents()) {
+      LOG(INFO)<<(*c);
+      c->onStart();
+    }
+    LOG(INFO)<<"Activated!";
     notify(Graphics::UI::ChangeTextEvent::create(name));
   }
 }
 
 void Engine::deactivateScene(const std::string& name) {
-  if(active_scenes.count(name) > 0) {
-    component_manager->removeComponents(active_scenes[name]->getComponents());
-    active_scenes.erase(name);
+  auto scene = findSceneByName(name);
+  
+  LOG(INFO)<<"Deactivating: "<<name;
+  LOG(INFO)<<"Removing Components: "<<scene->getComponents().size();
+
+  if(scene != nullptr && scenes[scene] == true) {
+    scenes[scene] = false;
+    component_manager->removeComponents(scene->getComponents());
+    LOG(INFO)<<"Deactivated!";
   }
 }
 
@@ -192,7 +222,7 @@ void Engine::setup(const std::string config_path) {
   map_list_text->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
   map_list_text->setKerning(0.12);
 
-  map_list_text_area = Graphics::UI::TextArea::create(skin, map_list_text, glm::vec4(0.2, 0.2, 0.2, 0.8), glm::vec4(1.0, 1.0, 1.0, 1.0), 0.5, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 16.0, 11.5);
+  map_list_text_area = Graphics::UI::TextArea::create(skin, map_list_text, glm::vec4(0.2, 0.2, 0.2, 0.8), glm::vec4(1.0, 1.0, 1.0, 1.0), 0.5, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 16.0, 10.0);
   
   map_list_ui->addComponent(map_list_text);
   map_list_ui->addComponent(map_list_text_area);
@@ -209,6 +239,7 @@ void Engine::setup(const std::string config_path) {
   input_system->addObserver(map_list_quit_button);
   
   map_list_ui->setActive(false);
+  camera_component->getTransform()->addChild(map_list_ui->getTransform());
 
   component_manager->addComponents(std::vector<std::shared_ptr<Component>> { map_list_ui->getComponents().begin(), map_list_ui->getComponents().end()});
 
@@ -232,7 +263,7 @@ void Engine::setup(const std::string config_path) {
   name_text->setShader(shader_manager->getShader("simple_text"));
   name_text->setHorizontalAlignment(Graphics::UI::WrappableText::HorizontalAlignment::CENTER);
 
-  auto name_area = Graphics::UI::TextArea::create(skin, name_text, glm::vec4(0.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.8), 0.1, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 10.0, 1.0);
+  name_area = Graphics::UI::TextArea::create(skin, name_text, glm::vec4(0.0, 0.0, 0.0, 0.0), glm::vec4(1.0, 1.0, 1.0, 0.8), 0.1, viewport_tile_width, viewport_tile_height, 0.0, 0.0, 10.0, 1.0);
 
   name_area->getTransform()->translate(glm::vec2(0.0, 5.0));
   this->addObserver(name_area);
@@ -271,16 +302,29 @@ void Engine::setup(const std::string config_path) {
   for(auto map_name : config_manager->getStringVector("maps")) {
     Tmx::Map *map = new Tmx::Map();
     map->ParseFile(map_name);
+    LOG(INFO)<<map_name;
 
     auto stripped_name = map_name.substr(map_name.find_last_of("/") + 1, map_name.size() - map_name.find_last_of("/") - 5);
+    LOG(INFO)<<stripped_name;
     
     auto scene = scene_generator.createSceneFromMap(config_manager->getInt("patch_width"), config_manager->getInt("patch_height"), *map);
-    
+    scene->setName(stripped_name);
 
-    scenes[stripped_name] = scene;
+    LOG(INFO)<<"Components: "<<scene->getComponents().size();
+    LOG(INFO)<<"Entities: "<<scene->getEntities().size();
+    LOG(INFO)<<scenes.size();
+
+    for(auto c : scene->getComponents()) {
+      LOG(INFO)<<(*c);
+    }
+    LOG(INFO)<<"--------------------------";
+
+    scenes[scene] = false;
 
     delete map;
   }
+
+
 
   auto sprite = scene_generator.getDynamicEntityByName("Aidan");
 
@@ -302,7 +346,7 @@ void Engine::setup(const std::string config_path) {
   sprite->setActive(true);
 
   auto stripped_name = config_manager->getString("active_map").substr(config_manager->getString("active_map").find_last_of("/") + 1, config_manager->getString("active_map").size() - config_manager->getString("active_map").find_last_of("/") - 5);
-  scenes[stripped_name]->addEntity(sprite);
+  findSceneByName(stripped_name)->addEntity(sprite);
 
   activateScene(stripped_name);
 }

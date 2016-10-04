@@ -110,5 +110,10 @@ namespace Graphics {
         return false;
       }
     }
+
+    void Text::log(el::base::type::ostream_t& os) const {
+      os << "Text: "<<text<<" Color: "<<glm::to_string(color)<<" Kerning: "<<kerning;
+      Component::log(os);
+    }
   }
 }

@@ -1,20 +1,19 @@
 {
   "window_title": "Spero Engine",
   "fullscreen": false,
-  "active_map": "./project-spero-assets/Maps/Board1.tmx",
+  "active_map": "./project-spero-assets/Maps/Watcher.tmx",
   "maps": [
+    "./project-spero-assets/Maps/Intro_Ramses.tmx",
     "./project-spero-assets/Maps/Board1.tmx",
     "./project-spero-assets/Maps/Cave.tmx",
     "./project-spero-assets/Maps/CrimsonWoods.tmx",
     "./project-spero-assets/Maps/Graveyard.tmx",
-    "./project-spero-assets/Maps/Hollow Springs-Entrance.tmx",
     "./project-spero-assets/Maps/HollowSprings-Church.tmx",
     "./project-spero-assets/Maps/HollowSprings-Forge.tmx",
     "./project-spero-assets/Maps/HollowSprings-Office.tmx",
     "./project-spero-assets/Maps/HollowSprings.tmx",
-    "./project-spero-assets/Maps/Intro_Ramses.tmx",
     "./project-spero-assets/Maps/Mystery.tmx",
-    "./project-spero-assets/Maps/Sanctuary.tmx",
+    "./project-spero-assets/Maps/Sancturary.tmx",
     "./project-spero-assets/Maps/UndeadParadise-Exit.tmx",
     "./project-spero-assets/Maps/UndeadParadise.tmx",
     "./project-spero-assets/Maps/Watcher.tmx"

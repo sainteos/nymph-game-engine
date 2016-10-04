@@ -44,6 +44,8 @@ class SpriteMovement : public Component {
     void moveUp();
     void stopMovingDown();
     void moveDown();
+    
+    virtual void log(el::base::type::ostream_t& os) const;
 };
 
 #endif

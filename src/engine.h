@@ -30,9 +30,8 @@ class Engine : public std::enable_shared_from_this<Engine>, public Events::Subje
     std::shared_ptr<Graphics::TextureManager> texture_manager;
     std::shared_ptr<Utility::ConfigManager> config_manager;
     
-    std::map<std::string, std::shared_ptr<Scene>> scenes;
-
-    std::map<std::string, std::shared_ptr<Scene>> active_scenes;
+    //Bool represents if the scene is active;
+    std::map<std::shared_ptr<Scene>, bool> scenes;
     
     float viewport_tile_width;
     float viewport_tile_height;
@@ -46,9 +45,12 @@ class Engine : public std::enable_shared_from_this<Engine>, public Events::Subje
     std::shared_ptr<Graphics::UI::TextArea> map_list_text_area;
     std::shared_ptr<Entity> character_list_ui;
     std::shared_ptr<Entity> layer_list_ui;
+    std::shared_ptr<Graphics::UI::TextArea> name_area;
 
     std::shared_ptr<SpriteMovement> sprite_movement;
     std::shared_ptr<Graphics::Camera> camera_component;
+
+    std::shared_ptr<Scene> findSceneByName(const std::string& name) noexcept;
 
     void activateScene(const std::string& name);
     void deactivateScene(const std::string& name);
