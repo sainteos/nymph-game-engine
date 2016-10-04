@@ -36,6 +36,8 @@ namespace Graphics {
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
         virtual const unsigned long long getValueForSorting() const noexcept override;
+
+        virtual void log(el::base::type::ostream_t& os) const;
     };
   }
 }

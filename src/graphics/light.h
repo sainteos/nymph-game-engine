@@ -7,7 +7,7 @@
 #include "component.h"
 
 namespace Graphics {
-  class Light : public Component, public el::Loggable {
+  class Light : public Component {
     public:
       enum class Type { POINT, SPOT };
     private:

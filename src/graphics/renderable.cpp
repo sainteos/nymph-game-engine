@@ -177,30 +177,30 @@ namespace Graphics {
 
       if(shader != nullptr) {
         setUniforms();
-        // if(light_reactive) {
-        //   shader->setUniform("num_lights", (int)influencing_lights.size());
-        //   int index = 0;
-        //   std::stringstream light_str;
-        //   for(auto& light : influencing_lights) {
-        //     light_str << "lights[" << index << "].";
-        //     shader->setUniform(light_str.str() + "position", light->getTransform()->getAbsoluteTranslation());
-        //     shader->setUniform(light_str.str() + "color", light->getColor());
-        //     shader->setUniform(light_str.str() + "intensity", light->getIntensity());
-        //     shader->setUniform(light_str.str() + "linear_attenuation", light->getLinearAttenuation());
-        //     if(light->castsQuantizedBands()) {
-        //       shader->setUniform(light_str.str() + "number_quantized_bands", light->getNumberOfQuantizedBands());
-        //     }
-        //     if(light->getType() == Light::Type::POINT) {
-        //       shader->setUniform(light_str.str() + "cone_angle", 0.0f);
-        //     }
-        //     else if(light->getType() == Light::Type::SPOT) {
-        //       shader->setUniform(light_str.str() + "cone_angle", light->getConeAngle());
-        //       shader->setUniform(light_str.str() + "cone_direction", light->getConeDirection());
-        //     }
-        //     light_str.str(std::string());
-        //     index++;
-        //   }
-        // }
+        if(light_reactive) {
+          shader->setUniform("num_lights", (int)influencing_lights.size());
+          int index = 0;
+          std::stringstream light_str;
+          for(auto& light : influencing_lights) {
+            light_str << "lights[" << index << "].";
+            shader->setUniform(light_str.str() + "position", light->getTransform()->getAbsoluteTranslation());
+            shader->setUniform(light_str.str() + "color", light->getColor());
+            shader->setUniform(light_str.str() + "intensity", light->getIntensity());
+            shader->setUniform(light_str.str() + "linear_attenuation", light->getLinearAttenuation());
+            if(light->castsQuantizedBands()) {
+              shader->setUniform(light_str.str() + "number_quantized_bands", light->getNumberOfQuantizedBands());
+            }
+            if(light->getType() == Light::Type::POINT) {
+              shader->setUniform(light_str.str() + "cone_angle", 0.0f);
+            }
+            else if(light->getType() == Light::Type::SPOT) {
+              shader->setUniform(light_str.str() + "cone_angle", light->getConeAngle());
+              shader->setUniform(light_str.str() + "cone_direction", light->getConeDirection());
+            }
+            light_str.str(std::string());
+            index++;
+          }
+        }
 
         shader->useProgram();  
 
@@ -249,10 +249,11 @@ namespace Graphics {
 
   const unsigned long long Renderable::getValueForSorting() const noexcept {
     
-    return (unsigned long long)((unsigned long)highestZ() + 20);
+    return (unsigned long long)((unsigned long)getTransform()->getAbsoluteTranslation().z + 20);
   }
 
   void Renderable::log(el::base::type::ostream_t& os) const {
-    os<<"id: "<<getId()<<"  vao: "<<vertex_array_object<<"  active: "<<isActive()<<"  "<<"  transform: "<<glm::to_string(getTransform()->getAbsoluteTranslation())<<"  sort value: "<<getValueForSorting();
+    os << "vao: "<<vertex_array_object<<" Highest Z: "<<highestZ();
+    Component::log(os);
   }
 }

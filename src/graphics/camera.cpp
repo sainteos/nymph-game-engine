@@ -246,4 +246,9 @@ namespace Graphics {
     negated_for_screen.translate(glm::vec3(-2.0, -2.0, 1.0) * negated_for_screen.getAbsoluteTranslation());
     return negated_for_screen;
   }
+
+  void Camera::log(el::base::type::ostream_t& os) const {
+    os << "Viewport Width: "<<viewport_width<<" Viewport Height: "<<viewport_height<<" Near: "<<near<<" Far: "<<far<<" Velocity: "<<glm::to_string(velocity)<<" Target Position: "<<glm::to_string(target_position)<<" Free Camera: "<<free_camera<<" Speed: "<<free_camera_speed;
+    Component::log(os);
+  }
 }

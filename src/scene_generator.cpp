@@ -45,6 +45,8 @@ const Graphics::VertexData SceneGenerator::generateBasisCube() {
     3, 7, 4, 0
   };
 
+
+
   Graphics::VertexData vertex_data(GL_QUADS);
   vertex_data.addIndices(indices);
   vertex_data.addVec<glm::vec3>(Graphics::VertexData::DATA_TYPE::GEOMETRY, verts);
@@ -52,7 +54,7 @@ const Graphics::VertexData SceneGenerator::generateBasisCube() {
   return vertex_data;
 }
 
-const Graphics::VertexData SceneGenerator::generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos, const unsigned int y_pos, const float z_order, const unsigned int offset_x, const unsigned int offset_y) {
+const Graphics::VertexData SceneGenerator::generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos, const unsigned int y_pos, const unsigned int offset_x, const unsigned int offset_y) {
   std::vector<glm::vec2> texs {
     glm::vec2(0.0, 0.0),
     glm::vec2(0.0, 1.0),
@@ -63,11 +65,16 @@ const Graphics::VertexData SceneGenerator::generateBasisTile(const unsigned int 
   };
 
   Graphics::VertexData vert_data(GL_TRIANGLES);
-  vert_data.addVec<glm::vec3>(Graphics::VertexData::DATA_TYPE::GEOMETRY, generateVertexCoords(base_width, base_height, current_width, current_height, x_pos, y_pos, z_order, offset_x, offset_y));
+  vert_data.addVec<glm::vec3>(Graphics::VertexData::DATA_TYPE::GEOMETRY, generateVertexCoords(base_width, base_height, current_width, current_height, x_pos, y_pos, offset_x, offset_y));
   vert_data.addVec<glm::vec2>(Graphics::VertexData::DATA_TYPE::TEX_COORDS, texs);
   vert_data.addVec<unsigned int>(Graphics::VertexData::DATA_TYPE::TEXTURE_UNIT, std::vector<unsigned int> { 0, 0, 0, 0, 0, 0 });
 
   return vert_data;
+}
+
+const float SceneGenerator::calculateZ(const unsigned int layer_index, const unsigned int total_layers) {
+  LOG(INFO)<<"I: "<<layer_index<<" T: "<<total_layers<<" Z: "<<(-((float)total_layers - (float)layer_index));
+  return -((float)total_layers - (float)layer_index);
 }
 
 std::shared_ptr<Graphics::BaseTexture> SceneGenerator::textureFromTileset(const Tmx::Tileset* tileset, const std::string& path) {
@@ -238,14 +245,14 @@ std::vector<glm::vec2> SceneGenerator::generateTextureCoords(const Tmx::TileLaye
   return texs;
 }
 
-std::vector<glm::vec3> SceneGenerator::generateVertexCoords(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos, const unsigned int y_pos, const float z_order, const unsigned int offset_x, const unsigned int offset_y) {
+std::vector<glm::vec3> SceneGenerator::generateVertexCoords(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos, const unsigned int y_pos, const unsigned int offset_x, const unsigned int offset_y) {
   std::vector<glm::vec3> verts {
-    glm::vec3((float)x_pos + (float)offset_x / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height, z_order),
-    glm::vec3((float)x_pos + (float)offset_x / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height + (float)current_height / (float)base_height, z_order),
-    glm::vec3((float)x_pos + (float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height + (float)current_height / (float)base_height, z_order),
-    glm::vec3((float)x_pos + (float)offset_x / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height, z_order),
-    glm::vec3((float)x_pos + (float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height + (float)current_height / (float)base_height, z_order),
-    glm::vec3((float)x_pos + (float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height, z_order)
+    glm::vec3((float)x_pos + (float)offset_x / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height, 0.0),
+    glm::vec3((float)x_pos + (float)offset_x / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height + (float)current_height / (float)base_height, 0.0),
+    glm::vec3((float)x_pos + (float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height + (float)current_height / (float)base_height, 0.0),
+    glm::vec3((float)x_pos + (float)offset_x / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height, 0.0),
+    glm::vec3((float)x_pos + (float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height + (float)current_height / (float)base_height, 0.0),
+    glm::vec3((float)x_pos + (float)offset_x / (float)base_width + (float)current_width / (float)base_width, (float)y_pos + (float)offset_y / (float)base_height, 0.0)
   };
   return verts;
 }
@@ -259,7 +266,7 @@ std::shared_ptr<Scene> SceneGenerator::createSceneFromMap(const unsigned int pat
   
   for(auto placeholder : map_renderables.dynamic_animations) {
     auto new_entity = dynamic_animations[placeholder.sprite_name].entity;
-    new_entity->getTransform()->translate(glm::vec3((float)placeholder.x_pos, (float)placeholder.y_pos, (float)placeholder.z_order));
+    new_entity->getTransform()->translate(glm::vec3((float)placeholder.x_pos, (float)placeholder.y_pos, placeholder.z_order));
     auto animator = dynamic_animations[placeholder.sprite_name].animator;
     animator->setStartingState(placeholder.default_animation);
     new_entity->addComponent(animator);
@@ -349,16 +356,7 @@ std::vector<std::shared_ptr<Entity>> SceneGenerator::createStaticallyAnimatedTil
   auto layers = map.GetTileLayers();
   auto tilesets = map.GetTilesets();
   auto path = map.GetFilepath();
-  
-  unsigned int max_z_order = 0;
-  unsigned int min_z_order = 0xFFFFFFFF;
-
-  for(auto layer : layers) {
-    if(min_z_order > layer->GetZOrder())
-      min_z_order = layer->GetZOrder();
-    if(max_z_order < layer->GetZOrder())
-      max_z_order = layer->GetZOrder();
-  }
+  unsigned int layer_index = 0;
   
   for(auto layer : layers) {
     for(int y = 0; y < layer->GetHeight(); y++) {
@@ -371,7 +369,7 @@ std::vector<std::shared_ptr<Entity>> SceneGenerator::createStaticallyAnimatedTil
           unsigned int unit = 0;
 
           if(tile != nullptr && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
-            auto renderable = Graphics::Renderable::create(generateBasisTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), 0, 0, -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0));
+            auto renderable = Graphics::Renderable::create(generateBasisTile(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), 0, 0));
             auto animator = Graphics::TileAnimator::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
 
             auto frames = tile->GetFrames();
@@ -398,14 +396,18 @@ std::vector<std::shared_ptr<Entity>> SceneGenerator::createStaticallyAnimatedTil
             entity->addComponent(renderable);
             entity->addComponent(animator);
 
-            entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, 0.0f));
+            entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, calculateZ(layer_index, layers.size())));
             if(layer->IsVisible()) 
               entity->setActive(true);
+            else {
+              entity->setActive(false);
+            }
             animations.push_back(entity);
           }
         }
       }
     }
+    layer_index++;
   }
 
   return animations;
@@ -417,21 +419,11 @@ SceneGenerator::MapRenderables SceneGenerator::createRenderablesFromMap(const un
   auto tilesets = map.GetTilesets();
   auto path = map.GetFilepath();
 
-  //find the min, max z in the given layers
-  unsigned int max_z_order = 0;
-  unsigned int min_z_order = 0xFFFFFFFF;
-
-  for(auto layer : layers) {
-    if(min_z_order > layer->GetZOrder()) {
-      min_z_order = layer->GetZOrder();
-    }
-    if(max_z_order < layer->GetZOrder()) {
-      max_z_order = layer->GetZOrder();
-    }
-  }
-
   unsigned int width_in_patches = ceil((float)map.GetWidth() / (float)patch_width_tiles);
   unsigned int height_in_patches = ceil((float)map.GetHeight() / (float)patch_height_tiles);
+
+  unsigned int total_layers = layers.size();
+  unsigned int layer_index = 0;
 
   for(auto layer : layers) {
     auto layer_entity = std::make_shared<Entity>();
@@ -468,9 +460,6 @@ SceneGenerator::MapRenderables SceneGenerator::createRenderablesFromMap(const un
               continue;
             }
 
-            //Calculate OpenGL compatible z-order
-            auto z_order = -(min_z_order + max_z_order - (float)layer->GetZOrder()) - 1.0;
-
             auto tileset = tilesets[tileset_index];
             auto tile = tileset->GetTile(layer->GetTileId(map_x, map_y));
 
@@ -482,12 +471,12 @@ SceneGenerator::MapRenderables SceneGenerator::createRenderablesFromMap(const un
               placeholder.default_animation = tile->GetProperties().GetStringProperty("DefaultAnimation");
               placeholder.x_pos = map_x;
               placeholder.y_pos = opengl_map_y;
-              placeholder.z_order = z_order;
+              placeholder.z_order = calculateZ(layer_index, total_layers);
               renderables.dynamic_animations.push_back(placeholder);
             }
             else if(!tile) {
               //Generate Vertex Coords
-              auto vertex_coords = generateVertexCoords(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), map_x, opengl_map_y, z_order);
+              auto vertex_coords = generateVertexCoords(map.GetTileWidth(), map.GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), map_x, opengl_map_y);
               patch_vertices.insert(patch_vertices.end(), vertex_coords.begin(), vertex_coords.end());
               
               //Generate Textures
@@ -554,18 +543,20 @@ SceneGenerator::MapRenderables SceneGenerator::createRenderablesFromMap(const un
             renderable->setShader((*shader_manager.lock())["simple_texture"]); 
           }
 
-          if(layer->IsVisible()) {
-            renderable->setActive(true);
-          }
-          else {
-            renderable->setActive(false);
-          }
-
           layer_entity->addComponent(renderable);
 
         }
       }
+      if(layer->IsVisible()) {
+        layer_entity->setActive(true);
+      }
+      else {
+        layer_entity->setActive(false);
+      }
     }
+     
+    layer_entity->getTransform()->translate(glm::vec3(0.0, 0.0, calculateZ(layer_index, total_layers)));
+    layer_index++;
     renderables.entities.push_back(layer_entity);
   }
   return renderables;

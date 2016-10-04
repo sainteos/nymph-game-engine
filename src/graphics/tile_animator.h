@@ -129,6 +129,12 @@ namespace Graphics {
       virtual const unsigned long long getValueForSorting() const noexcept override {
         return getId();
       }
+
+
+      virtual void log(el::base::type::ostream_t& os) const {
+        os << "Current State: " << current_state << " Tile Width: "<<tile_width<<" Tile Height: "<<tile_height<<" Tileset Width: "<<tileset_width<<" Tileset Height: "<<tileset_height;
+        Component::log(os);
+      }
   };
 }
 

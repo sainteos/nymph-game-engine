@@ -14,7 +14,7 @@
 #include "uniform.h"
 
 namespace Graphics {
-  class Renderable : public Component, virtual public el::Loggable {
+  class Renderable : public Component{
     private:
       unsigned int vertex_array_object;
       std::shared_ptr<Shader> shader;

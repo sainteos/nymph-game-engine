@@ -34,6 +34,10 @@ void ComponentManager::removeComponents(std::vector<std::shared_ptr<Component>> 
     removeComponent(component);
 }
 
+const unsigned int ComponentManager::count() const noexcept {
+  return components.size();
+}
+
 void ComponentManager::onStart() {
   if(camera.lock() == nullptr)
     throw Exceptions::NoCameraAttachedException();

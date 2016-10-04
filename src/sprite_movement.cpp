@@ -196,3 +196,8 @@ void SpriteMovement::stopMovingDown() {
 void SpriteMovement::moveDown() {
   down_down = true;
 }
+
+void SpriteMovement::log(el::base::type::ostream_t& os) const {
+  os << "Moving Speed: "<<moving_speed<<" Move Quantization (tiles): "<<move_quantization_in_tiles<<" Current Velocity: "<<glm::to_string(current_velocity)<<" Next Position: "<<glm::to_string(next_position);
+  Component::log(os);
+}

@@ -20,7 +20,7 @@ class SceneGenerator {
       std::string default_animation;
       int x_pos;
       int y_pos;
-      int z_order;
+      float z_order;
     };
 
     struct MapRenderables {
@@ -38,18 +38,20 @@ class SceneGenerator {
     std::map<std::string, DynamicAnimation> dynamic_animations;
 
     const Graphics::VertexData generateBasisCube();
-    const Graphics::VertexData generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos = 0, const unsigned int y_pos = 0, const float z_order = -1.0, const unsigned int offset_x = 0, const unsigned int offset_y = 0);
+    const Graphics::VertexData generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos = 0, const unsigned int y_pos = 0,  const unsigned int offset_x = 0, const unsigned int offset_y = 0);
     std::shared_ptr<Graphics::BaseTexture> textureFromTileset(const Tmx::Tileset* tileset, const std::string& path);
     std::shared_ptr<Graphics::BaseTexture> normalTextureFromTileset(const Tmx::Tileset* tileset, const std::string& path);
     std::shared_ptr<Graphics::BaseTexture> displacementTextureFromTileset(const Tmx::Tileset* tileset, const std::string& path);
     std::vector<glm::vec2> generateTextureCoords(const Tmx::TileLayer* layer, const unsigned int x_pos, const unsigned int y_pos, const unsigned int texture_width, const unsigned int texture_height, const unsigned int tile_width, const unsigned int tile_height);
-    std::vector<glm::vec3> generateVertexCoords(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos = 0, const unsigned int y_pos = 0, const float z_order = -1.0, const unsigned int offset_x = 0, const unsigned int offset_y = 0);
+    std::vector<glm::vec3> generateVertexCoords(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos = 0, const unsigned int y_pos = 0, const unsigned int offset_x = 0, const unsigned int offset_y = 0);
 
 
     MapRenderables createRenderablesFromMap(const unsigned int patch_width_tiles, const unsigned int patch_height_tiles, const Tmx::Map& map);
     std::vector<std::shared_ptr<Entity>> createStaticallyAnimatedTilesFromMap(const Tmx::Map& map);
     std::map<std::string, DynamicAnimation> createAnimationsFromAnimationMap(const Tmx::Map& map);
     std::vector<std::shared_ptr<Component>> createLightsFromMap(const Tmx::Map& map);
+
+    const float calculateZ(unsigned int layer_index, unsigned int layers_total);
   public:
     SceneGenerator(const Tmx::Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager);
     SceneGenerator() = delete;
