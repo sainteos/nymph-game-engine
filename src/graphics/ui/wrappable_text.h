@@ -3,13 +3,17 @@
 
 #include <map>
 #include "graphics/ui/text.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Text
 
 namespace Graphics {
   namespace UI {
     class WrappableText : public Text {
       public:
-        enum class HorizontalAlignment {LEFT, CENTER, RIGHT};
-        enum class VerticalAlignment { TOP, CENTER, BOTTOM};
+        //= SCRIPTABLE ENUM
+        enum HorizontalAlignment : unsigned int {LEFT, HCENTER, RIGHT};
+        //= SCRIPTABLE ENUM
+        enum VerticalAlignment : unsigned int { TOP, VCENTER, BOTTOM};
       private:
         float width;
         float height;
@@ -22,6 +26,7 @@ namespace Graphics {
       protected:
         std::vector<std::pair<float, std::vector<Character>>> splitTextIntoLines();
       public:
+      //= BEGIN SCRIPTABLE
         WrappableText();
         void setSize(float width, float height);
         void setLineSpacing(float spacing);
@@ -29,6 +34,9 @@ namespace Graphics {
         void setVerticalAlignment(const VerticalAlignment& alignment);
 
         virtual void setText(const std::string& text) override;
+        const std::string to_string() const noexcept;
+        virtual const std::string className() const noexcept override;
+      //= END SCRIPTABLE
 
         virtual void onDestroy() override;
         virtual void onStart() override;

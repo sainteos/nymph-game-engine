@@ -5,6 +5,8 @@
 #include <memory>
 #include <list>
 
+//= SCRIPTABLE
+
 class Transform : public std::enable_shared_from_this<Transform> {
   private:
     std::weak_ptr<Transform> parent;
@@ -14,6 +16,8 @@ class Transform : public std::enable_shared_from_this<Transform> {
     glm::quat local_rotation;
     glm::vec3 local_scale;
   public:
+
+    //= BEGIN SCRIPTABLE
     Transform();
     ~Transform();
 
@@ -32,16 +36,18 @@ class Transform : public std::enable_shared_from_this<Transform> {
 
     const unsigned int getTreeSize() const;
 
-    template<class T>
-    void translate(const T& translation);
+    void translate(const float x, const float y) noexcept;
+    void translate(const float x, const float y, const float z) noexcept;
+    void translate(const glm::vec3& vec) noexcept;
+    void translate(const glm::vec2& vec) noexcept;
 
     const glm::vec3 getAbsoluteTranslation() const noexcept;
     const glm::vec3 getLocalTranslation() const noexcept;
 
-    void rotate(const float angle, const glm::vec3& axis);
-    void rotate(const float angle_x, const float angle_y, const float angle_z);
-    void rotate(const glm::vec3& euler_angles);
-    void rotate(const glm::quat& quat);
+    void rotate(const float angle_x, const float angle_y, const float angle_z) noexcept;
+    void rotate(const glm::vec3& euler_angles) noexcept;
+    void rotate(const glm::quat& quat) noexcept;
+    void rotate(const float angle, const glm::vec3& axis) noexcept;
 
     const glm::quat getAbsoluteRotation() const noexcept;
     const float getAbsoluteRotationAngle() const noexcept;
@@ -53,15 +59,21 @@ class Transform : public std::enable_shared_from_this<Transform> {
     const glm::vec3 getLocalRotationAxis() const noexcept;
     const glm::vec3 getLocalEulerAngles() const noexcept;
 
-
-    template<class T>
-    void scale(const T& scale);
+    void scale(const float x) noexcept;
+    void scale(const float x, const float y) noexcept;
+    void scale(const float x, const float y, const float z) noexcept;
+    void scale(const glm::vec2& vec) noexcept;
+    void scale(const glm::vec3& vec) noexcept;
 
     const glm::vec3 getAbsoluteScale() const noexcept;
     const glm::vec3 getLocalScale() const noexcept;
 
     const glm::mat4 getAbsoluteTransformationMatrix() const noexcept;
     const glm::mat4 getLocalTransformationMatrix() const noexcept;
+
+    const std::string to_string() const noexcept;
+    //= END SCRIPTABLE
+
 };
 
 #endif

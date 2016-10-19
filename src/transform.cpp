@@ -53,15 +53,21 @@ const unsigned int Transform::getTreeSize() const {
   return size;
 }
 
-template<>
-void Transform::translate(const glm::vec2& translation) {
+void Transform::translate(const glm::vec2& translation) noexcept {
   local_translation += glm::vec3(translation, 0.0f);
 }
 
-template<>
-void Transform::translate(const glm::vec3& translation) {
+void Transform::translate(const glm::vec3& translation) noexcept {
   local_translation += translation;
 }
+
+void Transform::translate(const float x, const float y) noexcept {
+  translate(glm::vec2(x, y));
+}
+
+void Transform::translate(const float x, const float y, const float z) noexcept {
+  translate(glm::vec3(x, y, z));
+}\
 
 const glm::vec3 Transform::getAbsoluteTranslation() const noexcept {
   if(parent.lock() != nullptr) 
@@ -74,22 +80,22 @@ const glm::vec3 Transform::getLocalTranslation() const noexcept {
   return local_translation;
 }
 
-void Transform::rotate(const float angle, const glm::vec3& axis) {
+void Transform::rotate(const float angle, const glm::vec3& axis) noexcept {
   glm::quat quaternion = glm::angleAxis(angle, axis);
   local_rotation = quaternion * local_rotation;
 }
 
-void Transform::rotate(const float angle_x, const float angle_y, const float angle_z) {
+void Transform::rotate(const float angle_x, const float angle_y, const float angle_z) noexcept {
   glm::quat quaternion = glm::quat(glm::vec3(angle_x, angle_y, angle_z));
   local_rotation = quaternion * local_rotation;
 }
 
-void Transform::rotate(const glm::vec3& euler_angles) {
+void Transform::rotate(const glm::vec3& euler_angles) noexcept {
   glm::quat quaternion = glm::quat(euler_angles);
   local_rotation = quaternion * local_rotation;
 }
 
-void Transform::rotate(const glm::quat& quat) {
+void Transform::rotate(const glm::quat& quat) noexcept{
   local_rotation = quat * local_rotation;
 }
 
@@ -128,19 +134,24 @@ const glm::vec3 Transform::getLocalEulerAngles() const noexcept {
   return glm::eulerAngles(local_rotation);
 }
 
-template<>
-void Transform::scale(const glm::vec3& scale) {
+void Transform::scale(const glm::vec3& scale) noexcept {
   local_scale *= scale;
 }
 
-template<>
-void Transform::scale(const glm::vec2& scale) {
+void Transform::scale(const glm::vec2& scale) noexcept {
   local_scale *= glm::vec3(scale, 1.0);
 }
 
-template<>
-void Transform::scale(const float& scale) {
-  local_scale *= glm::vec3(scale);
+void Transform::scale(const float x) noexcept {
+  local_scale *= glm::vec3(x);
+}
+
+void Transform::scale(const float x, const float y) noexcept {
+  scale(glm::vec2(x, y));
+}
+
+void Transform::scale(const float x, const float y, const float z) noexcept {
+  scale(glm::vec3(x, y, z));
 }
 
 const glm::vec3 Transform::getAbsoluteScale() const noexcept {
@@ -171,6 +182,7 @@ const glm::mat4 Transform::getLocalTransformationMatrix() const noexcept {
 void Transform::addChild(std::shared_ptr<Transform> transform) {
   transform->parent = shared_from_this();
   children.push_back(transform);
+  children.unique();
 }
 
 void Transform::removeChild(std::shared_ptr<Transform> transform) {
@@ -189,4 +201,10 @@ std::shared_ptr<Transform> Transform::getParent() const {
   else {
     return nullptr;
   }
+}
+
+const std::string Transform::to_string() const noexcept {
+  std::stringstream str;
+  str << "Transform: translation("<<glm::to_string(getAbsoluteTranslation())<<") rotation(axis: "<<glm::to_string(getAbsoluteRotationAxis())<<" angle: "<<getAbsoluteRotationAngle()<<+") scale("<<glm::to_string(getAbsoluteScale())<<")";
+  return str.str();
 }

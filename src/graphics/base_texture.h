@@ -7,19 +7,20 @@
 #include <glew.h>
 #endif
 #include <string>
-#include "graphics/base_sampler.h"
+//= SCRIPTABLE
 
 namespace Graphics {
   class BaseTexture {
     private:
       unsigned int texture_object;
       GLenum texture_type;
-      std::shared_ptr<BaseSampler> sampler;
       bool loaded;
       unsigned int width;
       unsigned int height;
+      std::string name;
     public:
       BaseTexture() = delete;
+      //= BEGIN SCRIPTABLE
       BaseTexture(const GLenum texture_type);
       ~BaseTexture();
 
@@ -27,12 +28,16 @@ namespace Graphics {
       const unsigned int getHeight() const noexcept;
       
       virtual const bool load(const std::string& filename);
-      virtual void setSampler(const std::shared_ptr<BaseSampler> sampler);
       virtual void bind(const unsigned int texture_unit);
+      virtual const bool isLoaded() const noexcept;
+
+      void setName(const std::string name) noexcept;
+      const std::string getName() const noexcept;
+
+      const std::string to_string() const noexcept;
+      //= END SCRIPTABLE
 
       virtual const unsigned int getTextureObject() const noexcept;
-      virtual const std::shared_ptr<BaseSampler> getSampler() const noexcept;
-      virtual const bool isLoaded() const noexcept;
   };
 }
 

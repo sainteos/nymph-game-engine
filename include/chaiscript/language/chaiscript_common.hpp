@@ -1,7 +1,7 @@
 // This file is distributed under the BSD License.
 // See "license.txt" for details.
 // Copyright 2009-2012, Jonathan Turner (jonathan@emptycrate.com)
-// Copyright 2009-2015, Jason Turner (jason@emptycrate.com)
+// Copyright 2009-2016, Jason Turner (jason@emptycrate.com)
 // http://www.chaiscript.com
 
 #ifndef CHAISCRIPT_COMMON_HPP_
@@ -34,7 +34,7 @@ namespace chaiscript
   /// Types of AST nodes available to the parser and eval
   class AST_Node_Type {
   public:
-    enum Type { Error, Int, Float, Id, Char, Str, Eol, Fun_Call, Inplace_Fun_Call, Arg_List, Variable, Equation, Var_Decl,
+    enum Type { Error, Int, Float, Id, Char, Str, Eol, Fun_Call, Arg_List, Variable, Equation, Var_Decl,
                 Comparison, Addition, Subtraction, Multiplication, Division, Modulus, Array_Call, Dot_Access, Quoted_String, Single_Quoted_String,
                 Lambda, Block, Def, While, If, For, Inline_Array, Inline_Map, Return, File, Prefix, Break, Continue, Map_Pair, Value_Range,
                 Inline_Range, Annotation, Try, Catch, Finally, Method, Attr_Decl, Shift, Equality, Bitwise_And, Bitwise_Xor, Bitwise_Or, 
@@ -47,7 +47,7 @@ namespace chaiscript
 
     /// Helper lookup to get the name of each node type
     const char *ast_node_type_to_string(int ast_node_type) {
-      const char *ast_node_types[] = { "Internal Parser Error", "Int", "Float", "Id", "Char", "Str", "Eol", "Fun_Call", "Inplace_Fun_Call", "Arg_List", "Variable", "Equation", "Var_Decl",
+      const char *ast_node_types[] = { "Internal Parser Error", "Int", "Float", "Id", "Char", "Str", "Eol", "Fun_Call", "Arg_List", "Variable", "Equation", "Var_Decl",
                                     "Comparison", "Addition", "Subtraction", "Multiplication", "Division", "Modulus", "Array_Call", "Dot_Access", "Quoted_String", "Single_Quoted_String",
                                     "Lambda", "Block", "Def", "While", "If", "For", "Inline_Array", "Inline_Map", "Return", "File", "Prefix", "Break", "Continue", "Map_Pair", "Value_Range",
                                     "Inline_Range", "Annotation", "Try", "Catch", "Finally", "Method", "Attr_Decl", "Shift", "Equality", "Bitwise_And", "Bitwise_Xor", "Bitwise_Or", 
@@ -276,10 +276,13 @@ namespace chaiscript
       template<typename T>
         static std::string format_location(const T &t)
         {
-          std::ostringstream oss;
-          oss << "(" << t->filename() << " " << t->start().line << ", " << t->start().column << ")"; 
-
-          return oss.str();
+          if (t) {
+            std::ostringstream oss;
+            oss << "(" << t->filename() << " " << t->start().line << ", " << t->start().column << ")"; 
+            return oss.str();
+          } else {
+            return "(internal)";
+          }
 
         }
 
@@ -476,7 +479,7 @@ namespace chaiscript
         return oss.str();
       }
 
-      Boxed_Value eval(chaiscript::detail::Dispatch_Engine &t_e) const
+      Boxed_Value eval(const chaiscript::detail::Dispatch_State &t_e) const
       {
         try {
           return eval_internal(t_e);
@@ -512,7 +515,7 @@ namespace chaiscript
       {
       }
 
-      virtual Boxed_Value eval_internal(chaiscript::detail::Dispatch_Engine &) const
+      virtual Boxed_Value eval_internal(const chaiscript::detail::Dispatch_State &) const
       {
         throw std::runtime_error("Undispatched ast_node (internal error)");
       }
@@ -554,21 +557,20 @@ namespace chaiscript
         Scope_Push_Pop(const Scope_Push_Pop &) = delete;
         Scope_Push_Pop& operator=(const Scope_Push_Pop &) = delete;
 
-        Scope_Push_Pop(chaiscript::detail::Dispatch_Engine &t_de)
-          : m_de(t_de)
+        Scope_Push_Pop(const chaiscript::detail::Dispatch_State &t_ds)
+          : m_ds(t_ds)
         {
-          m_de.new_scope();
+          m_ds.get()->new_scope(m_ds.get().stack_holder());
         }
 
         ~Scope_Push_Pop()
         {
-          m_de.pop_scope();
+          m_ds.get()->pop_scope(m_ds.get().stack_holder());
         }
 
 
         private:
-
-        chaiscript::detail::Dispatch_Engine &m_de;
+        std::reference_wrapper<const chaiscript::detail::Dispatch_State> m_ds;
       };
 
       /// Creates a new function call and pops it on destruction
@@ -577,31 +579,30 @@ namespace chaiscript
         Function_Push_Pop(const Function_Push_Pop &) = delete;
         Function_Push_Pop& operator=(const Function_Push_Pop &) = delete;
 
-        Function_Push_Pop(chaiscript::detail::Dispatch_Engine &t_de)
-          : m_de(t_de)
+        Function_Push_Pop(const chaiscript::detail::Dispatch_State &t_ds)
+          : m_ds(t_ds)
         {
-          m_de.new_function_call();
+          m_ds.get()->new_function_call(m_ds.get().stack_holder(), m_ds.get().conversion_saves());
         }
 
         ~Function_Push_Pop()
         {
-          m_de.pop_function_call();
+          m_ds.get()->pop_function_call(m_ds.get().stack_holder(), m_ds.get().conversion_saves());
         }
 
         void save_params(const std::vector<Boxed_Value> &t_params)
         {
-          m_de.save_function_params(t_params);
+          m_ds.get()->save_function_params(t_params);
         }
 
         void save_params(std::initializer_list<Boxed_Value> t_params)
         {
-          m_de.save_function_params(std::move(t_params));
+          m_ds.get()->save_function_params(std::move(t_params));
         }
 
 
         private:
-
-        chaiscript::detail::Dispatch_Engine &m_de;
+          std::reference_wrapper<const chaiscript::detail::Dispatch_State> m_ds;
       };
 
       /// Creates a new scope then pops it on destruction
@@ -610,21 +611,20 @@ namespace chaiscript
         Stack_Push_Pop(const Stack_Push_Pop &) = delete;
         Stack_Push_Pop& operator=(const Stack_Push_Pop &) = delete;
 
-        Stack_Push_Pop(chaiscript::detail::Dispatch_Engine &t_de)
-          : m_de(t_de)
+        Stack_Push_Pop(const chaiscript::detail::Dispatch_State &t_ds)
+          : m_ds(t_ds)
         {
-          m_de.new_stack();
+          m_ds.get()->new_stack(m_ds.get().stack_holder());
         }
 
         ~Stack_Push_Pop()
         {
-          m_de.pop_stack();
+          m_ds.get()->pop_stack(m_ds.get().stack_holder());
         }
 
 
         private:
-
-        chaiscript::detail::Dispatch_Engine &m_de;
+          std::reference_wrapper<const chaiscript::detail::Dispatch_State> m_ds;
       };
     }
   }

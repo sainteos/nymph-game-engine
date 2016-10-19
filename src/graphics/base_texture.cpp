@@ -5,7 +5,7 @@
 #include "exceptions/texture_not_loaded_exception.h"
 
 namespace Graphics {
-  BaseTexture::BaseTexture(const GLenum texture_type) : loaded(false), texture_object(0), texture_type(texture_type), sampler(nullptr), width(0), height(0) {
+  BaseTexture::BaseTexture(const GLenum texture_type) : loaded(false), texture_object(0), texture_type(texture_type), width(0), height(0) {
 
   }
 
@@ -66,29 +66,35 @@ namespace Graphics {
     return success;
   }
 
-  void BaseTexture::setSampler(const std::shared_ptr<BaseSampler> sampler) {
-    this->sampler = sampler;
-  }
-
   void BaseTexture::bind(const unsigned int texture_unit) {
     if(!loaded)
       throw Exceptions::TextureNotLoadedException();
 
     glActiveTexture(GL_TEXTURE0 + texture_unit);
     glBindTexture(texture_type, texture_object);
-    if(sampler != nullptr)
-      sampler->bind(texture_unit);
   }
 
   const unsigned int BaseTexture::getTextureObject() const noexcept {
     return texture_object;
   }
 
-  const std::shared_ptr<BaseSampler> BaseTexture::getSampler() const noexcept {
-    return sampler;
-  }
 
   const bool BaseTexture::isLoaded() const noexcept {
     return loaded;
+  }
+
+  void BaseTexture::setName(const std::string name) noexcept {
+    this->name = name;
+  }
+
+  const std::string BaseTexture::getName() const noexcept {
+    return this->name;
+  }
+
+  const std::string BaseTexture::to_string() const noexcept {
+    std::stringstream str;
+
+    str << "Texture: "<<getName()<<" Width: "<<getWidth()<<" Height: "<<getHeight()<<" Loaded: "<<isLoaded();
+    return str.str();
   }
 }

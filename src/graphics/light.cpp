@@ -100,6 +100,10 @@ namespace Graphics {
     return getId();
   }
 
+  const std::string Light::className() const noexcept {
+    return "Graphics::Light";
+  }
+
   void Light::log(el::base::type::ostream_t& os) const {
     os<<"{Light("<<typeToString(type)<<")} "<<"Color: "<<glm::to_string(color)<<" Intensity: "<<intensity<<" LinearAttenuation: "<<linear_attenuation
       <<" Quadratic Attenuation: "<<quadratic_attenuation<<" Quantized Bands: "<<quantized_bands<<" ConeAngle: "<<cone_angle

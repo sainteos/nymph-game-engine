@@ -4,11 +4,15 @@
 #include "events/event.h"
 #include "events/event_type.h"
 
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Event
 namespace Utility {
   class ListMapsEvent : public Events::Event {
     public:
+      //= BEGIN SCRIPTABLE
       ListMapsEvent() : Event(Events::EventType::LIST_MAPS) {}
       static std::shared_ptr<ListMapsEvent> create() { return std::make_shared<ListMapsEvent>(); }
+      //= END SCRIPTABLE
   };
 }
 

@@ -7,6 +7,8 @@
 #include "transform.h"
 #include "graphics/camera.h"
 
+//= SCRIPTABLE
+
 class Entity  : public std::enable_shared_from_this<Entity>  {
   private:
     std::shared_ptr<Transform> transform;
@@ -14,6 +16,7 @@ class Entity  : public std::enable_shared_from_this<Entity>  {
   protected:
     std::list<std::shared_ptr<Component>> components;
   public:
+    //= BEGIN SCRIPTABLE
     Entity();
     void addComponent(std::shared_ptr<Component> component);
     void removeComponent(std::shared_ptr<Component> component);
@@ -21,6 +24,7 @@ class Entity  : public std::enable_shared_from_this<Entity>  {
     std::shared_ptr<Transform> getTransform() const noexcept;
     void setActive(const bool active) noexcept;
     const bool isActive() const noexcept;
+    //= END SCRIPTABLE
 };
 
 #endif

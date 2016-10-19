@@ -1,7 +1,7 @@
 // This file is distributed under the BSD License.
 // See "license.txt" for details.
 // Copyright 2009-2012, Jonathan Turner (jonathan@emptycrate.com)
-// Copyright 2009-2015, Jason Turner (jason@emptycrate.com)
+// Copyright 2009-2016, Jason Turner (jason@emptycrate.com)
 // http://www.chaiscript.com
 
 #ifndef CHAISCRIPT_TYPE_INFO_HPP_
@@ -29,20 +29,20 @@ namespace chaiscript
   class Type_Info
   {
     public:
-       CHAISCRIPT_CONSTEXPR Type_Info(bool t_is_const, bool t_is_reference, bool t_is_pointer, bool t_is_void, 
+      CHAISCRIPT_CONSTEXPR Type_Info(bool t_is_const, bool t_is_reference, bool t_is_pointer, bool t_is_void, 
           bool t_is_arithmetic, const std::type_info *t_ti, const std::type_info *t_bare_ti)
         : m_type_info(t_ti), m_bare_type_info(t_bare_ti),
-        m_is_const(t_is_const), m_is_reference(t_is_reference), m_is_pointer(t_is_pointer),
-        m_is_void(t_is_void), m_is_arithmetic(t_is_arithmetic),
-        m_is_undef(false)
+          m_flags((static_cast<unsigned int>(t_is_const) << is_const_flag)
+                + (static_cast<unsigned int>(t_is_reference) << is_reference_flag)
+                + (static_cast<unsigned int>(t_is_pointer) << is_pointer_flag)
+                + (static_cast<unsigned int>(t_is_void) << is_void_flag)
+                + (static_cast<unsigned int>(t_is_arithmetic) << is_arithmetic_flag))
       {
       }
 
-       CHAISCRIPT_CONSTEXPR Type_Info()
+      CHAISCRIPT_CONSTEXPR Type_Info()
         : m_type_info(nullptr), m_bare_type_info(nullptr),
-        m_is_const(false), m_is_reference(false), m_is_pointer(false),
-        m_is_void(false), m_is_arithmetic(false), 
-        m_is_undef(true)
+          m_flags(1 << is_undef_flag)
       {
       }
 
@@ -58,6 +58,16 @@ namespace chaiscript
       CHAISCRIPT_CONSTEXPR bool operator<(const Type_Info &ti) const CHAISCRIPT_NOEXCEPT
       {
         return m_type_info < ti.m_type_info;
+      }
+
+      CHAISCRIPT_CONSTEXPR bool operator!=(const Type_Info &ti) const CHAISCRIPT_NOEXCEPT
+      {
+        return !(operator==(ti));
+      }
+
+      CHAISCRIPT_CONSTEXPR bool operator!=(const std::type_info &ti) const CHAISCRIPT_NOEXCEPT
+      {
+        return !(operator==(ti));
       }
 
       CHAISCRIPT_CONSTEXPR bool operator==(const Type_Info &ti) const CHAISCRIPT_NOEXCEPT
@@ -83,12 +93,12 @@ namespace chaiscript
           && (*m_bare_type_info) == ti;
       }
 
-      CHAISCRIPT_CONSTEXPR bool is_const() const CHAISCRIPT_NOEXCEPT { return m_is_const; }
-      CHAISCRIPT_CONSTEXPR bool is_reference() const CHAISCRIPT_NOEXCEPT { return m_is_reference; }
-      CHAISCRIPT_CONSTEXPR bool is_void() const CHAISCRIPT_NOEXCEPT { return m_is_void; }
-      CHAISCRIPT_CONSTEXPR bool is_arithmetic() const CHAISCRIPT_NOEXCEPT { return m_is_arithmetic; }
-      CHAISCRIPT_CONSTEXPR bool is_undef() const CHAISCRIPT_NOEXCEPT { return m_is_undef; }
-      CHAISCRIPT_CONSTEXPR bool is_pointer() const CHAISCRIPT_NOEXCEPT { return m_is_pointer; }
+      CHAISCRIPT_CONSTEXPR bool is_const() const CHAISCRIPT_NOEXCEPT { return (m_flags & (1 << is_const_flag)) != 0; }
+      CHAISCRIPT_CONSTEXPR bool is_reference() const CHAISCRIPT_NOEXCEPT { return (m_flags & (1 << is_reference_flag)) != 0; }
+      CHAISCRIPT_CONSTEXPR bool is_void() const CHAISCRIPT_NOEXCEPT { return (m_flags & (1 << is_void_flag)) != 0; }
+      CHAISCRIPT_CONSTEXPR bool is_arithmetic() const CHAISCRIPT_NOEXCEPT { return (m_flags & (1 << is_arithmetic_flag)) != 0; }
+      CHAISCRIPT_CONSTEXPR bool is_undef() const CHAISCRIPT_NOEXCEPT { return (m_flags & (1 << is_undef_flag)) != 0; }
+      CHAISCRIPT_CONSTEXPR bool is_pointer() const CHAISCRIPT_NOEXCEPT { return (m_flags & (1 << is_pointer_flag)) != 0; }
 
       std::string name() const
       {
@@ -118,12 +128,13 @@ namespace chaiscript
     private:
       const std::type_info *m_type_info;
       const std::type_info *m_bare_type_info;
-      bool m_is_const;
-      bool m_is_reference;
-      bool m_is_pointer;
-      bool m_is_void;
-      bool m_is_arithmetic;
-      bool m_is_undef;
+      unsigned int m_flags;
+      static const int is_const_flag = 0;
+      static const int is_reference_flag = 1;
+      static const int is_pointer_flag = 2;
+      static const int is_void_flag = 3;
+      static const int is_arithmetic_flag = 4;
+      static const int is_undef_flag = 5;
   };
 
   namespace detail
@@ -134,12 +145,14 @@ namespace chaiscript
       {
         typedef T type;
 
-         static Type_Info get()
+        static Type_Info get()
         {
-          return Type_Info(std::is_const<typename std::remove_pointer<typename std::remove_reference<T>::type>::type>::value, std::is_reference<T>::value, std::is_pointer<T>::value, 
+          return Type_Info(std::is_const<typename std::remove_pointer<typename std::remove_reference<T>::type>::type>::value, 
+              std::is_reference<T>::value, std::is_pointer<T>::value, 
               std::is_void<T>::value,
-              std::is_arithmetic<T>::value && !std::is_same<typename std::remove_const<T>::type, bool>::value,
-              &typeid(T), 
+              (std::is_arithmetic<T>::value || std::is_arithmetic<typename std::remove_reference<T>::type>::value)
+                && !std::is_same<typename std::remove_const<typename std::remove_reference<T>::type>::type, bool>::value,
+              &typeid(T),
               &typeid(typename Bare_Type<T>::type));
         }
       };
@@ -149,14 +162,19 @@ namespace chaiscript
       {
         typedef T type;
 
-         static Type_Info get()
+        static Type_Info get()
         {
           return Type_Info(std::is_const<T>::value, std::is_reference<T>::value, std::is_pointer<T>::value, 
               std::is_void<T>::value,
-              std::is_arithmetic<T>::value && !std::is_same<typename std::remove_const<T>::type, bool>::value,
+              std::is_arithmetic<T>::value && !std::is_same<typename std::remove_const<typename std::remove_reference<T>::type>::type, bool>::value,
               &typeid(std::shared_ptr<T> ), 
               &typeid(typename Bare_Type<T>::type));
         }
+      };
+
+    template<typename T>
+      struct Get_Type_Info<std::shared_ptr<T> &> : Get_Type_Info<std::shared_ptr<T>>
+      {
       };
 
     template<typename T>
@@ -164,11 +182,11 @@ namespace chaiscript
       {
         typedef T type;
 
-         static Type_Info get()
+        static Type_Info get()
         {
           return Type_Info(std::is_const<T>::value, std::is_reference<T>::value, std::is_pointer<T>::value, 
               std::is_void<T>::value,
-              std::is_arithmetic<T>::value && !std::is_same<typename std::remove_const<T>::type, bool>::value,
+              std::is_arithmetic<T>::value && !std::is_same<typename std::remove_const<typename std::remove_reference<T>::type>::type, bool>::value,
               &typeid(const std::shared_ptr<T> &), 
               &typeid(typename Bare_Type<T>::type));
         }
@@ -179,11 +197,11 @@ namespace chaiscript
       {
         typedef T type;
 
-         static Type_Info get()
+        static Type_Info get()
         {
           return Type_Info(std::is_const<T>::value, std::is_reference<T>::value, std::is_pointer<T>::value, 
               std::is_void<T>::value,
-              std::is_arithmetic<T>::value && !std::is_same<typename std::remove_const<T>::type, bool>::value,
+              std::is_arithmetic<T>::value && !std::is_same<typename std::remove_const<typename std::remove_reference<T>::type>::type, bool>::value,
               &typeid(std::reference_wrapper<T> ), 
               &typeid(typename Bare_Type<T>::type));
         }
@@ -194,11 +212,11 @@ namespace chaiscript
       {
         typedef T type;
 
-         static Type_Info get()
+        static Type_Info get()
         {
           return Type_Info(std::is_const<T>::value, std::is_reference<T>::value, std::is_pointer<T>::value, 
               std::is_void<T>::value,
-              std::is_arithmetic<T>::value && !std::is_same<typename std::remove_const<T>::type, bool>::value,
+              std::is_arithmetic<T>::value && !std::is_same<typename std::remove_const<typename std::remove_reference<T>::type>::type, bool>::value,
               &typeid(const std::reference_wrapper<T> &), 
               &typeid(typename Bare_Type<T>::type));
         }

@@ -1,7 +1,7 @@
 // This file is distributed under the BSD License.
 // See "license.txt" for details.
 // Copyright 2009-2012, Jonathan Turner (jonathan@emptycrate.com)
-// Copyright 2009-2015, Jason Turner (jason@emptycrate.com)
+// Copyright 2009-2016, Jason Turner (jason@emptycrate.com)
 // http://www.chaiscript.com
 
 #ifndef CHAISCRIPT_HANDLE_RETURN_HPP_
@@ -112,6 +112,24 @@ namespace chaiscript
             return Boxed_Value(
                 chaiscript::make_shared<dispatch::Proxy_Function_Base, dispatch::Proxy_Function_Callable_Impl<Ret, std::function<Ret>>>(f)
               );
+          }
+        };
+
+      template<typename Ret>
+        struct Handle_Return<Ret *&>
+        {
+          static Boxed_Value handle(Ret *p)
+          {
+            return Boxed_Value(p, true);
+          }
+        };
+
+      template<typename Ret>
+        struct Handle_Return<const Ret *&>
+        {
+          static Boxed_Value handle(const Ret *p)
+          {
+            return Boxed_Value(p, true);
           }
         };
 

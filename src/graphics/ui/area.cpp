@@ -5,8 +5,6 @@ namespace Graphics {
   namespace UI {
 
     Area::Area(VertexData vertex_data, std::shared_ptr<Skin> skin) : Element(vertex_data, skin) {
-      setShader(skin->shader.lock());
-      addTexture(0, "skin0", skin->texture.lock());
     }
 
     std::shared_ptr<Area> Area::create(std::shared_ptr<Skin> skin, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) {
@@ -81,8 +79,16 @@ namespace Graphics {
     void Area::onScroll(const glm::dvec2 position_change) {
     }
 
+    const std::string Area::to_string() const noexcept {
+      return Element::to_string();
+    }
+
+    const std::string Area::className() const noexcept {
+      return "Graphics::UI::Area";
+    }
+
     void Area::log(el::base::type::ostream_t& os) const {
-      Element::log(os);
+      os << to_string();
     }
   }
 }

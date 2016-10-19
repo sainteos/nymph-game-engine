@@ -79,6 +79,10 @@ namespace Graphics {
     void Button::onScroll(const glm::dvec2 position_change) {
 
     }
+    
+    const std::string Button::className() const noexcept {
+      return "Graphics::UI::Button";
+    }
 
     void Button::log(el::base::type::ostream_t& os) const {
       os << "Cursor over: "<<cursor_over;

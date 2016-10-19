@@ -7,6 +7,8 @@
 #include "events/subject.h"
 #include "events/observer.h"
 #include "events/event.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Subject Observer
 
 namespace Input {
   class InputSystem : public Events::Subject, public Events::Observer {
@@ -37,11 +39,16 @@ namespace Input {
       static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
       static void mouseScrollCallback(GLFWwindow* window, double x_offset, double y_offset);
     public:
+      virtual ~InputSystem() = default;
       InputSystem(GLFWwindow* window, float viewport_width, float viewport_height, glm::mat4 camera_transform_matrix, glm::mat4 projection_matrix);
       void pollForInput();
 
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
+
+      //= BEGIN SCRIPTABLE
+      void dummy() {}
+      //= END SCRIPTABLE
   };
 }
 

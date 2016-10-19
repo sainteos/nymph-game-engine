@@ -2,9 +2,11 @@
 #define EVENT_TYPE_H
 #include <map>
 #include <string>
+//= SCRIPTABLE
 
 namespace Events {
-  enum EventType {
+  //= SCRIPTABLE ENUM
+  enum EventType : unsigned int {
     MOUSE_CURSOR,
     MOUSE_SCROLL,
     MOUSE_BUTTON_DOWN,

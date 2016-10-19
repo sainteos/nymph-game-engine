@@ -14,7 +14,8 @@ namespace Graphics {
   namespace UI {
 
     Element::Element(VertexData vertex_data, std::shared_ptr<Skin> skin) : Renderable(vertex_data.generateVertexArrayObject(), vertex_data), skin(skin), anchor_point(glm::vec2(0.0, 0.0)), width(0), height(0), text_padding(0), cursor_within(false), color(glm::vec4(1.0)) {
-
+      setShader(skin->getShader());
+      addTexture(0, "skin0", skin->getTexture());
     }
 
     Element::~Element() {
@@ -24,12 +25,12 @@ namespace Graphics {
     std::vector<glm::vec3> Element::generateRect(float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) noexcept {
       std::vector<glm::vec3> rect_points;
 
-      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.9));
-      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos + height / 2.0, -0.9));
-      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.9));
-      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.9));
-      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.9));
-      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos - height / 2.0, -0.9));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.71));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos + height / 2.0, -0.71));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.71));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.71));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.71));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos - height / 2.0, -0.71));
 
       return rect_points;
     }
@@ -61,6 +62,13 @@ namespace Graphics {
 
     void Element::setAnchorPoint(const glm::vec2 anchor_point) {
       this->anchor_point = anchor_point;
+      
+      auto anchor_point_transform = Transform();
+      auto anchor_point_uniform = Uniform();
+      
+      anchor_point_transform.translate(-anchor_point);
+      anchor_point_uniform.setData("anchor_point", anchor_point_transform.getAbsoluteTransformationMatrix());
+      setUniform(anchor_point_uniform);
     }
 
     const float Element::getWidth() const noexcept {
@@ -119,16 +127,6 @@ namespace Graphics {
     }
 
     void Element::onStart() {
-      auto uniform = Uniform();
-      uniform.setData("color", color);
-      setUniform(uniform);
-
-      auto anchor_point_transform = Transform();
-      auto anchor_point_uniform = Uniform();
-      
-      anchor_point_transform.translate(-anchor_point);
-      anchor_point_uniform.setData("anchor_point", anchor_point_transform.getAbsoluteTransformationMatrix());
-      setUniform(anchor_point_uniform);
     }
 
     const bool Element::onUpdate(const double delta) {
@@ -160,7 +158,6 @@ namespace Graphics {
 
         case Events::EventType::MOUSE_BUTTON_DOWN: {
           auto casted_event = std::static_pointer_cast<Input::MouseButtonDownEvent>(event);
-          LOG(INFO)<<cursor_within<<" "<<isActive()<<" "<<casted_event->getButton();
           if(cursor_within && isActive() && casted_event->getButton() == GLFW_MOUSE_BUTTON_LEFT) {
             onLeftClick();
           }
@@ -212,11 +209,20 @@ namespace Graphics {
       return 0;
     }
 
-    void Element::log(el::base::type::ostream_t& os) const {
-      os<<"\n"
-        <<" Anchor Point: "<<glm::to_string(anchor_point)<<" Width: "<<width<<" Height: "<<height
+    const std::string Element::className() const noexcept {
+      return "Graphics::UI::Element";
+    }
+
+    const std::string Element::to_string() const noexcept {
+      std::stringstream str;
+      str<<Renderable::to_string()
+        <<"Anchor Point: "<<glm::to_string(anchor_point)<<" Width: "<<width<<" Height: "<<height
         <<"Text Padding: "<<text_padding<<" Cursor Within: "<<cursor_within<<" Color: "<<glm::to_string(color);
-      Renderable::log(os);
+      return str.str();
+    }
+
+    void Element::log(el::base::type::ostream_t& os) const {
+      os << to_string();
     }
   }
 }

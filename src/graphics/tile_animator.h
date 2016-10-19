@@ -6,7 +6,9 @@
 #include "events/subject.h"
 #include "graphics/set_uniform_event.h"
 #include "set_active_event.h"
-#include "animation_trigger_event.h"
+#include "game/animation_trigger_event.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Component
 
 namespace Graphics {
   class TileAnimator : public Component {
@@ -24,117 +26,39 @@ namespace Graphics {
 
     public:
       TileAnimator() = delete;
-      TileAnimator(const unsigned int tileset_width, const unsigned int tileset_height, const unsigned int tile_width_pixels, const unsigned int tile_height_pixels)  : current_state(""), frame_time_accumulator(0.0), tile_width(tile_width_pixels), tile_height(tile_height_pixels), tileset_width(tileset_width), tileset_height(tileset_height) {
-      } 
+      //= BEGIN SCRIPTABLE
+      TileAnimator(const unsigned int tileset_width, const unsigned int tileset_height, const unsigned int tile_width_pixels, const unsigned int tile_height_pixels);
 
-      static std::shared_ptr<TileAnimator> create(const unsigned int tileset_width, const unsigned int tileset_height, const unsigned int tile_width = 32, const unsigned int tile_height = 32) {
-        return std::make_shared<TileAnimator>(tileset_width, tileset_height, tile_width, tile_height);
-      }
+      static std::shared_ptr<TileAnimator> create(const unsigned int tileset_width, const unsigned int tileset_height, const unsigned int tile_width = 32, const unsigned int tile_height = 32);
 
-      void setStartingState(const std::string& state) {
-        current_state = state;
-      }
+      void setStartingState(const std::string& state);
 
-      void addFrameFront(const std::string& state, const glm::ivec2& frame_pos, const unsigned int frame_time, bool set_current = false) {
-        if(set_current)
-          current_state = state;
-        triggerable_animations[state].push_front(std::pair<glm::ivec2, unsigned int>(frame_pos, frame_time));
-      }
+      void addFrameFront(const std::string& state, const glm::ivec2& frame_pos, const unsigned int frame_time, bool set_current = false);
 
-      void addFrameBack(const std::string& state, const glm::ivec2& frame_pos, const unsigned int frame_time, bool set_current = false) {
-        if(set_current)
-          current_state = state;
-        triggerable_animations[state].push_back(std::pair<glm::ivec2, unsigned int>(frame_pos, frame_time));
-      }
+      void addFrameBack(const std::string& state, const glm::ivec2& frame_pos, const unsigned int frame_time, bool set_current = false);
 
-      void popFrameFront(const std::string& state) {
-        if(triggerable_animations[state].size() > 0)
-          triggerable_animations[state].pop_front();
-      }
+      void popFrameFront(const std::string& state);
 
-      void popFrameBack(const std::string& state)  {
-        if(triggerable_animations[state].size() > 0)
-          triggerable_animations[state].pop_back();
-      }
+      void popFrameBack(const std::string& state);
 
-      void triggerAnimation(const std::string& state) {
-        current_state = state;
-      }
+      void triggerAnimation(const std::string& state);
+      virtual const std::string className() const noexcept override;
+      //= END SCRIPTABLE
 
-      virtual void onStart() override {
-        frame_time_accumulator = 0.0;
+      virtual void onStart() override;
 
-        if(triggerable_animations[current_state].size() > 0) {
-          Uniform tile_coord;
-          tile_coord.setData("tile_coord", triggerable_animations[current_state].front().first);
-          notify(SetUniformEvent::create(tile_coord));
+      virtual const bool onUpdate(const double delta) override;
 
-          float normalized_width = float(tile_width) / float(tileset_width);
-          float normalized_height = float(tile_height) / float(tileset_height);
-          multiplier = glm::vec2(normalized_width, normalized_height);
+      virtual void onDestroy() override;
 
-          Uniform tile_coord_multiplier;
-          tile_coord_multiplier.setData("tile_coord_multiplier", multiplier);
-          notify(SetUniformEvent::create(tile_coord_multiplier));
-        }
-      }
+      void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
 
-      virtual const bool onUpdate(const double delta) override {
-        if(!active)
-          return false;
- 
-        while(eventsWaiting()) {
-          handleQueuedEvent(getEvent());
-        }
+      void onNotifyNow(std::shared_ptr<Events::Event> event) override;
 
-        frame_time_accumulator += delta;
-        if(triggerable_animations[current_state].size() > 1) {
-          if(frame_time_accumulator > triggerable_animations[current_state].front().second) {
-            triggerable_animations[current_state].push_back(triggerable_animations[current_state].front());
-            triggerable_animations[current_state].pop_front();
-            frame_time_accumulator = 0.0;
-            Uniform tile_coord;
-            tile_coord.setData(std::string("tile_coord"), triggerable_animations[current_state].front().first);
-            notifyNow(SetUniformEvent::create(tile_coord));
-            Uniform tile_coord_multiplier;
-            tile_coord_multiplier.setData(std::string("tile_coord_multiplier"), multiplier);
-            notifyNow(SetUniformEvent::create(tile_coord_multiplier));
-          }
-
-          return true;
-        }
-      }
-
-      virtual void onDestroy() override {
-        triggerable_animations.clear();
-      }
-
-      void handleQueuedEvent(std::shared_ptr<Events::Event> event) override {
-        switch(event->getEventType()) {
-          case Events::EventType::ANIMATION_TRIGGER: {
-            auto casted_event = std::static_pointer_cast<AnimationTriggerEvent>(event);
-            triggerAnimation(casted_event->getState());
-            break;
-          }
-          default:
-            Component::handleQueuedEvent(event);
-            break;
-        }
-      }
-
-      void onNotifyNow(std::shared_ptr<Events::Event> event) override {
-        handleQueuedEvent(event);
-      }
-
-      virtual const unsigned long long getValueForSorting() const noexcept override {
-        return getId();
-      }
+      virtual const unsigned long long getValueForSorting() const noexcept override;
 
 
-      virtual void log(el::base::type::ostream_t& os) const {
-        os << "Current State: " << current_state << " Tile Width: "<<tile_width<<" Tile Height: "<<tile_height<<" Tileset Width: "<<tileset_width<<" Tileset Height: "<<tileset_height;
-        Component::log(os);
-      }
+      virtual void log(el::base::type::ostream_t& os) const;
   };
 }
 

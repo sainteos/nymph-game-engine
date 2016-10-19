@@ -1,7 +1,7 @@
 {
   "window_title": "Spero Engine",
   "fullscreen": false,
-  "active_map": "./project-spero-assets/Maps/Watcher.tmx",
+  "active_map": "Mystery",
   "maps": [
     "./project-spero-assets/Maps/Intro_Ramses.tmx",
     "./project-spero-assets/Maps/Board1.tmx",

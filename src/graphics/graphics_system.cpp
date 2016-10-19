@@ -13,6 +13,8 @@
 #include "exceptions/system_not_initialized_exception.h"
 #include "exceptions/system_already_running_exception.h"
 #include "exceptions/system_not_running_exception.h"
+#include <chaiscript/chaiscript.hpp>
+#include <chaiscript/utility/utility.hpp>
 
 namespace Graphics {
 
@@ -235,4 +237,5 @@ namespace Graphics {
     glfwTerminate();
     LOG(INFO)<<"Graphics System destroyed!";
   }
+
 }

@@ -42,6 +42,12 @@ namespace Graphics {
       return kerning;
     }
 
+    const std::string Text::to_string() const noexcept {
+      std::stringstream str;
+      str << Component::to_string() << "Text: "<<text<<" Color: "<<glm::to_string(color)<<" Kerning: "<<kerning;
+      return str.str();
+    }
+
     const unsigned long long Text::getValueForSorting() const noexcept {
       return 0;
     }
@@ -111,9 +117,12 @@ namespace Graphics {
       }
     }
 
+    const std::string Text::className() const noexcept {
+      return "Graphics::UI::Text";
+    }
+
     void Text::log(el::base::type::ostream_t& os) const {
-      os << "Text: "<<text<<" Color: "<<glm::to_string(color)<<" Kerning: "<<kerning;
-      Component::log(os);
+      os << to_string();
     }
   }
 }

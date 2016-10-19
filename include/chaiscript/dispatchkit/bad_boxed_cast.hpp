@@ -1,7 +1,7 @@
 // This file is distributed under the BSD License.
 // See "license.txt" for details.
 // Copyright 2009-2012, Jonathan Turner (jonathan@emptycrate.com)
-// Copyright 2009-2015, Jason Turner (jason@emptycrate.com)
+// Copyright 2009-2016, Jason Turner (jason@emptycrate.com)
 // http://www.chaiscript.com
 
 #ifndef CHAISCRIPT_BAD_BOXED_CAST_HPP_
@@ -36,11 +36,11 @@ namespace chaiscript
         }
 
         bad_boxed_cast(Type_Info t_from, const std::type_info &t_to)
-          : from(std::move(t_from)), to(&t_to), m_what("Cannot perform boxed_cast")
+          : from(std::move(t_from)), to(&t_to), m_what("Cannot perform boxed_cast: " + t_from.name() + " to: " + t_to.name())
         {
         }
 
-        bad_boxed_cast(std::string t_what) CHAISCRIPT_NOEXCEPT
+        explicit bad_boxed_cast(std::string t_what) CHAISCRIPT_NOEXCEPT
           : to(nullptr), m_what(std::move(t_what))
         {
         }

@@ -78,7 +78,7 @@ namespace Graphics {
           current_width += font->getCharacter(character).advance;
         }
       }
-      else if(horizontal_alignment == HorizontalAlignment::CENTER) {
+      else if(horizontal_alignment == HorizontalAlignment::HCENTER) {
         auto lines = splitTextIntoLines();
         
         unsigned int character_index = 0;
@@ -128,7 +128,7 @@ namespace Graphics {
       if(vertical_alignment == VerticalAlignment::TOP) {
         vertical_alignment_y = (height - font->getOpenGLSize()) / 2.0;
       }
-      else if(vertical_alignment == VerticalAlignment::CENTER) {
+      else if(vertical_alignment == VerticalAlignment::VCENTER) {
         vertical_alignment_y = -font->getOpenGLSize() / 2.0; 
       }
       else {
@@ -147,12 +147,11 @@ namespace Graphics {
     }
 
     const bool WrappableText::onUpdate(const double delta) {
-      Uniform color_uniform;
-      color_uniform.setData<glm::vec4>("color", color);
-      shader->setUniform(color_uniform);
-
       if(isActive()) {
         if(shader != nullptr) {
+          Uniform color_uniform;
+          color_uniform.setData<glm::vec4>("color", color);
+          shader->setUniform(color_uniform);
 
           shader->useProgram();
           shader->setUniform<glm::vec4>("color", color);
@@ -181,10 +180,19 @@ namespace Graphics {
     const unsigned long long WrappableText::getValueForSorting() const noexcept {
       return -1;
     }
+    
+    const std::string WrappableText::className() const noexcept {
+      return "Graphics::UI::WrappableText";
+    }
+
+    const std::string WrappableText::to_string() const noexcept {
+      std::stringstream str;
+      str << Text::to_string() << " Width: "<<width<<" Height: "<<height<<" Line Spacing: "<<line_spacing;
+      return str.str();
+    }
 
     void WrappableText::log(el::base::type::ostream_t& os) const {
-      os << "Width: "<<width<<" Height: "<<height<<" Line Spacing: "<<line_spacing;
-      Text::log(os);
+      os << to_string();
     }
   }
 }

@@ -5,11 +5,14 @@
 #include <glm/ext.hpp>
 #include <iostream>
 #include "component.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Component
 
 namespace Graphics {
   class Light : public Component {
     public:
-      enum class Type { POINT, SPOT };
+      //= SCRIPTABLE ENUM
+      enum Type : unsigned int { POINT, SPOT };
     private:
       Type type;
       glm::vec3 color;
@@ -20,13 +23,13 @@ namespace Graphics {
       float cone_angle;
       glm::vec3 cone_direction;
     public:
-      Light(const Type& type = Type::POINT);
-      ~Light();
-
       virtual void onStart() override;
       virtual const bool onUpdate(const double delta) override;
       virtual void onDestroy() override;
 
+      //= BEGIN SCRIPTABLE
+      Light(const Light::Type& type = Type::POINT);
+      ~Light();
       void setColor(const glm::vec3 color) noexcept;
       const glm::vec3 getColor() const noexcept;
       void setIntensity(const float intensity) noexcept;
@@ -48,6 +51,8 @@ namespace Graphics {
       const Light::Type getType() const noexcept;
 
       const float influenceOnComponent(const Component& component) const;
+      virtual const std::string className() const noexcept override;
+      //= END SCRIPTABLE
 
       const unsigned long long getValueForSorting() const noexcept override;
 

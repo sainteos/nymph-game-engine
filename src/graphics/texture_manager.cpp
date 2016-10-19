@@ -21,7 +21,7 @@ namespace Graphics {
   const bool TextureManager::loadTexture(const std::string& path) {
     std::string tex_name = getNameFromPath(path);
     auto texture = std::make_shared<BaseTexture>(GL_TEXTURE_2D);
-
+    texture->setName(tex_name);
     if(texture->load(path)) {
       textures_to_names[tex_name] = texture;
       return true;
@@ -31,11 +31,11 @@ namespace Graphics {
     }
   }
 
-  const std::shared_ptr<BaseTexture> TextureManager::operator[](const std::string& name) const {
+  std::shared_ptr<BaseTexture> TextureManager::operator[](const std::string& name) const {
     return getTexture(name);
   }
 
-  const std::shared_ptr<BaseTexture> TextureManager::getTexture(const std::string& name) const {
+  std::shared_ptr<BaseTexture> TextureManager::getTexture(const std::string& name) const {
     if(textures_to_names.count(name) == 0) {
       throw Exceptions::InvalidTextureNameException(name);
     } 

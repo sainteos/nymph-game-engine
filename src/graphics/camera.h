@@ -8,6 +8,9 @@
 #include "graphics/renderable.h"
 #include "events/observer.h"
 #include "events/event_type.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Component
+
 #undef near
 #undef far
 
@@ -41,6 +44,7 @@ namespace Graphics {
       virtual const bool onUpdate(const double delta) override;
       virtual void onDestroy() override;
 
+      //= BEGIN SCRIPTABLE
       void setScreenPaddingInTiles(const int padding) noexcept;
       const int getScreenPaddingInTiles() const noexcept;
       void setWidth(const float width) noexcept;
@@ -57,6 +61,8 @@ namespace Graphics {
       const glm::mat4 getProjectionMatrix() const noexcept;
 
       const bool isComponentWithin(const Component& component) const;
+      virtual const std::string className() const noexcept override;
+      //= END SCRIPTABLE
 
       const unsigned long long getValueForSorting() const noexcept override;
 

@@ -1,0 +1,41 @@
+class MapLoading {
+  attr thiss
+  attr animation_map
+  attr scene_generator
+
+  def MapLoading() {
+  }
+
+  def setScriptObjectHandle(handle) {
+    this.thiss := handle
+  }
+
+  def onStart() {
+    this.animation_map = Map(config.getString("animation_database"))
+    this.scene_generator = SceneGenerator(this.animation_map, texture_manager, shader_manager)
+    var map_names = config.getStringVector("maps")
+
+    for(var i = 0; i < map_names.size(); ++i) {
+      var map_path = map_names[i]
+      var map = Map(map_path)
+      var scene = this.scene_generator.createSceneFromMap(config.getInt("patch_width"), config.getInt("patch_height"), map)
+      var name = this.scene_generator.getStrippedMapName(map_path)
+      scene.setName(name)
+      engine.addScene(scene)
+    }
+    
+    this.thiss.notify(LoadMapEvent_create(config.getString("active_map")))
+  }
+
+  def onUpdate(delta) {
+
+  }
+
+  def onDestroy() {
+
+  }
+
+  def handleEvent(event) {
+
+  }
+}

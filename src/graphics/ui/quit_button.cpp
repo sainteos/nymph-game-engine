@@ -16,21 +16,26 @@ namespace Graphics {
 
       text->setColor(text_color);
       text->setSize(width, height);
-      text->setVerticalAlignment(WrappableText::VerticalAlignment::CENTER);
-      text->setHorizontalAlignment(WrappableText::HorizontalAlignment::CENTER);
-      text->setText("X");
+      text->setVerticalAlignment(WrappableText::VerticalAlignment::VCENTER);
+      text->setHorizontalAlignment(WrappableText::HorizontalAlignment::HCENTER);
 
       auto button = std::make_shared<QuitButton>(text, vertex_data, skin);
       button->setColor(color);
-      button->setAnchorPoint(glm::vec2(x_pos + width / 2.0, y_pos + height / 2.0));
+      button->setAnchorPoint(glm::vec2(x_pos, y_pos));
       button->setWidth(width);
       button->setHeight(height);
+
+      text->setText("X");
 
       return button;
     }
 
     void QuitButton::onLeftClick() {
       notifyNow(SetEntityActiveEvent::create(false));
+    }
+
+    const std::string QuitButton::className() const noexcept {
+      return "Graphics::UI::QuitButton";
     }
   }
 }
