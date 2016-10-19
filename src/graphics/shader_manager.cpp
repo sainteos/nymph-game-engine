@@ -9,6 +9,8 @@
 #include "exceptions/invalid_filename_exception.h"
 #include "exceptions/invalid_shader_name_exception.h"
 #include "exceptions/shader_compilation_exception.h"
+#include <chaiscript/chaiscript.hpp>
+#include <chaiscript/utility/utility.hpp>
 
 namespace Graphics {
   char const* ShaderManager::VERTEX_EXTENSION = ".vert";
@@ -137,15 +139,21 @@ namespace Graphics {
     return true;
   }
 
-  const std::shared_ptr<Shader> ShaderManager::operator[](const std::string& name) const {
+  std::shared_ptr<Shader> ShaderManager::operator[](const std::string& name) const {
     return getShader(name);
   }
 
-  const std::shared_ptr<Shader> ShaderManager::getShader(const std::string& name) const {
+  std::shared_ptr<Shader> ShaderManager::getShader(const std::string& name) const {
     if(shaders_to_names.count(name) == 0) {
       throw Exceptions::InvalidShaderNameException(name);
     } 
     return shaders_to_names.at(name);
+  }
+
+  void ShaderManager::setUniformForAllPrograms(const Uniform& u) {
+    for(auto& i : shaders_to_names) {
+      i.second->setUniform(u);
+    }
   }
 
   const bool ShaderManager::checkCompilation(const unsigned int& shader_object) {

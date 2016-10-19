@@ -6,6 +6,7 @@
 #include FT_FREETYPE_H 
 #include "graphics/ui/text.h"
 #include "graphics/ui/font.h"
+//= SCRIPTABLE
 
 namespace Graphics {
   namespace UI {
@@ -19,11 +20,13 @@ namespace Graphics {
         FontGenerator(const std::string& font_path = "", const unsigned int pixels_per_unit = 32);
         ~FontGenerator();
 
+      //= BEGIN SCRIPTABLE
         void setFontPath(const std::string& font_path) noexcept;
         const std::string getFontPath() const noexcept;
 
         void loadFont(const std::string& ttf_file, const unsigned int size, const std::string& name="");
         std::shared_ptr<Font> getFont(const std::string& name) const noexcept;
+      //= END SCRIPTABLE
     };
   }
 }

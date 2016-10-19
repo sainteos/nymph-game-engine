@@ -12,8 +12,6 @@ namespace Graphics {
   namespace UI {
 
     TextField::TextField(std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, VertexData vertex_data, std::shared_ptr<Skin> skin) : TextArea(default_text, vertex_data, skin), typed_text(typed_text), default_text(default_text), caret(">"), blink_speed(0.5), in_focus(false), current_typed("") {
-      setShader(skin->shader.lock());
-      addTexture(0, "skin0", skin->texture.lock());
       typed_color = typed_text->getColor();
       setText(default_text);
     }
@@ -76,7 +74,7 @@ namespace Graphics {
     }
 
     const unsigned long long TextField::getValueForSorting() const noexcept {
-      return -45;
+      return 1;
     }
 
     void TextField::onLeftClick() {
@@ -156,8 +154,18 @@ namespace Graphics {
       }
     }
 
+    const std::string TextField::className() const noexcept {
+      return "Graphics::UI::TextField";
+    }
+
+    const std::string TextField::to_string() const noexcept {
+      std::stringstream str;
+      str << TextArea::to_string()<<" Typed Text: "<<typed_text->getText()<<" with cid("<<typed_text->getId()<<") Default Text: "<<default_text->getText()<<" with cid("<<default_text->getId()<<") Currently in field: "<<current_typed<<" In focus: "<<in_focus<<"\n";
+      return str.str();
+    }
+
     void TextField::log(el::base::type::ostream_t& os) const {
-      TextArea::log(os);
+      os << to_string();
     }
   }
 }

@@ -4,13 +4,18 @@
 #include "events/event.h"
 #include "events/event_type.h"
 
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Event
+
 class SetEntityActiveEvent : public Events::Event {
   private:
     bool active;
   public:
+    //= BEGIN SCRIPTABLE
     SetEntityActiveEvent(const bool active) : Event(Events::EventType::SET_ENTITY_ACTIVE), active(active) {}
     static std::shared_ptr<SetEntityActiveEvent> create(const bool active) { return std::make_shared<SetEntityActiveEvent>(active); }
     const bool getActive() const noexcept { return active; }
+    //= END SCRIPTABLE
 };
 
 #endif

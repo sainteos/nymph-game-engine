@@ -7,6 +7,8 @@
 #include "graphics/ui/area.h"
 #include "graphics/ui/wrappable_text.h"
 #include "events/event.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Area
 
 namespace Graphics {
   namespace UI {
@@ -15,19 +17,12 @@ namespace Graphics {
         std::shared_ptr<WrappableText> text;
         const glm::vec4 mouse_over_dim = glm::vec4(0.2, 0.2, 0.2, 0.0);
       public:
+      //= BEGIN SCRIPTABLE
         TextArea(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin);
         static std::shared_ptr<TextArea> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
 
         void setText(std::shared_ptr<WrappableText> text);
         std::shared_ptr<WrappableText> getText() const noexcept;
-        virtual void onDestroy() override;
-        virtual void onStart() override;
-        virtual const bool onUpdate(const double delta) override;
-        
-        void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
-        void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-        virtual const unsigned long long getValueForSorting() const noexcept override;
-
         virtual void onLeftClick() override;
         virtual void onRightClick() override;
         virtual void onLeftClickRelease() override;
@@ -38,6 +33,17 @@ namespace Graphics {
         virtual void onKeyUp(const int key) override;
         virtual void onKeyRepeat(const int key) override;
         virtual void onScroll(const glm::dvec2 position_change) override;
+        virtual void onDestroy() override;
+        virtual void onStart() override;
+        virtual const bool onUpdate(const double delta) override;
+        const std::string to_string() const noexcept;
+        virtual const std::string className() const noexcept override;
+      //= END SCRIPTABLE
+        
+        void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
+        void onNotifyNow(std::shared_ptr<Events::Event> event) override;
+        virtual const unsigned long long getValueForSorting() const noexcept override;
+
 
         virtual void log(el::base::type::ostream_t& os) const;
     };

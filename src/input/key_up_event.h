@@ -4,14 +4,18 @@
 #include "events/event.h"
 #include "events/event_type.h"
 
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Event
 namespace Input {
   class KeyUpEvent : public Events::Event {
     private:
       int key;
     public:
+      //= BEGIN SCRIPTABLE
       KeyUpEvent(const int key) : Event(Events::EventType::KEY_UP), key(key) {}
       static std::shared_ptr<KeyUpEvent> create(const int key) { return std::make_shared<KeyUpEvent>(key); }
       const int getKey() const noexcept { return key; }
+      //= END SCRIPTABLE
   };
 }
 

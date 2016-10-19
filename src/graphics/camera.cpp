@@ -4,13 +4,15 @@
 #include "camera.h"
 #include "glm/ext.hpp"
 #include "graphics/shader_manager.h"
-#include "sprite_move_event.h"
+#include "game/sprite_move_event.h"
 #include "input/key_down_event.h"
 #include "input/key_repeat_event.h"
 #include "input/key_up_event.h"
 #include "graphics/ui/change_text_event.h"
 #define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
+#include <chaiscript/chaiscript.hpp>
+#include <chaiscript/utility/utility.hpp>
 
 namespace Graphics {
   
@@ -82,7 +84,7 @@ namespace Graphics {
     switch(event->getEventType()) {
       case Events::EventType::SPRITE_MOVE: {
         free_camera = false;
-        auto casted_event = std::static_pointer_cast<SpriteMoveEvent>(event);
+        auto casted_event = std::static_pointer_cast<Game::SpriteMoveEvent>(event);
 
         if(casted_event->getVelocity().x > 0.0) {
           if(casted_event->getNextPosition().x > getTransform()->getAbsoluteTranslation().x + viewport_width / 2.0 - screen_padding_in_tiles) {
@@ -250,5 +252,9 @@ namespace Graphics {
   void Camera::log(el::base::type::ostream_t& os) const {
     os << "Viewport Width: "<<viewport_width<<" Viewport Height: "<<viewport_height<<" Near: "<<near<<" Far: "<<far<<" Velocity: "<<glm::to_string(velocity)<<" Target Position: "<<glm::to_string(target_position)<<" Free Camera: "<<free_camera<<" Speed: "<<free_camera_speed;
     Component::log(os);
+  }
+
+  const std::string Camera::className() const noexcept  {
+    return "Graphics::Camera";
   }
 }

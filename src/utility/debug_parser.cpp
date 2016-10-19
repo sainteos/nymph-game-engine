@@ -29,9 +29,7 @@ namespace Utility {
   }
 
   void DebugParser::handleEvents() {
-    while(eventsWaiting()) {
-      handleQueuedEvent(getEvent());
-    }
+    processEventQueue();
   }
 
   std::queue<std::string> DebugParser::tokenSplit(std::string command) {

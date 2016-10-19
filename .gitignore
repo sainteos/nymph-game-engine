@@ -4,6 +4,7 @@ doc
 lib
 obj
 logs
+src/generated
 Makefile
 *.make
 *.out
@@ -12,4 +13,5 @@ Makefile
 *.exe
 *.zip
 *Package/
-.ycm_extra_conf.py
+.ycm_extra_conf.py*
+*.so

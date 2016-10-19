@@ -3,6 +3,7 @@
 #include "set_entity_active_event.h"
 #include "entity.h"
 #include <easylogging++.h>
+#include <chaiscript/utility/utility.hpp>
 
 
 unsigned int Component::next_id = 0;
@@ -59,7 +60,16 @@ const bool Component::operator<(Component& other) noexcept {
   return getValueForSorting() < other.getValueForSorting();
 }
 
-void Component::log(el::base::type::ostream_t& os) const {
-  os<<"id: "<<getId()<<"  active: "<<isActive()<<"  "<<"  transform: "<<glm::to_string(getTransform()->getAbsoluteTranslation())<<"  sort value: "<<getValueForSorting();
+const std::string Component::to_string() const noexcept {
+  std::stringstream str;
+  str<<className()<<":: id: "<<getId()<<"  active: "<<isActive()<<"  "<<getTransform()->to_string()<<"  sort value: "<<getValueForSorting();
+  return str.str();
 }
 
+const std::string Component::className() const noexcept {
+  return "Component";
+}
+
+void Component::log(el::base::type::ostream_t& os) const {
+  os << to_string();
+}

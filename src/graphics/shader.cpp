@@ -9,7 +9,7 @@
 #include "exceptions/invalid_uniform_name_exception.h"
 
 namespace Graphics {
-  Shader::Shader(const unsigned int vertex_program, const unsigned int fragment_program, const unsigned int geometry_program) {
+  Shader::Shader(const unsigned int vertex_program, const unsigned int fragment_program, const unsigned int geometry_program) : name("") {
     if(!glIsShader(vertex_program)) {
       throw Exceptions::InvalidVertexShaderException(vertex_program);
     }
@@ -488,5 +488,23 @@ namespace Graphics {
       default:
         break;
     }
+  }
+
+  void Shader::setName(const std::string& name) {
+    this->name = name;
+  }
+
+  const std::string Shader::getName() const noexcept {
+    return this->name;
+  }
+  const std::string Shader::to_string() const noexcept {
+    std::stringstream str;
+    str << "Shader: "<<getName()<<" with uniforms: ";
+
+    for(auto name : getUniformNames()) {
+      str << name <<", ";
+    }
+    str << "\n";
+    return str.str();
   }
 }

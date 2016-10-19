@@ -17,6 +17,7 @@
 #include "graphics/renderable.h"
 #include "graphics/window_exit_functor.h"
 #include "graphics/camera.h"
+//= SCRIPTABLE
 
 namespace Graphics {
   class GraphicsSystem {
@@ -80,6 +81,7 @@ namespace Graphics {
       void stopFrame();
 
       GLFWwindow* getWindow() const noexcept;
+      //= BEGIN SCRIPTABLE
       /**
        * @brief Getter for the window width
        * @details This Pings GLFW to get the width of the window.
@@ -129,12 +131,13 @@ namespace Graphics {
        */
       const int renderablesCount();
 
-      GLFWwindow* getCurrentWindow() noexcept;
-
       void setMaxInfluenceLights(const unsigned int number) noexcept;
       const unsigned int getMaxInfluenceLights() const noexcept;
       void addLight(std::shared_ptr<Light> light) noexcept;
       void removeLight(std::shared_ptr<Light> light);
+      //= END SCRIPTABLE
+      GLFWwindow* getCurrentWindow() noexcept;
+
 
       /**
        * @brief Closes window, and destroys GLFW context.
@@ -142,6 +145,7 @@ namespace Graphics {
        *          glfw. Initialize must be called to get another window.
        */
       void destroy();
+
   };
 }
 

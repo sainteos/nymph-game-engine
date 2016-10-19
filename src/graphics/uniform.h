@@ -7,7 +7,7 @@ namespace Graphics {
   class Uniform {
     public:
       enum class UniformTypes { FLOAT, VEC2, VEC3, VEC4, INT, IVEC2, IVEC3, IVEC4, UINT, UVEC2, UVEC3, UVEC4, 
-                               BOOL, BVEC2, BVEC3, BVEC4, MAT2, MAT3, MAT4, MAT23, MAT32, MAT24, MAT42, MAT34, MAT43 };
+                          BOOL, BVEC2, BVEC3, BVEC4, MAT2, MAT3, MAT4, MAT23, MAT32, MAT24, MAT42, MAT34, MAT43 };
     private:
       UniformTypes uniform_type;
       std::string name;
@@ -39,6 +39,7 @@ namespace Graphics {
 
       bool dirty;
     public:
+      //= BEGIN SCRIPTABLE
       Uniform();
       template<typename T>
       void setData(const std::string& name, const T& data);
@@ -53,6 +54,9 @@ namespace Graphics {
       const bool operator<(const Uniform& right) const noexcept;
       const bool operator==(const Uniform& right) const noexcept;
       const bool operator!=(const Uniform& right) const noexcept;
+
+      const std::string to_string() const noexcept;
+      //= END SCRIPTABLE
   };
 }
 

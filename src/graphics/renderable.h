@@ -12,9 +12,11 @@
 #include "light.h"
 #include "events/observer.h"
 #include "uniform.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Component
 
 namespace Graphics {
-  class Renderable : public Component{
+  class Renderable : public Component {
     private:
       unsigned int vertex_array_object;
       std::shared_ptr<Shader> shader;
@@ -46,6 +48,7 @@ namespace Graphics {
 
       virtual ~Renderable();
 
+      //= BEGIN SCRIPTABLE
       void setShader(std::shared_ptr<Shader> shader_object) noexcept;
       const std::shared_ptr<Shader> getShader() const noexcept;
 
@@ -63,6 +66,11 @@ namespace Graphics {
 
       void addInfluencingLight(std::shared_ptr<Light> light) noexcept;
       void clearInfluencingLights();
+
+      const std::string to_string() const noexcept;
+      
+      virtual const std::string className() const noexcept override;
+      //= END SCRIPTABLE
 
       const float highestZ() const noexcept;
 

@@ -6,6 +6,8 @@
 #include "graphics/ui/skin.h"
 #include "events/event.h"
 #include "graphics/renderable.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Renderable
 
 namespace Graphics {  
   namespace UI {
@@ -27,6 +29,7 @@ namespace Graphics {
         Element(VertexData vertex_data, std::shared_ptr<Skin> skin);
         virtual ~Element();
 
+      //= BEGIN SCRIPTABLE
         std::shared_ptr<Skin> getSkin() const noexcept;
         void setSkin(std::shared_ptr<Skin> skin) noexcept;
 
@@ -44,7 +47,11 @@ namespace Graphics {
         const glm::vec4 getColor() const noexcept;
         void setColor(const glm::vec4 color) noexcept;
 
+        const std::string to_string() const noexcept;
+
         bool isPointWithin(glm::vec2 point) noexcept;
+        virtual const std::string className() const noexcept override;
+      //= END SCRIPTABLE
 
         virtual void onDestroy() override;
         virtual void onStart() override;
@@ -64,7 +71,6 @@ namespace Graphics {
         virtual void onKeyUp(const int key) = 0;
         virtual void onKeyRepeat(const int key) = 0;
         virtual void onScroll(const glm::dvec2 position_change) = 0;
-
         virtual void log(el::base::type::ostream_t& os) const;
     };
   }

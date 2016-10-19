@@ -5,21 +5,16 @@
 #include "graphics/ui/element.h"
 #include "graphics/ui/skin.h"
 #include "events/event.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Element
 
 namespace Graphics {
   namespace UI {
     class Area : public Element, virtual public el::Loggable  {
       public:
+      //= BEGIN SCRIPTABLE
         Area(VertexData vertex_data, std::shared_ptr<Skin> skin);
         static std::shared_ptr<Area> create(std::shared_ptr<Skin>, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
-
-        virtual void onDestroy() override;
-        virtual void onStart() override;
-        virtual const bool onUpdate(const double delta) override;
-        
-        void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
-        void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-        virtual const unsigned long long getValueForSorting() const noexcept override;
 
         virtual void onLeftClick() override;
         virtual void onRightClick() override;
@@ -31,7 +26,17 @@ namespace Graphics {
         virtual void onKeyUp(const int key) override;
         virtual void onKeyRepeat(const int key) override;
         virtual void onScroll(const glm::dvec2 position_change) override;
+        const std::string to_string() const noexcept;
+        virtual const std::string className() const noexcept override;
+      //= END SCRIPTABLE
 
+        virtual void onDestroy() override;
+        virtual void onStart() override;
+        virtual const bool onUpdate(const double delta) override;
+        
+        void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
+        void onNotifyNow(std::shared_ptr<Events::Event> event) override;
+        virtual const unsigned long long getValueForSorting() const noexcept override;
         virtual void log(el::base::type::ostream_t& os) const;
     };
   }

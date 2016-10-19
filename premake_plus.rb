@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+`ruby script_registration_generator.rb`
 `premake4 gmake`
 makefile = File.read("TileEngine.make")
 makefile.gsub!("CC = gcc", "CC = $(CROSS)gcc")

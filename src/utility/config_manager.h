@@ -3,6 +3,7 @@
 #include <json/json.h>
 #include <vector>
 
+//= SCRIPTABLE
 namespace Utility {
   class ConfigManager {
     private:
@@ -11,7 +12,7 @@ namespace Utility {
       ConfigManager();
       
       const bool loadConfig(const std::string& file_path);
-      
+      //= BEGIN SCRIPTABLE
       const int getInt(const std::string& key);
       const unsigned int getUnsignedInt(const std::string& key);
       const std::string getString(const std::string& key);
@@ -20,6 +21,7 @@ namespace Utility {
       const bool getBool(const std::string& key);
       const std::vector<std::string> getStringVector(const std::string& key);
       const std::vector<unsigned int> getUnsignedIntVector(const std::string& key);
+      //= END SCRIPTABLE
   };
 }
 

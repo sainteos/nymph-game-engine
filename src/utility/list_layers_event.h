@@ -4,11 +4,15 @@
 #include "events/event.h"
 #include "events/event_type.h"
 
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Event
 namespace Utility {
   class ListLayersEvent : public Events::Event {
     public:
+      //= BEGIN SCRIPTABLE
       ListLayersEvent() : Event(Events::EventType::LIST_LAYERS) {}
       static std::shared_ptr<ListLayersEvent> create() { return std::make_shared<ListLayersEvent>(); }
+      //= END SCRIPTABLE
   };
 }
 

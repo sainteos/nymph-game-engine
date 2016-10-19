@@ -6,8 +6,6 @@ namespace Graphics {
   namespace UI {
 
     TextArea::TextArea(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin) : Area(vertex_data, skin), text(text) {
-      setShader(skin->shader.lock());
-      addTexture(0, "skin0", skin->texture.lock());
       getTransform()->addChild(text->getTransform());
     }
 
@@ -102,9 +100,18 @@ namespace Graphics {
     void TextArea::onScroll(const glm::dvec2 position_change) {
     }
 
+    const std::string TextArea::className() const noexcept {
+      return "Graphics::UI::TextArea";
+    }
+
+    const std::string TextArea::to_string() const noexcept {
+      std::stringstream str;
+      str << Area::to_string() << " Text Area text: "<<this->text->to_string();
+      return str.str();
+    }
+
     void TextArea::log(el::base::type::ostream_t& os) const {
-      os << "Text: "<<this->text->getText();
-      Area::log(os);
+      os << to_string();
     }
   }
 }

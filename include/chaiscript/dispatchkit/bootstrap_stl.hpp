@@ -1,7 +1,7 @@
 // This file is distributed under the BSD License.
 // See "license.txt" for details.
 // Copyright 2009-2012, Jonathan Turner (jonathan@emptycrate.com)
-// Copyright 2009-2015, Jason Turner (jason@emptycrate.com)
+// Copyright 2009-2016, Jason Turner (jason@emptycrate.com)
 // http://www.chaiscript.com
 
 /// \file
@@ -248,13 +248,17 @@ namespace chaiscript
           m->add(
               fun(
                 [](ContainerType &c, int index) -> typename ContainerType::reference {
-                  return c.at(index);
+                  /// \todo we are prefering to keep the key as 'int' to avoid runtime conversions
+                  /// during dispatch. reevaluate
+                  return c.at(static_cast<typename ContainerType::size_type>(index));
                 }), "[]");
 
           m->add(
               fun(
                 [](const ContainerType &c, int index) -> typename ContainerType::const_reference {
-                  return c.at(index);
+                  /// \todo we are prefering to keep the key as 'int' to avoid runtime conversions
+                  /// during dispatch. reevaluate
+                  return c.at(static_cast<typename ContainerType::size_type>(index));
                 }), "[]");
 
           return m;
@@ -319,7 +323,7 @@ namespace chaiscript
       /// Add back insertion sequence concept to the given ContainerType
       /// http://www.sgi.com/tech/stl/BackInsertionSequence.html
       template<typename ContainerType>
-        ModulePtr back_insertion_sequence_type(const std::string &/*type*/, ModulePtr m = std::make_shared<Module>())
+        ModulePtr back_insertion_sequence_type(const std::string &type, ModulePtr m = std::make_shared<Module>())
         {
           typedef typename ContainerType::reference (ContainerType::*backptr)();
 
@@ -328,8 +332,21 @@ namespace chaiscript
 
           typedef void (ContainerType::*push_back)(const typename ContainerType::value_type &);
           m->add(fun(static_cast<push_back>(&ContainerType::push_back)),
-              []()->std::string{
-                if (typeid(typename ContainerType::value_type) == typeid(Boxed_Value)) {
+              [&]()->std::string{
+              if (typeid(typename ContainerType::value_type) == typeid(Boxed_Value)) {
+                m->eval(
+                    "# Pushes the second value onto the container while making a clone of the value\n"
+                    "def push_back(" + type + " container, x)\n"
+                    "{ \n"
+                    "  if (x.is_var_return_value()) {\n"
+                    "    x.reset_var_return_value() \n"
+                    "    container.push_back_ref(x) \n"
+                    "  } else { \n"
+                    "    container.push_back_ref(clone(x)); \n"
+                    "  }\n"
+                    "} \n"
+                    );
+
                   return "push_back_ref";
                 } else {
                   return "push_back";
@@ -345,7 +362,7 @@ namespace chaiscript
       /// Front insertion sequence
       /// http://www.sgi.com/tech/stl/FrontInsertionSequence.html
       template<typename ContainerType>
-        ModulePtr front_insertion_sequence_type(const std::string &, ModulePtr m = std::make_shared<Module>())
+        ModulePtr front_insertion_sequence_type(const std::string &type, ModulePtr m = std::make_shared<Module>())
         {
           typedef typename ContainerType::reference (ContainerType::*front_ptr)();
           typedef typename ContainerType::const_reference (ContainerType::*const_front_ptr)() const;
@@ -356,8 +373,20 @@ namespace chaiscript
           m->add(fun(static_cast<const_front_ptr>(&ContainerType::front)), "front");
 
           m->add(fun(static_cast<push_ptr>(&ContainerType::push_front)),
-              []()->std::string{
+              [&]()->std::string{
                 if (typeid(typename ContainerType::value_type) == typeid(Boxed_Value)) {
+                  m->eval(
+                      "# Pushes the second value onto the front of container while making a clone of the value\n"
+                      "def push_front(" + type + " container, x)\n"
+                      "{ \n"
+                      "  if (x.is_var_return_value()) {\n"
+                      "    x.reset_var_return_value() \n"
+                      "    container.push_front_ref(x) \n"
+                      "  } else { \n"
+                      "    container.push_front_ref(clone(x)); \n"
+                      "  }\n"
+                      "} \n"
+                      );
                   return "push_front_ref";
                 } else {
                   return "push_front";
@@ -445,6 +474,30 @@ namespace chaiscript
           m->add(fun(static_cast<elem_access>(&MapType::at)), "at");
           m->add(fun(static_cast<const_elem_access>(&MapType::at)), "at");
 
+          if (typeid(MapType) == typeid(std::map<std::string, Boxed_Value>))
+          {
+            m->eval(R"(
+                    def Map::`==`(Map rhs) {
+                       if ( rhs.size() != this.size() ) {
+                         return false;
+                       } else {
+                         auto r1 = range(this);
+                         auto r2 = range(rhs);
+                         while (!r1.empty())
+                         {
+                           if (!eq(r1.front().first, r2.front().first) || !eq(r1.front().second, r2.front().second))
+                           {
+                             return false;
+                           }
+                           r1.pop_front();
+                           r2.pop_front();
+                         }
+                         true;
+                       }
+                   } )"
+                 );
+          } 
+
           container_type<MapType>(type, m);
           default_constructible_type<MapType>(type, m);
           assignable_type<MapType>(type, m);
@@ -500,7 +553,7 @@ namespace chaiscript
           if (typeid(VectorType) == typeid(std::vector<Boxed_Value>))
           {
             m->eval(R"(
-                    def Vector::`==`(rhs) : type_match(rhs, this) {
+                    def Vector::`==`(Vector rhs) {
                        if ( rhs.size() != this.size() ) {
                          return false;
                        } else {

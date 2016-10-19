@@ -488,4 +488,10 @@ namespace Graphics {
 
     return ret;
   }
+
+  const std::string Uniform::to_string() const noexcept {
+    std::stringstream str;
+    str <<"Uniform name: "<<getName()<<" dirty: "<<isDirty();
+    return str.str();
+  }
 }

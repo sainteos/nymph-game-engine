@@ -2,6 +2,7 @@
 #include <exception>
 #include <utility>
 #include <limits>
+#include <glm/ext.hpp>
 #include "vertex_data.h"
 
 namespace Graphics {
@@ -757,5 +758,172 @@ namespace Graphics {
     glBindVertexArray(0);
 
     return vertex_array_object;
+  }
+
+  const std::string VertexData::to_string() const noexcept {
+    std::stringstream str;
+    str << "VertexData:: Indices: "<<index_count<<" Vertices: "<<vertex_count<<" Highest Z: "<<highest_z<<"\n";
+
+    if(float_vector1s.size() > 0) {
+      for(auto pair : float_vector1s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << f << ", ";
+        }
+      }
+      str <<"\n";
+    }
+    
+    if(float_vector2s.size() > 0) {
+      for(auto pair : float_vector2s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(float_vector3s.size() > 0) {
+      for(auto pair : float_vector3s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(float_vector4s.size() > 0) {
+      for(auto pair : float_vector4s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+    
+
+    if(double_vector1s.size() > 0) {
+      for(auto pair : double_vector1s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << f << ", ";
+        }
+      }
+      str <<"\n";
+    }
+    
+    if(double_vector2s.size() > 0) {
+      for(auto pair : double_vector2s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(double_vector3s.size() > 0) {
+      for(auto pair : double_vector3s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(double_vector4s.size() > 0) {
+      for(auto pair : double_vector4s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(int_vector1s.size() > 0) {
+      for(auto pair : int_vector1s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << f << ", ";
+        }
+      }
+      str <<"\n";
+    }
+    
+    if(int_vector2s.size() > 0) {
+      for(auto pair : int_vector2s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(int_vector3s.size() > 0) {
+      for(auto pair : int_vector3s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(int_vector4s.size() > 0) {
+      for(auto pair : int_vector4s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(unsigned_int_vector1s.size() > 0) {
+      for(auto pair : unsigned_int_vector1s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << f << ", ";
+        }
+      }
+      str <<"\n";
+    }
+    
+    if(unsigned_int_vector2s.size() > 0) {
+      for(auto pair : unsigned_int_vector2s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(unsigned_int_vector3s.size() > 0) {
+      for(auto pair : unsigned_int_vector3s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+
+    if(unsigned_int_vector4s.size() > 0) {
+      for(auto pair : unsigned_int_vector4s) {
+        str <<"Vec Type: "<<pair.first<<": ";
+        for(auto f : pair.second) {
+          str << glm::to_string(f) << ", ";
+        }
+      }
+      str <<"\n";
+    }
+    return str.str();
   }
 }

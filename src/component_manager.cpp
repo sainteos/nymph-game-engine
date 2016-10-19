@@ -3,6 +3,8 @@
 #include <easylogging++.h>
 #include <typeinfo>
 #include <algorithm>
+#include <chaiscript/chaiscript.hpp>
+#include <chaiscript/utility/utility.hpp>
 
 
 void ComponentManager::addComponent(std::shared_ptr<Component> component) {
@@ -15,6 +17,12 @@ void ComponentManager::addComponent(std::shared_ptr<Graphics::Camera> component)
 }
 
 void ComponentManager::addComponents(std::vector<std::shared_ptr<Component>> components) {
+  for(auto c : components) {
+    this->components.insert(std::pair<unsigned long long, std::shared_ptr<Component>>(c->getValueForSorting(), c));
+  }
+}
+
+void ComponentManager::addComponents(std::list<std::shared_ptr<Component>> components) {
   for(auto c : components) {
     this->components.insert(std::pair<unsigned long long, std::shared_ptr<Component>>(c->getValueForSorting(), c));
   }
@@ -52,7 +60,7 @@ void ComponentManager::onUpdate(const float delta) {
   for(auto component : components) {
     component.second->processEventQueue();
     //if(camera.lock()->isComponentWithin(*component)) {
-      if(component.second->isActive())
+      //if(component.second->isActive())
         component.second->onUpdate(delta);
     //}
   }
@@ -65,3 +73,4 @@ void ComponentManager::destroy() {
   }
   components.clear();
 }
+

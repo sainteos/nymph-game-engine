@@ -7,6 +7,8 @@
 #include "graphics/vertex_data.h"
 #include "graphics/shader.h"
 #include "transform.h"
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Component
 
 namespace Graphics {
   namespace UI {
@@ -21,6 +23,7 @@ namespace Graphics {
         void renderCharacter(const unsigned char character, Transform transform);
 
       public:
+      //= BEGIN SCRIPTABLE
         Text();
         void setFont(const std::shared_ptr<Font> font);
         virtual void setText(const std::string& text);
@@ -30,6 +33,9 @@ namespace Graphics {
         void setShader(std::shared_ptr<Shader> shader);
         void setKerning(const float amount) noexcept;
         const float getKerning() const noexcept;
+        const std::string to_string() const noexcept;
+        virtual const std::string className() const noexcept override;
+      //= END SCRIPTABLE
 
         virtual void onDestroy() override;
         virtual void onStart() override;
@@ -37,7 +43,7 @@ namespace Graphics {
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
         virtual const unsigned long long getValueForSorting() const noexcept override;
-
+        
         virtual void log(el::base::type::ostream_t& os) const;
     };
   }

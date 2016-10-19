@@ -1,7 +1,7 @@
 // This file is distributed under the BSD License.
 // See "license.txt" for details.
 // Copyright 2009-2012, Jonathan Turner (jonathan@emptycrate.com)
-// Copyright 2009-2015, Jason Turner (jason@emptycrate.com)
+// Copyright 2009-2016, Jason Turner (jason@emptycrate.com)
 // http://www.chaiscript.com
 
 #ifndef CHAISCRIPT_BOXED_VALUE_HPP_
@@ -231,6 +231,50 @@ namespace chaiscript
         return m_data->m_type_info.bare_equal(ti);
       }
 
+      template<typename T>
+      struct Sentinel {
+        Sentinel(std::shared_ptr<T> &ptr, Data &data)
+          : m_ptr(ptr), m_data(data)
+        {
+        }
+
+        ~Sentinel()
+        {
+          // save new pointer data
+          m_data.get().m_data_ptr = m_ptr.get().get();
+          m_data.get().m_const_data_ptr = m_ptr.get().get();
+        }
+
+        Sentinel& operator=(Sentinel&&s) {
+          m_ptr = std::move(s.m_ptr);
+          m_data = std::move(s.m_data);
+        }
+
+        Sentinel(Sentinel &&s)
+          : m_ptr(std::move(s.m_ptr)),
+            m_data(std::move(s.m_data))
+        {
+        }
+
+        operator std::shared_ptr<T>&() const
+        {
+          return m_ptr.get();
+        }
+
+        Sentinel &operator=(const Sentinel &) = delete;
+        Sentinel(Sentinel&) = delete;
+
+        std::reference_wrapper<std::shared_ptr<T>> m_ptr;
+        std::reference_wrapper<Data> m_data;
+      };
+
+
+      template<typename T>
+      Sentinel<T> pointer_sentinel(std::shared_ptr<T> &ptr) const
+      {
+        return Sentinel<T>(ptr, *(m_data.get()));
+      }
+
       bool is_null() const CHAISCRIPT_NOEXCEPT
       {
         return (m_data->m_data_ptr == nullptr && m_data->m_const_data_ptr == nullptr);
@@ -297,6 +341,13 @@ namespace chaiscript
         return *this;
       }
 
+      Boxed_Value &clone_attrs(const Boxed_Value &t_obj)
+      {
+        copy_attrs(t_obj);
+        reset_return_value();
+        return *this;
+      }
+
 
       /// \returns true if the two Boxed_Values share the same internal type
       static bool type_match(const Boxed_Value &l, const Boxed_Value &r) CHAISCRIPT_NOEXCEPT
@@ -330,9 +381,9 @@ namespace chaiscript
   ///
   /// @sa @ref adding_objects
   template<typename T>
-    Boxed_Value var(T t)
+    Boxed_Value var(T &&t)
     {
-      return Boxed_Value(t);
+      return Boxed_Value(std::forward<T>(t));
     }
 
   namespace detail {

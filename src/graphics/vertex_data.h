@@ -118,6 +118,8 @@ namespace Graphics {
 
       unsigned int numberVertexBufferObjects() const noexcept;
       const unsigned int generateVertexArrayObject() const;
+
+      const std::string to_string() const noexcept;
   };
 }
 

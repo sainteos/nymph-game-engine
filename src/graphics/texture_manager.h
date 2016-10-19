@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include "graphics/base_texture.h"
+//= SCRIPTABLE
 
 namespace Graphics {
   class TextureManager {
@@ -13,12 +14,14 @@ namespace Graphics {
       TextureManager();
       ~TextureManager();
 
+      //= BEGIN SCRIPTABLE
       const bool loadTexture(const std::string& path);
 
-      const std::shared_ptr<BaseTexture> operator[](const std::string& name) const;
-      const std::shared_ptr<BaseTexture> getTexture(const std::string& name) const;
+      std::shared_ptr<BaseTexture> operator[](const std::string& name) const;
+      std::shared_ptr<BaseTexture> getTexture(const std::string& name) const;
 
       const bool textureExists(const std::string& name) const noexcept;
+      //= END SCRIPTABLE
 
       static const std::string getNameFromPath(const std::string& path) noexcept;
   };  

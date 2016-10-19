@@ -3,6 +3,9 @@
 #include <chrono>
 #include "events/subject.h"
 
+//= SCRIPTABLE
+//= SCRIPTABLE BASES Subject
+
 namespace Utility {
   class FPSCounter : public Events::Subject {
     private:
@@ -18,11 +21,16 @@ namespace Utility {
 
     public:
       FPSCounter(const float max_fps);
+      virtual ~FPSCounter() = default;
+      
+      const float assessCountAndGetDelta();
+
+      //= BEGIN SCRIPTABLE
       const float getMaxFPS() const noexcept;
       const float getCurrentFPS() const noexcept;
       const float getAverageFPS() const noexcept;
       void resetAverageFPS() noexcept;
-      const float assessCountAndGetDelta();
+      //= END SCRIPTABLE
   };  
 }
 
