@@ -1,7 +1,7 @@
 # Nymph Game Engine #
 2D Chaiscript Based Game Engine
 
-Welcome to the Nymph Game Engine codebase. This README is in progress. Documentation can be found [here](http://sainteos.github.io/project-spero/).
+Welcome to the Nymph Game Engine codebase. This README is in progress. Documentation can be found [here](http://sainteos.github.io/nymph-game-engine/).
 
 Nymph Game Engine is a Chaiscript based game engine. It uses a renderer that is OpenGL 3.3/GLSL 3.3 based, currently only 2D graphics are supported (though, I will not rule out that I won't touch 3D one day). It supports loading Tiled .tmx files, including support for lighting, and animations. 
 
