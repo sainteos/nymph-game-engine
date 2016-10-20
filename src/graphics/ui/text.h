@@ -12,6 +12,9 @@
 
 namespace Graphics {
   namespace UI {
+    /**
+     * @brief      Class for text.
+     */
     class Text : public Component {
       protected:
         std::shared_ptr<Font> font;
@@ -24,15 +27,64 @@ namespace Graphics {
 
       public:
       //= BEGIN SCRIPTABLE
+      
+        /**
+         * @brief      Constructor for Text
+         */
         Text();
+        /**
+         * @brief      Sets the font.
+         *
+         * @param[in]  font  The font
+         */
         void setFont(const std::shared_ptr<Font> font);
+        /**
+         * @brief      Sets the text string.
+         *
+         * @param[in]  text  The text string
+         */
         virtual void setText(const std::string& text);
+        /**
+         * @brief      Gets the text string
+         *
+         * @return     The text string.
+         */
         const std::string getText() const noexcept;
+        /**
+         * @brief      Sets the color.
+         *
+         * @param[in]  color  The color
+         */
         void setColor(const glm::vec4& color);
+        /**
+         * @brief      Gets the color.
+         *
+         * @return     The color.
+         */
         const glm::vec4 getColor() const noexcept;
+        /**
+         * @brief      Sets the shader.
+         *
+         * @param[in]  shader  The shader
+         */
         void setShader(std::shared_ptr<Shader> shader);
+        /**
+         * @brief      Sets the kerning.
+         *
+         * @param[in]  amount  The amount
+         */
         void setKerning(const float amount) noexcept;
+        /**
+         * @brief      Gets the kerning.
+         *
+         * @return     The kerning.
+         */
         const float getKerning() const noexcept;
+        /**
+         * @brief      Returns a string representation of the object.
+         *
+         * @return     String representation of the object.
+         */
         const std::string to_string() const noexcept;
         virtual const std::string className() const noexcept override;
       //= END SCRIPTABLE

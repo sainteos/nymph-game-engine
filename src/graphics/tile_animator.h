@@ -11,6 +11,9 @@
 //= SCRIPTABLE BASES Component
 
 namespace Graphics {
+  /**
+   * @brief      Class for tile animator.
+   */
   class TileAnimator : public Component {
     private:
       glm::vec2 multiplier;
@@ -27,21 +30,77 @@ namespace Graphics {
     public:
       TileAnimator() = delete;
       //= BEGIN SCRIPTABLE
+      
+      /**
+       * @brief      TileAnimator Constructor
+       *
+       * @param[in]  tileset_width       The tileset width
+       * @param[in]  tileset_height      The tileset height
+       * @param[in]  tile_width_pixels   The tile width pixels
+       * @param[in]  tile_height_pixels  The tile height pixels
+       */
       TileAnimator(const unsigned int tileset_width, const unsigned int tileset_height, const unsigned int tile_width_pixels, const unsigned int tile_height_pixels);
-
+      
+      /**
+       * @brief      Factory function for TileAnimator
+       *
+       * @param[in]  tileset_width   The tileset width
+       * @param[in]  tileset_height  The tileset height
+       * @param[in]  tile_width      The tile width
+       * @param[in]  tile_height     The tile height
+       *
+       * @return     Newly created TileAnimator
+       */
       static std::shared_ptr<TileAnimator> create(const unsigned int tileset_width, const unsigned int tileset_height, const unsigned int tile_width = 32, const unsigned int tile_height = 32);
 
+      /**
+       * @brief      Sets the starting state.
+       *
+       * @param[in]  state  The state
+       */
       void setStartingState(const std::string& state);
-
+      
+      /**
+       * @brief      Adds a frame to the front.
+       *
+       * @param[in]  state        The state
+       * @param[in]  frame_pos    The frame position
+       * @param[in]  frame_time   The frame time
+       * @param[in]  set_current  The set current
+       */
       void addFrameFront(const std::string& state, const glm::ivec2& frame_pos, const unsigned int frame_time, bool set_current = false);
 
+      /**
+       * @brief      Adds a frame to the back.
+       *
+       * @param[in]  state        The state
+       * @param[in]  frame_pos    The frame position
+       * @param[in]  frame_time   The frame time
+       * @param[in]  set_current  The set current
+       */
       void addFrameBack(const std::string& state, const glm::ivec2& frame_pos, const unsigned int frame_time, bool set_current = false);
-
+      
+      /**
+       * @brief      Pops a frame from the front
+       *
+       * @param[in]  state  The state
+       */
       void popFrameFront(const std::string& state);
 
+      /**
+       * @brief      Pops a frame from the back
+       *
+       * @param[in]  state  The state
+       */
       void popFrameBack(const std::string& state);
 
+      /**
+       * @brief      Triggers animation of state
+       *
+       * @param[in]  state  The state
+       */
       void triggerAnimation(const std::string& state);
+      
       virtual const std::string className() const noexcept override;
       //= END SCRIPTABLE
 

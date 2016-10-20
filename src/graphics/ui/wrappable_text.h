@@ -8,11 +8,20 @@
 
 namespace Graphics {
   namespace UI {
+    /**
+     * @brief      Class for wrappable text.
+     */
     class WrappableText : public Text {
       public:
         //= SCRIPTABLE ENUM
+        /**
+         * @brief      Horizontal Alignment Enum
+         */
         enum HorizontalAlignment : unsigned int {LEFT, HCENTER, RIGHT};
         //= SCRIPTABLE ENUM
+        /**
+         * @brief      Vertical Alignment Enum
+         */
         enum VerticalAlignment : unsigned int { TOP, VCENTER, BOTTOM};
       private:
         float width;
@@ -27,13 +36,48 @@ namespace Graphics {
         std::vector<std::pair<float, std::vector<Character>>> splitTextIntoLines();
       public:
       //= BEGIN SCRIPTABLE
+      
+        /**
+         * @brief      Wrappable Text constructor.
+         */
         WrappableText();
+        /**
+         * @brief      Sets the size.
+         *
+         * @param[in]  width   The width
+         * @param[in]  height  The height
+         */
         void setSize(float width, float height);
+        /**
+         * @brief      Sets the line spacing.
+         *
+         * @param[in]  spacing  The spacing
+         */
         void setLineSpacing(float spacing);
+        /**
+         * @brief      Sets the horizontal alignment.
+         *
+         * @param[in]  alignment  The alignment
+         */
         void setHorizontalAlignment(const HorizontalAlignment& alignment);
+        /**
+         * @brief      Sets the vertical alignment.
+         *
+         * @param[in]  alignment  The alignment
+         */
         void setVerticalAlignment(const VerticalAlignment& alignment);
 
+        /**
+         * @brief      Sets the text string.
+         *
+         * @param[in]  text  The text string
+         */
         virtual void setText(const std::string& text) override;
+        /**
+         * @brief      Returns a string representation of the object.
+         *
+         * @return     String representation of the object.
+         */
         const std::string to_string() const noexcept;
         virtual const std::string className() const noexcept override;
       //= END SCRIPTABLE

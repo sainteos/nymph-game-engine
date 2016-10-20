@@ -4,12 +4,26 @@
 //= SCRIPTABLE
 
 namespace Events {
+  /**
+   * @brief      Class for event.
+   */
   class Event {
     private:
       EventType type;
     public:
       //= BEGIN SCRIPTABLE
+      
+      /**
+       * @brief      Event constructor
+       *
+       * @param[in]  type  The event type.
+       */
       Event(const EventType& type) : type(type) {}
+      /**
+       * @brief      Gets the event type.
+       *
+       * @return     The event type.
+       */
       const EventType getEventType() const { return type; }
       //= END SCRIPTABLE
   };

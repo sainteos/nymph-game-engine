@@ -20,6 +20,9 @@
 //= SCRIPTABLE
 
 namespace Graphics {
+  /**
+   * @brief      Class for graphics system.
+   */
   class GraphicsSystem {
     private:
       struct RankedLight {
@@ -73,13 +76,35 @@ namespace Graphics {
        */
       const bool isInitialized() const noexcept;
 
+      /**
+       * @brief      Determines if running.
+       *
+       * @return     True if running, False otherwise.
+       */
       const bool isRunning() noexcept;
 
+      /**
+       * @brief      Starts a render.
+       */
       void startRender();
+      /**
+       * @brief      Stops a render.
+       */
       void stopRender();
+      /**
+       * @brief      Starts a frame.
+       */
       void startFrame();
+      /**
+       * @brief      Stops a frame.
+       */
       void stopFrame();
-
+      
+      /**
+       * @brief      Gets the window.
+       *
+       * @return     The window.
+       */
       GLFWwindow* getWindow() const noexcept;
       //= BEGIN SCRIPTABLE
       /**
@@ -101,7 +126,12 @@ namespace Graphics {
        * @return a string that is the name of the window
        */
       const std::string windowName() const noexcept;
-
+      
+      /**
+       * @brief      Sets the window name.
+       *
+       * @param[in]  name  The name
+       */
       void setWindowName(const std::string& name);
       
       /**
@@ -131,9 +161,29 @@ namespace Graphics {
        */
       const int renderablesCount();
 
+      /**
+       * @brief      Sets the maximum number influencing lights.
+       *
+       * @param[in]  number  The number
+       */
       void setMaxInfluenceLights(const unsigned int number) noexcept;
+      /**
+       * @brief      Gets the maximum number of influencing lights.
+       *
+       * @return     The maximum influence lights.
+       */
       const unsigned int getMaxInfluenceLights() const noexcept;
+      /**
+       * @brief      Adds a light.
+       *
+       * @param[in]  light  The light
+       */
       void addLight(std::shared_ptr<Light> light) noexcept;
+      /**
+       * @brief      Removes a light.
+       *
+       * @param[in]  light  The light
+       */
       void removeLight(std::shared_ptr<Light> light);
       //= END SCRIPTABLE
       GLFWwindow* getCurrentWindow() noexcept;

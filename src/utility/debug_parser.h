@@ -9,6 +9,9 @@
 //= SCRIPTABLE BASES Subject Observer
 
 namespace Utility {
+  /**
+   * @brief      Class for debug parser.
+   */
   class DebugParser : public Events::Subject, public Events::Observer {
     private:
       std::queue<std::string> tokenSplit(std::string command);
@@ -18,13 +21,32 @@ namespace Utility {
 
 
       //= BEGIN SCRIPTABLE
+      
+      /**
+       * @brief      DebugParser constructor
+       */
       DebugParser() = default;
+      /**
+       * @brief      Parses a debug command
+       *
+       * @param[in]  command  The command
+       */
       void parseCommand(const std::string& command);
       //Must be called every engine loop to get events
       //out of the event queue and use them.
+      
+      /**
+       * @brief      Handles queued debug parser events
+       * 
+       * @detail     Must be called every engine loop to get events
+       * out of the event queue and use them
+       */
       void handleEvents();
       //= END SCRIPTABLE
-
+      
+      /**
+       * @brief      Destroys the object.
+       */
       virtual ~DebugParser() = default;
   };
 }

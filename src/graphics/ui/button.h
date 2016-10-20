@@ -7,6 +7,9 @@
 //= SCRIPTABLE BASES TextArea
 namespace Graphics {
   namespace UI {
+    /**
+     * @brief      Class for UI button.
+     */
     class Button : public TextArea {
       private: 
         bool cursor_over;
@@ -14,7 +17,32 @@ namespace Graphics {
         const glm::vec4 mouse_over_dim = glm::vec4(0.1, 0.1, 0.1, 0.0);
       public:
       //= BEGIN SCRIPTABLE
+      
+        /**
+         * @brief      Button constructor
+         *
+         * @param[in]  text         The text
+         * @param[in]  vertex_data  The vertex data
+         * @param[in]  skin         The skin
+         */
         Button(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin);
+        /**
+         * @brief      Factory function for Button
+         *
+         * @param[in]  skin           The UI skin
+         * @param[in]  text           The text
+         * @param[in]  color          The color
+         * @param[in]  text_color     The text color
+         * @param[in]  padding        The padding
+         * @param[in]  screen_width   The screen width
+         * @param[in]  screen_height  The screen height
+         * @param[in]  x_pos          The x position
+         * @param[in]  y_pos          The y position
+         * @param[in]  width          The width
+         * @param[in]  height         The height
+         *
+         * @return     a newly constructed Button
+         */
         static std::shared_ptr<Button> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
 
         virtual void onLeftClick() override;

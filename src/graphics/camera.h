@@ -15,6 +15,9 @@
 #undef far
 
 namespace Graphics {
+  /**
+   * @brief      Class for camera.
+   */
   class Camera : public Component {
     private:
       glm::mat4 projection_matrix;
@@ -38,28 +41,115 @@ namespace Graphics {
       Transform negateTransformForScreen(std::shared_ptr<Transform> trans);
     public:
       Camera() = delete;
+      /**
+       * @brief      Constructor for Camera
+       *
+       * @param[in]  shader_manager  The shader manager
+       */
       Camera(const std::shared_ptr<ShaderManager> shader_manager);
+      /**
+       * @brief      Constructor for Camera
+       *
+       * @param[in]  shader_manager   The shader manager
+       * @param[in]  viewport_width   The viewport width
+       * @param[in]  viewport_height  The viewport height
+       * @param[in]  near             The near plane z value
+       * @param[in]  far              The far plane z value
+       */
       Camera(const std::shared_ptr<ShaderManager> shader_manager, const float viewport_width, const float viewport_height, const float near = 0.1, const float far = 1.0);
       virtual void onStart() override;
       virtual const bool onUpdate(const double delta) override;
       virtual void onDestroy() override;
 
       //= BEGIN SCRIPTABLE
+      
+      /**
+       * @brief      Sets the screen padding in tiles.
+       *
+       * @param[in]  padding  The padding
+       */
       void setScreenPaddingInTiles(const int padding) noexcept;
+      /**
+       * @brief      Gets the screen padding in tiles.
+       *
+       * @return     The screen padding in tiles.
+       */
       const int getScreenPaddingInTiles() const noexcept;
+      /**
+       * @brief      Sets the width.
+       *
+       * @param[in]  width  The width
+       */
       void setWidth(const float width) noexcept;
+      /**
+       * @brief      Gets the width.
+       *
+       * @return     The width.
+       */
       const float getWidth() const noexcept;
+      /**
+       * @brief      Sets the height.
+       *
+       * @param[in]  height  The height
+       */
       void setHeight(const float height) noexcept;
+      /**
+       * @brief      Gets the height.
+       *
+       * @return     The height.
+       */
       const float getHeight() const noexcept;
+      /**
+       * @brief      Sets the near z plane
+       *
+       * @param[in]  near  The near
+       */
       void setNear(const float near) noexcept;
+      /**
+       * @brief      Gets the near z plane.
+       *
+       * @return     The near.
+       */
       const float getNear() const noexcept;
+      /**
+       * @brief      Sets the far z plane.
+       *
+       * @param[in]  far   The far
+       */
       void setFar(const float far) noexcept;
+      /**
+       * @brief      Gets the far z plane.
+       *
+       * @return     The far.
+       */
       const float getFar() const noexcept;
+      /**
+       * @brief      Sets the free camera speed when in free camera mode
+       *
+       * @param[in]  speed  The speed
+       */
       void setFreeCameraSpeed(const float speed) noexcept;
+      /**
+       * @brief      Gets the free camera speed when in free camera mode
+       *
+       * @return     The free camera speed.
+       */
       const float getFreeCameraSpeed() const noexcept;
 
+      /**
+       * @brief      Gets the projection matrix.
+       *
+       * @return     The projection matrix.
+       */
       const glm::mat4 getProjectionMatrix() const noexcept;
-
+      
+      /**
+       * @brief      Determines if component within.
+       *
+       * @param[in]  component  The component
+       *
+       * @return     True if component within, False otherwise.
+       */
       const bool isComponentWithin(const Component& component) const;
       virtual const std::string className() const noexcept override;
       //= END SCRIPTABLE
@@ -69,7 +159,7 @@ namespace Graphics {
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
 
-      virtual void log(el::base::type::ostream_t& os) const;
+      virtual void log(el::base::type::ostream_t& os) const override;
   };
 }
 #endif

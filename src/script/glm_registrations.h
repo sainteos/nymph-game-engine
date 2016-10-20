@@ -3,6 +3,11 @@
 #include <glm/glm.hpp>
 
 namespace Script {
+  /**
+   * @brief      Gets the glm scripting module.
+   *
+   * @return     The glm scripting module.
+   */
   chaiscript::ModulePtr getGlmModule() {
     chaiscript::ModulePtr module = std::make_shared<chaiscript::Module>();
 

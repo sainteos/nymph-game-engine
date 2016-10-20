@@ -10,11 +10,35 @@
 
 namespace Graphics {
   namespace UI {
+    /**
+     * @brief      Class for UI Area.
+     */
     class Area : public Element, virtual public el::Loggable  {
       public:
       //= BEGIN SCRIPTABLE
+      
+        /**
+         * @brief      Area constructor
+         *
+         * @param[in]  vertex_data  The vertex data
+         * @param[in]  skin         The skin
+         */
         Area(VertexData vertex_data, std::shared_ptr<Skin> skin);
-        static std::shared_ptr<Area> create(std::shared_ptr<Skin>, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
+        /**
+         * @brief      Area factory function.
+         *
+         * @param[in]  skin           The UI skin to use
+         * @param[in]  color          The color
+         * @param[in]  screen_width   The screen width
+         * @param[in]  screen_height  The screen height
+         * @param[in]  x_pos          The x position
+         * @param[in]  y_pos          The y position
+         * @param[in]  width          The width
+         * @param[in]  height         The height
+         *
+         * @return     a newly constructed Area
+         */
+        static std::shared_ptr<Area> create(std::shared_ptr<Skin> skin, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
 
         virtual void onLeftClick() override;
         virtual void onRightClick() override;

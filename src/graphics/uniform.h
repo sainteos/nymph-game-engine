@@ -4,8 +4,14 @@
 #include <string>
 
 namespace Graphics {
+  /**
+   * @brief      Class for shader uniform.
+   */
   class Uniform {
     public:
+      /**
+       * Enum describing the different types that can be held in a uniform.
+       */
       enum class UniformTypes { FLOAT, VEC2, VEC3, VEC4, INT, IVEC2, IVEC3, IVEC4, UINT, UVEC2, UVEC3, UVEC4, 
                           BOOL, BVEC2, BVEC3, BVEC4, MAT2, MAT3, MAT4, MAT23, MAT32, MAT24, MAT42, MAT34, MAT43 };
     private:
@@ -40,21 +46,84 @@ namespace Graphics {
       bool dirty;
     public:
       //= BEGIN SCRIPTABLE
+      
+      /**
+       * @brief      Uniform constructor.
+       */
       Uniform();
+      /**
+       * @brief      Sets the data.
+       *
+       * @param[in]  name  The name
+       * @param[in]  data  The data
+       *
+       * @tparam     T     DataType for uniform
+       */
       template<typename T>
       void setData(const std::string& name, const T& data);
+      /**
+       * @brief      Gets the type.
+       *
+       * @return     The type.
+       */
       const UniformTypes getType() const noexcept;
+      /**
+       * @brief      Gets the name.
+       *
+       * @return     The name.
+       */
       const std::string getName() const noexcept;
+      /**
+       * @brief      Determines if dirty.
+       *
+       * @return     True if dirty, False otherwise.
+       */
       const bool isDirty() const noexcept;
+      /**
+       * @brief      dirty = false
+       */
       void clean() noexcept;
 
+      /**
+       * @brief      Gets the data.
+       *
+       * @tparam     T     Type of data to get
+       *
+       * @return     The data.
+       */
       template<typename T>
       const T getData() const noexcept;
 
+      /**
+       * @brief      < operator using name
+       *
+       * @param[in]  right  The right
+       *
+       * @return     true if right.name is alphabetically higher than this.name
+       */
       const bool operator<(const Uniform& right) const noexcept;
+      /**
+       * @brief      == operator
+       *
+       * @param[in]  right  The right
+       *
+       * @return     True if same uniform
+       */
       const bool operator==(const Uniform& right) const noexcept;
+      /**
+       * @brief      != operator
+       *
+       * @param[in]  right  The right
+       *
+       * @return     True if not the same uniform
+       */
       const bool operator!=(const Uniform& right) const noexcept;
 
+      /**
+       * @brief      Returns a string representation of the object.
+       *
+       * @return     String representation of the object.
+       */
       const std::string to_string() const noexcept;
       //= END SCRIPTABLE
   };
