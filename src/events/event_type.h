@@ -6,6 +6,9 @@
 
 namespace Events {
   //= SCRIPTABLE ENUM
+  /**
+   * @brief      Event type enum that is used when passing events.
+   */
   enum EventType : unsigned int {
     MOUSE_CURSOR,
     MOUSE_SCROLL,
@@ -40,6 +43,11 @@ namespace Events {
     WINDOW_EXIT
   };
 
+  /**
+   * @brief      This gets all possible event types in their string form.
+   *
+   * @return     A map of EventType to the corresponding string.
+   */
   inline std::map<EventType, std::string> EventTypesToString() {
     return std::map<EventType, std::string> {
       {MOUSE_CURSOR, "Mouse Cursor"},

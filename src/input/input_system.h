@@ -11,6 +11,9 @@
 //= SCRIPTABLE BASES Subject Observer
 
 namespace Input {
+  /**
+   * @brief      Class for input system.
+   */
   class InputSystem : public Events::Subject, public Events::Observer {
     private:
       static std::map<int, int> keys_to_actions;
@@ -40,15 +43,24 @@ namespace Input {
       static void mouseScrollCallback(GLFWwindow* window, double x_offset, double y_offset);
     public:
       virtual ~InputSystem() = default;
+
+      /**
+       * @brief      Constructor for input system
+       *
+       * @param      window                   The window
+       * @param[in]  viewport_width           The viewport width
+       * @param[in]  viewport_height          The viewport height
+       * @param[in]  camera_transform_matrix  The camera transform matrix
+       * @param[in]  projection_matrix        The projection matrix
+       */
       InputSystem(GLFWwindow* window, float viewport_width, float viewport_height, glm::mat4 camera_transform_matrix, glm::mat4 projection_matrix);
+      /**
+       * @brief      Polls glfw for new input
+       */
       void pollForInput();
 
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
-
-      //= BEGIN SCRIPTABLE
-      void dummy() {}
-      //= END SCRIPTABLE
   };
 }
 

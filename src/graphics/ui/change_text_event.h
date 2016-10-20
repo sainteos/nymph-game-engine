@@ -8,13 +8,34 @@
 
 namespace Graphics {
   namespace UI {
+    /**
+     * @brief      Class for change text event.
+     */
     class ChangeTextEvent : public Events::Event {
       private:
         std::string text;
       public:
       //= BEGIN SCRIPTABLE
+      
+        /**
+         * @brief      ChangeTextEvent constructor
+         *
+         * @param[in]  text  The text
+         */
         ChangeTextEvent(const std::string& text) : Event(Events::EventType::CHANGE_TEXT), text(text) {}
+        /**
+         * @brief      ChangeTextEvent factory function
+         *
+         * @param[in]  text  The text
+         *
+         * @return     A newly created ChangeTextEvent
+         */
         static std::shared_ptr<ChangeTextEvent> create(const std::string& text) { return std::make_shared<ChangeTextEvent>(text); }
+        /**
+         * @brief      Gets the text.
+         *
+         * @return     The text.
+         */
         const std::string getText() const noexcept { return text; }
       //= END SCRIPTABLE
     }; 

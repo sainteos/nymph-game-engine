@@ -59,16 +59,64 @@ namespace Game {
       ~SceneGenerator();
 
       //= BEGIN SCRIPTABLE
+      
+      /**
+       * @brief      SceneGenerator constructor
+       *
+       * @param[in]  animation_index  The animation index containing all animations
+       * @param[in]  texture_manager  The texture manager
+       * @param[in]  shader_manager   The shader manager
+       */
       SceneGenerator(const Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager);
+      /**
+       * @brief      SceneGenerator copy constructor
+       *
+       * @param[in]  s  The other SceneGenerator
+       */
       SceneGenerator(const SceneGenerator& s) = default;
+      /**
+       * @brief      SceneGenerator equal operator
+       *
+       * @param[in]  other  The other SceneGenerator
+       *
+       * @return     *this
+       */
       SceneGenerator& operator=(const SceneGenerator& other) = default;
       
+      /**
+       * @brief      Creates a scene from a map.
+       *
+       * @param[in]  patch_width_tiles   The patch width in tiles
+       * @param[in]  patch_height_tiles  The patch height in tiles
+       * @param[in]  map                 The map
+       *
+       * @return     A newly created scene
+       */
       std::shared_ptr<Scene> createSceneFromMap(const unsigned int patch_width_tiles, const unsigned int patch_height_tiles, const Map& map);
 
+      /**
+       * @brief      Gets a dynamic entity by name.
+       *
+       * @param[in]  name  The name
+       *
+       * @return     The dynamic entity by name.
+       */
       std::shared_ptr<Entity> getDynamicEntityByName(const std::string& name);
 
+      /**
+       * @brief      Gets all dynamic entity names
+       *
+       * @return     The dynamic entity names.
+       */
       std::vector<std::string> getDynamicEntityNames() const noexcept;
 
+      /**
+       * @brief      Strips path specification from map name
+       *
+       * @param[in]  path  The path
+       *
+       * @return     The stripped map name.
+       */
       const std::string getStrippedMapName(const std::string path);
       //= END SCRIPTABLE
   };

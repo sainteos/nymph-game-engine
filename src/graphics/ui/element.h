@@ -26,29 +26,102 @@ namespace Graphics {
         static std::vector<glm::vec2> basisTexCoords() noexcept;
 
       public:
+        /**
+         * @brief      Element constructor
+         *
+         * @param[in]  vertex_data  The vertex data
+         * @param[in]  skin         The UI skin
+         */
         Element(VertexData vertex_data, std::shared_ptr<Skin> skin);
+        /**
+         * @brief      Destroys element.
+         */
         virtual ~Element();
 
       //= BEGIN SCRIPTABLE
+      
+        /**
+         * @brief      Gets the UI skin.
+         *
+         * @return     The skin.
+         */
         std::shared_ptr<Skin> getSkin() const noexcept;
+        /**
+         * @brief      Sets the UI skin.
+         *
+         * @param[in]  skin  The skin
+         */
         void setSkin(std::shared_ptr<Skin> skin) noexcept;
-
+        /**
+         * @brief      Gets the anchor point.
+         *
+         * @return     The anchor point.
+         */
         const glm::vec2 getAnchorPoint() const noexcept;
+        /**
+         * @brief      Sets the anchor point.
+         *
+         * @param[in]  anchor_point  The anchor point
+         */
         void setAnchorPoint(const glm::vec2 anchor_point);
-
+        /**
+         * @brief      Gets the width.
+         *
+         * @return     The width.
+         */
         const float getWidth() const noexcept;
+        /**
+         * @brief      Gets the height.
+         *
+         * @return     The height.
+         */
         const float getHeight() const noexcept;
+        /**
+         * @brief      Sets the width.
+         *
+         * @param[in]  width  The width
+         */
         void setWidth(const float width) noexcept;
+        /**
+         * @brief      Sets the height.
+         *
+         * @param[in]  height  The height
+         */
         void setHeight(const float height) noexcept;
-
+        /**
+         * @brief      Gets the text padding.
+         *
+         * @return     The text padding.
+         */
         const float getTextPadding() const noexcept;
+        /**
+         * @brief      Sets the text padding.
+         *
+         * @param[in]  text_padding  The text padding
+         */
         void setTextPadding(const float text_padding) noexcept;
-
+        /**
+         * @brief      Gets the color.
+         *
+         * @return     The color.
+         */
         const glm::vec4 getColor() const noexcept;
+        /**
+         * @brief      Sets the color.
+         *
+         * @param[in]  color  The color
+         */
         void setColor(const glm::vec4 color) noexcept;
 
         const std::string to_string() const noexcept;
 
+        /**
+         * @brief      Determines if point is within element.
+         *
+         * @param[in]  point  The point
+         *
+         * @return     True if point within, False otherwise.
+         */
         bool isPointWithin(glm::vec2 point) noexcept;
         virtual const std::string className() const noexcept override;
       //= END SCRIPTABLE
@@ -60,16 +133,54 @@ namespace Graphics {
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
         virtual const unsigned long long getValueForSorting() const noexcept override;
-
+        
+        /**
+         * @brief      Called when element is left clicked.
+         */
         virtual void onLeftClick() = 0;
+        /**
+         * @brief      Called when element is right clicked.
+         */
         virtual void onRightClick() = 0;
+        /**
+         * @brief      Called when element has left click released over it.
+         */
         virtual void onLeftClickRelease() = 0;
+        /**
+         * @brief      Called when element has right click released over it.
+         */
         virtual void onRightClickRelease() = 0;
+        /**
+         * @brief      Called when the mosue cursor goes over the element.
+         */
         virtual void onCursorEnter() = 0;
+        /**
+         * @brief      Called when the mouse cursor goes off the element.
+         */
         virtual void onCursorLeave() = 0;
+        /**
+         * @brief      Called when a key is pressed while element is in focus.
+         *
+         * @param[in]  key   The key
+         */
         virtual void onKeyDown(const int key) = 0;
+        /**
+         * @brief      Called when a key is released while element is in focus.
+         *
+         * @param[in]  key   The key
+         */
         virtual void onKeyUp(const int key) = 0;
+        /**
+         * @brief      Called when a key is repeated while element is in focus.
+         *
+         * @param[in]  key   The key
+         */
         virtual void onKeyRepeat(const int key) = 0;
+        /**
+         * @brief      Called when the mouse wheel is scrolled while element is in focus.
+         *
+         * @param[in]  position_change  The position change
+         */
         virtual void onScroll(const glm::dvec2 position_change) = 0;
         virtual void log(el::base::type::ostream_t& os) const;
     };

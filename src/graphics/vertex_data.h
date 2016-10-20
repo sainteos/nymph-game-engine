@@ -11,8 +11,14 @@
 #include <vector>
 #include <map>
 namespace Graphics {
+  /**
+   * @brief      Class for vertex data.
+   */
   class VertexData {
     public:
+      /**
+       * @brief      VertexData possible types
+       */
       enum DATA_TYPE : unsigned int { 
         GEOMETRY = 0,
         TEX_COORDS = 1,
@@ -87,38 +93,129 @@ namespace Graphics {
       const bool mapCompare(std::map<DATA_TYPE, std::vector<T>> lhs, std::map<DATA_TYPE, std::vector<T>> rhs);
 
     public:
+      /**
+       * Holds the different data widths possible for DATA_TYPE
+       */
       static const std::map<DATA_TYPE, unsigned int> DataWidth;
       
+      /**
+       * @brief      VertexData constructor
+       *
+       * @param[in]  primitive_type  The primitive type
+       */
       VertexData(const GLenum primitive_type = GL_TRIANGLES);
 
+      /**
+       * @brief      VertexData copy constructor
+       *
+       * @param[in]  vertex_data  The vertex data
+       */
       VertexData(const VertexData& vertex_data);
+      /**
+       * @brief      = operator
+       *
+       * @param[in]  vertex_data  The vertex data
+       *
+       * @return     this = other
+       */
       VertexData operator=(const VertexData& vertex_data);
       
+      /**
+       * @brief      Destroys the object.
+       */
       ~VertexData();
 
+      /**
+       * @brief      == operator
+       *
+       * @param[in]  other  The other
+       *
+       * @return     True if same vertexdata
+       */
       const bool operator==(const VertexData& other);
+      /**
+       * @brief      != operator
+       *
+       * @param[in]  other  The other
+       *
+       * @return     True if not same vertexdata
+       */
       const bool operator!=(const VertexData& other);
 
-      //if indices are added first, then they are used for min and divisibility validation
-      //otherwise, vertices added are used for min and divisibility validation
+      /**
+       * @brief      Adds indices.
+       *
+       * @detail     If indices are added first, then they are used for min and divisibility validation
+       * otherwise, vertices added are used for min and divisibility validation
+       * 
+       * @param[in]  indices  The indices
+       */
       void addIndices(const std::vector<unsigned int>& indices);
 
+      /**
+       * @brief      Adds a vector of data for a certain data type
+       *
+       * @param[in]  data_type  The data type
+       * @param[in]  vec        The vector
+       *
+       * @tparam     T          Physical Type of data to add
+       */
       template<typename T>
       void addVec(DATA_TYPE data_type, const std::vector<T>& vec);
 
+      /**
+       * @brief      Gets the index count.
+       *
+       * @return     The index count.
+       */
       const unsigned int getIndexCount() const noexcept;
+      /**
+       * @brief      Gets the vertex count.
+       *
+       * @return     The vertex count.
+       */
       const unsigned int getVertexCount() const noexcept;
       
+      /**
+       * @brief      Gets a map of collapsed type vectors to a data types
+       * 
+       * @return     Map of data types to vectors of type
+       */
       template<typename T>
       std::map<DATA_TYPE, std::vector<T>> getCollapsedVectors() const;
 
+      /**
+       * @brief      Gets the indices.
+       *
+       * @return     The indices.
+       */
       std::vector<unsigned int> getIndices() const noexcept;
 
+      /**
+       * @brief      Returns the highest Z value found in this vertex data.
+       *
+       * @return     float representing highest z value
+       */
       const float highestZ() const noexcept;
 
+      /**
+       * @brief      Returns number of vertex buffer objects needed for this vertex data
+       *
+       * @return     Number of vbos
+       */
       unsigned int numberVertexBufferObjects() const noexcept;
+      /**
+       * @brief      Generates an opengl vertex array object
+       *
+       * @return     A handle to an opengl vao
+       */
       const unsigned int generateVertexArrayObject() const;
 
+      /**
+       * @brief      Returns a string representation of the object.
+       *
+       * @return     String representation of the object.
+       */
       const std::string to_string() const noexcept;
   };
 }

@@ -9,9 +9,15 @@
 //= SCRIPTABLE BASES Component
 
 namespace Graphics {
+  /**
+   * @brief      Class for light.
+   */
   class Light : public Component {
     public:
       //= SCRIPTABLE ENUM
+      /**
+       * @brief      Light type enum
+       */
       enum Type : unsigned int { POINT, SPOT };
     private:
       Type type;
@@ -28,28 +34,124 @@ namespace Graphics {
       virtual void onDestroy() override;
 
       //= BEGIN SCRIPTABLE
+      
+      /**
+       * @brief      Light constructor
+       *
+       * @param[in]  type  The type
+       */
       Light(const Light::Type& type = Type::POINT);
+      /**
+       * @brief      Destroys the object.
+       */
       ~Light();
+      /**
+       * @brief      Sets the color.
+       *
+       * @param[in]  color  The color
+       */
       void setColor(const glm::vec3 color) noexcept;
+      /**
+       * @brief      Gets the color.
+       *
+       * @return     The color.
+       */
       const glm::vec3 getColor() const noexcept;
+      /**
+       * @brief      Sets the intensity.
+       *
+       * @param[in]  intensity  The intensity
+       */
       void setIntensity(const float intensity) noexcept;
+      /**
+       * @brief      Gets the intensity.
+       *
+       * @return     The intensity.
+       */
       const float getIntensity() const noexcept;
+      /**
+       * @brief      Sets the linear attenuation.
+       *
+       * @param[in]  linear  The linear
+       */
       void setLinearAttenuation(const float linear) noexcept;
+      /**
+       * @brief      Gets the linear attenuation.
+       *
+       * @return     The linear attenuation.
+       */
       const float getLinearAttenuation() const noexcept;
+      /**
+       * @brief      Sets the quadratic attenuation.
+       *
+       * @param[in]  quadratic  The quadratic
+       */
       void setQuadraticAttenuation(const float quadratic) noexcept;
+      /**
+       * @brief      Gets the quadratic attenuation.
+       *
+       * @return     The quadratic attenuation.
+       */
       const float getQuadraticAttenuation() const noexcept;
-
+      
+      /**
+       * @brief      Function to see if lights cast quantized bands or are smooth
+       *
+       * @return     True if lights cast quantized bands
+       */
       const bool castsQuantizedBands() const noexcept;
+      /**
+       * @brief      Sets the number of quantized bands.
+       *
+       * @param[in]  bands  The bands
+       */
       void setNumberOfQuantizedBands(const int bands) noexcept;
+      /**
+       * @brief      Gets the number of quantized bands.
+       *
+       * @return     The number of quantized bands.
+       */
       const int getNumberOfQuantizedBands() const noexcept;
-
+      
+      /**
+       * @brief      Sets the cone angle.
+       *
+       * @param[in]  angle  The angle
+       */
       void setConeAngle(const float angle) noexcept;
+      /**
+       * @brief      Gets the cone angle.
+       *
+       * @return     The cone angle.
+       */
       const float getConeAngle() const noexcept;
+      /**
+       * @brief      Sets the cone direction.
+       *
+       * @param[in]  direction  The direction
+       */
       void setConeDirection(const glm::vec3 direction) noexcept;
+      /**
+       * @brief      Gets the cone direction.
+       *
+       * @return     The cone direction.
+       */
       const glm::vec3 getConeDirection() const noexcept;
-
+      
+      /**
+       * @brief      Gets the type.
+       *
+       * @return     The type.
+       */
       const Light::Type getType() const noexcept;
-
+      
+      /**
+       * @brief      Calculates a light's influence on a given component
+       *
+       * @param[in]  component  The component
+       *
+       * @return     Influence amount clamped 0.0, 1.0, on the given component
+       */
       const float influenceOnComponent(const Component& component) const;
       virtual const std::string className() const noexcept override;
       //= END SCRIPTABLE

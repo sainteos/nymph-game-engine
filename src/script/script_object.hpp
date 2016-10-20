@@ -11,6 +11,9 @@
 //= SCRIPTABLE BASES Subject Observer
 
 namespace Script {
+  /**
+   * @brief      Class for script object.
+   */
   class ScriptObject : public Events::Subject, public Events::Observer, public std::enable_shared_from_this<ScriptObject> {
     private:
       std::string class_name;
@@ -29,16 +32,47 @@ namespace Script {
 
     public:
       ScriptObject() = delete;
+      /**
+       * @brief      ScriptObject constructor
+       *
+       * @param[in]  name              The name
+       * @param[in]  chai_interpreter  The chaiscript interpreter
+       */
       ScriptObject(const std::string& name, std::shared_ptr<chaiscript::ChaiScript> chai_interpreter);
+      /**
+       * @brief      Copy constructor for ScriptObject
+       *
+       * @param[in]  other  The other
+       */
       ScriptObject(const ScriptObject& other);
+      /**
+       * @brief      Destroys the object.
+       */
       ~ScriptObject() = default;
 
       //= BEGIN SCRIPTABLE
+      
+      /**
+       * @brief      Sets the class name on the scripting object
+       *
+       * @param[in]  name  The name
+       */
       void setClassName(const std::string& name);
       //= END SCRIPTABLE
 
+      /**
+       * @brief      Calls onStart in the attached script object
+       */
       void onStart();
+      /**
+       * @brief      Calls onUpdate in the attached script object
+       *
+       * @param[in]  delta  The delta
+       */
       void onUpdate(const float delta);
+      /**
+       * @brief      Calls onDestroy in the attached script object
+       */
       void onDestroy();
 
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
