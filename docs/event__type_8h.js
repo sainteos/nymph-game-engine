@@ -1,0 +1,37 @@
+var event__type_8h =
+[
+    [ "EventType", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8", [
+      [ "MOUSE_CURSOR", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a0cb764fec5c8199714bf03253c59947d", null ],
+      [ "MOUSE_SCROLL", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8ab140bcabe8209ca48d5819ea5eec1388", null ],
+      [ "MOUSE_BUTTON_DOWN", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a736b1e52bb7a8cc2dbc890aea3977968", null ],
+      [ "MOUSE_BUTTON_UP", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8aac48bee4c87670c7fe3b3069d6ce9374", null ],
+      [ "CURSOR_ENTER", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a6c257ebeef1901158cdf7d14de99d707", null ],
+      [ "CURSOR_LEAVE", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a485a5cc8bf22749daf99c3d3864a00f0", null ],
+      [ "KEY_DOWN", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8abfd0602b97b7a8bfdf17ac0ce9906a5b", null ],
+      [ "KEY_UP", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8af029df17599c60ec56183ab424c203f2", null ],
+      [ "KEY_REPEAT", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a7d4bafdab402977a5862a4f895924aa3", null ],
+      [ "CHARACTER_TYPED", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a01aef2685e3694c309858d4fdbaa04dd", null ],
+      [ "SPRITE_MOVE", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a757670ec7d6770630737a8203e475d43", null ],
+      [ "SET_SHADER", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8ad995372d89868d6f0554073791146d23", null ],
+      [ "ADD_TEXTURE", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a033c2e93e0deb4ae58afec32a4ce48d7", null ],
+      [ "REMOVE_TEXTURE", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a39b3d10c426a459ea56db40976c9e20f", null ],
+      [ "SET_ACTIVE", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8ad2663063a97778b873899da2fd2c2f59", null ],
+      [ "SET_ENTITY_ACTIVE", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a22ac21ea6b27aa2c90f0872743d62902", null ],
+      [ "SET_UNIFORM", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8ae71060c6bd8a403b98666fde5a6c37cd", null ],
+      [ "ANIMATION_TRIGGER", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8aaf9918386309aeaa763bd360bb700ca3", null ],
+      [ "SUSPEND_KEY_INPUT", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a0f9447e88294fd82e3e8ce98e22a9d41", null ],
+      [ "RESUME_KEY_INPUT", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8ac46c75c3b6ceef6197dbcd9587d9f3d2", null ],
+      [ "CHANGE_TEXT", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a31adbd4ba3a95217435b43793b0de9b1", null ],
+      [ "DEBUG_COMMAND", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8afecb62e5495690bf470c9b3e9db7dd39", null ],
+      [ "LOAD_MAP", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a129d3c94d09201cfb1a8b1cbf315a852", null ],
+      [ "LOAD_CHARACTER", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a70f5a909a7e3dc8cef5886d32c97f9c6", null ],
+      [ "TOGGLE_FREE_CAMERA", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8ac010671c31b7ad849ac3cf4ec41f8853", null ],
+      [ "LIST_MAPS", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a603ce920e5c9808a89c59e4bc2da2f32", null ],
+      [ "LIST_CHARACTERS", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8abbecebe4e55624bd42cd986b06c1fa2a", null ],
+      [ "LIST_LAYERS", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a4863176607a97f77b91922fecd58d911", null ],
+      [ "TOGGLE_LIGHTS", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a0b64d1894375f2cc4c64bce88ffa47f5", null ],
+      [ "TOGGLE_LAYER", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8aa04e0b7b043ce5740fd2498e627d204f", null ],
+      [ "WINDOW_EXIT", "event__type_8h.html#a07b11ec064b2d1ea8593ca3630c2aec8a0876a695abc0ac64e80e3ae620989c68", null ]
+    ] ],
+    [ "EventTypesToString", "event__type_8h.html#a80b7c98fc6ce6ebcd8d36dbc13454dfb", null ]
+];

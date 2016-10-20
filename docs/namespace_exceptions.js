@@ -1,0 +1,26 @@
+var namespace_exceptions =
+[
+    [ "ChildDoesNotExistException", "class_exceptions_1_1_child_does_not_exist_exception.html", "class_exceptions_1_1_child_does_not_exist_exception" ],
+    [ "ConfigNotLoadedException", "class_exceptions_1_1_config_not_loaded_exception.html", "class_exceptions_1_1_config_not_loaded_exception" ],
+    [ "FreeTypeInitializationException", "class_exceptions_1_1_free_type_initialization_exception.html", "class_exceptions_1_1_free_type_initialization_exception" ],
+    [ "InvalidFileFormatException", "class_exceptions_1_1_invalid_file_format_exception.html", "class_exceptions_1_1_invalid_file_format_exception" ],
+    [ "InvalidFilenameException", "class_exceptions_1_1_invalid_filename_exception.html", "class_exceptions_1_1_invalid_filename_exception" ],
+    [ "InvalidFragmentShaderException", "class_exceptions_1_1_invalid_fragment_shader_exception.html", "class_exceptions_1_1_invalid_fragment_shader_exception" ],
+    [ "InvalidGeometryShaderException", "class_exceptions_1_1_invalid_geometry_shader_exception.html", "class_exceptions_1_1_invalid_geometry_shader_exception" ],
+    [ "InvalidShaderNameException", "class_exceptions_1_1_invalid_shader_name_exception.html", "class_exceptions_1_1_invalid_shader_name_exception" ],
+    [ "InvalidShaderObjectException", "class_exceptions_1_1_invalid_shader_object_exception.html", "class_exceptions_1_1_invalid_shader_object_exception" ],
+    [ "InvalidShaderProgramException", "class_exceptions_1_1_invalid_shader_program_exception.html", "class_exceptions_1_1_invalid_shader_program_exception" ],
+    [ "InvalidTextureNameException", "class_exceptions_1_1_invalid_texture_name_exception.html", "class_exceptions_1_1_invalid_texture_name_exception" ],
+    [ "InvalidUniformNameException", "class_exceptions_1_1_invalid_uniform_name_exception.html", "class_exceptions_1_1_invalid_uniform_name_exception" ],
+    [ "InvalidVertexArrayException", "class_exceptions_1_1_invalid_vertex_array_exception.html", "class_exceptions_1_1_invalid_vertex_array_exception" ],
+    [ "InvalidVertexShaderException", "class_exceptions_1_1_invalid_vertex_shader_exception.html", "class_exceptions_1_1_invalid_vertex_shader_exception" ],
+    [ "MalformedMapLayerException", "class_exceptions_1_1_malformed_map_layer_exception.html", "class_exceptions_1_1_malformed_map_layer_exception" ],
+    [ "NoCameraAttachedException", "class_exceptions_1_1_no_camera_attached_exception.html", "class_exceptions_1_1_no_camera_attached_exception" ],
+    [ "RenderableNotInitializedException", "class_exceptions_1_1_renderable_not_initialized_exception.html", "class_exceptions_1_1_renderable_not_initialized_exception" ],
+    [ "ShaderCompilationException", "class_exceptions_1_1_shader_compilation_exception.html", "class_exceptions_1_1_shader_compilation_exception" ],
+    [ "SystemAlreadyInitializedException", "class_exceptions_1_1_system_already_initialized_exception.html", "class_exceptions_1_1_system_already_initialized_exception" ],
+    [ "SystemAlreadyRunningException", "class_exceptions_1_1_system_already_running_exception.html", "class_exceptions_1_1_system_already_running_exception" ],
+    [ "SystemNotInitializedException", "class_exceptions_1_1_system_not_initialized_exception.html", "class_exceptions_1_1_system_not_initialized_exception" ],
+    [ "SystemNotRunningException", "class_exceptions_1_1_system_not_running_exception.html", "class_exceptions_1_1_system_not_running_exception" ],
+    [ "TextureNotLoadedException", "class_exceptions_1_1_texture_not_loaded_exception.html", "class_exceptions_1_1_texture_not_loaded_exception" ]
+];

@@ -106,23 +106,22 @@ end
 def extractEnums file_text
   enums = {}
 
-  scriptable_enum_regex = /\s*\/\/=\s*SCRIPTABLE\s*ENUM\s*enum\s*[clas]*\s+(\w+)(\W*|\s*:\s*[a-zA-Z ]+){(.*?)};/m
+  scriptable_enum_regex = /\s*\/\/=\s*SCRIPTABLE\s*ENUM\s+(\/\*.*?\*\/)\s*\senum\s*[clas]*\s+(\w+)(\W*|\s*:\s*[a-zA-Z ]+){(.*?)};/m
 
   class_regex = /^(?!enum)\s*class\s+([a-zA-Z]+).*/
 
   matches = file_text.scan(scriptable_enum_regex)
-
   class_matches = class_regex.match(file_text)
 
   if matches != []
     matches.each do |match|
-      name = match[0]
+      name = match[1]
 
       if class_matches != nil && file_text.index(class_matches[0]) < file_text.index(/\/\/=\s*SCRIPTABLE\s*ENUM\s*/)
         name = class_matches.captures[0] + "::" + name
       end
 
-      args = match[2].split(",").collect {|val| val.strip }
+      args = match[3].split(",").collect {|val| val.strip }
 
       enums[name] = args
     end
