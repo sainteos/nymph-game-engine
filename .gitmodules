@@ -1,3 +1,3 @@
-[submodule "project-spero-assets"]
-	path = project-spero-assets
-	url = https://github.com/sainteos/project-spero-assets
+[submodule "nymph-game-one"]
+	path = nymph-game-one
+	url = https://github.com/sainteos/nymph-game-one.git
