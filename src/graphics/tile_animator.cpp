@@ -66,7 +66,7 @@ namespace Graphics {
     }
 
     frame_time_accumulator += delta;
-    if(triggerable_animations[current_state].size() > 1) {
+    if(triggerable_animations[current_state].size() > 0) {
       if(frame_time_accumulator > triggerable_animations[current_state].front().second) {
         triggerable_animations[current_state].push_back(triggerable_animations[current_state].front());
         triggerable_animations[current_state].pop_front();

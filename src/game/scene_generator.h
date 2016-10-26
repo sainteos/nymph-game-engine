@@ -2,6 +2,7 @@
 #define SCENE_GENERATOR_H
 #include <memory>
 #include <map>
+#include "physics/collision_data.h"
 #include "graphics/vertex_data.h"
 #include "graphics/texture_manager.h"
 #include "graphics/shader_manager.h"
@@ -52,6 +53,7 @@ namespace Game {
       std::vector<std::shared_ptr<Entity>> createStaticallyAnimatedTilesFromMap(const Map& map);
       std::map<std::string, DynamicAnimation> createAnimationsFromAnimationMap(const Map& map);
       std::vector<std::shared_ptr<Component>> createLightsFromMap(const Map& map);
+      std::shared_ptr<Physics::CollisionData> createCollisionDataFromMap(const Map& map);
 
       const float calculateZ(unsigned int layer_index, unsigned int layers_total);
     public:

@@ -147,7 +147,7 @@ class DebugConsole {
   }
 
   def onStart() {
-    texture_manager.loadTexture("./project-spero-assets/grayscale_tex.png")
+    texture_manager.loadTexture("./nymph-game-one/textures/grayscale_tex.png")
     font_generator.loadFont("8bit.ttf", 48, "8bit")
     
     this.setupConsole()

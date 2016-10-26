@@ -2,6 +2,7 @@
 #define SCENE_H
 #include <memory>
 #include <vector>
+#include "physics/collision_data.h"
 #include "transform.h"
 #include "component.h"
 #include "entity.h"
@@ -18,6 +19,7 @@ namespace Game {
       std::vector <std::shared_ptr<Component>> components;
       std::vector<std::shared_ptr<Entity>> entities;
       std::string name;
+      std::shared_ptr<Physics::CollisionData> collision_data;
 
     public:
       //= BEGIN SCRIPTABLE
@@ -45,6 +47,12 @@ namespace Game {
        */
       void addComponent(std::shared_ptr<Component> component);
       /**
+       * @brief      Adds a collision data component
+       *
+       * @param[in]  collision_data  The collision data
+       */
+      void addComponent(std::shared_ptr<Physics::CollisionData> collision_data);
+      /**
        * @brief      Adds components.
        *
        * @param[in]  components  The components
@@ -56,6 +64,13 @@ namespace Game {
        * @return     A vector of components
        */
       std::vector<std::shared_ptr<Component>> getComponents() const noexcept;
+      
+      /**
+       * @brief      Gets the collision data.
+       *
+       * @return     The collision data.
+       */
+      std::shared_ptr<Physics::CollisionData> getCollisionData() const noexcept; 
       /**
        * @brief      Adds an entity.
        *

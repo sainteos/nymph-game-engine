@@ -283,6 +283,10 @@ namespace Game {
 
     scene->addComponents(lights);
 
+    auto collision_data = createCollisionDataFromMap(map);
+
+    scene->addComponent(collision_data);
+
     scene->getTransform()->translate(glm::vec2(-map.getImpl()->GetWidth() / 2.0, -map.getImpl()->GetHeight() / 2.0));
 
     return scene;
@@ -302,6 +306,34 @@ namespace Game {
     for(auto dynamic_entity : dynamic_animations) 
       names.push_back(dynamic_entity.first);
     return names;
+  }
+
+  std::shared_ptr<Physics::CollisionData> SceneGenerator::createCollisionDataFromMap(const Map& map) {
+    auto collision_data = std::make_shared<Physics::CollisionData>(map.getImpl()->GetWidth(), map.getImpl()->GetHeight());
+
+    auto layers = map.getImpl()->GetTileLayers();
+    auto tilesets = map.getImpl()->GetTilesets();
+    unsigned int layer_index = 0;
+    
+    for(auto layer : layers) {
+      for(int y = 0; y < layer->GetHeight(); y++) {
+        for(int x = 0; x < layer->GetWidth(); x++) {
+          if(layer->GetTileTilesetIndex(x, y) >= 0) {
+            auto tileset = tilesets[layer->GetTileTilesetIndex(x, y)];
+
+            auto tile = tileset->GetTile(layer->GetTileId(x, y));
+
+            if(tile != nullptr && tile->GetProperties().HasProperty("collide level")) {
+              auto collide_level = tile->GetProperties().GetIntProperty("collide level");
+
+              collision_data->setIndexCollidable(x, y, collide_level);
+            }
+          }
+        }
+      }
+    }
+
+    return collision_data;
   }
 
   std::vector<std::shared_ptr<Component>> SceneGenerator::createLightsFromMap(const Map& map) {
@@ -369,7 +401,7 @@ namespace Game {
             auto texture = textureFromTileset(tileset, path);
             unsigned int unit = 0;
 
-            if(tile != nullptr && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
+            if(tile != nullptr && tile->IsAnimated() && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
               auto renderable = Graphics::Renderable::create(generateBasisTile(map.getImpl()->GetTileWidth(), map.getImpl()->GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), 0, 0));
               auto animator = Graphics::TileAnimator::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
 
@@ -475,7 +507,10 @@ namespace Game {
                 placeholder.z_order = calculateZ(layer_index, total_layers);
                 renderables.dynamic_animations.push_back(placeholder);
               }
-              else if(!tile) {
+              else if(tile != nullptr && tile->IsAnimated()) {
+                continue;
+              }
+              else if(!tile || tile != nullptr && !tile->IsAnimated()) {
                 //Generate Vertex Coords
                 auto vertex_coords = generateVertexCoords(map.getImpl()->GetTileWidth(), map.getImpl()->GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), map_x, opengl_map_y);
                 patch_vertices.insert(patch_vertices.end(), vertex_coords.begin(), vertex_coords.end());

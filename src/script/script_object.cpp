@@ -73,7 +73,7 @@ namespace Script {
     catch(chaiscript::exception::dispatch_error& e) {
       LOG(INFO)<<"No C++ this setter for script class "<<class_name;
     }
-
+    
     invokeScriptFunction(std::bind(script_on_start, script_object));
   }
 
