@@ -91,6 +91,9 @@ void Engine::setup(const std::string config_path) {
     throw;
   }
   
+  LOG(INFO)<<"Using sounds location: "<<config_manager->getString("sounds_location");
+  sound_system = std::make_shared<Sound::SoundSystem>(config_manager->getString("sounds_location"));
+  
   scripting_system->addGlobalObject<ComponentManager>(component_manager, "component_manager");
   scripting_system->addGlobalObject<Utility::ConfigManager>(config_manager, "config");
   scripting_system->addGlobalObject<Engine>(shared_from_this(), "engine");
@@ -100,6 +103,7 @@ void Engine::setup(const std::string config_path) {
   scripting_system->addGlobalObject<Graphics::GraphicsSystem>(graphics_system, "graphics_system");
   scripting_system->addGlobalObject<Graphics::ShaderManager>(shader_manager, "shader_manager");
   scripting_system->addGlobalObject<Graphics::TextureManager>(texture_manager, "texture_manager");
+  scripting_system->addGlobalObject<Sound::SoundSystem>(sound_system, "sound_system");
   
   //Initialize font generator
   font_generator = std::make_shared<Graphics::UI::FontGenerator>(config_manager->getString("fonts_location"), config_manager->getInt("pixels_per_unit"));
@@ -142,6 +146,7 @@ void Engine::mainLoop() {
     graphics_system->startFrame();
     component_manager->onUpdate(delta);
     graphics_system->stopFrame();
+    sound_system->update(delta);
     input_system->pollForInput();
     scripting_system->update(delta);
     delta = fps_counter->assessCountAndGetDelta();
@@ -152,4 +157,5 @@ void Engine::cleanUp() {
    graphics_system->destroy();
    component_manager->destroy();
    scripting_system->destroy();
+   sound_system->destroy();
 }
