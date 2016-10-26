@@ -2,6 +2,7 @@ class MapLoading {
   attr thiss
   attr animation_map
   attr scene_generator
+  attr sprite_movement
 
   def MapLoading() {
   }
@@ -23,12 +24,36 @@ class MapLoading {
       scene.setName(name)
       engine.addScene(scene)
     }
+
+    var sprite = this.scene_generator.getDynamicEntityByName("Aidan")
+
+    this.sprite_movement = SpriteMovement()
+    this.sprite_movement.setAnimationStringState(SpriteState_MOVE_UP, "Up_Movement")
+    this.sprite_movement.setAnimationStringState(SpriteState_MOVE_DOWN, "Down_Movement")
+    this.sprite_movement.setAnimationStringState(SpriteState_MOVE_LEFT, "Left_Movement")
+    this.sprite_movement.setAnimationStringState(SpriteState_MOVE_RIGHT, "Right_Movement")
+    this.sprite_movement.setAnimationStringState(SpriteState_FACE_UP, "Up_Still")
+    this.sprite_movement.setAnimationStringState(SpriteState_FACE_DOWN, "Down_Still")
+    this.sprite_movement.setAnimationStringState(SpriteState_FACE_LEFT, "Left_Still")
+    this.sprite_movement.setAnimationStringState(SpriteState_FACE_RIGHT, "Right_Still")
+    this.sprite_movement.addObserver(camera)
+    this.sprite_movement.setMovingSpeed(2.0)
+
+    sprite.addComponent(this.sprite_movement)
+    input_system.addObserver(this.sprite_movement)
+    camera.getTransform().translate(sprite.getTransform().getAbsoluteTranslation())
+    
+    sprite.setActive(true)
+
+    component_manager.addComponents(sprite.getComponents())
+
+    var active_scene = engine.findSceneByName(config.getString("active_map"))
+    this.sprite_movement.addCollisionData(active_scene.getCollisionData())
     
     this.thiss.notify(LoadMapEvent_create(config.getString("active_map")))
   }
 
   def onUpdate(delta) {
-
   }
 
   def onDestroy() {

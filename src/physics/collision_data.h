@@ -8,12 +8,16 @@ namespace Physics {
   class CollisionData : public Component, virtual public el::Loggable {
     private:  
       std::vector<std::vector<int>> collision_table;
+      unsigned int width;
+      unsigned int height;
     public:
       CollisionData() = delete;
       CollisionData(const unsigned int map_width, const unsigned int map_height);
 
       void setIndexCollidable(const unsigned int x, const unsigned int y, const unsigned int collide_level);
-      const int getCollideLevel(const unsigned int x, const unsigned int y);
+      const int getCollideLevel(const int x, const int y);
+      const unsigned int getWidth() const noexcept;
+      const unsigned int getHeight() const noexcept;
 
       virtual void onStart() override;
       virtual const bool onUpdate(const double delta) override;

@@ -1,7 +1,7 @@
 {
   "window_title": "Nymph Game Engine",
   "fullscreen": false,
-  "active_map": "Mystery",
+  "active_map": "Board1",
   "maps": [
     "./nymph-game-one/maps/Intro_Ramses.tmx",
     "./nymph-game-one/maps/Board1.tmx",

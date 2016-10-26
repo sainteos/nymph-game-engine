@@ -19,12 +19,21 @@ namespace Game {
     this->components.push_back(component);
   }
 
+  void Scene::addComponent(std::shared_ptr<Physics::CollisionData> collision_data) {
+    this->collision_data = collision_data;
+    this->components.push_back(collision_data);
+  }
+
   void Scene::addComponents(std::vector<std::shared_ptr<Component>> components) {
     this->components.insert(this->components.end(), components.begin(), components.end());
   }
 
   std::vector<std::shared_ptr<Component>> Scene::getComponents() const noexcept {
     return this->components;
+  }
+  
+  std::shared_ptr<Physics::CollisionData> Scene::getCollisionData() const noexcept {
+    return this->collision_data;
   }
 
   void Scene::addEntity(std::shared_ptr<Entity> entity) noexcept {

@@ -11,63 +11,88 @@
 
 namespace Game {
   SpriteMovement::SpriteMovement() : move_quantization_in_tiles(1.0),
-    up_down(false), down_down(false), left_down(false), right_down(false), current_state(SpriteState::FACE_DOWN) {
+    up_down(false), down_down(false), left_down(false), right_down(false), current_state(SpriteState::FACE_DOWN), current_level(0) {
 
   }
 
+  void SpriteMovement::addCollisionData(std::shared_ptr<Physics::CollisionData> collision_data) {
+    this->collision_data = collision_data;
+  }
+
   void SpriteMovement::onStart() {
+    tile_location = glm::ivec2(getTransform()->getAbsoluteTranslation().x, -getTransform()->getAbsoluteTranslation().y);
+
+    tile_location += glm::ivec2(this->collision_data->getWidth() / 2, this->collision_data->getHeight() / 2 - 1);
   }
 
   const bool SpriteMovement::onUpdate(const double delta) {
     if(!active)
       return false;
-
     while(eventsWaiting()) {
       handleQueuedEvent(getEvent());
     }
-
     if(current_state == SpriteState::FACE_LEFT || current_state == SpriteState::FACE_RIGHT ||
        current_state == SpriteState::FACE_UP || current_state == SpriteState::FACE_DOWN) {
-      if(left_down) {
+      if(left_down && collision_data->getCollideLevel(tile_location.x - 1, tile_location.y) < current_level) {
         current_velocity = glm::vec2(-moving_speed, 0.0);
-        next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+        next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+        tile_location += glm::ivec2(-1, 0);
         auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
         current_state = SpriteState::MOVE_LEFT;
         notifyNow(AnimationTriggerEvent::create(states[SpriteState::MOVE_LEFT]));
         notify(SpriteMoveEvent::create(current_velocity, absolute_next_position));
       }
-      else if(right_down) {
+      else if(left_down && collision_data->getCollideLevel(tile_location.x - 1, tile_location.y) == current_level) {
+        current_state = SpriteState::FACE_LEFT;
+        notifyNow(AnimationTriggerEvent::create(states[SpriteState::FACE_LEFT]));
+      }
+      else if(right_down && collision_data->getCollideLevel(tile_location.x + 1, tile_location.y) < current_level) {
         current_velocity = glm::vec2(moving_speed, 0.0);
-        next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+        next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+        tile_location += glm::ivec2(1, 0);
         auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
         current_state = SpriteState::MOVE_RIGHT;
         notifyNow(AnimationTriggerEvent::create(states[SpriteState::MOVE_RIGHT]));
         notify(SpriteMoveEvent::create(current_velocity, absolute_next_position));
+      }
+      else if(right_down && collision_data->getCollideLevel(tile_location.x + 1, tile_location.y) == current_level) {
+        current_state = SpriteState::FACE_RIGHT;
+        notifyNow(AnimationTriggerEvent::create(states[SpriteState::FACE_RIGHT]));
       } 
-      else if(up_down) {
+      else if(up_down && collision_data->getCollideLevel(tile_location.x, tile_location.y - 1) < current_level) {
         current_velocity = glm::vec2(0.0, moving_speed);
-        next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+        next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+        tile_location += glm::ivec2(0, -1);
         auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
         current_state = SpriteState::MOVE_UP;
         notifyNow(AnimationTriggerEvent::create(states[SpriteState::MOVE_UP]));
         notify(SpriteMoveEvent::create(current_velocity, absolute_next_position));
       }
-      else if(down_down) {
+      else if(up_down && collision_data->getCollideLevel(tile_location.x, tile_location.y - 1) == current_level) {
+        current_state = SpriteState::FACE_UP;
+        notifyNow(AnimationTriggerEvent::create(states[SpriteState::FACE_UP]));
+      }
+      else if(down_down && collision_data->getCollideLevel(tile_location.x, tile_location.y + 1) < current_level) {
         current_velocity = glm::vec2(0.0, -moving_speed);
-        next_position = glm::vec2(getTransform()->getLocalTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+        next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
+        tile_location += glm::ivec2(0, 1);
         auto absolute_next_position = glm::vec2(getTransform()->getAbsoluteTranslation()) + glm::normalize(current_velocity) * move_quantization_in_tiles;
         current_state = SpriteState::MOVE_DOWN;
         notifyNow(AnimationTriggerEvent::create(states[SpriteState::MOVE_DOWN]));
         notify(SpriteMoveEvent::create(current_velocity, absolute_next_position));
       }
+      else if(down_down && collision_data->getCollideLevel(tile_location.x, tile_location.y + 1) == current_level) {
+        current_state = SpriteState::FACE_DOWN;
+        notifyNow(AnimationTriggerEvent::create(states[SpriteState::FACE_DOWN]));
+      }
     }
     if(current_state == SpriteState::MOVE_LEFT || current_state == SpriteState::MOVE_RIGHT ||
        current_state == SpriteState::MOVE_UP || current_state == SpriteState::MOVE_DOWN) {
-      if(glm::distance(glm::vec2(getTransform()->getLocalTranslation()), next_position) > glm::length(current_velocity * 1.0f / 1000.0f * delta)) {
-        getTransform()->translate(current_velocity * 1.0 / 1000.0f * delta);
+      if(glm::distance(glm::vec2(getTransform()->getAbsoluteTranslation()), next_position) > glm::length(current_velocity * 1.0f / 1000.0f * delta)) {
+        getTransform()->getParent()->translate(current_velocity * 1.0 / 1000.0f * delta);
       }
       else {
-        getTransform()->translate(next_position - glm::vec2(getTransform()->getLocalTranslation()));
+        getTransform()->getParent()->translate(next_position - glm::vec2(getTransform()->getAbsoluteTranslation()));
         if(current_state == SpriteState::MOVE_LEFT) {
           current_velocity = glm::vec2(0.0, 0.0);
           current_state = SpriteState::FACE_LEFT;
@@ -199,11 +224,17 @@ namespace Game {
   }
 
   void SpriteMovement::log(el::base::type::ostream_t& os) const {
-    os << "Moving Speed: "<<moving_speed<<" Move Quantization (tiles): "<<move_quantization_in_tiles<<" Current Velocity: "<<glm::to_string(current_velocity)<<" Next Position: "<<glm::to_string(next_position);
-    Component::log(os);
+    os << to_string();
   }
 
   const std::string SpriteMovement::className() const noexcept {
     return "SpriteMovement";
+  }
+
+  const std::string SpriteMovement::to_string() const noexcept {
+    std::stringstream str;
+    str << Component::to_string();
+    str << " Moving Speed: "<<moving_speed<<" Move Quantization (tiles): "<<move_quantization_in_tiles<<" Current Velocity: "<<glm::to_string(current_velocity)<<" Next Position: "<<glm::to_string(next_position);
+    return str.str();
   }
 }

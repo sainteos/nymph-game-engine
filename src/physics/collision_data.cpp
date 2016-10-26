@@ -1,8 +1,9 @@
+#include <easylogging++.h>
 #include "collision_data.h"
 
 namespace Physics {
 
-  CollisionData::CollisionData(const unsigned int map_width, const unsigned int map_height) {
+  CollisionData::CollisionData(const unsigned int map_width, const unsigned int map_height) : width(map_width), height(map_height) {
     collision_table = std::vector<std::vector<int>>(map_height, std::vector<int>(map_width, -1));
 
   }
@@ -11,8 +12,13 @@ namespace Physics {
     collision_table[y][x] = collide_level;
   }
 
-  const int CollisionData::getCollideLevel(const unsigned int x, const unsigned int y) {
-    return collision_table[y][x];
+  const int CollisionData::getCollideLevel(const int x, const int y) {
+    if(x < 0 || y < 0) {
+      return -1;
+    }
+    else {
+      return collision_table[y][x]; 
+    }
   }
 
   void CollisionData::onStart() {
@@ -25,6 +31,14 @@ namespace Physics {
 
   void CollisionData::onDestroy() {
 
+  }
+
+  const unsigned int CollisionData::getWidth() const noexcept {
+    return width;
+  }
+
+  const unsigned int CollisionData::getHeight() const noexcept {
+    return height;
   }
 
   const unsigned long long CollisionData::getValueForSorting() const {

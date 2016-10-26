@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include "events/event.h"
+#include "physics/collision_data.h"
 #include <list>
 #include "component.h"
 
@@ -33,6 +34,9 @@ namespace Game {
       bool right_down;
       SpriteState current_state;
       std::map<SpriteState, std::string> states;
+      std::shared_ptr<Physics::CollisionData> collision_data;
+      int current_level;
+      glm::ivec2 tile_location;
 
     public:
       const bool onUpdate(const double delta) override;
@@ -50,6 +54,12 @@ namespace Game {
        */
       SpriteMovement();
 
+      /**
+       * @brief      Adds a collision data.
+       *
+       * @param[in]  collision_data  The collision data
+       */
+      void addCollisionData(std::shared_ptr<Physics::CollisionData> collision_data);
       /**
        * @brief      Sets the animation string state.
        *
@@ -103,6 +113,7 @@ namespace Game {
       void moveDown();
 
       virtual const std::string className() const noexcept override;
+      const std::string to_string() const noexcept;
       //= END SCRIPTABLE
       
       virtual void log(el::base::type::ostream_t& os) const override;

@@ -333,8 +333,6 @@ namespace Game {
       }
     }
 
-    LOG(INFO)<<collision_data->to_string();
-    
     return collision_data;
   }
 
@@ -403,7 +401,7 @@ namespace Game {
             auto texture = textureFromTileset(tileset, path);
             unsigned int unit = 0;
 
-            if(tile != nullptr && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
+            if(tile != nullptr && tile->IsAnimated() && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
               auto renderable = Graphics::Renderable::create(generateBasisTile(map.getImpl()->GetTileWidth(), map.getImpl()->GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), 0, 0));
               auto animator = Graphics::TileAnimator::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
 
@@ -509,7 +507,10 @@ namespace Game {
                 placeholder.z_order = calculateZ(layer_index, total_layers);
                 renderables.dynamic_animations.push_back(placeholder);
               }
-              else if(!tile) {
+              else if(tile != nullptr && tile->IsAnimated()) {
+                continue;
+              }
+              else if(!tile || tile != nullptr && !tile->IsAnimated()) {
                 //Generate Vertex Coords
                 auto vertex_coords = generateVertexCoords(map.getImpl()->GetTileWidth(), map.getImpl()->GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), map_x, opengl_map_y);
                 patch_vertices.insert(patch_vertices.end(), vertex_coords.begin(), vertex_coords.end());

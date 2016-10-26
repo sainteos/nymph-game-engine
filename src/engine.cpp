@@ -129,37 +129,14 @@ void Engine::setup(const std::string config_path) {
   scripting_system->loadScripts();
 
   camera_component->getTransform()->translate(glm::vec2(config_manager->getFloat("camera_x"), config_manager->getFloat("camera_y")));
-  // auto sprite = scene_generator.getDynamicEntityByName("Aidan");
-
-  // sprite_movement = std::make_shared<SpriteMovement>();
-  // sprite_movement->setAnimationStringState(SpriteState::MOVE_UP, "Up_Movement");
-  // sprite_movement->setAnimationStringState(SpriteState::MOVE_DOWN, "Down_Movement");
-  // sprite_movement->setAnimationStringState(SpriteState::MOVE_LEFT, "Left_Movement");
-  // sprite_movement->setAnimationStringState(SpriteState::MOVE_RIGHT, "Right_Movement");
-  // sprite_movement->setAnimationStringState(SpriteState::FACE_UP, "Up_Still");
-  // sprite_movement->setAnimationStringState(SpriteState::FACE_DOWN, "Down_Still");
-  // sprite_movement->setAnimationStringState(SpriteState::FACE_LEFT, "Left_Still");
-  // sprite_movement->setAnimationStringState(SpriteState::FACE_RIGHT, "Right_Still");
-  // sprite_movement->addObserver(camera_component);
-  // sprite_movement->setMovingSpeed(2.0);
-
-  // sprite->addComponent(sprite_movement);
-  // input_system->addObserver(sprite_movement);
-
-  // sprite->setActive(true);
-
-  // auto stripped_name = config_manager->getString("active_map").substr(config_manager->getString("active_map").find_last_of("/") + 1, config_manager->getString("active_map").size() - config_manager->getString("active_map").find_last_of("/") - 5);
-  // findSceneByName(stripped_name)->addEntity(sprite);
-
-  // activateScene(stripped_name);
 }
 
 void Engine::mainLoop() {
 
   float delta = 0.0f;
   graphics_system->startRender();
-  component_manager->onStart();
   scripting_system->start();
+  component_manager->onStart();
 
   while(graphics_system->isRunning() && !time_to_exit) {
     graphics_system->startFrame();
