@@ -15,3 +15,5 @@ Makefile
 *Package/
 .ycm_extra_conf.py*
 *.so
+*.dylib
+YSElog.txt

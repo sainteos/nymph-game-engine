@@ -18,20 +18,20 @@ solution "TileEngine"
 
     configuration "WindowsDebug"
       buildoptions { "-std=c++11" }
-      links { "freetype_win", "fmod", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-5.8.5" }
+      links { "freetype_win", "yse", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-5.8.5" }
       defines { "DEBUG", "GLEW_STATIC" }
       targetextension ".exe"
 
     configuration "Debug"
       buildoptions { "-std=c++11", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
-      links {  "freetype", "fmod", "glfw3.3.1", "png", "z", "OpenGL.framework", "glew", "IL", "chaiscript_stdlib-5.8.5" }
+      links {  "freetype", "yse", "glfw3.3.1", "png", "z", "OpenGL.framework", "glew", "IL", "chaiscript_stdlib-5.8.5" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
 
     configuration "Release"
       buildoptions { "-std=c++11", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
-      links {  "freetype", "fmod", "glfw3.3.1", "png", "z", "OpenGL.framework", "glew", "IL", "chaiscript_stdlib-5.8.5" }
+      links {  "freetype", "yse", "glfw3.3.1", "png", "z", "OpenGL.framework", "glew", "IL", "chaiscript_stdlib-5.8.5" }
       defines { "NDEBUG" }
       flags { "Optimize" }
       targetextension ".out"
