@@ -89,7 +89,7 @@ class Component : public Events::Subject, public Events::Observer, virtual publi
      *
      * @return     String representation of the object.
      */
-    const std::string to_string() const noexcept;
+    virtual const std::string to_string() const noexcept;
     /**
      * @brief      Returns a string representing the class name
      *

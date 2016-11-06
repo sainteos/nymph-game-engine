@@ -5,11 +5,11 @@ class ShaderRegistrar {
     shader_manager.loadShader("diffuse_lighting", false)
     shader_manager.loadShader("simple_text", false)
     shader_manager.loadShader("simple_ui", false)
-    sound_system.loadSound("gunload.wav")
+    //sound_system.loadSound("smokeweedeveryday.aiff")
   }
 
   def onStart() {
-    sound_system.getSound("gunload").play()
+    //sound_system.getSound("smokeweedeveryday").play()
   }
 
   def onUpdate(delta) {

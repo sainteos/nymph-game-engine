@@ -45,6 +45,8 @@ class Engine : public std::enable_shared_from_this<Engine> {
     bool time_to_exit;
     std::shared_ptr<Graphics::Camera> camera_component;
 
+    void loadScriptingSystemSave();
+
   public:
     /**
      * @brief      Engine constructor

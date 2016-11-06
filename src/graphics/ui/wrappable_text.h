@@ -78,7 +78,7 @@ namespace Graphics {
          *
          * @return     String representation of the object.
          */
-        const std::string to_string() const noexcept;
+        virtual const std::string to_string() const noexcept override;
         virtual const std::string className() const noexcept override;
       //= END SCRIPTABLE
 

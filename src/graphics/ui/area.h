@@ -50,7 +50,7 @@ namespace Graphics {
         virtual void onKeyUp(const int key) override;
         virtual void onKeyRepeat(const int key) override;
         virtual void onScroll(const glm::dvec2 position_change) override;
-        const std::string to_string() const noexcept;
+        virtual const std::string to_string() const noexcept override;
         virtual const std::string className() const noexcept override;
       //= END SCRIPTABLE
 

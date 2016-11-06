@@ -84,6 +84,11 @@ const std::vector<std::string> Engine::getActiveSceneNames() const noexcept {
   return names;
 }
 
+void Engine::loadScriptingSystemSave() {
+  LOG(INFO)<<"Loading scripting save file from "<<config_manager->getString("save_file");
+  scripting_system->load(config_manager->getString("save_file"));
+}
+
 void Engine::setup(const std::string config_path) {
   //Load Config
   if(!config_manager->loadConfig(config_path)) {
@@ -129,13 +134,13 @@ void Engine::setup(const std::string config_path) {
   fps_counter = std::make_shared<Utility::FPSCounter>(60.0f);
   scripting_system->addGlobalObject<Utility::FPSCounter>(fps_counter, "fps_counter");
 
-
   scripting_system->loadScripts();
 
   camera_component->getTransform()->translate(glm::vec2(config_manager->getFloat("camera_x"), config_manager->getFloat("camera_y")));
 }
 
 void Engine::mainLoop() {
+  loadScriptingSystemSave();
 
   float delta = 0.0f;
   graphics_system->startRender();
@@ -151,6 +156,7 @@ void Engine::mainLoop() {
     scripting_system->update(delta);
     delta = fps_counter->assessCountAndGetDelta();
   }
+  scripting_system->save(config_manager->getString("save_file"));
 }
 
 void Engine::cleanUp() {

@@ -113,7 +113,7 @@ namespace Graphics {
          */
         void setColor(const glm::vec4 color) noexcept;
 
-        const std::string to_string() const noexcept;
+        virtual const std::string to_string() const noexcept override;
 
         /**
          * @brief      Determines if point is within element.

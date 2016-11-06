@@ -2,43 +2,54 @@
 #define SCRIPT_OBJECT_H
 #include <memory>
 #include <type_traits>
-#include <chaiscript/chaiscript.hpp>
+#include <json/json.h>
 #include "events/subject.h"
 #include "events/observer.h"
 #include "events/event.h"
+#include "chaiscript_wrapper.h"
 
 //= SCRIPTABLE
 //= SCRIPTABLE BASES Subject Observer
 
 namespace Script {
+  class ScriptingSystem;
   /**
    * @brief      Class for script object.
    */
   class ScriptObject : public Events::Subject, public Events::Observer, public std::enable_shared_from_this<ScriptObject> {
     private:
-      std::string class_name;
-      std::shared_ptr<chaiscript::ChaiScript> interpreter;
+      friend class ScriptingSystem;
 
-      chaiscript::Boxed_Value script_object;
-      std::function<void (chaiscript::Boxed_Value&)> script_on_start;
-      std::function<void (chaiscript::Boxed_Value&, const float)> script_on_update;
-      std::function<void (chaiscript::Boxed_Value&)> script_on_destroy;
-      std::function<void (chaiscript::Boxed_Value&, std::shared_ptr<ScriptObject>)> script_set_obj_handle;
+      std::string class_name;
+      bool saved;
+      bool sent_this;
+      unsigned int num_saved_fields;
+      std::vector<std::string> serialized_var_names;
+
+      std::shared_ptr<chaiscript::dispatch::Dynamic_Object> script_object;
+
+      std::function<void (std::shared_ptr<chaiscript::dispatch::Dynamic_Object>)> script_on_start;
+      std::function<void (std::shared_ptr<chaiscript::dispatch::Dynamic_Object>, const float)> script_on_update;
+      std::function<void (std::shared_ptr<chaiscript::dispatch::Dynamic_Object>)> script_on_destroy;
+      std::function<void (std::shared_ptr<chaiscript::dispatch::Dynamic_Object>, std::shared_ptr<ScriptObject>)> script_set_obj_handle;
 
       template<class T>
-      typename std::enable_if<std::is_base_of<Events::Event, T>::value, std::function<void(chaiscript::Boxed_Value&, std::shared_ptr<T>)>>::type selectEventHandler();
+      typename std::enable_if<std::is_base_of<Events::Event, T>::value, std::function<void(std::shared_ptr<chaiscript::dispatch::Dynamic_Object>, std::shared_ptr<T>)>>::type selectEventHandler();
 
-      void invokeScriptFunction(std::function<void ()> func);
+      void invokeScriptFunction(const std::function<void ()>& func);
+
+      void setSerializable(const std::string& name);
+
+      void create();
+      void sendThisToScript();
 
     public:
-      ScriptObject() = delete;
       /**
        * @brief      ScriptObject constructor
        *
        * @param[in]  name              The name
-       * @param[in]  chai_interpreter  The chaiscript interpreter
        */
-      ScriptObject(const std::string& name, std::shared_ptr<chaiscript::ChaiScript> chai_interpreter);
+      ScriptObject(const std::string& name);
       /**
        * @brief      Copy constructor for ScriptObject
        *
@@ -58,6 +69,8 @@ namespace Script {
        * @param[in]  name  The name
        */
       void setClassName(const std::string& name);
+
+      const std::string& getClassName() const noexcept;
       //= END SCRIPTABLE
 
       /**
@@ -74,6 +87,13 @@ namespace Script {
        * @brief      Calls onDestroy in the attached script object
        */
       void onDestroy();
+
+      const bool shouldBeSerialized() const noexcept;
+
+      Json::Value getSaveData() const noexcept;
+      void loadSavedData(Json::Value& save_data);
+
+      const bool representsDynamicObject(const chaiscript::dispatch::Dynamic_Object& obj) const noexcept;
 
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;

@@ -25,7 +25,7 @@ namespace Physics {
 
       virtual const unsigned long long getValueForSorting() const;
       
-      const std::string to_string() const noexcept;
+      virtual const std::string to_string() const noexcept override;
       virtual void log(el::base::type::ostream_t& os) const override;
 
   };

@@ -1,7 +1,7 @@
 #ifndef SCRIPTING_SYSTEM_H
 #define SCRIPTING_SYSTEM_H
-#include <chaiscript/chaiscript.hpp>
-#include "script_object.hpp"
+#include <json/json.h>
+#include "script_object.h"
 
 namespace Script {
   /**
@@ -9,7 +9,6 @@ namespace Script {
    */
   class ScriptingSystem {
     private:
-      std::shared_ptr<chaiscript::ChaiScript> chai;
       std::string scripts_location;
       std::vector<std::string> getFileList(const std::string& location);
 
@@ -51,7 +50,7 @@ namespace Script {
        */
       template<class T>
       void addObject(std::shared_ptr<T> object, const std::string& name) {
-        chai->add(chaiscript::var(object), name);
+        ChaiscriptWrapper::getInstance()->add(chaiscript::var(object), name);
       }
 
       /**
@@ -64,8 +63,12 @@ namespace Script {
        */
       template<class T>
       void addGlobalObject(std::shared_ptr<T> object, const std::string& name) {
-        chai->add_global(chaiscript::var(object), name);
+        ChaiscriptWrapper::getInstance()->add_global(chaiscript::var(object), name);
       }
+
+      void save(const std::string& file); 
+
+      void load(const std::string& file);
 
       /**
        * @brief      Calls onStart in all scripts

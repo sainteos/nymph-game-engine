@@ -287,6 +287,7 @@ func_def_file = %?#ifndef GENERATED_REGISTRATIONS_H
 
 filenames = class_names_to_filenames.values | enum_filenames
 
+func_def_file += "#include <chaiscript/utility/utility.hpp>\n"
 func_def_file += "#include <vector>\n#include <map>\n"
 filenames.each do |fn|
   fn.slice! "./src/"

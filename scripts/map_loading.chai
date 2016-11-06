@@ -3,12 +3,17 @@ class MapLoading {
   attr animation_map
   attr scene_generator
   attr sprite_movement
+  attr map_name
 
   def MapLoading() {
+    if(this.map_name.is_var_undef()) {
+      this.map_name = ""
+    }
   }
 
   def setScriptObjectHandle(handle) {
     this.thiss := handle
+    set_serializable(this.thiss, "map_name")
   }
 
   def onStart() {
@@ -46,11 +51,19 @@ class MapLoading {
     sprite.setActive(true)
 
     component_manager.addComponents(sprite.getComponents())
+    if(this.map_name == "") {
+      print("loading map from config")
+      print("that map is: " + config.getString("active_map"))
+      this.map_name = config.getString("active_map")
+    }
+    else {
+      print("loading map from save")
+    }
 
-    var active_scene = engine.findSceneByName(config.getString("active_map"))
+    var active_scene = engine.findSceneByName(this.map_name)
     this.sprite_movement.addCollisionData(active_scene.getCollisionData())
     
-    this.thiss.notify(LoadMapEvent_create(config.getString("active_map")))
+    this.thiss.notify(LoadMapEvent_create(this.map_name))
   }
 
   def onUpdate(delta) {
@@ -61,6 +74,21 @@ class MapLoading {
   }
 
   def handleEvent(event) {
+    switch(event.getEventType()) {
+      case(EventType_LOAD_MAP) {
+        if(this.map_name != "") {
+          engine.deactivateScene(this.map_name)
+        }
 
+        this.map_name = event.getName()
+
+        engine.activateScene(this.map_name)
+       
+        break;
+      }
+      default {
+
+      }
+    }
   }
 }
