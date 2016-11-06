@@ -25,7 +25,7 @@ namespace Graphics {
          * @param[in]  vertex_data  The vertex data
          * @param[in]  skin         The skin
          */
-        Button(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin);
+        Button(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
         /**
          * @brief      Factory function for Button
          *
@@ -43,7 +43,7 @@ namespace Graphics {
          *
          * @return     a newly constructed Button
          */
-        static std::shared_ptr<Button> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
+        static std::shared_ptr<Button> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
 
         virtual void onLeftClick() override;
         virtual void onRightClick() override;
@@ -59,7 +59,6 @@ namespace Graphics {
       //= END SCRIPTABLE
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-        virtual const unsigned long long getValueForSorting() const noexcept override;
 
         virtual void log(el::base::type::ostream_t& os) const;
     };

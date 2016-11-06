@@ -40,6 +40,8 @@ namespace Game {
       std::weak_ptr<Graphics::ShaderManager> shader_manager;
       std::map<std::string, DynamicAnimation> dynamic_animations;
 
+      unsigned int ui_z_slots;
+
       const Graphics::VertexData generateBasisCube();
       const Graphics::VertexData generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos = 0, const unsigned int y_pos = 0,  const unsigned int offset_x = 0, const unsigned int offset_y = 0);
       std::shared_ptr<Graphics::BaseTexture> textureFromTileset(const Tmx::Tileset* tileset, const std::string& path);
@@ -69,7 +71,7 @@ namespace Game {
        * @param[in]  texture_manager  The texture manager
        * @param[in]  shader_manager   The shader manager
        */
-      SceneGenerator(const Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager);
+      SceneGenerator(const Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager, const unsigned int ui_z_slots);
       /**
        * @brief      SceneGenerator copy constructor
        *

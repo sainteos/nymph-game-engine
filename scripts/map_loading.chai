@@ -18,7 +18,7 @@ class MapLoading {
 
   def onStart() {
     this.animation_map = Map(config.getString("animation_database"))
-    this.scene_generator = SceneGenerator(this.animation_map, texture_manager, shader_manager)
+    this.scene_generator = SceneGenerator(this.animation_map, texture_manager, shader_manager, config.getUnsignedInt("ui_z_slots"))
     var map_names = config.getStringVector("maps")
 
     for(var i = 0; i < map_names.size(); ++i) {
@@ -46,7 +46,7 @@ class MapLoading {
 
     sprite.addComponent(this.sprite_movement)
     input_system.addObserver(this.sprite_movement)
-    camera.getTransform().translate(sprite.getTransform().getAbsoluteTranslation())
+    camera.getTransform().translate(vec2(sprite.getTransform().getAbsoluteTranslation().x, sprite.getTransform().getAbsoluteTranslation().y))
     
     sprite.setActive(true)
 

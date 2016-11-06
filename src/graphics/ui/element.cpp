@@ -13,9 +13,10 @@
 namespace Graphics {
   namespace UI {
 
-    Element::Element(VertexData vertex_data, std::shared_ptr<Skin> skin) : Renderable(vertex_data.generateVertexArrayObject(), vertex_data), skin(skin), anchor_point(glm::vec2(0.0, 0.0)), width(0), height(0), text_padding(0), cursor_within(false), color(glm::vec4(1.0)) {
+    Element::Element(VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer) : Renderable(vertex_data.generateVertexArrayObject(), vertex_data), skin(skin), anchor_point(glm::vec2(0.0, 0.0)), width(0), height(0), text_padding(0), cursor_within(false), color(glm::vec4(1.0)), layer(layer) {
       setShader(skin->getShader());
       addTexture(0, "skin0", skin->getTexture());
+      getTransform()->translate(glm::vec3(0.0, 0.0, -(float)layer));
     }
 
     Element::~Element() {
@@ -25,12 +26,12 @@ namespace Graphics {
     std::vector<glm::vec3> Element::generateRect(float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) noexcept {
       std::vector<glm::vec3> rect_points;
 
-      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.71));
-      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos + height / 2.0, -0.71));
-      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.71));
-      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -0.71));
-      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -0.71));
-      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos - height / 2.0, -0.71));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -1.0));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos + height / 2.0, -1.0));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -1.0));
+      rect_points.push_back(glm::vec3(x_pos - width / 2.0, y_pos - height / 2.0, -1.0));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos + height / 2.0, -1.0));
+      rect_points.push_back(glm::vec3(x_pos + width / 2.0, y_pos - height / 2.0, -1.0));
 
       return rect_points;
     }
@@ -130,6 +131,7 @@ namespace Graphics {
     }
 
     const bool Element::onUpdate(const double delta) {
+      LOG(INFO)<<"Element: "<<getTransform()->getAbsoluteTranslation().z;
       return Renderable::onUpdate(delta);
     }
 
@@ -206,7 +208,7 @@ namespace Graphics {
     }
 
     const unsigned long long Element::getValueForSorting() const noexcept {
-      return 0;
+      return (unsigned long long)getTransform()->getAbsoluteTranslation().z;
     }
 
     const std::string Element::className() const noexcept {

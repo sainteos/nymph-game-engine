@@ -249,7 +249,7 @@ namespace Graphics {
 
   const unsigned long long Renderable::getValueForSorting() const noexcept {
     
-    return (unsigned long long)((unsigned long)getTransform()->getAbsoluteTranslation().z + 20);
+    return (unsigned long long)getTransform()->getAbsoluteTranslation().z;
   }
 
   const std::string Renderable::className() const noexcept {

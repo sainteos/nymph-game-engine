@@ -177,10 +177,6 @@ namespace Graphics {
 
     }
 
-    const unsigned long long WrappableText::getValueForSorting() const noexcept {
-      return -1;
-    }
-    
     const std::string WrappableText::className() const noexcept {
       return "Graphics::UI::WrappableText";
     }
