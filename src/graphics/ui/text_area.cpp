@@ -5,11 +5,11 @@
 namespace Graphics {
   namespace UI {
 
-    TextArea::TextArea(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin) : Area(vertex_data, skin), text(text) {
+    TextArea::TextArea(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer) : Area(vertex_data, skin, layer), text(text) {
       getTransform()->addChild(text->getTransform());
     }
 
-    std::shared_ptr<TextArea> TextArea::create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) {
+    std::shared_ptr<TextArea> TextArea::create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer) {
       auto vertex_data = VertexData();
       vertex_data.addVec(VertexData::DATA_TYPE::GEOMETRY, generateRect(screen_width, screen_height, 0, 0, width, height));
       vertex_data.addVec(VertexData::DATA_TYPE::TEX_COORDS, basisTexCoords());
@@ -17,7 +17,7 @@ namespace Graphics {
       text->setColor(text_color);
       text->setSize(width - (2.0 * padding), height - (2.0 * padding));
 
-      auto area = std::make_shared<TextArea>(text, vertex_data, skin);
+      auto area = std::make_shared<TextArea>(text, vertex_data, skin, layer);
       area->setColor(color);
       area->setAnchorPoint(glm::vec2(x_pos, y_pos));
       area->setWidth(width);
@@ -62,10 +62,6 @@ namespace Graphics {
 
     void TextArea::onNotifyNow(std::shared_ptr<Events::Event> event) {
       handleQueuedEvent(event);
-    }
-
-    const unsigned long long TextArea::getValueForSorting() const noexcept {
-      return -45;
     }
 
     void TextArea::onLeftClick() {

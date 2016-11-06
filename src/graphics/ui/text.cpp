@@ -49,7 +49,7 @@ namespace Graphics {
     }
 
     const unsigned long long Text::getValueForSorting() const noexcept {
-      return 0;
+      return (unsigned long long)getTransform()->getAbsoluteTranslation().z;
     }
 
     void Text::renderCharacter(unsigned char character, Transform transform) {
@@ -87,7 +87,6 @@ namespace Graphics {
     }
 
     void Text::onStart() {
-
     }
 
     const bool Text::onUpdate(const double delta) {

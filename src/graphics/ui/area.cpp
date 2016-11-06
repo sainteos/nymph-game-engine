@@ -4,15 +4,15 @@
 namespace Graphics {
   namespace UI {
 
-    Area::Area(VertexData vertex_data, std::shared_ptr<Skin> skin) : Element(vertex_data, skin) {
+    Area::Area(VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer) : Element(vertex_data, skin, layer) {
     }
 
-    std::shared_ptr<Area> Area::create(std::shared_ptr<Skin> skin, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) {
+    std::shared_ptr<Area> Area::create(std::shared_ptr<Skin> skin, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer) {
       auto vertex_data = VertexData();
       vertex_data.addVec(VertexData::DATA_TYPE::GEOMETRY, generateRect(screen_width, screen_height, 0, 0, width, height));
       vertex_data.addVec(VertexData::DATA_TYPE::TEX_COORDS, basisTexCoords());
 
-      auto area = std::make_shared<Area>(vertex_data, skin);
+      auto area = std::make_shared<Area>(vertex_data, skin, layer);
       area->setColor(color);
       area->setAnchorPoint(glm::vec2(x_pos, y_pos));
       area->setWidth(width);
@@ -40,11 +40,7 @@ namespace Graphics {
     void Area::onNotifyNow(std::shared_ptr<Events::Event> event) {
       handleQueuedEvent(event);
     }
-
-    const unsigned long long Area::getValueForSorting() const noexcept {
-      return -24;
-    }
-
+    
     void Area::onLeftClick() {
       LOG(INFO)<<"Area left click";
     }

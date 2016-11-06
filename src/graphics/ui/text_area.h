@@ -29,7 +29,7 @@ namespace Graphics {
          * @param[in]  vertex_data  The vertex data
          * @param[in]  skin         The skin
          */
-        TextArea(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin);
+        TextArea(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
         /**
          * @brief      TextArea factory function
          *
@@ -47,7 +47,7 @@ namespace Graphics {
          *
          * @return     A newly created TextArea
          */
-        static std::shared_ptr<TextArea> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
+        static std::shared_ptr<TextArea> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
 
         /**
          * @brief      Sets the text.
@@ -85,7 +85,6 @@ namespace Graphics {
         
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-        virtual const unsigned long long getValueForSorting() const noexcept override;
 
 
         virtual void log(el::base::type::ostream_t& os) const;

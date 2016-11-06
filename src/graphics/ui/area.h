@@ -23,7 +23,7 @@ namespace Graphics {
          * @param[in]  vertex_data  The vertex data
          * @param[in]  skin         The skin
          */
-        Area(VertexData vertex_data, std::shared_ptr<Skin> skin);
+        Area(VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
         /**
          * @brief      Area factory function.
          *
@@ -38,7 +38,7 @@ namespace Graphics {
          *
          * @return     a newly constructed Area
          */
-        static std::shared_ptr<Area> create(std::shared_ptr<Skin> skin, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height);
+        static std::shared_ptr<Area> create(std::shared_ptr<Skin> skin, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
 
         virtual void onLeftClick() override;
         virtual void onRightClick() override;
@@ -60,7 +60,6 @@ namespace Graphics {
         
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-        virtual const unsigned long long getValueForSorting() const noexcept override;
         virtual void log(el::base::type::ostream_t& os) const;
     };
   }

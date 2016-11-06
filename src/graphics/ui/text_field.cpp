@@ -11,12 +11,12 @@
 namespace Graphics {
   namespace UI {
 
-    TextField::TextField(std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, VertexData vertex_data, std::shared_ptr<Skin> skin) : TextArea(default_text, vertex_data, skin), typed_text(typed_text), default_text(default_text), caret(">"), blink_speed(0.5), in_focus(false), current_typed("") {
+    TextField::TextField(std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer) : TextArea(default_text, vertex_data, skin, layer), typed_text(typed_text), default_text(default_text), caret(">"), blink_speed(0.5), in_focus(false), current_typed("") {
       typed_color = typed_text->getColor();
       setText(default_text);
     }
 
-    std::shared_ptr<TextField> TextField::create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, glm::vec4 background_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) {
+    std::shared_ptr<TextField> TextField::create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, glm::vec4 background_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer) {
       auto vertex_data = VertexData();
       vertex_data.addVec(VertexData::DATA_TYPE::GEOMETRY, generateRect(screen_width, screen_height, 0, 0, width, height));
       vertex_data.addVec(VertexData::DATA_TYPE::TEX_COORDS, basisTexCoords());
@@ -25,7 +25,7 @@ namespace Graphics {
       typed_text->setSize(width - (2.0 * padding), height - (2.0 * padding));
       typed_text->setText("");
 
-      auto field = std::make_shared<TextField>(default_text, typed_text, vertex_data, skin);
+      auto field = std::make_shared<TextField>(default_text, typed_text, vertex_data, skin, layer);
       field->setColor(background_color);
       field->setAnchorPoint(glm::vec2(x_pos, y_pos));
       field->setWidth(width);
@@ -71,10 +71,6 @@ namespace Graphics {
 
     void TextField::onNotifyNow(std::shared_ptr<Events::Event> event) {
       handleQueuedEvent(event);
-    }
-
-    const unsigned long long TextField::getValueForSorting() const noexcept {
-      return 1;
     }
 
     void TextField::onLeftClick() {

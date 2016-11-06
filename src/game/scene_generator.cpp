@@ -17,7 +17,7 @@
 #include "utility/utility_functions.h"
 
 namespace Game {
-  SceneGenerator::SceneGenerator(const Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager) : texture_manager(texture_manager), shader_manager(shader_manager) {
+  SceneGenerator::SceneGenerator(const Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager, const unsigned int ui_z_slots) : texture_manager(texture_manager), shader_manager(shader_manager), ui_z_slots(ui_z_slots) {
     dynamic_animations = createAnimationsFromAnimationMap(animation_index);
   }
 
@@ -75,7 +75,8 @@ namespace Game {
   }
 
   const float SceneGenerator::calculateZ(const unsigned int layer_index, const unsigned int total_layers) {
-    return -((float)total_layers - (float)layer_index);
+    LOG(INFO)<<(-((float)total_layers - (float)layer_index + ui_z_slots));
+    return -((float)total_layers - (float)layer_index + ui_z_slots);
   }
 
   std::shared_ptr<Graphics::BaseTexture> SceneGenerator::textureFromTileset(const Tmx::Tileset* tileset, const std::string& path) {

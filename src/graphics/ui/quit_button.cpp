@@ -5,11 +5,11 @@
 namespace Graphics {
   namespace UI {
 
-    QuitButton::QuitButton(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin) : Button(text, vertex_data, skin) {
+    QuitButton::QuitButton(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer) : Button(text, vertex_data, skin, layer) {
       setTextPadding(0.0);
     }
 
-    std::shared_ptr<QuitButton> QuitButton::create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) {
+    std::shared_ptr<QuitButton> QuitButton::create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer) {
       auto vertex_data = VertexData();
       vertex_data.addVec(VertexData::DATA_TYPE::GEOMETRY, generateRect(screen_width, screen_height, 0.0, 0.0, width, height));
       vertex_data.addVec(VertexData::DATA_TYPE::TEX_COORDS, basisTexCoords());
@@ -19,7 +19,7 @@ namespace Graphics {
       text->setVerticalAlignment(WrappableText::VerticalAlignment::VCENTER);
       text->setHorizontalAlignment(WrappableText::HorizontalAlignment::HCENTER);
 
-      auto button = std::make_shared<QuitButton>(text, vertex_data, skin);
+      auto button = std::make_shared<QuitButton>(text, vertex_data, skin, layer);
       button->setColor(color);
       button->setAnchorPoint(glm::vec2(x_pos, y_pos));
       button->setWidth(width);

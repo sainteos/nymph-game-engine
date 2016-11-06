@@ -43,7 +43,7 @@ class DebugConsole {
     text.setActive(false)
     default_text.setActive(false)
 
-    this.console_field := TextField_create(this.console_skin, default_text, text, vec4(0.2, 0.2, 0.2, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 16.0, 0.75)
+    this.console_field := TextField_create(this.console_skin, default_text, text, vec4(0.2, 0.2, 0.2, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 16.0, 0.75, 1)
     
     this.console_field.setActive(false)
     this.console_field.getTransform().addChild(text.getTransform())
@@ -77,7 +77,7 @@ class DebugConsole {
     map_list_text.setColor(vec4(1.0, 1.0, 1.0, 1.0))
     map_list_text.setKerning(0.12)
 
-    this.map_list_text_area = TextArea_create(this.console_skin, map_list_text, vec4(0.2, 0.2, 0.2, 1.0), vec4(1.0, 1.0, 1.0, 1.0), 0.5, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 16.0, 10.0)
+    this.map_list_text_area = TextArea_create(this.console_skin, map_list_text, vec4(0.2, 0.2, 0.2, 1.0), vec4(1.0, 1.0, 1.0, 1.0), 0.5, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 16.0, 10.0, 2)
     
     this.map_list_ui.addComponent(map_list_text)
     this.map_list_ui.addComponent(this.map_list_text_area)
@@ -86,7 +86,7 @@ class DebugConsole {
     map_list_quit_button_text.setFont(font_generator.getFont("8bit"))
     map_list_quit_button_text.setShader(shader_manager.getShader("simple_text"))
 
-    var map_list_quit_button = QuitButton_create(this.console_skin, map_list_quit_button_text, vec4(0.6, 0.6, 0.6, 0.8), vec4(0.8, 0.0, 0.0, 0.8), this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 1.0, 1.0)
+    var map_list_quit_button = QuitButton_create(this.console_skin, map_list_quit_button_text, vec4(0.6, 0.6, 0.6, 0.8), vec4(0.8, 0.0, 0.0, 0.8), this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 1.0, 1.0, 1)
     map_list_quit_button.getTransform().translate(vec3(this.map_list_text_area.getWidth() / 2.0 - 0.5, this.map_list_text_area.getHeight() / 2.0 - 0.5, 0.0))
 
     this.map_list_ui.addComponent(map_list_quit_button_text)
@@ -107,7 +107,7 @@ class DebugConsole {
     fps_text.setShader(shader_manager.getShader("simple_text"))
     fps_text.setKerning(0.0)
 
-    var fps_area = TextArea_create(this.console_skin, fps_text, vec4(0.0, 1.0, 0.0, 0.0), vec4(1.0, 1.0, 1.0, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, -2.0, 0.0, 5.0, 1.0)
+    var fps_area = TextArea_create(this.console_skin, fps_text, vec4(0.0, 1.0, 0.0, 0.0), vec4(1.0, 1.0, 1.0, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, -2.0, 0.0, 5.0, 1.0, 1)
     
     fps_area.getTransform().translate(vec2(-8.0, 5.0))
     fps_counter.addObserver(fps_area)
@@ -120,7 +120,7 @@ class DebugConsole {
     name_text.setShader(shader_manager.getShader("simple_text"))
     name_text.setHorizontalAlignment(WrappableText_HorizontalAlignment_HCENTER)
 
-    this.name_area = TextArea_create(this.console_skin, name_text, vec4(0.0, 0.0, 1.0, 0.0), vec4(1.0, 1.0, 1.0, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 10.0, 1.0)
+    this.name_area = TextArea_create(this.console_skin, name_text, vec4(0.0, 0.0, 1.0, 0.0), vec4(1.0, 1.0, 1.0, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 10.0, 1.0, 1)
 
     this.name_area.getTransform().translate(vec2(0.0, 5.0))
     this.thiss.addObserver(this.name_area)
@@ -133,7 +133,7 @@ class DebugConsole {
     pos_text.setShader(shader_manager.getShader("simple_text"))
     pos_text.setHorizontalAlignment(WrappableText_HorizontalAlignment_RIGHT)
 
-    auto pos_area = TextArea_create(this.console_skin, pos_text, vec4(1.0, 0.0, 1.0, 0.0), vec4(1.0, 1.0, 1.0, 0.8), 0.0, this.screen_width_tiles, this.screen_height_tiles, 2.5, 0.0, 5.0, 1.0)
+    auto pos_area = TextArea_create(this.console_skin, pos_text, vec4(1.0, 0.0, 1.0, 0.0), vec4(1.0, 1.0, 1.0, 0.8), 0.0, this.screen_width_tiles, this.screen_height_tiles, 2.5, 0.0, 5.0, 1.0, 1)
 
     pos_area.getTransform().translate(vec2(8.0, 5.0))
     camera.addObserver(pos_area)
@@ -157,6 +157,8 @@ class DebugConsole {
   }
 
   def onUpdate(delta) {
+    print("Camera Z")
+    print(camera.getTransform().getAbsoluteTranslation().z)
     this.debug.handleEvents()
   }
 

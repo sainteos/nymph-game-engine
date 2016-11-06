@@ -21,6 +21,7 @@ namespace Graphics {
         float text_padding;
         bool cursor_within;
         glm::dvec2 last_mouse_scroll_position;
+        unsigned int layer;
       protected:
         static std::vector<glm::vec3> generateRect(float screen_width, float screen_height, float x_pos, float y_pos, float width, float height) noexcept;
         static std::vector<glm::vec2> basisTexCoords() noexcept;
@@ -32,7 +33,7 @@ namespace Graphics {
          * @param[in]  vertex_data  The vertex data
          * @param[in]  skin         The UI skin
          */
-        Element(VertexData vertex_data, std::shared_ptr<Skin> skin);
+        Element(VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
         /**
          * @brief      Destroys element.
          */
