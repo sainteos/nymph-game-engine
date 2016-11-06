@@ -113,7 +113,7 @@ namespace Game {
       void moveDown();
 
       virtual const std::string className() const noexcept override;
-      const std::string to_string() const noexcept;
+      virtual const std::string to_string() const noexcept override;
       //= END SCRIPTABLE
       
       virtual void log(el::base::type::ostream_t& os) const override;

@@ -56,6 +56,10 @@ namespace Utility {
         tokens.pop();
         notify(LoadCharacterEvent::create(tokens.front()));
       }
+      else if(tokens.front() == "save") {
+        tokens.pop();
+        //notify(LoadSaveEvent::create());
+      }
     }
     else if(tokens.front() == "camera") {
       tokens.pop();

@@ -32,5 +32,6 @@
   "fonts_location": "./nymph-game-one/fonts/",
   "sounds_location": "./nymph-game-one/sounds/",
   "pixels_per_unit": 128,
-  "camera_speed": 3.0
+  "camera_speed": 3.0,
+  "save_file": "save.json"
 }

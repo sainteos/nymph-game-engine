@@ -279,7 +279,6 @@ class Transform : public std::enable_shared_from_this<Transform> {
      */
     const std::string to_string() const noexcept;
     //= END SCRIPTABLE
-
 };
 
 #endif

@@ -43,7 +43,6 @@ class DebugConsole {
     text.setActive(false)
     default_text.setActive(false)
 
-    this.console_skin := Skin(texture_manager.getTexture("grayscale_tex"), shader_manager.getShader("simple_ui"))
     this.console_field := TextField_create(this.console_skin, default_text, text, vec4(0.2, 0.2, 0.2, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 16.0, 0.75)
     
     this.console_field.setActive(false)
@@ -149,10 +148,12 @@ class DebugConsole {
   def onStart() {
     texture_manager.loadTexture("./nymph-game-one/textures/grayscale_tex.png")
     font_generator.loadFont("8bit.ttf", 48, "8bit")
+
+    this.console_skin := Skin(texture_manager.getTexture("grayscale_tex"), shader_manager.getShader("simple_ui"))
     
     this.setupConsole()
-    this.setupLists()
     this.setupHUD()
+    this.setupLists()
   }
 
   def onUpdate(delta) {
@@ -179,7 +180,6 @@ class DebugConsole {
 
         this.map_list_text_area.getText().setText(map_list)
         this.map_list_ui.setActive(true)
-        print(this.map_list_text_area.isActive())
         print("List Maps")
         break;
       }
@@ -191,13 +191,8 @@ class DebugConsole {
       }
 
       case(EventType_LOAD_MAP) {
-        print("Load Map")
-        if(this.name_area.getText().getText() != "") {
-          engine.deactivateScene(this.name_area.getText().getText())
-        }
-        engine.activateScene(event.getName())
         this.thiss.notifyNow(ChangeTextEvent_create(event.getName()))
-       
+        this.thiss.notifyNow(event)
         break;
       }
       case(EventType_LOAD_CHARACTER) {

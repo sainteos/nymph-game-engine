@@ -1,8 +1,8 @@
 #ifndef SOUND_SYSTEM_H
 #define SOUND_SYSTEM_H
+#define DEBUG
 #include <yse/yse.hpp>
 #include "sound_instance.h"
-
 //= SCRIPTABLE
 
 namespace Sound {

@@ -17,3 +17,4 @@ Makefile
 *.so
 *.dylib
 YSElog.txt
+save.json
