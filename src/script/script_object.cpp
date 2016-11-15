@@ -1,6 +1,7 @@
 #include <easylogging++.h>
 #include "script_object.h"
 #include "events/events.h"
+#include "game/sprite_movement.h"
 
 namespace Script {
   ScriptObject::ScriptObject(const std::string& name) : class_name(name), saved(false), sent_this(false) {
@@ -274,8 +275,8 @@ namespace Script {
         break;
       }
       case Events::ANIMATION_TRIGGER: {
-        auto handler = selectEventHandler<Game::AnimationTriggerEvent>();
-        auto casted_event = std::static_pointer_cast<Game::AnimationTriggerEvent>(event);
+        auto handler = selectEventHandler<Game::AnimationTriggerEvent<Game::SpriteMovementMotor::SpriteState>>();
+        auto casted_event = std::static_pointer_cast<Game::AnimationTriggerEvent<Game::SpriteMovementMotor::SpriteState>>(event);
         invokeScriptFunction(std::bind(handler, script_object, casted_event));
         break;
       }

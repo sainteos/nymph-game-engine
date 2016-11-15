@@ -7,11 +7,12 @@
 #include "graphics/texture_manager.h"
 #include "graphics/shader_manager.h"
 #include "graphics/renderable.h"
-#include "graphics/tile_animator.h"
+#include "graphics/tile_animator.hpp"
 #include "component_manager.h"
 #include "entity.h"
 #include "scene.h"
 #include "map.h"
+#include "sprite_movement.h"
 //= SCRIPTABLE
 
 namespace Game {
@@ -20,7 +21,7 @@ namespace Game {
 
       struct AnimationPlaceholder {
         std::string sprite_name;
-        std::string default_animation;
+        SpriteMovementMotor::SpriteState default_animation;
         int x_pos;
         int y_pos;
         float z_order;
@@ -33,7 +34,7 @@ namespace Game {
 
       struct DynamicAnimation {
         std::shared_ptr<Entity> entity;
-        std::shared_ptr<Graphics::TileAnimator> animator;
+        std::shared_ptr<Graphics::TileAnimator<SpriteMovementMotor::SpriteState>> animator;
       };
 
       std::weak_ptr<Graphics::TextureManager> texture_manager;
@@ -56,6 +57,8 @@ namespace Game {
       std::map<std::string, DynamicAnimation> createAnimationsFromAnimationMap(const Map& map);
       std::vector<std::shared_ptr<Component>> createLightsFromMap(const Map& map);
       std::shared_ptr<Physics::CollisionData> createCollisionDataFromMap(const Map& map);
+
+      const SpriteMovementMotor::SpriteState transformStateStringToEnum(const std::string& state);
 
       const float calculateZ(unsigned int layer_index, unsigned int layers_total);
     public:

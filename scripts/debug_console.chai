@@ -157,8 +157,6 @@ class DebugConsole {
   }
 
   def onUpdate(delta) {
-    print("Camera Z")
-    print(camera.getTransform().getAbsoluteTranslation().z)
     this.debug.handleEvents()
   }
 

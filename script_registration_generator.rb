@@ -53,10 +53,10 @@ def extractNamespace file
 end
 
 def extractClassNameAndBody file
-  class_regex = /^(?!enum)\s*class\s+([a-zA-Z]+)[^;]*$.*\/\/=\s*BEGIN\s*SCRIPTABLE(.*)\/\/=\s*END\s*SCRIPTABLE.*?}/m
+  class_regex = /\/\/=\sSCRIPTABLE.*(\/\/=\sSCRIPTABLE\sBASES.*$|\s*)^(?!enum)\s*class\s+([a-zA-Z]+)[^;]*$.*\/\/=\s*BEGIN\s*SCRIPTABLE(.*)\/\/=\s*END\s*SCRIPTABLE.*?}/m
   matches = class_regex.match(file)
   if matches != nil
-    return matches.captures[0], matches.captures[1]
+    return matches.captures[1], matches.captures[2]
   else
     return nil
   end

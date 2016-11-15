@@ -33,14 +33,6 @@ class MapLoading {
     var sprite = this.scene_generator.getDynamicEntityByName("Aidan")
 
     this.sprite_movement = SpriteMovement()
-    this.sprite_movement.setAnimationStringState(SpriteState_MOVE_UP, "Up_Movement")
-    this.sprite_movement.setAnimationStringState(SpriteState_MOVE_DOWN, "Down_Movement")
-    this.sprite_movement.setAnimationStringState(SpriteState_MOVE_LEFT, "Left_Movement")
-    this.sprite_movement.setAnimationStringState(SpriteState_MOVE_RIGHT, "Right_Movement")
-    this.sprite_movement.setAnimationStringState(SpriteState_FACE_UP, "Up_Still")
-    this.sprite_movement.setAnimationStringState(SpriteState_FACE_DOWN, "Down_Still")
-    this.sprite_movement.setAnimationStringState(SpriteState_FACE_LEFT, "Left_Still")
-    this.sprite_movement.setAnimationStringState(SpriteState_FACE_RIGHT, "Right_Still")
     this.sprite_movement.addObserver(camera)
     this.sprite_movement.setMovingSpeed(2.0)
 
