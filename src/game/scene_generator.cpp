@@ -74,8 +74,22 @@ namespace Game {
     return vert_data;
   }
 
+  const SpriteMovementMotor::SpriteState SceneGenerator::transformStateStringToEnum(const std::string& state) {
+    std::map<std::string, SpriteMovementMotor::SpriteState> states {
+      {"Up_Movement", SpriteMovementMotor::MOVE_UP},
+      {"Up_Still", SpriteMovementMotor::FACE_UP},
+      {"Down_Movement", SpriteMovementMotor::MOVE_DOWN},
+      {"Down_Still", SpriteMovementMotor::FACE_DOWN},
+      {"Left_Movement", SpriteMovementMotor::MOVE_LEFT},
+      {"Left_Still", SpriteMovementMotor::FACE_LEFT},
+      {"Right_Movement", SpriteMovementMotor::MOVE_RIGHT},
+      {"Right_Still", SpriteMovementMotor::FACE_RIGHT}
+    };
+
+    return states[state];
+  }
+
   const float SceneGenerator::calculateZ(const unsigned int layer_index, const unsigned int total_layers) {
-    LOG(INFO)<<(-((float)total_layers - (float)layer_index + ui_z_slots));
     return -((float)total_layers - (float)layer_index + ui_z_slots);
   }
 
@@ -404,7 +418,7 @@ namespace Game {
 
             if(tile != nullptr && tile->IsAnimated() && (!tile->GetProperties().HasProperty("AnimatedSprite") || tile->GetProperties().GetStringProperty("AnimatedSprite") == "False")) {
               auto renderable = Graphics::Renderable::create(generateBasisTile(map.getImpl()->GetTileWidth(), map.getImpl()->GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), 0, 0));
-              auto animator = Graphics::TileAnimator::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
+              auto animator = Graphics::TileAnimator<SpriteMovementMotor::SpriteState>::create(texture->getWidth(), texture->getHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
 
               auto frames = tile->GetFrames();
 
@@ -420,7 +434,7 @@ namespace Game {
                 int x_pos = id % width_in_tiles;
                 int y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
-                animator->addFrameBack("default", glm::ivec2(x_pos, y_pos), duration, true);
+                animator->addFrameBack((SpriteMovementMotor::SpriteState)0, glm::ivec2(x_pos, y_pos), duration, true);
               }
 
               renderable->setShader((*shader_manager.lock())["tile_animation"]);
@@ -502,7 +516,7 @@ namespace Game {
               if(tile != nullptr && tile->GetProperties().GetStringProperty("AnimatedSprite") == "True") {
                 AnimationPlaceholder placeholder;
                 placeholder.sprite_name = tile->GetProperties().GetStringProperty("CharacterName");
-                placeholder.default_animation = tile->GetProperties().GetStringProperty("DefaultAnimation");
+                placeholder.default_animation = transformStateStringToEnum(tile->GetProperties().GetStringProperty("DefaultAnimation"));
                 placeholder.x_pos = map_x;
                 placeholder.y_pos = opengl_map_y;
                 placeholder.z_order = calculateZ(layer_index, total_layers);
@@ -629,7 +643,7 @@ namespace Game {
 
           auto frames = tile->GetFrames();
           if(animations[sprite_name].animator == nullptr) {
-            animations[sprite_name].animator = Graphics::TileAnimator::create(tileset->GetImage()->GetWidth(), tileset->GetImage()->GetHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
+            animations[sprite_name].animator = Graphics::TileAnimator<SpriteMovementMotor::SpriteState>::create(tileset->GetImage()->GetWidth(), tileset->GetImage()->GetHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
             animations[sprite_name].entity->addComponent(animations[sprite_name].animator);
           }
            
@@ -643,7 +657,7 @@ namespace Game {
             int x_pos = id % width_in_tiles;
             int y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
-            animations[sprite_name].animator->addFrameBack(animation_name, glm::ivec2(x_pos, y_pos), duration);
+            animations[sprite_name].animator->addFrameBack(transformStateStringToEnum(animation_name), glm::ivec2(x_pos, y_pos), duration);
           }
         }
       }

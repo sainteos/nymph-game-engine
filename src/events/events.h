@@ -25,7 +25,7 @@
 #include "utility/toggle_layer_event.h"
 #include "utility/toggle_lights_event.h"
 #include "utility/window_exit_event.h"
-#include "game/animation_trigger_event.h"
+#include "game/animation_trigger_event.hpp"
 #include "game/sprite_move_event.h"
 #include "set_active_event.h"
 #include "set_entity_active_event.h"

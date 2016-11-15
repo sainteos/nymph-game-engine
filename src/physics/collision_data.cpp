@@ -13,7 +13,8 @@ namespace Physics {
   }
 
   const int CollisionData::getCollideLevel(const int x, const int y) {
-    if(x < 0 || y < 0) {
+    if(x < 0 || y < 0 || y >= collision_table.size() || x >= collision_table[0].size()
+       ) {
       return -1;
     }
     else {

@@ -131,7 +131,6 @@ namespace Graphics {
     }
 
     const bool Element::onUpdate(const double delta) {
-      LOG(INFO)<<"Element: "<<getTransform()->getAbsoluteTranslation().z;
       return Renderable::onUpdate(delta);
     }
 
