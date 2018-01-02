@@ -43,30 +43,30 @@ void Component::setTransform(std::shared_ptr<Transform> transform) {
 std::shared_ptr<Transform> Component::getTransform() const noexcept {
   return transform;
 }
-  
+
 void Component::setActive(const bool active) noexcept {
   this->active = active;
 }
 
-const bool Component::isActive() const noexcept {
+bool Component::isActive() const noexcept {
   return active;
 }
 
-const unsigned int Component::getId() const noexcept {
+unsigned int Component::getId() const noexcept {
   return id;
 }
 
-const bool Component::operator<(Component& other) noexcept {
+bool Component::operator<(Component& other) noexcept {
   return getValueForSorting() < other.getValueForSorting();
 }
 
-const std::string Component::to_string() const noexcept {
+std::string Component::to_string() const noexcept {
   std::stringstream str;
   str<<className()<<":: id: "<<getId()<<"  active: "<<isActive()<<"  "<<getTransform()->to_string()<<"  sort value: "<<getValueForSorting();
   return str.str();
 }
 
-const std::string Component::className() const noexcept {
+std::string Component::className() const noexcept {
   return "Component";
 }
 

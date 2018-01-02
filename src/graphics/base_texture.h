@@ -24,7 +24,7 @@ namespace Graphics {
     public:
       BaseTexture() = delete;
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      BaseTexture constructor
        *
@@ -41,14 +41,14 @@ namespace Graphics {
        *
        * @return     The width.
        */
-      const unsigned int getWidth() const noexcept;
+      unsigned int getWidth() const noexcept;
       /**
        * @brief      Gets the height.
        *
        * @return     The height.
        */
-      const unsigned int getHeight() const noexcept;
-      
+      unsigned int getHeight() const noexcept;
+
       /**
        * @brief      Loads the texture
        *
@@ -56,7 +56,7 @@ namespace Graphics {
        *
        * @return     True on success
        */
-      virtual const bool load(const std::string& filename);
+      virtual bool load(const std::string& filename);
       /**
        * @brief      Binds texture to opengl on the texture unit.
        *
@@ -68,7 +68,7 @@ namespace Graphics {
        *
        * @return     True if loaded, False otherwise.
        */
-      virtual const bool isLoaded() const noexcept;
+      virtual bool isLoaded() const noexcept;
 
       /**
        * @brief      Sets the name.
@@ -81,22 +81,22 @@ namespace Graphics {
        *
        * @return     The name.
        */
-      const std::string getName() const noexcept;
-      
+      std::string getName() const noexcept;
+
       /**
        * @brief      Returns a string representation of the object.
        *
        * @return     String representation of the object.
        */
-      const std::string to_string() const noexcept;
+      std::string to_string() const noexcept;
       //= END SCRIPTABLE
-      
+
       /**
        * @brief      Gets the texture object.
        *
        * @return     The texture object.
        */
-      virtual const unsigned int getTextureObject() const noexcept;
+      virtual unsigned int getTextureObject() const noexcept;
   };
 }
 

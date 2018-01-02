@@ -15,7 +15,7 @@ namespace Input {
       unsigned char character;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      CharacterTypedEvent constructor
        *
@@ -35,7 +35,7 @@ namespace Input {
        *
        * @return     The character.
        */
-      const unsigned char getCharacter() const noexcept { return character; }
+      unsigned char getCharacter() const noexcept { return character; }
       //= END SCRIPTABLE
   };
 }

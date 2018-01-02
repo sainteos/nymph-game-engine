@@ -1,6 +1,9 @@
 #ifndef INVALID_SHADER_NAME_EXCEPTION_H
 #define INVALID_SHADER_NAME_EXCEPTION_H
 
+#include <exception>
+#include <string>
+
 namespace Exceptions {
   class InvalidShaderNameException : public std::exception {
     private:

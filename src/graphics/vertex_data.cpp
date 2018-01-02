@@ -84,7 +84,7 @@ namespace Graphics {
         {Graphics::VertexData::DATA_TYPE::FOUR_WIDE, 4}
   };
 
-  const bool VertexData::operator==(const VertexData& other) {
+  bool VertexData::operator==(const VertexData& other) {
     return float_vector1s.size() == other.float_vector1s.size() &&
            float_vector2s.size() == other.float_vector2s.size() &&
            float_vector3s.size() == other.float_vector3s.size() &&
@@ -124,7 +124,7 @@ namespace Graphics {
            indices == other.indices;
   }
 
-  const bool VertexData::operator!=(const VertexData& other) {
+  bool VertexData::operator!=(const VertexData& other) {
     return !(*this == other);
   }
 
@@ -134,7 +134,7 @@ namespace Graphics {
   }
 
   void VertexData::checkMinimum(const unsigned int size) {
-    if(size < minimum.at(primitive_type)) 
+    if(size < minimum.at(primitive_type))
       throw std::length_error("Passed data doesn't comform to vertex count minimum spec!");
   }
 
@@ -174,7 +174,7 @@ namespace Graphics {
   }
 
   template<class T>
-  const bool VertexData::mapCompare(const std::map<DATA_TYPE, std::vector<T>> lhs, const std::map<DATA_TYPE, std::vector<T>> rhs) {
+  bool VertexData::mapCompare(const std::map<DATA_TYPE, std::vector<T>> lhs, const std::map<DATA_TYPE, std::vector<T>> rhs) {
     return lhs.size() == rhs.size() &&
            std::equal(lhs.begin(), lhs.end(), rhs.begin());
   }
@@ -192,7 +192,7 @@ namespace Graphics {
       this->indices = indices;
     }
     else if(this->index_count == indices.size()) {
-      this->indices = indices; 
+      this->indices = indices;
     }
     else {
       throw std::length_error("Indices size mismatch when adding indices!");
@@ -528,12 +528,12 @@ namespace Graphics {
       }
     }
   }
- 
-  const unsigned int VertexData::getVertexCount() const noexcept {
+
+  unsigned int VertexData::getVertexCount() const noexcept {
     return vertex_count;
   }
 
-  const unsigned int VertexData::getIndexCount() const noexcept {
+  unsigned int VertexData::getIndexCount() const noexcept {
     return index_count;
   }
 
@@ -675,20 +675,20 @@ namespace Graphics {
       }
     }
     return out_map;
-  } 
+  }
 
-  const float VertexData::highestZ() const noexcept {
+  float VertexData::highestZ() const noexcept {
     return highest_z;
   }
 
   unsigned int VertexData::numberVertexBufferObjects() const noexcept {
-    return float_vector1s.size() + float_vector2s.size() + float_vector3s.size() + float_vector4s.size() + 
+    return float_vector1s.size() + float_vector2s.size() + float_vector3s.size() + float_vector4s.size() +
            double_vector1s.size() + double_vector2s.size() + double_vector3s.size() + double_vector4s.size() +
            int_vector1s.size() + int_vector2s.size() + int_vector3s.size() + int_vector4s.size() +
            unsigned_int_vector1s.size() + unsigned_int_vector2s.size() + unsigned_int_vector3s.size() + unsigned_int_vector4s.size();
   }
 
-  const unsigned int VertexData::generateVertexArrayObject() const {
+  unsigned int VertexData::generateVertexArrayObject() const {
     unsigned int vertex_array_object = 0;
     glGenVertexArrays(1, &vertex_array_object);
     glBindVertexArray(vertex_array_object);
@@ -697,7 +697,7 @@ namespace Graphics {
     auto double_data = getCollapsedVectors<double>();
     auto int_data = getCollapsedVectors<int>();
     auto unsigned_int_data = getCollapsedVectors<unsigned int>();
-    
+
     unsigned int num_of_vertex_buffers = numberVertexBufferObjects();
     unsigned int* vertex_buffer_objects = new unsigned int[num_of_vertex_buffers];
     unsigned int index_buffer_object = 0;
@@ -706,7 +706,7 @@ namespace Graphics {
     glGenBuffers(num_of_vertex_buffers, vertex_buffer_objects);
 
     unsigned int current_buffer = 0;
-    
+
     //Do this if we actually have indices
     if(getIndices().size() > 0) {
       glGenBuffers(1, &index_buffer_object);
@@ -751,7 +751,7 @@ namespace Graphics {
         glVertexAttribIPointer(data_types[i].first, VertexData::DataWidth.at(data_types[i].first), data_types[i].second, 0, 0);
       glEnableVertexAttribArray(data_types[i].first);
     }
-    
+
     if(getIndices().size() > 0) {
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object);
     }
@@ -760,7 +760,7 @@ namespace Graphics {
     return vertex_array_object;
   }
 
-  const std::string VertexData::to_string() const noexcept {
+  std::string VertexData::to_string() const noexcept {
     std::stringstream str;
     str << "VertexData:: Indices: "<<index_count<<" Vertices: "<<vertex_count<<" Highest Z: "<<highest_z<<"\n";
 
@@ -773,7 +773,7 @@ namespace Graphics {
       }
       str <<"\n";
     }
-    
+
     if(float_vector2s.size() > 0) {
       for(auto pair : float_vector2s) {
         str <<"Vec Type: "<<pair.first<<": ";
@@ -803,7 +803,7 @@ namespace Graphics {
       }
       str <<"\n";
     }
-    
+
 
     if(double_vector1s.size() > 0) {
       for(auto pair : double_vector1s) {
@@ -814,7 +814,7 @@ namespace Graphics {
       }
       str <<"\n";
     }
-    
+
     if(double_vector2s.size() > 0) {
       for(auto pair : double_vector2s) {
         str <<"Vec Type: "<<pair.first<<": ";
@@ -854,7 +854,7 @@ namespace Graphics {
       }
       str <<"\n";
     }
-    
+
     if(int_vector2s.size() > 0) {
       for(auto pair : int_vector2s) {
         str <<"Vec Type: "<<pair.first<<": ";
@@ -894,7 +894,7 @@ namespace Graphics {
       }
       str <<"\n";
     }
-    
+
     if(unsigned_int_vector2s.size() > 0) {
       for(auto pair : unsigned_int_vector2s) {
         str <<"Vec Type: "<<pair.first<<": ";

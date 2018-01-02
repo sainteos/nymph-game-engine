@@ -27,7 +27,7 @@ namespace Game {
     state_machine->start();
   }
 
-  const bool SpriteMovement::onUpdate(const double delta) {
+  bool SpriteMovement::onUpdate(const double delta) {
     if(!active)
       return false;
     while(eventsWaiting()) {
@@ -72,7 +72,7 @@ namespace Game {
     }
   }
 
-  const unsigned long long SpriteMovement::getValueForSorting() const noexcept {
+  unsigned long long SpriteMovement::getValueForSorting() const noexcept {
     return getId();
   }
 
@@ -88,11 +88,11 @@ namespace Game {
     os << to_string();
   }
 
-  const std::string SpriteMovement::className() const noexcept {
+  std::string SpriteMovement::className() const noexcept {
     return "SpriteMovement";
   }
 
-  const std::string SpriteMovement::to_string() const noexcept {
+  std::string SpriteMovement::to_string() const noexcept {
     std::stringstream str;
     str << Component::to_string();
     str << " Moving Speed: "<<data->moving_speed<<" Move Quantization (tiles): "<<data->move_quantization_in_tiles<<" Current Velocity: "<<glm::to_string(data->current_velocity)<<" Next Position: "<<glm::to_string(data->next_position);

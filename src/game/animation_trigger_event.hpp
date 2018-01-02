@@ -33,8 +33,8 @@ namespace Game {
        *
        * @return     The state.
        */
-      const StateType getState() const noexcept { return state; }
-  }; 
+      StateType getState() const noexcept { return state; }
+  };
 }
 
 #endif

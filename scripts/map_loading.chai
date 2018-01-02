@@ -25,8 +25,6 @@ class MapLoading {
       var map_path = map_names[i]
       var map = Map(map_path)
       var scene = this.scene_generator.createSceneFromMap(config.getInt("patch_width"), config.getInt("patch_height"), map)
-      var name = this.scene_generator.getStrippedMapName(map_path)
-      scene.setName(name)
       engine.addScene(scene)
     }
 
@@ -39,7 +37,7 @@ class MapLoading {
     sprite.addComponent(this.sprite_movement)
     input_system.addObserver(this.sprite_movement)
     camera.getTransform().translate(vec2(sprite.getTransform().getAbsoluteTranslation().x, sprite.getTransform().getAbsoluteTranslation().y))
-    
+
     sprite.setActive(true)
 
     component_manager.addComponents(sprite.getComponents())
@@ -52,10 +50,14 @@ class MapLoading {
       print("loading map from save")
     }
 
+    print(engine.findSceneByName(this.map_name))
     var active_scene = engine.findSceneByName(this.map_name)
+    print("ASS")
     this.sprite_movement.addCollisionData(active_scene.getCollisionData())
-    
+    print("ASS")
+
     this.thiss.notify(LoadMapEvent_create(this.map_name))
+    print("ASS")
   }
 
   def onUpdate(delta) {
@@ -75,7 +77,7 @@ class MapLoading {
         this.map_name = event.getName()
 
         engine.activateScene(this.map_name)
-       
+
         break;
       }
       default {

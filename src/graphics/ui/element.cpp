@@ -57,26 +57,26 @@ namespace Graphics {
       this->skin = skin;
     }
 
-    const glm::vec2 Element::getAnchorPoint() const noexcept {
+    glm::vec2 Element::getAnchorPoint() const noexcept {
       return anchor_point;
     }
 
     void Element::setAnchorPoint(const glm::vec2 anchor_point) {
       this->anchor_point = anchor_point;
-      
+
       auto anchor_point_transform = Transform();
       auto anchor_point_uniform = Uniform();
-      
+
       anchor_point_transform.translate(-anchor_point);
       anchor_point_uniform.setData("anchor_point", anchor_point_transform.getAbsoluteTransformationMatrix());
       setUniform(anchor_point_uniform);
     }
 
-    const float Element::getWidth() const noexcept {
+    float Element::getWidth() const noexcept {
       return width;
     }
 
-    const float Element::getHeight() const noexcept {
+    float Element::getHeight() const noexcept {
       return height;
     }
 
@@ -88,7 +88,7 @@ namespace Graphics {
       this->height = height;
     }
 
-    const float Element::getTextPadding() const noexcept {
+    float Element::getTextPadding() const noexcept {
       return this->text_padding;
     }
 
@@ -96,7 +96,7 @@ namespace Graphics {
       this->text_padding = text_padding;
     }
 
-    const glm::vec4 Element::getColor() const noexcept {
+    glm::vec4 Element::getColor() const noexcept {
       return color;
     }
 
@@ -130,7 +130,7 @@ namespace Graphics {
     void Element::onStart() {
     }
 
-    const bool Element::onUpdate(const double delta) {
+    bool Element::onUpdate(const double delta) {
       return Renderable::onUpdate(delta);
     }
 
@@ -206,15 +206,15 @@ namespace Graphics {
       handleQueuedEvent(event);
     }
 
-    const unsigned long long Element::getValueForSorting() const noexcept {
+    unsigned long long Element::getValueForSorting() const noexcept {
       return (unsigned long long)getTransform()->getAbsoluteTranslation().z;
     }
 
-    const std::string Element::className() const noexcept {
+    std::string Element::className() const noexcept {
       return "Graphics::UI::Element";
     }
 
-    const std::string Element::to_string() const noexcept {
+    std::string Element::to_string() const noexcept {
       std::stringstream str;
       str<<Renderable::to_string()
         <<"Anchor Point: "<<glm::to_string(anchor_point)<<" Width: "<<width<<" Height: "<<height

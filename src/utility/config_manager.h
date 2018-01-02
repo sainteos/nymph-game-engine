@@ -16,7 +16,7 @@ namespace Utility {
        * @brief      Constructs the configManager
        */
       ConfigManager();
-      
+
       /**
        * @brief      Loads a configuration.
        *
@@ -24,9 +24,9 @@ namespace Utility {
        *
        * @return     True if successful
        */
-      const bool loadConfig(const std::string& file_path);
+      bool loadConfig(const std::string& file_path);
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Gets an int from config.
        *
@@ -34,7 +34,7 @@ namespace Utility {
        *
        * @return     The int.
        */
-      const int getInt(const std::string& key);
+      int getInt(const std::string& key);
       /**
        * @brief      Gets an unsigned int from config
        *
@@ -42,7 +42,7 @@ namespace Utility {
        *
        * @return     The unsigned int.
        */
-      const unsigned int getUnsignedInt(const std::string& key);
+      unsigned int getUnsignedInt(const std::string& key);
       /**
        * @brief      Gets a string from config
        *
@@ -50,7 +50,7 @@ namespace Utility {
        *
        * @return     The string.
        */
-      const std::string getString(const std::string& key);
+      std::string getString(const std::string& key);
       /**
        * @brief      Gets a float from config
        *
@@ -58,7 +58,7 @@ namespace Utility {
        *
        * @return     The float.
        */
-      const float getFloat(const std::string& key);
+      float getFloat(const std::string& key);
       /**
        * @brief      Gets a double from config
        *
@@ -66,7 +66,7 @@ namespace Utility {
        *
        * @return     The double.
        */
-      const double getDouble(const std::string& key);
+      double getDouble(const std::string& key);
       /**
        * @brief      Gets a bool from config
        *
@@ -74,7 +74,7 @@ namespace Utility {
        *
        * @return     The bool.
        */
-      const bool getBool(const std::string& key);
+      bool getBool(const std::string& key);
       /**
        * @brief      Gets a string vector from config
        *
@@ -82,7 +82,7 @@ namespace Utility {
        *
        * @return     The string vector.
        */
-      const std::vector<std::string> getStringVector(const std::string& key);
+      std::vector<std::string> getStringVector(const std::string& key);
       /**
        * @brief      Gets an unsigned int vector from config
        *
@@ -90,7 +90,7 @@ namespace Utility {
        *
        * @return     The unsigned int vector.
        */
-      const std::vector<unsigned int> getUnsignedIntVector(const std::string& key);
+      std::vector<unsigned int> getUnsignedIntVector(const std::string& key);
       //= END SCRIPTABLE
   };
 }

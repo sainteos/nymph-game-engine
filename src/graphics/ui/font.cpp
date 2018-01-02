@@ -18,11 +18,11 @@ namespace Graphics {
       return characters;
     }
 
-    const unsigned int Font::getSize() const noexcept {
+    unsigned int Font::getSize() const noexcept {
       return size;
     }
 
-    const float Font::getOpenGLSize() const noexcept { 
+    float Font::getOpenGLSize() const noexcept {
       return (float)size / (float)pixels_per_unit;
     }
   }

@@ -3,7 +3,7 @@
 #include <memory>
 #include <map>
 #include <ft2build.h>
-#include FT_FREETYPE_H 
+#include FT_FREETYPE_H
 #include "graphics/ui/text.h"
 #include "graphics/ui/font.h"
 //= SCRIPTABLE
@@ -33,7 +33,7 @@ namespace Graphics {
         ~FontGenerator();
 
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      Sets the font path.
          *
@@ -45,8 +45,8 @@ namespace Graphics {
          *
          * @return     The font path.
          */
-        const std::string getFontPath() const noexcept;
-        
+        std::string getFontPath() const noexcept;
+
         /**
          * @brief      Loads a font.
          *

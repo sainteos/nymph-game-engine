@@ -18,3 +18,4 @@ Makefile
 *.dylib
 YSElog.txt
 save.json
+.clang_complete

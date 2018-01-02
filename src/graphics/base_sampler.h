@@ -9,7 +9,7 @@ namespace Graphics {
       BaseSampler();
       virtual ~BaseSampler();
       virtual void bind(const unsigned int texture_unit);
-      virtual const unsigned int getSamplerObject() const noexcept;
+      virtual unsigned int getSamplerObject() const noexcept;
   };
 }
 #endif

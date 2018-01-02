@@ -30,26 +30,26 @@ namespace Graphics {
        * @param[in]  geometry_program  The geometry program
        */
       Shader(const unsigned int vertex_program, const unsigned int fragment_program, const unsigned int geometry_program = 0);
-      
+
       /**
        * @brief      Gets the shader's opengl handle.
        *
        * @return     The handle.
        */
-      const unsigned int getHandle() const noexcept;
+      unsigned int getHandle() const noexcept;
       /**
        * @brief      Tell open gl to use this shader
        */
       void useProgram() const;
 
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Gets the uniform names.
        *
        * @return     The uniform names.
        */
-      const std::vector<std::string> getUniformNames() const noexcept;
+      std::vector<std::string> getUniformNames() const noexcept;
       /**
        * @brief      Sets the uniform.
        *
@@ -67,15 +67,15 @@ namespace Graphics {
        *
        * @return     The name.
        */
-      const std::string getName() const noexcept;
+      std::string getName() const noexcept;
       /**
        * @brief      Returns a string representation of the object.
        *
        * @return     String representation of the object.
        */
-      const std::string to_string() const noexcept;
+      std::string to_string() const noexcept;
       //= END SCRIPTABLE
-      
+
       /**
        * @brief      Sets the uniform.
        *

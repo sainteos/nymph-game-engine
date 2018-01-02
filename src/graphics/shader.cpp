@@ -19,13 +19,13 @@ namespace Graphics {
     if(geometry_program != 0 && !glIsShader(geometry_program)) {
       throw Exceptions::InvalidGeometryShaderException(geometry_program);
     }
-    
+
     program_object = glCreateProgram();
     glAttachShader(program_object, vertex_program);
     glAttachShader(program_object, fragment_program);
     if(geometry_program != 0)
       glAttachShader(program_object, geometry_program);
-    
+
     glLinkProgram(program_object);
     int is_linked = 0;
     glGetProgramiv(program_object, GL_LINK_STATUS, &is_linked);
@@ -60,7 +60,7 @@ namespace Graphics {
     }
   }
 
-  const unsigned int Shader::getHandle() const noexcept {
+  unsigned int Shader::getHandle() const noexcept {
     return program_object;
   }
 
@@ -71,9 +71,9 @@ namespace Graphics {
     glUseProgram(program_object);
   }
 
-  const std::vector<std::string> Shader::getUniformNames() const noexcept {
+  std::vector<std::string> Shader::getUniformNames() const noexcept {
     std::vector<std::string> names;
-    for(auto i : name_to_location) 
+    for(auto i : name_to_location)
       names.push_back(i.first);
     return names;
   }
@@ -407,7 +407,7 @@ namespace Graphics {
     if(prev_bound_program != program_object)
       glUseProgram(prev_bound_program);
   }
-  
+
   void Shader::setUniform(const Uniform& uniform) {
     switch(uniform.getType()) {
       case Graphics::Uniform::UniformTypes::FLOAT:
@@ -494,10 +494,10 @@ namespace Graphics {
     this->name = name;
   }
 
-  const std::string Shader::getName() const noexcept {
+  std::string Shader::getName() const noexcept {
     return this->name;
   }
-  const std::string Shader::to_string() const noexcept {
+  std::string Shader::to_string() const noexcept {
     std::stringstream str;
     str << "Shader: "<<getName()<<" with uniforms: ";
 

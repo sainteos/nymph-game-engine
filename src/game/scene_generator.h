@@ -43,8 +43,8 @@ namespace Game {
 
       unsigned int ui_z_slots;
 
-      const Graphics::VertexData generateBasisCube();
-      const Graphics::VertexData generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos = 0, const unsigned int y_pos = 0,  const unsigned int offset_x = 0, const unsigned int offset_y = 0);
+      Graphics::VertexData generateBasisCube();
+      Graphics::VertexData generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos = 0, const unsigned int y_pos = 0,  const unsigned int offset_x = 0, const unsigned int offset_y = 0);
       std::shared_ptr<Graphics::BaseTexture> textureFromTileset(const Tmx::Tileset* tileset, const std::string& path);
       std::shared_ptr<Graphics::BaseTexture> normalTextureFromTileset(const Tmx::Tileset* tileset, const std::string& path);
       std::shared_ptr<Graphics::BaseTexture> displacementTextureFromTileset(const Tmx::Tileset* tileset, const std::string& path);
@@ -58,15 +58,15 @@ namespace Game {
       std::vector<std::shared_ptr<Component>> createLightsFromMap(const Map& map);
       std::shared_ptr<Physics::CollisionData> createCollisionDataFromMap(const Map& map);
 
-      const SpriteMovementMotor::SpriteState transformStateStringToEnum(const std::string& state);
+      SpriteMovementMotor::SpriteState transformStateStringToEnum(const std::string& state);
 
-      const float calculateZ(unsigned int layer_index, unsigned int layers_total);
+      float calculateZ(unsigned int layer_index, unsigned int layers_total);
     public:
       SceneGenerator() = delete;
       ~SceneGenerator();
 
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      SceneGenerator constructor
        *
@@ -89,7 +89,7 @@ namespace Game {
        * @return     *this
        */
       SceneGenerator& operator=(const SceneGenerator& other) = default;
-      
+
       /**
        * @brief      Creates a scene from a map.
        *
@@ -124,7 +124,7 @@ namespace Game {
        *
        * @return     The stripped map name.
        */
-      const std::string getStrippedMapName(const std::string path);
+      std::string getStrippedMapName(const std::string path);
       //= END SCRIPTABLE
   };
 }

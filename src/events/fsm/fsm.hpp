@@ -31,7 +31,7 @@ namespace Events {
          * @param[in]  subject         The subject
          */
         StateReactor(const StateType& state_type, const std::shared_ptr<DataType>& data_to_mutate, Subject* subject) : data(data_to_mutate), subject(subject), state_type(state_type) { }
-        
+
         constexpr StateType getStateType() const noexcept {
           return state_type;
         }
@@ -63,7 +63,7 @@ namespace Events {
          *
          * @return     The new state to transition into
          */
-        virtual const StateType react(const TransitionType transition) { return (StateType)0; }
+        virtual StateType react(const TransitionType transition) { return (StateType)0; }
     };
 
     /**
@@ -76,7 +76,7 @@ namespace Events {
      */
     template<typename DataType, typename StateType, typename TransitionType, typename... Reactor>
     class FSM : public std::enable_shared_from_this<FSM<DataType, StateType, TransitionType, Reactor...>> {
-      private: 
+      private:
         std::shared_ptr<DataType> data;
         Subject* subject;
         StateType current_state;
@@ -94,7 +94,7 @@ namespace Events {
         template<typename T, typename... R>
         void unpackReactorAndMakeShared(const std::shared_ptr<T>& t, const std::shared_ptr<R>&... reactors) {
           states[t->getStateType()] = t;
-          
+
           unpackReactorAndMakeShared(reactors...);
         }
 
@@ -112,7 +112,7 @@ namespace Events {
          * @param[in]  subject         The subject
          * @param[in]  begin_state     The begin state
          */
-        FSM(const std::shared_ptr<DataType>& data_to_mutate, const StateType& begin_state, Subject* subject) : data(data_to_mutate), current_state(begin_state), running(false), is_terminated(false), subject(subject) {
+        FSM(const std::shared_ptr<DataType>& data_to_mutate, const StateType& begin_state, Subject* subject) : data(data_to_mutate), subject(subject), current_state(begin_state), is_terminated(false), running(false)  {
           if(data_to_mutate == nullptr) {
             throw std::invalid_argument("FSM::data_to_mutate cannot be nullptr");
           }
@@ -131,7 +131,7 @@ namespace Events {
         FSM(const std::shared_ptr<DataType>& data_to_mutate, const StateType& begin_state, const StateType& end_state, Subject* subject) : data(data_to_mutate), current_state(begin_state), end_state(end_state), is_terminated(true), subject(subject) {
           if(data_to_mutate == nullptr) {
             throw std::invalid_argument("FSM::data_to_mutate cannot be nullptr");
-          } 
+          }
 
           unpackAndConstructReactors<Reactor...>();
         }

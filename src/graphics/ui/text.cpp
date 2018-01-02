@@ -5,7 +5,7 @@
 
 namespace Graphics {
   namespace UI {
-  
+
     Text::Text() : text("text"), font(nullptr), color(1.0), kerning(0.0) {
 
     }
@@ -17,8 +17,8 @@ namespace Graphics {
     void Text::setText(const std::string& text) {
       this->text = text;
     }
-    
-    const std::string Text::getText() const noexcept {
+
+    std::string Text::getText() const noexcept {
       return text;
     }
 
@@ -26,7 +26,7 @@ namespace Graphics {
       this->color = color;
     }
 
-    const glm::vec4 Text::getColor() const noexcept {
+    glm::vec4 Text::getColor() const noexcept {
       return color;
     }
 
@@ -38,17 +38,17 @@ namespace Graphics {
       this->kerning = amount;
     }
 
-    const float Text::getKerning() const noexcept {
+    float Text::getKerning() const noexcept {
       return kerning;
     }
 
-    const std::string Text::to_string() const noexcept {
+    std::string Text::to_string() const noexcept {
       std::stringstream str;
       str << Component::to_string() << "Text: "<<text<<" Color: "<<glm::to_string(color)<<" Kerning: "<<kerning;
       return str.str();
     }
 
-    const unsigned long long Text::getValueForSorting() const noexcept {
+    unsigned long long Text::getValueForSorting() const noexcept {
       return (unsigned long long)getTransform()->getAbsoluteTranslation().z;
     }
 
@@ -71,7 +71,7 @@ namespace Graphics {
       }
       else {
         glDrawArrays(GL_TRIANGLES, 0, font->getCharacter(character).vertex_data.getVertexCount());
-      }      
+      }
     }
 
     void Text::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
@@ -89,7 +89,7 @@ namespace Graphics {
     void Text::onStart() {
     }
 
-    const bool Text::onUpdate(const double delta) {
+    bool Text::onUpdate(const double delta) {
       Uniform color_uniform;
       color_uniform.setData<glm::vec4>("color", color);
       shader->setUniform(color_uniform);
@@ -116,7 +116,7 @@ namespace Graphics {
       }
     }
 
-    const std::string Text::className() const noexcept {
+    std::string Text::className() const noexcept {
       return "Graphics::UI::Text";
     }
 

@@ -15,7 +15,7 @@ namespace Input {
       int key;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      KeyUpEvent constructor
        *
@@ -30,7 +30,7 @@ namespace Input {
        * @return     Newly constructed KeyUpEvent
        */
       static std::shared_ptr<KeyUpEvent> create(const int key) { return std::make_shared<KeyUpEvent>(key); }
-      const int getKey() const noexcept { return key; }
+      int getKey() const noexcept { return key; }
       //= END SCRIPTABLE
   };
 }

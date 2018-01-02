@@ -16,7 +16,7 @@ namespace Game {
       glm::vec2 next_position;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      SpriteMoveEvent constructor
        *
@@ -38,13 +38,13 @@ namespace Game {
        *
        * @return     The velocity.
        */
-      const glm::vec2 getVelocity() const noexcept { return velocity; }
+      glm::vec2 getVelocity() const noexcept { return velocity; }
       /**
        * @brief      Gets the next position.
        *
        * @return     The next position.
        */
-      const glm::vec2 getNextPosition() const noexcept { return next_position; }
+      glm::vec2 getNextPosition() const noexcept { return next_position; }
       //= END SCRIPTABLE
   };
 }

@@ -20,7 +20,7 @@ namespace Graphics {
     glBindSampler(texture_unit, sampler_object);
   }
 
-  const unsigned int BaseSampler::getSamplerObject() const noexcept {
+  unsigned int BaseSampler::getSamplerObject() const noexcept {
     return sampler_object;
   }
 }

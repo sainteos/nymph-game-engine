@@ -35,10 +35,10 @@ class Engine : public std::enable_shared_from_this<Engine> {
     std::shared_ptr<Utility::ConfigManager> config_manager;
     std::shared_ptr<Script::ScriptingSystem> scripting_system;
     std::shared_ptr<Sound::SoundSystem> sound_system;
-    
+
     //Bool represents if the scene is active;
     std::map<std::shared_ptr<Game::Scene>, bool> scenes;
-    
+
     float viewport_tile_width;
     float viewport_tile_height;
 
@@ -58,7 +58,7 @@ class Engine : public std::enable_shared_from_this<Engine> {
     virtual ~Engine() = default;
 
     //= BEGIN SCRIPTABLE
-    
+
     /**
      * @brief      Adds a scene to the engine.
      *
@@ -80,7 +80,7 @@ class Engine : public std::enable_shared_from_this<Engine> {
      * @return     The scenes.
      */
     std::map<std::shared_ptr<Game::Scene>, bool> getScenes() const noexcept;
-    
+
     /**
      * @brief      Activates a scene by name
      *
@@ -98,20 +98,20 @@ class Engine : public std::enable_shared_from_this<Engine> {
      *
      * @return     The scene names.
      */
-    const std::vector<std::string> getSceneNames() const noexcept;
+    std::vector<std::string> getSceneNames() const noexcept;
     /**
      * @brief      Gets the active scene names.
      *
      * @return     The active scene names.
      */
-    const std::vector<std::string> getActiveSceneNames() const noexcept;
-    
+    std::vector<std::string> getActiveSceneNames() const noexcept;
+
     /**
      * @brief      This is to signal the engine that it is time to shut down
      */
     void timeToExit() noexcept;
     //= END SCRIPTABLE
-    
+
     /**
      * @brief      Sets up the engine
      *

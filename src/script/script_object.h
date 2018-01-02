@@ -62,7 +62,7 @@ namespace Script {
       ~ScriptObject() = default;
 
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Sets the class name on the scripting object
        *
@@ -70,7 +70,7 @@ namespace Script {
        */
       void setClassName(const std::string& name);
 
-      const std::string& getClassName() const noexcept;
+      std::string getClassName() const noexcept;
       //= END SCRIPTABLE
 
       /**
@@ -88,12 +88,12 @@ namespace Script {
        */
       void onDestroy();
 
-      const bool shouldBeSerialized() const noexcept;
+      bool shouldBeSerialized() const noexcept;
 
       Json::Value getSaveData() const noexcept;
       void loadSavedData(Json::Value& save_data);
 
-      const bool representsDynamicObject(const chaiscript::dispatch::Dynamic_Object& obj) const noexcept;
+      bool representsDynamicObject(const chaiscript::dispatch::Dynamic_Object& obj) const noexcept;
 
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;

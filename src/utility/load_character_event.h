@@ -15,7 +15,7 @@ namespace Utility {
       std::string name;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Constructs a LoadCharacterEvent
        *
@@ -35,7 +35,7 @@ namespace Utility {
        *
        * @return     The name.
        */
-      const std::string getName() const noexcept { return name; }
+      std::string getName() const noexcept { return name; }
       //= END SCRIPTABLE
   };
 }

@@ -24,7 +24,7 @@ namespace Graphics {
       ~TextureManager();
 
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Loads a texture.
        *
@@ -32,7 +32,7 @@ namespace Graphics {
        *
        * @return     True if successful
        */
-      const bool loadTexture(const std::string& path);
+      bool loadTexture(const std::string& path);
 
       /**
        * @brief      Get's texture with name
@@ -58,7 +58,7 @@ namespace Graphics {
        *
        * @return     True if it exists
        */
-      const bool textureExists(const std::string& name) const noexcept;
+      bool textureExists(const std::string& name) const noexcept;
       //= END SCRIPTABLE
 
       /**
@@ -68,8 +68,8 @@ namespace Graphics {
        *
        * @return     The name from path.
        */
-      static const std::string getNameFromPath(const std::string& path) noexcept;
-  };  
+      static std::string getNameFromPath(const std::string& path) noexcept;
+  };
 }
 
 #endif

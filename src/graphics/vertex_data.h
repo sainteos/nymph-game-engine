@@ -19,7 +19,7 @@ namespace Graphics {
       /**
        * @brief      VertexData possible types
        */
-      enum DATA_TYPE : unsigned int { 
+      enum DATA_TYPE : unsigned int {
         GEOMETRY = 0,
         TEX_COORDS = 1,
         TEXTURE_UNIT = 2,
@@ -40,19 +40,19 @@ namespace Graphics {
 
     private:
       std::map<DATA_TYPE, std::vector<float>> float_vector1s;
-      std::map<DATA_TYPE, std::vector<glm::vec2>> float_vector2s;   
+      std::map<DATA_TYPE, std::vector<glm::vec2>> float_vector2s;
       std::map<DATA_TYPE, std::vector<glm::vec3>> float_vector3s;
       std::map<DATA_TYPE, std::vector<glm::vec4>> float_vector4s;
       std::map<DATA_TYPE, std::vector<double>> double_vector1s;
-      std::map<DATA_TYPE, std::vector<glm::dvec2>> double_vector2s;   
+      std::map<DATA_TYPE, std::vector<glm::dvec2>> double_vector2s;
       std::map<DATA_TYPE, std::vector<glm::dvec3>> double_vector3s;
       std::map<DATA_TYPE, std::vector<glm::dvec4>> double_vector4s;
       std::map<DATA_TYPE, std::vector<int>> int_vector1s;
-      std::map<DATA_TYPE, std::vector<glm::ivec2>> int_vector2s;   
+      std::map<DATA_TYPE, std::vector<glm::ivec2>> int_vector2s;
       std::map<DATA_TYPE, std::vector<glm::ivec3>> int_vector3s;
       std::map<DATA_TYPE, std::vector<glm::ivec4>> int_vector4s;
       std::map<DATA_TYPE, std::vector<unsigned int>> unsigned_int_vector1s;
-      std::map<DATA_TYPE, std::vector<glm::uvec2>> unsigned_int_vector2s;   
+      std::map<DATA_TYPE, std::vector<glm::uvec2>> unsigned_int_vector2s;
       std::map<DATA_TYPE, std::vector<glm::uvec3>> unsigned_int_vector3s;
       std::map<DATA_TYPE, std::vector<glm::uvec4>> unsigned_int_vector4s;
       std::vector<unsigned int> indices;
@@ -87,17 +87,17 @@ namespace Graphics {
       void checkMinimum(const unsigned int size);
       void clearDataType(const DATA_TYPE& type);
 
-      void setHighestZIfHigher(float z) noexcept; 
+      void setHighestZIfHigher(float z) noexcept;
 
       template<class T>
-      const bool mapCompare(std::map<DATA_TYPE, std::vector<T>> lhs, std::map<DATA_TYPE, std::vector<T>> rhs);
+      bool mapCompare(std::map<DATA_TYPE, std::vector<T>> lhs, std::map<DATA_TYPE, std::vector<T>> rhs);
 
     public:
       /**
        * Holds the different data widths possible for DATA_TYPE
        */
       static const std::map<DATA_TYPE, unsigned int> DataWidth;
-      
+
       /**
        * @brief      VertexData constructor
        *
@@ -119,7 +119,7 @@ namespace Graphics {
        * @return     this = other
        */
       VertexData operator=(const VertexData& vertex_data);
-      
+
       /**
        * @brief      Destroys the object.
        */
@@ -132,7 +132,7 @@ namespace Graphics {
        *
        * @return     True if same vertexdata
        */
-      const bool operator==(const VertexData& other);
+      bool operator==(const VertexData& other);
       /**
        * @brief      != operator
        *
@@ -140,14 +140,14 @@ namespace Graphics {
        *
        * @return     True if not same vertexdata
        */
-      const bool operator!=(const VertexData& other);
+      bool operator!=(const VertexData& other);
 
       /**
        * @brief      Adds indices.
        *
        * @detail     If indices are added first, then they are used for min and divisibility validation
        * otherwise, vertices added are used for min and divisibility validation
-       * 
+       *
        * @param[in]  indices  The indices
        */
       void addIndices(const std::vector<unsigned int>& indices);
@@ -168,17 +168,17 @@ namespace Graphics {
        *
        * @return     The index count.
        */
-      const unsigned int getIndexCount() const noexcept;
+      unsigned int getIndexCount() const noexcept;
       /**
        * @brief      Gets the vertex count.
        *
        * @return     The vertex count.
        */
-      const unsigned int getVertexCount() const noexcept;
-      
+      unsigned int getVertexCount() const noexcept;
+
       /**
        * @brief      Gets a map of collapsed type vectors to a data types
-       * 
+       *
        * @return     Map of data types to vectors of type
        */
       template<typename T>
@@ -196,7 +196,7 @@ namespace Graphics {
        *
        * @return     float representing highest z value
        */
-      const float highestZ() const noexcept;
+      float highestZ() const noexcept;
 
       /**
        * @brief      Returns number of vertex buffer objects needed for this vertex data
@@ -209,14 +209,14 @@ namespace Graphics {
        *
        * @return     A handle to an opengl vao
        */
-      const unsigned int generateVertexArrayObject() const;
+      unsigned int generateVertexArrayObject() const;
 
       /**
        * @brief      Returns a string representation of the object.
        *
        * @return     String representation of the object.
        */
-      const std::string to_string() const noexcept;
+      std::string to_string() const noexcept;
   };
 }
 

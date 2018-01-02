@@ -12,7 +12,7 @@ namespace Graphics {
       /**
        * Enum describing the different types that can be held in a uniform.
        */
-      enum class UniformTypes { FLOAT, VEC2, VEC3, VEC4, INT, IVEC2, IVEC3, IVEC4, UINT, UVEC2, UVEC3, UVEC4, 
+      enum class UniformTypes { FLOAT, VEC2, VEC3, VEC4, INT, IVEC2, IVEC3, IVEC4, UINT, UVEC2, UVEC3, UVEC4,
                           BOOL, BVEC2, BVEC3, BVEC4, MAT2, MAT3, MAT4, MAT23, MAT32, MAT24, MAT42, MAT34, MAT43 };
     private:
       UniformTypes uniform_type;
@@ -46,7 +46,7 @@ namespace Graphics {
       bool dirty;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Uniform constructor.
        */
@@ -66,19 +66,19 @@ namespace Graphics {
        *
        * @return     The type.
        */
-      const UniformTypes getType() const noexcept;
+      UniformTypes getType() const noexcept;
       /**
        * @brief      Gets the name.
        *
        * @return     The name.
        */
-      const std::string getName() const noexcept;
+      std::string getName() const noexcept;
       /**
        * @brief      Determines if dirty.
        *
        * @return     True if dirty, False otherwise.
        */
-      const bool isDirty() const noexcept;
+      bool isDirty() const noexcept;
       /**
        * @brief      dirty = false
        */
@@ -92,7 +92,7 @@ namespace Graphics {
        * @return     The data.
        */
       template<typename T>
-      const T getData() const noexcept;
+      T getData() const noexcept;
 
       /**
        * @brief      < operator using name
@@ -101,7 +101,7 @@ namespace Graphics {
        *
        * @return     true if right.name is alphabetically higher than this.name
        */
-      const bool operator<(const Uniform& right) const noexcept;
+      bool operator<(const Uniform& right) const noexcept;
       /**
        * @brief      == operator
        *
@@ -109,7 +109,7 @@ namespace Graphics {
        *
        * @return     True if same uniform
        */
-      const bool operator==(const Uniform& right) const noexcept;
+      bool operator==(const Uniform& right) const noexcept;
       /**
        * @brief      != operator
        *
@@ -117,14 +117,14 @@ namespace Graphics {
        *
        * @return     True if not the same uniform
        */
-      const bool operator!=(const Uniform& right) const noexcept;
+      bool operator!=(const Uniform& right) const noexcept;
 
       /**
        * @brief      Returns a string representation of the object.
        *
        * @return     String representation of the object.
        */
-      const std::string to_string() const noexcept;
+      std::string to_string() const noexcept;
       //= END SCRIPTABLE
   };
 }

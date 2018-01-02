@@ -15,7 +15,7 @@ namespace Graphics {
   class ShaderManager {
     private:
       std::map<std::string, std::shared_ptr<Shader>> shaders_to_names;
-      const bool checkCompilation(const unsigned int& shader_object);
+      bool checkCompilation(const unsigned int& shader_object);
       void logShaderInfoLog(const unsigned int& shader_object);
     public:
       /**
@@ -34,7 +34,7 @@ namespace Graphics {
        * Shader directory location
        */
       static char const* SHADER_DIRECTORY;
-      
+
       /**
        * @brief      Shader Manager constructor.
        */
@@ -53,7 +53,7 @@ namespace Graphics {
        *
        * @return     True if successful
        */
-      const bool loadShader(const std::string& name, const bool geometry_shader = false);
+      bool loadShader(const std::string& name, const bool geometry_shader = false);
       /**
        * @brief      Loads a shader.
        *
@@ -64,7 +64,7 @@ namespace Graphics {
        *
        * @return     True if successful
        */
-      const bool loadShader(const std::string& name, const std::string& vertex_filename, const std::string& fragment_filename, const std::string& geometry_filename);
+      bool loadShader(const std::string& name, const std::string& vertex_filename, const std::string& fragment_filename, const std::string& geometry_filename);
 
       /**
        * @brief      looks up shader by name
@@ -82,7 +82,7 @@ namespace Graphics {
        * @return     The shader.
        */
       std::shared_ptr<Shader> getShader(const std::string& name) const;
-      
+
       /**
        * @brief      Sets the uniform for all programs.
        *
@@ -90,7 +90,7 @@ namespace Graphics {
        */
       void setUniformForAllPrograms(const Uniform& u);
       //= END SCRIPTABLE
-      
+
       /**
        * @brief      Sets the uniform for all programs.
        *
@@ -102,8 +102,8 @@ namespace Graphics {
       template<class T>
       void setUniformForAllPrograms(const std::string& name, const T& data);
 
-  };  
-  
+  };
+
   template<class T>
   void ShaderManager::setUniformForAllPrograms(const std::string& name, const T& data) {
     for(auto& i : shaders_to_names) {

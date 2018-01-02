@@ -11,13 +11,13 @@ namespace Graphics {
      * @brief      Class for UI button.
      */
     class Button : public TextArea {
-      private: 
+      private:
         bool cursor_over;
       protected:
         const glm::vec4 mouse_over_dim = glm::vec4(0.1, 0.1, 0.1, 0.0);
       public:
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      Button constructor
          *
@@ -55,7 +55,7 @@ namespace Graphics {
         virtual void onKeyUp(const int key) override;
         virtual void onKeyRepeat(const int key) override;
         virtual void onScroll(const glm::dvec2 position_change) override;
-        virtual const std::string className() const noexcept override;
+        virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;

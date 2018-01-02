@@ -21,7 +21,7 @@ class Transform : public std::enable_shared_from_this<Transform> {
   public:
 
     //= BEGIN SCRIPTABLE
-    
+
     /**
      * @brief      Transform Constructor
      */
@@ -35,22 +35,22 @@ class Transform : public std::enable_shared_from_this<Transform> {
      * @brief      operator ==
      *
      * @param[in]  other  The other
-     * 
+     *
      * @detail Does not take tree properties into account
      *
      * @return     True if same
      */
-    const bool operator==(const Transform& other);
+    bool operator==(const Transform& other);
     /**
      * @brief      operator !=
      *
      * @param[in]  other  The other
-     * 
+     *
      * @detail Does not take tree properties into account
      *
      * @return     True if not same
      */
-    const bool operator!=(const Transform& other);
+    bool operator!=(const Transform& other);
 
     /**
      * @brief      Essentially a matrix multiplication, combines translations, rotations, and scales
@@ -76,7 +76,7 @@ class Transform : public std::enable_shared_from_this<Transform> {
 
     /**
      * @brief      Gets the children
-     * 
+     *
      * @return     list of Transform pointers
      */
     std::list<std::shared_ptr<Transform>> getChildren() const;
@@ -92,21 +92,21 @@ class Transform : public std::enable_shared_from_this<Transform> {
      *
      * @return     The tree size.
      */
-    const unsigned int getTreeSize() const;
+    unsigned int getTreeSize() const;
 
     /**
      * @brief      Adds 2d translation to Transform
      *
-     * @param[in]  x     
-     * @param[in]  y     
+     * @param[in]  x
+     * @param[in]  y
      */
     void translate(const float x, const float y) noexcept;
     /**
      * @brief      Adds 3d translation to Transform
      *
-     * @param[in]  x     
-     * @param[in]  y     
-     * @param[in]  z     
+     * @param[in]  x
+     * @param[in]  y
+     * @param[in]  z
      */
     void translate(const float x, const float y, const float z) noexcept;
     /**
@@ -127,13 +127,13 @@ class Transform : public std::enable_shared_from_this<Transform> {
      *
      * @return     The absolute translation.
      */
-    const glm::vec3 getAbsoluteTranslation() const noexcept;
+    glm::vec3 getAbsoluteTranslation() const noexcept;
     /**
      * @brief      Gets the local translation.
      *
      * @return     The local translation.
      */
-    const glm::vec3 getLocalTranslation() const noexcept;
+    glm::vec3 getLocalTranslation() const noexcept;
 
     /**
      * @brief      Rotates this transform using yaw roll pitch/euler angles
@@ -168,70 +168,70 @@ class Transform : public std::enable_shared_from_this<Transform> {
      *
      * @return     The absolute rotation.
      */
-    const glm::quat getAbsoluteRotation() const noexcept;
+    glm::quat getAbsoluteRotation() const noexcept;
     /**
      * @brief      Gets the absolute rotation angle.
      *
      * @return     The absolute rotation angle.
      */
-    const float getAbsoluteRotationAngle() const noexcept;
+    float getAbsoluteRotationAngle() const noexcept;
     /**
      * @brief      Gets the absolute rotation axis.
      *
      * @return     The absolute rotation axis.
      */
-    const glm::vec3 getAbsoluteRotationAxis() const noexcept;
+    glm::vec3 getAbsoluteRotationAxis() const noexcept;
     /**
      * @brief      Gets the absolute euler angles.
      *
      * @return     The absolute euler angles.
      */
-    const glm::vec3 getAbsoluteEulerAngles() const noexcept;
+    glm::vec3 getAbsoluteEulerAngles() const noexcept;
 
     /**
      * @brief      Gets the local rotation.
      *
      * @return     The local rotation.
      */
-    const glm::quat getLocalRotation() const noexcept;
+    glm::quat getLocalRotation() const noexcept;
     /**
      * @brief      Gets the local rotation angle.
      *
      * @return     The local rotation angle.
      */
-    const float getLocalRotationAngle() const noexcept;
+    float getLocalRotationAngle() const noexcept;
     /**
      * @brief      Gets the local rotation axis.
      *
      * @return     The local rotation axis.
      */
-    const glm::vec3 getLocalRotationAxis() const noexcept;
+    glm::vec3 getLocalRotationAxis() const noexcept;
     /**
      * @brief      Gets the local euler angles.
      *
      * @return     The local euler angles.
      */
-    const glm::vec3 getLocalEulerAngles() const noexcept;
+    glm::vec3 getLocalEulerAngles() const noexcept;
 
     /**
      * @brief      Scales transform in all 3 directions by x
      *
-     * @param[in]  x     
+     * @param[in]  x
      */
     void scale(const float x) noexcept;
     /**
      * @brief      Scales transform in 2d
      *
-     * @param[in]  x     
-     * @param[in]  y     
+     * @param[in]  x
+     * @param[in]  y
      */
     void scale(const float x, const float y) noexcept;
     /**
      * @brief      Scales transform in 3d
      *
-     * @param[in]  x     
-     * @param[in]  y     
-     * @param[in]  z     
+     * @param[in]  x
+     * @param[in]  y
+     * @param[in]  z
      */
     void scale(const float x, const float y, const float z) noexcept;
     /**
@@ -252,32 +252,32 @@ class Transform : public std::enable_shared_from_this<Transform> {
      *
      * @return     The absolute scale.
      */
-    const glm::vec3 getAbsoluteScale() const noexcept;
+    glm::vec3 getAbsoluteScale() const noexcept;
     /**
      * @brief      Gets the local scale.
      *
      * @return     The local scale.
      */
-    const glm::vec3 getLocalScale() const noexcept;
+    glm::vec3 getLocalScale() const noexcept;
 
     /**
      * @brief      Gets the absolute transformation matrix.
      *
      * @return     The absolute transformation matrix.
      */
-    const glm::mat4 getAbsoluteTransformationMatrix() const noexcept;
+    glm::mat4 getAbsoluteTransformationMatrix() const noexcept;
     /**
      * @brief      Gets the local transformation matrix.
      *
      * @return     The local transformation matrix.
      */
-    const glm::mat4 getLocalTransformationMatrix() const noexcept;
+    glm::mat4 getLocalTransformationMatrix() const noexcept;
     /**
      * @brief      Returns a string representation of the object.
      *
      * @return     String representation of the object.
      */
-    const std::string to_string() const noexcept;
+    std::string to_string() const noexcept;
     //= END SCRIPTABLE
 };
 

@@ -45,6 +45,6 @@ void Entity::setActive(const bool active) noexcept {
   }
 }
 
-const bool Entity::isActive() const noexcept {
+bool Entity::isActive() const noexcept {
   return active;
 }

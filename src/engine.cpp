@@ -12,7 +12,7 @@ Engine::Engine() : time_to_exit(false) {
   component_manager = std::make_shared<ComponentManager>();
   shader_manager = std::make_shared<Graphics::ShaderManager>();
   texture_manager = std::make_shared<Graphics::TextureManager>();
-  
+
   scripting_system = std::make_shared<Script::ScriptingSystem>("./scripts/");
 }
 
@@ -25,6 +25,12 @@ void Engine::addScene(std::shared_ptr<Game::Scene> scene) noexcept {
 }
 
 std::shared_ptr<Game::Scene> Engine::findSceneByName(const std::string& name) noexcept {
+  LOG(INFO)<<"Finding scene: "<<name;
+
+  for(auto s : scenes) {
+    LOG(INFO)<<s.first->getName();
+  }
+
   auto find_by_name = [&](std::pair<std::shared_ptr<Game::Scene>, bool> pair) {
     return pair.first->getName() == name;
   };
@@ -32,9 +38,11 @@ std::shared_ptr<Game::Scene> Engine::findSceneByName(const std::string& name) no
   auto scene_iter = std::find_if(scenes.begin(), scenes.end(), find_by_name);
 
   if(scene_iter == scenes.end()) {
+    LOG(INFO)<<"Didn't find scene: "<<name;
     return nullptr;
   }
   else {
+    LOG(INFO)<<"Found scene: "<<name;
     return scene_iter->first;
   }
 }
@@ -58,14 +66,14 @@ void Engine::activateScene(const std::string& name) {
 
 void Engine::deactivateScene(const std::string& name) {
   auto scene = findSceneByName(name);
-  
+
   if(scene != nullptr && scenes[scene] == true) {
     scenes[scene] = false;
     component_manager->removeComponents(scene->getComponents());
   }
 }
 
-const std::vector<std::string> Engine::getSceneNames() const noexcept {
+std::vector<std::string> Engine::getSceneNames() const noexcept {
   auto names = std::vector<std::string>();
 
   for(auto scene : scenes) {
@@ -74,7 +82,7 @@ const std::vector<std::string> Engine::getSceneNames() const noexcept {
   return names;
 }
 
-const std::vector<std::string> Engine::getActiveSceneNames() const noexcept {
+std::vector<std::string> Engine::getActiveSceneNames() const noexcept {
   auto names = std::vector<std::string>();
   for(auto scene : scenes) {
     if(scene.second) {
@@ -95,10 +103,10 @@ void Engine::setup(const std::string config_path) {
     LOG(FATAL)<<"Could not load config: "<<config_path;
     throw;
   }
-  
+
   LOG(INFO)<<"Using sounds location: "<<config_manager->getString("sounds_location");
   sound_system = std::make_shared<Sound::SoundSystem>(config_manager->getString("sounds_location"));
-  
+
   scripting_system->addGlobalObject<ComponentManager>(component_manager, "component_manager");
   scripting_system->addGlobalObject<Utility::ConfigManager>(config_manager, "config");
   scripting_system->addGlobalObject<Engine>(shared_from_this(), "engine");
@@ -109,7 +117,7 @@ void Engine::setup(const std::string config_path) {
   scripting_system->addGlobalObject<Graphics::ShaderManager>(shader_manager, "shader_manager");
   scripting_system->addGlobalObject<Graphics::TextureManager>(texture_manager, "texture_manager");
   scripting_system->addGlobalObject<Sound::SoundSystem>(sound_system, "sound_system");
-  
+
   //Initialize font generator
   font_generator = std::make_shared<Graphics::UI::FontGenerator>(config_manager->getString("fonts_location"), config_manager->getInt("pixels_per_unit"));
 

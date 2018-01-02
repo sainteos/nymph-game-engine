@@ -4,7 +4,7 @@
 #include <string>
 
 namespace Utility {
-  const glm::vec3 stringToVec3(const std::string str); 
+  glm::vec3 stringToVec3(const std::string str); 
 }
 
 #endif

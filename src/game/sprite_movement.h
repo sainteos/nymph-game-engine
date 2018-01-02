@@ -75,9 +75,12 @@ namespace Game {
           return false;
         }
       }
+      else {
+        return false;
+      }
     }
 
-    
+
     class MoveUpReactor : public Events::FSM::StateReactor<SpriteData, SpriteState, SpriteInput> {
       public:
         MoveUpReactor(const std::shared_ptr<SpriteData>& data, Events::Subject* subject) : StateReactor(MOVE_UP, data, subject) {}
@@ -87,11 +90,11 @@ namespace Game {
           data->tile_location += glm::ivec2(0, -1);
 
           auto absolute_next_position = glm::vec2(data->transform->getAbsoluteTranslation()) + glm::normalize(data->current_velocity) * data->move_quantization_in_tiles;
-          
+
           subject->notifyNow(AnimationTriggerEvent<SpriteState>::create(MOVE_UP));
           subject->notify(SpriteMoveEvent::create(data->current_velocity, absolute_next_position));
         }
-        
+
         virtual bool updateState(const double delta, SpriteInput& t) override {
           if(!updateSprite(data, getStateType(), delta)) {
             t = NONE;
@@ -100,7 +103,7 @@ namespace Game {
           return false;
         }
 
-        const SpriteState react(const SpriteInput transition) override {
+        virtual SpriteState react(const SpriteInput transition) override {
           switch(transition) {
             case NONE: {
               return FACE_UP;
@@ -123,7 +126,7 @@ namespace Game {
           subject->notifyNow(AnimationTriggerEvent<SpriteState>::create(FACE_UP));
         }
 
-        const SpriteState react(const SpriteInput transition) override {
+        virtual SpriteState react(const SpriteInput transition) override {
           switch(transition) {
             case LEFT: {
               if(data->collision_data->getCollideLevel(data->tile_location.x - 1, data->tile_location.y) < data->current_level) {
@@ -143,7 +146,7 @@ namespace Game {
             }
             case UP: {
               if(data->collision_data->getCollideLevel(data->tile_location.x, data->tile_location.y - 1) < data->current_level) {
-                return MOVE_UP; 
+                return MOVE_UP;
               }
               else {
                 return FACE_UP;
@@ -151,7 +154,7 @@ namespace Game {
             }
             case DOWN: {
               if(data->collision_data->getCollideLevel(data->tile_location.x, data->tile_location.y + 1) < data->current_level) {
-                return MOVE_DOWN; 
+                return MOVE_DOWN;
               }
               else {
                 return FACE_DOWN;
@@ -174,7 +177,7 @@ namespace Game {
           data->tile_location += glm::ivec2(0, 1);
 
           auto absolute_next_position = glm::vec2(data->transform->getAbsoluteTranslation()) + glm::normalize(data->current_velocity) * data->move_quantization_in_tiles;
-          
+
           subject->notifyNow(AnimationTriggerEvent<SpriteState>::create(MOVE_DOWN));
           subject->notify(SpriteMoveEvent::create(data->current_velocity, absolute_next_position));
         }
@@ -187,7 +190,7 @@ namespace Game {
           return false;
         }
 
-        const SpriteState react(const SpriteInput transition) override {
+        virtual SpriteState react(const SpriteInput transition) override {
           switch(transition) {
             case NONE: {
               return FACE_DOWN;
@@ -206,11 +209,11 @@ namespace Game {
         virtual void enterState() override {
           data->current_velocity = glm::vec2(0.0, 0.0);
           data->next_position = glm::vec2(data->transform->getAbsoluteTranslation());
-          
+
           subject->notifyNow(AnimationTriggerEvent<SpriteState>::create(FACE_DOWN));
         }
 
-        const SpriteState react(const SpriteInput transition) override {
+        virtual SpriteState react(const SpriteInput transition) override {
           switch(transition) {
             case LEFT: {
               if(data->collision_data->getCollideLevel(data->tile_location.x - 1, data->tile_location.y) < data->current_level) {
@@ -230,7 +233,7 @@ namespace Game {
             }
             case UP: {
               if(data->collision_data->getCollideLevel(data->tile_location.x, data->tile_location.y - 1) < data->current_level) {
-                return MOVE_UP; 
+                return MOVE_UP;
               }
               else {
                 return FACE_UP;
@@ -238,7 +241,7 @@ namespace Game {
             }
             case DOWN: {
               if(data->collision_data->getCollideLevel(data->tile_location.x, data->tile_location.y + 1) < data->current_level) {
-                return MOVE_DOWN; 
+                return MOVE_DOWN;
               }
               else {
                 return FACE_DOWN;
@@ -261,7 +264,7 @@ namespace Game {
           data->tile_location += glm::ivec2(-1, 0);
 
           auto absolute_next_position = glm::vec2(data->transform->getAbsoluteTranslation()) + glm::normalize(data->current_velocity) * data->move_quantization_in_tiles;
-          
+
           subject->notifyNow(AnimationTriggerEvent<SpriteState>::create(MOVE_LEFT));
           subject->notify(SpriteMoveEvent::create(data->current_velocity, absolute_next_position));
         }
@@ -274,7 +277,7 @@ namespace Game {
           return false;
         }
 
-        const SpriteState react(const SpriteInput transition) override {
+        virtual SpriteState react(const SpriteInput transition) override {
           switch(transition) {
             case NONE: {
               return FACE_LEFT;
@@ -293,11 +296,11 @@ namespace Game {
         virtual void enterState() override {
           data->current_velocity = glm::vec2(0.0, 0.0);
           data->next_position = glm::vec2(data->transform->getAbsoluteTranslation());
-          
+
           subject->notifyNow(AnimationTriggerEvent<SpriteState>::create(FACE_LEFT));
         }
 
-        const SpriteState react(const SpriteInput transition) override {
+        virtual SpriteState react(const SpriteInput transition) override {
           switch(transition) {
             case LEFT: {
               if(data->collision_data->getCollideLevel(data->tile_location.x - 1, data->tile_location.y) < data->current_level) {
@@ -317,7 +320,7 @@ namespace Game {
             }
             case UP: {
               if(data->collision_data->getCollideLevel(data->tile_location.x, data->tile_location.y - 1) < data->current_level) {
-                return MOVE_UP; 
+                return MOVE_UP;
               }
               else {
                 return FACE_UP;
@@ -325,7 +328,7 @@ namespace Game {
             }
             case DOWN: {
               if(data->collision_data->getCollideLevel(data->tile_location.x, data->tile_location.y + 1) < data->current_level) {
-                return MOVE_DOWN; 
+                return MOVE_DOWN;
               }
               else {
                 return FACE_DOWN;
@@ -348,7 +351,7 @@ namespace Game {
           data->tile_location += glm::ivec2(1, 0);
 
           auto absolute_next_position = glm::vec2(data->transform->getAbsoluteTranslation()) + glm::normalize(data->current_velocity) * data->move_quantization_in_tiles;
-          
+
           subject->notifyNow(AnimationTriggerEvent<SpriteState>::create(MOVE_RIGHT));
           subject->notify(SpriteMoveEvent::create(data->current_velocity, absolute_next_position));
         }
@@ -361,7 +364,7 @@ namespace Game {
           return false;
         }
 
-        const SpriteState react(const SpriteInput transition) override {
+        virtual SpriteState react(const SpriteInput transition) override {
           switch(transition) {
             case NONE: {
               return FACE_RIGHT;
@@ -380,11 +383,11 @@ namespace Game {
         virtual void enterState() override {
           data->current_velocity = glm::vec2(0.0, 0.0);
           data->next_position = glm::vec2(data->transform->getAbsoluteTranslation());
-          
+
           subject->notifyNow(AnimationTriggerEvent<SpriteState>::create(FACE_RIGHT));
         }
 
-        const SpriteState react(const SpriteInput transition) override {
+        virtual SpriteState react(const SpriteInput transition) override {
           switch(transition) {
             case LEFT: {
               if(data->collision_data->getCollideLevel(data->tile_location.x - 1, data->tile_location.y) < data->current_level) {
@@ -404,7 +407,7 @@ namespace Game {
             }
             case UP: {
               if(data->collision_data->getCollideLevel(data->tile_location.x, data->tile_location.y - 1) < data->current_level) {
-                return MOVE_UP; 
+                return MOVE_UP;
               }
               else {
                 return FACE_UP;
@@ -412,7 +415,7 @@ namespace Game {
             }
             case DOWN: {
               if(data->collision_data->getCollideLevel(data->tile_location.x, data->tile_location.y + 1) < data->current_level) {
-                return MOVE_DOWN; 
+                return MOVE_DOWN;
               }
               else {
                 return FACE_DOWN;
@@ -423,7 +426,7 @@ namespace Game {
             }
           };
         }
-    }; 
+    };
 
     using SpriteFSM = Events::FSM::FSM<SpriteData, SpriteState, SpriteInput,
                         MoveUpReactor, FaceUpReactor, MoveDownReactor, FaceDownReactor,
@@ -436,21 +439,21 @@ namespace Game {
   //= SCRIPTABLE
   //= SCRIPTABLE BASES Component
   class SpriteMovement : public Component, public std::enable_shared_from_this<SpriteMovement> {
-    private: 
+    private:
       std::unique_ptr<SpriteMovementMotor::SpriteFSM> state_machine;
       std::shared_ptr<SpriteMovementMotor::SpriteData> data;
 
     public:
-      const bool onUpdate(const double delta) override;
-      void onStart() override;
-      void onDestroy() override {}
+      virtual bool onUpdate(const double delta) override;
+      virtual void onStart() override;
+      virtual void onDestroy() override {}
 
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-      virtual const unsigned long long getValueForSorting() const noexcept override;
+      virtual unsigned long long getValueForSorting() const noexcept override;
 
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Sprite Movement constructor
        */
@@ -476,10 +479,10 @@ namespace Game {
       void setMoveQuantization(const float number_of_tiles);
 
 
-      virtual const std::string className() const noexcept override;
-      virtual const std::string to_string() const noexcept override;
+      virtual std::string className() const noexcept override;
+      virtual std::string to_string() const noexcept override;
       //= END SCRIPTABLE
-      
+
       virtual void log(el::base::type::ostream_t& os) const override;
   };
 }

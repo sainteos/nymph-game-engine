@@ -5,7 +5,7 @@
 namespace Graphics {
   namespace UI {
     WrappableText::WrappableText() : line_spacing(0.175), horizontal_alignment(HorizontalAlignment::LEFT), vertical_alignment(VerticalAlignment::TOP), horizontal_alignment_transform(Transform()), vertical_alignment_transform(Transform()) {
-      
+
     }
 
     void WrappableText::setHorizontalAlignment(const HorizontalAlignment& alignment) {
@@ -80,7 +80,7 @@ namespace Graphics {
       }
       else if(horizontal_alignment == HorizontalAlignment::HCENTER) {
         auto lines = splitTextIntoLines();
-        
+
         unsigned int character_index = 0;
         unsigned int line_number = 0;
         for(auto line : lines) {
@@ -98,7 +98,7 @@ namespace Graphics {
       else {
         auto lines = splitTextIntoLines();
         unsigned int line_number = 0;
-        std::string line_text= text.substr(0, lines[0].second.size()); 
+        std::string line_text= text.substr(0, lines[0].second.size());
         unsigned int last_position = 0;
 
         for(auto line : lines) {
@@ -109,7 +109,7 @@ namespace Graphics {
           if(line_number > 0) {
             line_text = text.substr(last_position, line.second.size());
           }
- 
+
           for(struct {std::vector<Character>::reverse_iterator character; std::string::reverse_iterator text_char;} iter = {line.second.rbegin(), line_text.rbegin()};
                       iter.character != line.second.rend() && iter.text_char != line_text.rend(); iter.character++, iter.text_char++) {
             character_transform.translate(glm::vec2(-iter.character->advance - kerning, 0.0));
@@ -129,12 +129,12 @@ namespace Graphics {
         vertical_alignment_y = (height - font->getOpenGLSize()) / 2.0;
       }
       else if(vertical_alignment == VerticalAlignment::VCENTER) {
-        vertical_alignment_y = -font->getOpenGLSize() / 2.0; 
+        vertical_alignment_y = -font->getOpenGLSize() / 2.0;
       }
       else {
         vertical_alignment_y = -height / 2.0;
       }
-      
+
       vertical_alignment_transform.translate(glm::vec2(0.0, vertical_alignment_y));
     }
 
@@ -146,7 +146,7 @@ namespace Graphics {
     void WrappableText::onStart() {
     }
 
-    const bool WrappableText::onUpdate(const double delta) {
+    bool WrappableText::onUpdate(const double delta) {
       if(isActive()) {
         if(shader != nullptr) {
           Uniform color_uniform;
@@ -177,11 +177,11 @@ namespace Graphics {
 
     }
 
-    const std::string WrappableText::className() const noexcept {
+    std::string WrappableText::className() const noexcept {
       return "Graphics::UI::WrappableText";
     }
 
-    const std::string WrappableText::to_string() const noexcept {
+    std::string WrappableText::to_string() const noexcept {
       std::stringstream str;
       str << Text::to_string() << " Width: "<<width<<" Height: "<<height<<" Line Spacing: "<<line_spacing;
       return str.str();

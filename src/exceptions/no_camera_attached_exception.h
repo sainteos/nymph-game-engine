@@ -1,6 +1,8 @@
 #ifndef NO_CAMERA_ATTACHED_EXCEPTION_H
 #define NO_CAMERA_ATTACHED_EXCEPTION_H
 
+#include <exception>
+
 namespace Exceptions {
   class NoCameraAttachedException : public std::exception {
     public:

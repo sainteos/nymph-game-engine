@@ -11,7 +11,7 @@ namespace Graphics {
      * @brief      Class for text field.
      */
     class TextField : public TextArea {
-      private: 
+      private:
         bool cursor_over;
         std::shared_ptr<WrappableText> default_text;
         std::shared_ptr<WrappableText> typed_text;
@@ -26,7 +26,7 @@ namespace Graphics {
         const glm::vec4 mouse_over_dim = glm::vec4(0.1, 0.1, 0.1, 0.0);
       public:
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      TextField constructor
          *
@@ -71,13 +71,13 @@ namespace Graphics {
          *
          * @return     String representation of the object.
          */
-        virtual const std::string to_string() const noexcept override;
-        virtual const std::string className() const noexcept override;
+        virtual std::string to_string() const noexcept override;
+        virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
-  
+
         virtual void onDestroy() override;
         virtual void onStart() override;
-        virtual const bool onUpdate(const double delta) override;
+        virtual bool onUpdate(const double delta) override;
 
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;

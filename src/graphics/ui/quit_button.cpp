@@ -34,7 +34,7 @@ namespace Graphics {
       notifyNow(SetEntityActiveEvent::create(false));
     }
 
-    const std::string QuitButton::className() const noexcept {
+    std::string QuitButton::className() const noexcept {
       return "Graphics::UI::QuitButton";
     }
   }

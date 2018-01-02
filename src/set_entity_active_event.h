@@ -15,7 +15,7 @@ class SetEntityActiveEvent : public Events::Event {
     bool active;
   public:
     //= BEGIN SCRIPTABLE
-    
+
     /**
      * @brief      Constructor for SetEntityActiveEvent
      *
@@ -35,7 +35,7 @@ class SetEntityActiveEvent : public Events::Event {
      *
      * @return     True if active
      */
-    const bool getActive() const noexcept { return active; }
+    bool getActive() const noexcept { return active; }
     //= END SCRIPTABLE
 };
 

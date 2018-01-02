@@ -9,7 +9,7 @@
 //= SCRIPTABLE
 //= SCRIPTABLE BASES Renderable
 
-namespace Graphics {  
+namespace Graphics {
   namespace UI {
     class Element : public Renderable, virtual public el::Loggable  {
       private:
@@ -40,7 +40,7 @@ namespace Graphics {
         virtual ~Element();
 
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      Gets the UI skin.
          *
@@ -58,7 +58,7 @@ namespace Graphics {
          *
          * @return     The anchor point.
          */
-        const glm::vec2 getAnchorPoint() const noexcept;
+        glm::vec2 getAnchorPoint() const noexcept;
         /**
          * @brief      Sets the anchor point.
          *
@@ -70,13 +70,13 @@ namespace Graphics {
          *
          * @return     The width.
          */
-        const float getWidth() const noexcept;
+        float getWidth() const noexcept;
         /**
          * @brief      Gets the height.
          *
          * @return     The height.
          */
-        const float getHeight() const noexcept;
+        float getHeight() const noexcept;
         /**
          * @brief      Sets the width.
          *
@@ -94,7 +94,7 @@ namespace Graphics {
          *
          * @return     The text padding.
          */
-        const float getTextPadding() const noexcept;
+        float getTextPadding() const noexcept;
         /**
          * @brief      Sets the text padding.
          *
@@ -106,7 +106,7 @@ namespace Graphics {
          *
          * @return     The color.
          */
-        const glm::vec4 getColor() const noexcept;
+        glm::vec4 getColor() const noexcept;
         /**
          * @brief      Sets the color.
          *
@@ -114,7 +114,7 @@ namespace Graphics {
          */
         void setColor(const glm::vec4 color) noexcept;
 
-        virtual const std::string to_string() const noexcept override;
+        virtual std::string to_string() const noexcept override;
 
         /**
          * @brief      Determines if point is within element.
@@ -124,17 +124,17 @@ namespace Graphics {
          * @return     True if point within, False otherwise.
          */
         bool isPointWithin(glm::vec2 point) noexcept;
-        virtual const std::string className() const noexcept override;
+        virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
 
         virtual void onDestroy() override;
         virtual void onStart() override;
-        virtual const bool onUpdate(const double delta) override;
+        virtual bool onUpdate(const double delta) override;
 
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-        virtual const unsigned long long getValueForSorting() const noexcept override;
-        
+        virtual unsigned long long getValueForSorting() const noexcept override;
+
         /**
          * @brief      Called when element is left clicked.
          */
@@ -183,7 +183,7 @@ namespace Graphics {
          * @param[in]  position_change  The position change
          */
         virtual void onScroll(const glm::dvec2 position_change) = 0;
-        virtual void log(el::base::type::ostream_t& os) const;
+        virtual void log(el::base::type::ostream_t& os) const override;
     };
   }
 }

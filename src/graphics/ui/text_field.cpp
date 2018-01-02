@@ -30,7 +30,7 @@ namespace Graphics {
       field->setAnchorPoint(glm::vec2(x_pos, y_pos));
       field->setWidth(width);
       field->setHeight(height);
-      field->setTextPadding(padding); 
+      field->setTextPadding(padding);
 
       return field;
     }
@@ -51,16 +51,16 @@ namespace Graphics {
     void TextField::onStart() {
       getTransform()->addChild(default_text->getTransform());
       getTransform()->addChild(typed_text->getTransform());
-      
+
       reset();
 
       TextArea::onStart();
     }
 
-    const bool TextField::onUpdate(const double delta) {
+    bool TextField::onUpdate(const double delta) {
       return TextArea::onUpdate(delta);
     }
-    
+
     void TextField::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
       if(event->getEventType() == Events::EventType::CHARACTER_TYPED) {
         auto casted_event = std::static_pointer_cast<Input::CharacterTypedEvent>(event);
@@ -150,11 +150,11 @@ namespace Graphics {
       }
     }
 
-    const std::string TextField::className() const noexcept {
+    std::string TextField::className() const noexcept {
       return "Graphics::UI::TextField";
     }
 
-    const std::string TextField::to_string() const noexcept {
+    std::string TextField::to_string() const noexcept {
       std::stringstream str;
       str << TextArea::to_string()<<" Typed Text: "<<typed_text->getText()<<" with cid("<<typed_text->getId()<<") Default Text: "<<default_text->getText()<<" with cid("<<default_text->getId()<<") Currently in field: "<<current_typed<<" In focus: "<<in_focus<<"\n";
       return str.str();

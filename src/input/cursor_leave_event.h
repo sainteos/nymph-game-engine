@@ -13,7 +13,7 @@ namespace Input {
   class CursorLeaveEvent : public Events::Event {
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      CusrorLeaveEvent constructor
        */

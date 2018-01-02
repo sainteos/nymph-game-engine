@@ -1,6 +1,8 @@
 #ifndef MALFORMED_MAP_LAYER_EXCEPTION_H
 #define MALFORMED_MAP_LAYER_EXCEPTION_H
 
+#include <exception>
+
 namespace Exceptions {
   class MalformedMapLayerException : public std::exception {
     public:

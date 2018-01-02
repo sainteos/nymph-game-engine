@@ -32,7 +32,7 @@ namespace Graphics {
     void Button::onNotifyNow(std::shared_ptr<Events::Event> event) {
       handleQueuedEvent(event);
     }
-    
+
     void Button::onLeftClick() {
       if(cursor_over)
         this->setColor(glm::vec4(0.0, 0.0, 0.0, 1.0));
@@ -75,8 +75,8 @@ namespace Graphics {
     void Button::onScroll(const glm::dvec2 position_change) {
 
     }
-    
-    const std::string Button::className() const noexcept {
+
+    std::string Button::className() const noexcept {
       return "Graphics::UI::Button";
     }
 

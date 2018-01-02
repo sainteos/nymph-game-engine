@@ -29,10 +29,10 @@ namespace Graphics {
       Element::onStart();
     }
 
-    const bool Area::onUpdate(const double delta) {
+    bool Area::onUpdate(const double delta) {
       return Element::onUpdate(delta);
     }
-    
+
     void Area::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
       Element::handleQueuedEvent(event);
     }
@@ -40,7 +40,7 @@ namespace Graphics {
     void Area::onNotifyNow(std::shared_ptr<Events::Event> event) {
       handleQueuedEvent(event);
     }
-    
+
     void Area::onLeftClick() {
       LOG(INFO)<<"Area left click";
     }
@@ -75,11 +75,11 @@ namespace Graphics {
     void Area::onScroll(const glm::dvec2 position_change) {
     }
 
-    const std::string Area::to_string() const noexcept {
+    std::string Area::to_string() const noexcept {
       return Element::to_string();
     }
 
-    const std::string Area::className() const noexcept {
+    std::string Area::className() const noexcept {
       return "Graphics::UI::Area";
     }
 

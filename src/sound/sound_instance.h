@@ -20,22 +20,22 @@ namespace Sound {
       SoundInstance(std::shared_ptr<YSE::sound> sound);
 
       void play();
-      const bool isPlaying() const noexcept;
+      bool isPlaying() const noexcept;
       void stop();
-      const bool isStopped() const noexcept;
+      bool isStopped() const noexcept;
       void setLooping(const bool looping);
-      const bool isLooping() const noexcept;
+      bool isLooping() const noexcept;
 
       //= END SCRIPTABLE
-      
+
       virtual void onStart() override;
-      virtual const bool onUpdate(const double delta) override;
+      virtual bool onUpdate(const double delta) override;
       virtual void onDestroy() override;
 
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
 
-      virtual const unsigned long long getValueForSorting() const noexcept override;
+      virtual unsigned long long getValueForSorting() const noexcept override;
   };
 }
 #endif

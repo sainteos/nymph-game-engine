@@ -20,7 +20,7 @@ class Entity  : public std::enable_shared_from_this<Entity>  {
     std::list<std::shared_ptr<Component>> components;
   public:
     //= BEGIN SCRIPTABLE
-    
+
     /**
      * @brief      Entity constructor
      */
@@ -60,7 +60,7 @@ class Entity  : public std::enable_shared_from_this<Entity>  {
      *
      * @return     True if active, False otherwise.
      */
-    const bool isActive() const noexcept;
+    bool isActive() const noexcept;
     //= END SCRIPTABLE
 };
 

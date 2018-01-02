@@ -15,7 +15,7 @@ namespace Input {
       int key;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Constructor for KeyRepeatEvent
        *
@@ -35,7 +35,7 @@ namespace Input {
        *
        * @return     The key.
        */
-      const int getKey() const noexcept { return key; }
+      int getKey() const noexcept { return key; }
       //= END SCRIPTABLE
   };
 }

@@ -17,14 +17,14 @@ namespace Sound {
       virtual ~SoundSystem() {}
 
       //= BEGIN SCRIPTABLE
-      const bool loadSound(const std::string filename);
+      bool loadSound(const std::string filename);
 
       std::shared_ptr<SoundInstance> getSound(const std::string name);
       //= END SCRIPTABLE
-      
+
       void update(const double delta);
       void destroy();
-  };  
+  };
 }
 
 #endif

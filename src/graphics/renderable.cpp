@@ -19,7 +19,7 @@
 #include "graphics/set_uniform_event.h"
 
 namespace Graphics {
-  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data) : vertex_data(vertex_data), shader(nullptr), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
+  Renderable::Renderable(const unsigned int vertex_array_object, const VertexData& vertex_data) : shader(nullptr), vertex_data(vertex_data), light_reactive(false), ambient_light(1.0), ambient_intensity(1.0) {
     if(!glIsVertexArray(vertex_array_object)) {
       throw Exceptions::InvalidVertexArrayException(vertex_array_object);
     }
@@ -38,7 +38,7 @@ namespace Graphics {
     textures = renderable.textures;
   }
 
-  Renderable& Renderable::operator=(Renderable&& renderable) { 
+  Renderable& Renderable::operator=(Renderable&& renderable) {
     vertex_array_object = std::move(renderable.vertex_array_object);
     shader = renderable.shader;
     vertex_data = renderable.vertex_data;
@@ -56,7 +56,7 @@ namespace Graphics {
     this->shader = shader_object;
   }
 
-  const std::shared_ptr<Shader> Renderable::getShader() const noexcept {
+  std::shared_ptr<Shader> Renderable::getShader() const noexcept {
     return shader;
   }
 
@@ -72,7 +72,7 @@ namespace Graphics {
     textures.erase(unit);
   }
 
-  const std::map<unsigned int, std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
+  std::map<unsigned int, std::shared_ptr<BaseTexture>> Renderable::getTextures() const noexcept {
     return textures;
   }
 
@@ -80,7 +80,7 @@ namespace Graphics {
     light_reactive = reactive;
   }
 
-  const bool Renderable::isLightReactive() const noexcept {
+  bool Renderable::isLightReactive() const noexcept {
     return light_reactive;
   }
 
@@ -88,7 +88,7 @@ namespace Graphics {
     ambient_light = color;
   }
 
-  const glm::vec3 Renderable::getAmbientLight() const noexcept {
+  glm::vec3 Renderable::getAmbientLight() const noexcept {
     return ambient_light;
   }
 
@@ -96,7 +96,7 @@ namespace Graphics {
     ambient_intensity = intensity;
   }
 
-  const float Renderable::getAmbientIntensity() const noexcept {
+  float Renderable::getAmbientIntensity() const noexcept {
     return ambient_intensity;
   }
 
@@ -107,16 +107,16 @@ namespace Graphics {
   void Renderable::clearInfluencingLights() {
     influencing_lights.clear();
   }
-  
-  const float Renderable::highestZ() const noexcept {
+
+  float Renderable::highestZ() const noexcept {
     return vertex_data.highestZ();
   }
 
-  const unsigned int Renderable::getVertexArrayBinding() const noexcept {
+  unsigned int Renderable::getVertexArrayBinding() const noexcept {
     return vertex_array_object;
   }
 
-  const VertexData Renderable::getVertexData() const noexcept {
+  VertexData Renderable::getVertexData() const noexcept {
     return vertex_data;
   }
 
@@ -153,16 +153,16 @@ namespace Graphics {
     if(light_reactive) {
       Uniform ambient_uniform;
       ambient_uniform.setData<glm::vec3>("ambient_color", ambient_light);
-      
+
       Uniform ambient_intensity_uniform;
       ambient_intensity_uniform.setData<float>("ambient_intensity", ambient_intensity);
-      
+
       setUniform(ambient_uniform);
       setUniform(ambient_intensity_uniform);
     }
   }
 
-  const bool Renderable::onUpdate(const double delta) {
+  bool Renderable::onUpdate(const double delta) {
     if(isActive()) {
       if(!glIsVertexArray(vertex_array_object)) {
         throw Exceptions::InvalidVertexArrayException(vertex_array_object);
@@ -202,7 +202,7 @@ namespace Graphics {
         //   }
         // }
 
-        shader->useProgram();  
+        shader->useProgram();
 
         for(auto& texture : textures) {
           texture.second->bind(texture.first);
@@ -211,7 +211,7 @@ namespace Graphics {
       else {
         LOG(WARNING)<<"Trying to render renderable with nullptr shader";
       }
-      
+
       if(vertex_data.getIndexCount() > 0) {
         glDrawElements(GL_TRIANGLES, vertex_data.getIndexCount(), GL_UNSIGNED_INT, 0);
       }
@@ -219,7 +219,7 @@ namespace Graphics {
         glDrawArrays(GL_TRIANGLES, 0, vertex_data.getVertexCount());
       }
     }
-    return true; 
+    return true;
   }
 
 
@@ -233,7 +233,7 @@ namespace Graphics {
         break;
       case Events::EventType::SET_UNIFORM: {
         auto casted_event = std::static_pointer_cast<Graphics::SetUniformEvent>(event);
-        
+
         setUniform(casted_event->getUniform());
         break;
       }
@@ -247,16 +247,16 @@ namespace Graphics {
     handleQueuedEvent(event);
   }
 
-  const unsigned long long Renderable::getValueForSorting() const noexcept {
-    
+  unsigned long long Renderable::getValueForSorting() const noexcept {
+
     return (unsigned long long)getTransform()->getAbsoluteTranslation().z;
   }
 
-  const std::string Renderable::className() const noexcept {
+  std::string Renderable::className() const noexcept {
     return "Graphics::Renderable";
   }
 
-  const std::string Renderable::to_string() const noexcept {
+  std::string Renderable::to_string() const noexcept {
     std::stringstream str;
     str << Component::to_string()<<" vao: "<<vertex_array_object<<" Highest Z: "<<highestZ();
 

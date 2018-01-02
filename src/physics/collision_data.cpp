@@ -12,13 +12,13 @@ namespace Physics {
     collision_table[y][x] = collide_level;
   }
 
-  const int CollisionData::getCollideLevel(const int x, const int y) {
+  int CollisionData::getCollideLevel(const int x, const int y) {
     if(x < 0 || y < 0 || y >= collision_table.size() || x >= collision_table[0].size()
        ) {
       return -1;
     }
     else {
-      return collision_table[y][x]; 
+      return collision_table[y][x];
     }
   }
 
@@ -26,7 +26,7 @@ namespace Physics {
 
   }
 
-  const bool CollisionData::onUpdate(const double delta) {
+  bool CollisionData::onUpdate(const double delta) {
 
   }
 
@@ -34,19 +34,19 @@ namespace Physics {
 
   }
 
-  const unsigned int CollisionData::getWidth() const noexcept {
+  unsigned int CollisionData::getWidth() const noexcept {
     return width;
   }
 
-  const unsigned int CollisionData::getHeight() const noexcept {
+  unsigned int CollisionData::getHeight() const noexcept {
     return height;
   }
 
-  const unsigned long long CollisionData::getValueForSorting() const {
+  unsigned long long CollisionData::getValueForSorting() const {
     return 5;
   }
 
-  const std::string CollisionData::to_string() const noexcept {
+  std::string CollisionData::to_string() const noexcept {
     std::stringstream str;
     str << "Collision Data: \n";
     for(auto row : collision_table) {

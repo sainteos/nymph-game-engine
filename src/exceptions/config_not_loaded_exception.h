@@ -1,6 +1,8 @@
 #ifndef CONFIG_NOT_LOADED_EXCEPTION_H
 #define CONFIG_NOT_LOADED_EXCEPTION_H
 
+#include <exception>
+
 namespace Exceptions {
   class ConfigNotLoadedException : public std::exception {
     public:

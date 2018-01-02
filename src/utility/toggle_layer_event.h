@@ -17,7 +17,7 @@ namespace Utility {
       bool on;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      ToggleLayerEvent Constructor
        *
@@ -39,13 +39,13 @@ namespace Utility {
        *
        * @return     True if yes
        */
-      const bool turnOn() const noexcept { return on; }
+      bool turnOn() const noexcept { return on; }
       /**
        * @brief      Gets the layer number.
        *
        * @return     The layer number.
        */
-      const unsigned int getLayerNumber() const noexcept { return layer_number; }
+      unsigned int getLayerNumber() const noexcept { return layer_number; }
       //= END SCRIPTABLE
   };
 }

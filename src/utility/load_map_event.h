@@ -16,7 +16,7 @@ namespace Utility {
       std::string name;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Creates a LoadMapEvent
        *
@@ -36,7 +36,7 @@ namespace Utility {
        *
        * @return     The name.
        */
-      const std::string getName() const noexcept { return name; }
+      std::string getName() const noexcept { return name; }
       //= END SCRIPTABLE
   };
 }

@@ -38,11 +38,11 @@ void ComponentManager::removeComponent(std::shared_ptr<Component> component) {
 }
 
 void ComponentManager::removeComponents(std::vector<std::shared_ptr<Component>> components) {
-  for(auto component : components) 
+  for(auto component : components)
     removeComponent(component);
 }
 
-const unsigned int ComponentManager::count() const noexcept {
+unsigned int ComponentManager::count() const noexcept {
   return components.size();
 }
 
@@ -73,4 +73,3 @@ void ComponentManager::destroy() {
   }
   components.clear();
 }
-

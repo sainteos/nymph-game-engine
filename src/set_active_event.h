@@ -15,7 +15,7 @@ class SetActiveEvent : public Events::Event {
     bool active;
   public:
     //= BEGIN SCRIPTABLE
-    
+
     /**
      * @brief      Constructs a SetActiveEvent
      *
@@ -24,7 +24,7 @@ class SetActiveEvent : public Events::Event {
     SetActiveEvent(const bool active) : Event(Events::EventType::SET_ACTIVE), active(active) {}
     /**
      * @brief      Factory function
-     *             
+     *
      * @param[in]  active  True if active
      *
      * @return     Newly constructed SetActiveEvent
@@ -35,7 +35,7 @@ class SetActiveEvent : public Events::Event {
      *
      * @return     True if active
      */
-    const bool getActive() const noexcept { return active; }
+    bool getActive() const noexcept { return active; }
     //= END SCRIPTABLE
 };
 

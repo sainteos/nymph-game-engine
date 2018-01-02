@@ -17,7 +17,7 @@ namespace Script {
     this->class_name = name;
   }
 
-  const std::string& ScriptObject::getClassName() const noexcept {
+  std::string ScriptObject::getClassName() const noexcept {
     return this->class_name;
   }
 
@@ -32,7 +32,7 @@ namespace Script {
       LOG(INFO)<<error.str();
     }
 
-    
+
     script_on_start = ChaiscriptWrapper::getInstance()->eval<std::function<void (std::shared_ptr<chaiscript::dispatch::Dynamic_Object>)>>("onStart");
     script_on_update = ChaiscriptWrapper::getInstance()->eval<std::function<void (std::shared_ptr<chaiscript::dispatch::Dynamic_Object>, const float)>>("onUpdate");
 
@@ -125,7 +125,7 @@ namespace Script {
     }
   }
 
-  template<class T> 
+  template<class T>
   typename std::enable_if<std::is_base_of<Events::Event, T>::value, std::function<void(std::shared_ptr<chaiscript::dispatch::Dynamic_Object>, std::shared_ptr<T>)>>::type ScriptObject::selectEventHandler() {
     return ChaiscriptWrapper::getInstance()->eval<std::function<void (std::shared_ptr<chaiscript::dispatch::Dynamic_Object>, std::shared_ptr<T>)>>("handleEvent");
   }
@@ -162,7 +162,7 @@ namespace Script {
   }
 
 
-  const bool ScriptObject::representsDynamicObject(const chaiscript::dispatch::Dynamic_Object& obj) const noexcept {
+  bool ScriptObject::representsDynamicObject(const chaiscript::dispatch::Dynamic_Object& obj) const noexcept {
     return obj.get_type_name() == script_object->get_type_name();
   }
 
@@ -180,7 +180,7 @@ namespace Script {
   }
 
 
-  const bool ScriptObject::shouldBeSerialized() const noexcept {
+  bool ScriptObject::shouldBeSerialized() const noexcept {
     return serialized_var_names.size() > 0;
   }
 

@@ -21,7 +21,7 @@ namespace Graphics {
         const glm::vec4 mouse_over_dim = glm::vec4(0.2, 0.2, 0.2, 0.0);
       public:
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      TextArea constructor
          *
@@ -73,16 +73,16 @@ namespace Graphics {
         virtual void onScroll(const glm::dvec2 position_change) override;
         virtual void onDestroy() override;
         virtual void onStart() override;
-        virtual const bool onUpdate(const double delta) override;
+        virtual bool onUpdate(const double delta) override;
         /**
          * @brief      Returns a string representation of the object.
          *
          * @return     String representation of the object.
          */
-        virtual const std::string to_string() const noexcept override;
-        virtual const std::string className() const noexcept override;
+        virtual std::string to_string() const noexcept override;
+        virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
-        
+
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
 

@@ -1,6 +1,9 @@
 #ifndef INVALID_FILE_FORMAT_EXCEPTION_H
 #define INVALID_FILE_FORMAT_EXCEPTION_H
 
+#include <exception>
+#include <string>
+
 namespace Exceptions {
   class InvalidFileFormatException : public std::exception {
     private:

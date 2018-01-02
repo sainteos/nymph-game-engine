@@ -28,7 +28,7 @@ class DebugConsole {
     default_text.setFont(font_generator.getFont("8bit"))
     var text := WrappableText()
     text.setFont(font_generator.getFont("8bit"))
-          
+
     text.setShader(shader_manager.getShader("simple_text"))
     text.setHorizontalAlignment(WrappableText_HorizontalAlignment_LEFT)
     text.setVerticalAlignment(WrappableText_VerticalAlignment_VCENTER)
@@ -44,7 +44,7 @@ class DebugConsole {
     default_text.setActive(false)
 
     this.console_field := TextField_create(this.console_skin, default_text, text, vec4(0.2, 0.2, 0.2, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 16.0, 0.75, 1)
-    
+
     this.console_field.setActive(false)
     this.console_field.getTransform().addChild(text.getTransform())
     this.console_field.getTransform().addChild(default_text.getTransform())
@@ -54,7 +54,7 @@ class DebugConsole {
     this.console_field.addObserver(this.debug)
 
     default_text.setText("click to type")
-    
+
     var debug_console = Entity()
 
     debug_console.addComponent(text)
@@ -78,7 +78,7 @@ class DebugConsole {
     map_list_text.setKerning(0.12)
 
     this.map_list_text_area = TextArea_create(this.console_skin, map_list_text, vec4(0.2, 0.2, 0.2, 1.0), vec4(1.0, 1.0, 1.0, 1.0), 0.5, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 16.0, 10.0, 2)
-    
+
     this.map_list_ui.addComponent(map_list_text)
     this.map_list_ui.addComponent(this.map_list_text_area)
 
@@ -92,7 +92,7 @@ class DebugConsole {
     this.map_list_ui.addComponent(map_list_quit_button_text)
     this.map_list_ui.addComponent(map_list_quit_button)
     input_system.addObserver(map_list_quit_button)
-    
+
     this.map_list_ui.setActive(false)
     camera.getTransform().addChild(this.map_list_ui.getTransform())
 
@@ -108,7 +108,7 @@ class DebugConsole {
     fps_text.setKerning(0.0)
 
     var fps_area = TextArea_create(this.console_skin, fps_text, vec4(0.0, 1.0, 0.0, 0.0), vec4(1.0, 1.0, 1.0, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, -2.0, 0.0, 5.0, 1.0, 1)
-    
+
     fps_area.getTransform().translate(vec2(-8.0, 5.0))
     fps_counter.addObserver(fps_area)
 
@@ -150,7 +150,7 @@ class DebugConsole {
     font_generator.loadFont("8bit.ttf", 48, "8bit")
 
     this.console_skin := Skin(texture_manager.getTexture("grayscale_tex"), shader_manager.getShader("simple_ui"))
-    
+
     this.setupConsole()
     this.setupHUD()
     this.setupLists()
@@ -173,7 +173,7 @@ class DebugConsole {
 
       case(EventType_LIST_MAPS) {
         var map_list = ""
-        
+
         var names = engine.getSceneNames()
 
         map_list = names.join("\n")

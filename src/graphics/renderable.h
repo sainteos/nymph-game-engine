@@ -54,7 +54,7 @@ namespace Graphics {
        * @return     newly created Renderable
        */
       static std::shared_ptr<Renderable> create(const VertexData& vertex_data);
- 
+
       //Remove copy constructor and assignment
       Renderable(const Renderable&) = delete;
       Renderable operator=(Renderable&) = delete;
@@ -65,7 +65,7 @@ namespace Graphics {
       virtual ~Renderable();
 
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Sets the shader.
        *
@@ -77,8 +77,8 @@ namespace Graphics {
        *
        * @return     The shader.
        */
-      const std::shared_ptr<Shader> getShader() const noexcept;
-      
+      std::shared_ptr<Shader> getShader() const noexcept;
+
       /**
        * @brief      Adds a texture.
        *
@@ -95,10 +95,10 @@ namespace Graphics {
       void removeTexture(const unsigned int unit);
       /**
        * @brief      Gets the textures
-       * 
+       *
        * @return     A map of texture units to textures
        */
-      const std::map<unsigned int, std::shared_ptr<BaseTexture>> getTextures() const noexcept;
+      std::map<unsigned int, std::shared_ptr<BaseTexture>> getTextures() const noexcept;
 
       /**
        * @brief      Sets if the renderable should be light reactive
@@ -111,7 +111,7 @@ namespace Graphics {
        *
        * @return     True if light reactive, False otherwise.
        */
-      const bool isLightReactive() const noexcept;
+      bool isLightReactive() const noexcept;
 
       /**
        * @brief      Sets the ambient light.
@@ -124,7 +124,7 @@ namespace Graphics {
        *
        * @return     The ambient light.
        */
-      const glm::vec3 getAmbientLight() const noexcept;
+      glm::vec3 getAmbientLight() const noexcept;
       /**
        * @brief      Sets the ambient intensity.
        *
@@ -136,7 +136,7 @@ namespace Graphics {
        *
        * @return     The ambient intensity.
        */
-      const float getAmbientIntensity() const noexcept;
+      float getAmbientIntensity() const noexcept;
 
       /**
        * @brief      Adds an influencing light.
@@ -154,39 +154,39 @@ namespace Graphics {
        *
        * @return     String representation of the object.
        */
-      virtual const std::string to_string() const noexcept override;
-      
-      virtual const std::string className() const noexcept override;
+      virtual std::string to_string() const noexcept override;
+
+      virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
-      
+
       /**
        * @brief      The highest possible z value in the renderable
        *
        * @return     A float representing the highest z value in the renderable
        */
-      const float highestZ() const noexcept;
+      float highestZ() const noexcept;
 
       /**
        * @brief      Gets the vertex array binding.
        *
        * @return     The vertex array binding.
        */
-      const unsigned int getVertexArrayBinding() const noexcept;
-      
+      unsigned int getVertexArrayBinding() const noexcept;
+
       /**
        * @brief      Gets the vertex data.
        *
        * @return     The vertex data.
        */
-      const VertexData getVertexData() const noexcept;
-      
+      VertexData getVertexData() const noexcept;
+
       virtual void onDestroy() override;
       virtual void onStart() override;
-      virtual const bool onUpdate(const double delta) override;
+      virtual bool onUpdate(const double delta) override;
 
       void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
       void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-      virtual const unsigned long long getValueForSorting() const noexcept override;
+      virtual unsigned long long getValueForSorting() const noexcept override;
 
       virtual void log(el::base::type::ostream_t& os) const override;
   };

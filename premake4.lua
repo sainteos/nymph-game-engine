@@ -9,11 +9,9 @@ solution "TileEngine"
 
     targetname "TileEngine"
 
-    libdirs { "./lib" }
-
     includedirs { "./include", "./src" }
 
-    files { "**.h", "**.hpp", "**.cpp" }
+    files { "**.h", "**.hpp", "**.cpp", "**.cc" }
     excludes { "./test/**" }
 
     configuration "WindowsDebug"
@@ -23,8 +21,8 @@ solution "TileEngine"
       targetextension ".exe"
 
     configuration "Debug"
-      buildoptions { "-std=c++11", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
-      links {  "freetype", "yse", "glfw3.3.1", "png", "z", "OpenGL.framework", "glew", "IL", "chaiscript_stdlib-5.8.5" }
+      buildoptions { "-std=c++14", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
+      links {  "freetype", "yse", "glfw", "png", "z", "OpenGL.framework", "glew", "IL" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
@@ -35,4 +33,3 @@ solution "TileEngine"
       defines { "NDEBUG" }
       flags { "Optimize" }
       targetextension ".out"
-

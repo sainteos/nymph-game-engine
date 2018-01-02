@@ -31,7 +31,7 @@ namespace Utility {
        *
        * @return     The debug command.
        */
-      const std::string getDebugCommand() const noexcept { return debug_command; }
+      std::string getDebugCommand() const noexcept { return debug_command; }
   };
 }
 

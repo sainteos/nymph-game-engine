@@ -16,7 +16,7 @@ namespace Graphics {
     class Area : public Element, virtual public el::Loggable  {
       public:
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      Area constructor
          *
@@ -50,17 +50,17 @@ namespace Graphics {
         virtual void onKeyUp(const int key) override;
         virtual void onKeyRepeat(const int key) override;
         virtual void onScroll(const glm::dvec2 position_change) override;
-        virtual const std::string to_string() const noexcept override;
-        virtual const std::string className() const noexcept override;
+        virtual std::string to_string() const noexcept override;
+        virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
 
         virtual void onDestroy() override;
         virtual void onStart() override;
-        virtual const bool onUpdate(const double delta) override;
-        
+        virtual bool onUpdate(const double delta) override;
+
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-        virtual void log(el::base::type::ostream_t& os) const;
+        virtual void log(el::base::type::ostream_t& os) const override;
     };
   }
 }

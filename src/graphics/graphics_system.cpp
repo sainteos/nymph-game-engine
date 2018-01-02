@@ -61,7 +61,7 @@ namespace Graphics {
     glfwMakeContextCurrent(window);
 
     #ifndef __APPLE__
-    glewExperimental=GL_TRUE; 
+    glewExperimental=GL_TRUE;
     auto glew_status = glewInit();
     if (glew_status != GLEW_OK)
     {
@@ -72,22 +72,22 @@ namespace Graphics {
 
     ilInit();
     glfwSetFramebufferSizeCallback(window, windowSizeCallback);
-    
+
     glfwSetWindowTitle(window, window_title.c_str());
 
     initialized = true;
     LOG(INFO)<<"Graphics system initialized!";
   }
 
-  const bool GraphicsSystem::isInitialized() const noexcept {
+  bool GraphicsSystem::isInitialized() const noexcept {
     return initialized;
   }
 
-  const bool GraphicsSystem::isRunning() noexcept {
+  bool GraphicsSystem::isRunning() noexcept {
     return !window_exit(window);
   }
 
-  const int GraphicsSystem::windowWidth() {
+  int GraphicsSystem::windowWidth() {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
     int width, height;
@@ -97,7 +97,7 @@ namespace Graphics {
     return width;
   }
 
-  const int GraphicsSystem::windowHeight() {
+  int GraphicsSystem::windowHeight() {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
     int width, height;
@@ -107,7 +107,7 @@ namespace Graphics {
     return height;
   }
 
-  const std::string GraphicsSystem::windowName() const noexcept {
+  std::string GraphicsSystem::windowName() const noexcept {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
     return window_title;
@@ -117,17 +117,17 @@ namespace Graphics {
     glfwSetWindowTitle(window, name.c_str());
   }
 
-  const int GraphicsSystem::addRenderable(std::shared_ptr<Graphics::Renderable> renderable) {
+  int GraphicsSystem::addRenderable(std::shared_ptr<Graphics::Renderable> renderable) {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
     renderables_map[next_id] = renderable;
     return next_id++;
   }
 
-  const bool GraphicsSystem::removeRenderable(const int id) {
+  bool GraphicsSystem::removeRenderable(const int id) {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
-    if(id < 1) 
+    if(id < 1)
       throw std::out_of_range("Cannot have id less than 1");
 
     if(renderables_map.count(id) <= 0)
@@ -136,7 +136,7 @@ namespace Graphics {
     return true;
   }
 
-  const int GraphicsSystem::renderablesCount() {
+  int GraphicsSystem::renderablesCount() {
     if(!initialized)
       throw Exceptions::SystemNotInitializedException("Graphics");
 
@@ -217,7 +217,7 @@ namespace Graphics {
     max_influence_lights = number;
   }
 
-  const unsigned int GraphicsSystem::getMaxInfluenceLights() const noexcept {
+  unsigned int GraphicsSystem::getMaxInfluenceLights() const noexcept {
     return max_influence_lights;
   }
 

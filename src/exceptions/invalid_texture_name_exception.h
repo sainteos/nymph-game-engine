@@ -1,6 +1,9 @@
 #ifndef INVALID_TEXTURE_NAME_EXCEPTION_H
 #define INVALID_TEXTURE_NAME_EXCEPTION_H
 
+#include <exception>
+#include <string>
+
 namespace Exceptions {
   class InvalidTextureNameException : public std::exception {
     private:

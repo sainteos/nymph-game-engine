@@ -8,7 +8,7 @@ namespace Sound {
     sound->play();
   }
 
-  const bool SoundInstance::isPlaying() const noexcept {
+  bool SoundInstance::isPlaying() const noexcept {
     return sound->isPlaying();
   }
 
@@ -16,7 +16,7 @@ namespace Sound {
     sound->stop();
   }
 
-  const bool SoundInstance::isStopped() const noexcept {
+  bool SoundInstance::isStopped() const noexcept {
     return sound->isStopped();
   }
 
@@ -24,7 +24,7 @@ namespace Sound {
     sound->setLooping(looping);
   }
 
-  const bool SoundInstance::isLooping() const noexcept {
+  bool SoundInstance::isLooping() const noexcept {
     return sound->isLooping();
   }
 
@@ -32,7 +32,7 @@ namespace Sound {
 
   }
 
-  const bool SoundInstance::onUpdate(const double delta) {
+  bool SoundInstance::onUpdate(const double delta) {
     return true;
   }
 
@@ -46,9 +46,9 @@ namespace Sound {
 
   void SoundInstance::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
 
-  }  
+  }
 
-  const unsigned long long SoundInstance::getValueForSorting() const noexcept {
+  unsigned long long SoundInstance::getValueForSorting() const noexcept {
     return 43434;
   }
 }

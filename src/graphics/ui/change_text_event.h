@@ -16,7 +16,7 @@ namespace Graphics {
         std::string text;
       public:
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      ChangeTextEvent constructor
          *
@@ -36,9 +36,9 @@ namespace Graphics {
          *
          * @return     The text.
          */
-        const std::string getText() const noexcept { return text; }
+        std::string getText() const noexcept { return text; }
       //= END SCRIPTABLE
-    }; 
+    };
   }
 }
 

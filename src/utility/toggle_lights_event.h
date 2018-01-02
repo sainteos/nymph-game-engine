@@ -13,7 +13,7 @@ namespace Utility {
       bool on;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      ToggleLightsEvent constructor
        *
@@ -33,7 +33,7 @@ namespace Utility {
        *
        * @return     True if yes
        */
-      const bool turnOn() const noexcept { return on; }
+      bool turnOn() const noexcept { return on; }
       //= END SCRIPTABLE
   };
 }

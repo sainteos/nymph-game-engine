@@ -8,21 +8,21 @@ namespace Utility {
   using clock = std::chrono::high_resolution_clock;
   using microseconds = std::chrono::microseconds;
 
-  FPSCounter::FPSCounter(const float max_fps = 0.0f) :
-    last_time(clock::now()), current_time(clock::now()),
-    delta(0.0f), delta_accum(0.0f), fps_accum(0.0f), frame_count(0),
-    max_fps(max_fps) {
+  FPSCounter::FPSCounter(const float max_fps) :
+    max_fps(max_fps), last_time(clock::now()), current_time(clock::now()),
+    delta(0.0f), delta_accum(0.0f), frame_count(0), fps_accum(0.0f)
+    {
   }
 
-  const float FPSCounter::getMaxFPS() const noexcept {
+  float FPSCounter::getMaxFPS() const noexcept {
     return max_fps;
   }
 
-  const float FPSCounter::getCurrentFPS() const noexcept {
+  float FPSCounter::getCurrentFPS() const noexcept {
     return current_fps;
   }
 
-  const float FPSCounter::getAverageFPS() const noexcept {
+  float FPSCounter::getAverageFPS() const noexcept {
     if(frame_count == 0)
       return 0.0f;
 
@@ -39,7 +39,7 @@ namespace Utility {
     while (std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - start).count() < milliseconds);
   }
 
-  const float FPSCounter::assessCountAndGetDelta() {    
+  float FPSCounter::assessCountAndGetDelta() {
     //if we have a max fps
     if(max_fps > 0.0) {
       //keep sleeping until we hit the right time

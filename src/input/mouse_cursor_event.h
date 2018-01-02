@@ -15,7 +15,7 @@ namespace Input {
       glm::dvec2 position;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      MouseCursorEvent constructor
        *
@@ -35,7 +35,7 @@ namespace Input {
        *
        * @return     The position.
        */
-      const glm::dvec2 getPosition() const noexcept { return position; }
+      glm::dvec2 getPosition() const noexcept { return position; }
       //= END SCRIPTABLE
   };
 }

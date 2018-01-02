@@ -36,7 +36,7 @@ namespace Graphics {
         std::vector<std::pair<float, std::vector<Character>>> splitTextIntoLines();
       public:
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      Wrappable Text constructor.
          */
@@ -78,13 +78,13 @@ namespace Graphics {
          *
          * @return     String representation of the object.
          */
-        virtual const std::string to_string() const noexcept override;
-        virtual const std::string className() const noexcept override;
+        virtual std::string to_string() const noexcept override;
+        virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
 
         virtual void onDestroy() override;
         virtual void onStart() override;
-        virtual const bool onUpdate(const double delta) override;
+        virtual bool onUpdate(const double delta) override;
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
 

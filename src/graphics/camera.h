@@ -58,11 +58,11 @@ namespace Graphics {
        */
       Camera(const std::shared_ptr<ShaderManager> shader_manager, const float viewport_width, const float viewport_height, const float near = 0.1, const float far = 1.0);
       virtual void onStart() override;
-      virtual const bool onUpdate(const double delta) override;
+      virtual bool onUpdate(const double delta) override;
       virtual void onDestroy() override;
 
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Sets the screen padding in tiles.
        *
@@ -74,7 +74,7 @@ namespace Graphics {
        *
        * @return     The screen padding in tiles.
        */
-      const int getScreenPaddingInTiles() const noexcept;
+      int getScreenPaddingInTiles() const noexcept;
       /**
        * @brief      Sets the width.
        *
@@ -86,7 +86,7 @@ namespace Graphics {
        *
        * @return     The width.
        */
-      const float getWidth() const noexcept;
+      float getWidth() const noexcept;
       /**
        * @brief      Sets the height.
        *
@@ -98,7 +98,7 @@ namespace Graphics {
        *
        * @return     The height.
        */
-      const float getHeight() const noexcept;
+      float getHeight() const noexcept;
       /**
        * @brief      Sets the near z plane
        *
@@ -110,7 +110,7 @@ namespace Graphics {
        *
        * @return     The near.
        */
-      const float getNear() const noexcept;
+      float getNear() const noexcept;
       /**
        * @brief      Sets the far z plane.
        *
@@ -122,7 +122,7 @@ namespace Graphics {
        *
        * @return     The far.
        */
-      const float getFar() const noexcept;
+      float getFar() const noexcept;
       /**
        * @brief      Sets the free camera speed when in free camera mode
        *
@@ -134,15 +134,15 @@ namespace Graphics {
        *
        * @return     The free camera speed.
        */
-      const float getFreeCameraSpeed() const noexcept;
+      float getFreeCameraSpeed() const noexcept;
 
       /**
        * @brief      Gets the projection matrix.
        *
        * @return     The projection matrix.
        */
-      const glm::mat4 getProjectionMatrix() const noexcept;
-      
+      glm::mat4 getProjectionMatrix() const noexcept;
+
       /**
        * @brief      Determines if component within.
        *
@@ -150,11 +150,11 @@ namespace Graphics {
        *
        * @return     True if component within, False otherwise.
        */
-      const bool isComponentWithin(const Component& component) const;
-      virtual const std::string className() const noexcept override;
+      bool isComponentWithin(const Component& component) const;
+      virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
 
-      const unsigned long long getValueForSorting() const noexcept override;
+      virtual unsigned long long getValueForSorting() const noexcept override;
 
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;

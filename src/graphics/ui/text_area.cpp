@@ -44,10 +44,10 @@ namespace Graphics {
       Area::onStart();
     }
 
-    const bool TextArea::onUpdate(const double delta) {
+    bool TextArea::onUpdate(const double delta) {
       return Area::onUpdate(delta);
     }
-    
+
     void TextArea::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
       switch(event->getEventType()) {
         case Events::EventType::CHANGE_TEXT: {
@@ -96,11 +96,11 @@ namespace Graphics {
     void TextArea::onScroll(const glm::dvec2 position_change) {
     }
 
-    const std::string TextArea::className() const noexcept {
+    std::string TextArea::className() const noexcept {
       return "Graphics::UI::TextArea";
     }
 
-    const std::string TextArea::to_string() const noexcept {
+    std::string TextArea::to_string() const noexcept {
       std::stringstream str;
       str << Area::to_string() << " Text Area text: "<<this->text->to_string();
       return str.str();

@@ -28,45 +28,45 @@ namespace Utility {
        *
        * @param[in]  max_fps  The maximum fps
        */
-      FPSCounter(const float max_fps);
+      FPSCounter(const float max_fps = 0.0f);
       /**
        * @brief      Destroys the object.
        */
       virtual ~FPSCounter() = default;
-      
+
       /**
        * @brief      Calculates frame delta from FPS counter
        *
        * @return     frame delta
        */
-      const float assessCountAndGetDelta();
+      float assessCountAndGetDelta();
 
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Gets the maximum fps.
        *
        * @return     The maximum fps.
        */
-      const float getMaxFPS() const noexcept;
+      float getMaxFPS() const noexcept;
       /**
        * @brief      Gets the current fps.
        *
        * @return     The current fps.
        */
-      const float getCurrentFPS() const noexcept;
+      float getCurrentFPS() const noexcept;
       /**
        * @brief      Gets the average fps.
        *
        * @return     The average fps.
        */
-      const float getAverageFPS() const noexcept;
+      float getAverageFPS() const noexcept;
       /**
        * @brief      Resets FPS Average
        */
       void resetAverageFPS() noexcept;
       //= END SCRIPTABLE
-  };  
+  };
 }
 
 #endif

@@ -30,11 +30,11 @@ namespace Graphics {
       glm::vec3 cone_direction;
     public:
       virtual void onStart() override;
-      virtual const bool onUpdate(const double delta) override;
+      virtual bool onUpdate(const double delta) override;
       virtual void onDestroy() override;
 
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Light constructor
        *
@@ -56,7 +56,7 @@ namespace Graphics {
        *
        * @return     The color.
        */
-      const glm::vec3 getColor() const noexcept;
+      glm::vec3 getColor() const noexcept;
       /**
        * @brief      Sets the intensity.
        *
@@ -68,7 +68,7 @@ namespace Graphics {
        *
        * @return     The intensity.
        */
-      const float getIntensity() const noexcept;
+      float getIntensity() const noexcept;
       /**
        * @brief      Sets the linear attenuation.
        *
@@ -80,7 +80,7 @@ namespace Graphics {
        *
        * @return     The linear attenuation.
        */
-      const float getLinearAttenuation() const noexcept;
+      float getLinearAttenuation() const noexcept;
       /**
        * @brief      Sets the quadratic attenuation.
        *
@@ -92,14 +92,14 @@ namespace Graphics {
        *
        * @return     The quadratic attenuation.
        */
-      const float getQuadraticAttenuation() const noexcept;
-      
+      float getQuadraticAttenuation() const noexcept;
+
       /**
        * @brief      Function to see if lights cast quantized bands or are smooth
        *
        * @return     True if lights cast quantized bands
        */
-      const bool castsQuantizedBands() const noexcept;
+      bool castsQuantizedBands() const noexcept;
       /**
        * @brief      Sets the number of quantized bands.
        *
@@ -111,8 +111,8 @@ namespace Graphics {
        *
        * @return     The number of quantized bands.
        */
-      const int getNumberOfQuantizedBands() const noexcept;
-      
+      int getNumberOfQuantizedBands() const noexcept;
+
       /**
        * @brief      Sets the cone angle.
        *
@@ -124,7 +124,7 @@ namespace Graphics {
        *
        * @return     The cone angle.
        */
-      const float getConeAngle() const noexcept;
+      float getConeAngle() const noexcept;
       /**
        * @brief      Sets the cone direction.
        *
@@ -136,15 +136,15 @@ namespace Graphics {
        *
        * @return     The cone direction.
        */
-      const glm::vec3 getConeDirection() const noexcept;
-      
+      glm::vec3 getConeDirection() const noexcept;
+
       /**
        * @brief      Gets the type.
        *
        * @return     The type.
        */
-      const Light::Type getType() const noexcept;
-      
+      Light::Type getType() const noexcept;
+
       /**
        * @brief      Calculates a light's influence on a given component
        *
@@ -152,16 +152,16 @@ namespace Graphics {
        *
        * @return     Influence amount clamped 0.0, 1.0, on the given component
        */
-      const float influenceOnComponent(const Component& component) const;
-      virtual const std::string className() const noexcept override;
+      float influenceOnComponent(const Component& component) const;
+      virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
 
-      const unsigned long long getValueForSorting() const noexcept override;
+      virtual unsigned long long getValueForSorting() const noexcept override;
 
-      virtual void log(el::base::type::ostream_t& os) const;
+      virtual void log(el::base::type::ostream_t& os) const override;
 
       static inline const Light::Type stringToType(const std::string& str) {
-        if(str == "Spot" || str == "spot" || str == "SPOT") 
+        if(str == "Spot" || str == "spot" || str == "SPOT")
           return Light::Type::SPOT;
         else if(str == "Point" || str == "point" || str == "POINT")
           return Light::Type::POINT;

@@ -24,7 +24,7 @@ namespace Graphics {
       this->font_path = font_path;
     }
 
-    const std::string FontGenerator::getFontPath() const noexcept {
+    std::string FontGenerator::getFontPath() const noexcept {
       return font_path;
     }
 
@@ -34,7 +34,7 @@ namespace Graphics {
         throw Exceptions::InvalidFilenameException(font_path + ttf_file);
       }
       FT_Set_Pixel_Sizes(face, 0, size);
-      
+
       int unpack_alignment_before;
       glGetIntegerv(GL_UNPACK_ALIGNMENT, &unpack_alignment_before);
       glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -43,7 +43,7 @@ namespace Graphics {
 
       for (unsigned char c = 0; c < 128; c++)
       {
-        // Load character glyph 
+        // Load character glyph
         if (FT_Load_Char(face, c, FT_LOAD_RENDER))
         {
           LOG(WARNING)<<"Freetype failed to load Glyph: "<<c;
@@ -70,7 +70,7 @@ namespace Graphics {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        
+
         float advance = (face->glyph->advance.x >> 6) / (float)pixels_per_unit;
 
         auto char_pos = glm::vec2(face->glyph->bitmap_left / (float)pixels_per_unit, ((float)face->glyph->bitmap_top - (float)face->glyph->bitmap.rows) / (float)pixels_per_unit);
@@ -103,7 +103,7 @@ namespace Graphics {
 
         // Now store character for later use
         Character character = {
-          texture, 
+          texture,
           char_pos,
           char_size,
           advance,

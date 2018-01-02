@@ -13,7 +13,7 @@ namespace Graphics {
     class QuitButton : public Button  {
       public:
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      Quit Button constructor
          *
@@ -41,7 +41,7 @@ namespace Graphics {
         static std::shared_ptr<QuitButton> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
 
         virtual void onLeftClick() override;
-        virtual const std::string className() const noexcept override;
+        virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
     };
   }

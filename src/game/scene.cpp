@@ -3,7 +3,7 @@
 
 
 namespace Game {
-  Scene::Scene()   {
+  Scene::Scene(const std::string scene_name) : name(scene_name)  {
     this->transform = std::make_shared<Transform>();
   }
 
@@ -31,7 +31,7 @@ namespace Game {
   std::vector<std::shared_ptr<Component>> Scene::getComponents() const noexcept {
     return this->components;
   }
-  
+
   std::shared_ptr<Physics::CollisionData> Scene::getCollisionData() const noexcept {
     return this->collision_data;
   }
@@ -62,14 +62,14 @@ namespace Game {
     this->name = name;
   }
 
-  const std::string Scene::getName() const noexcept {
+  std::string Scene::getName() const noexcept {
     return this->name;
   }
 
-  const std::string Scene::to_string() const noexcept {
+  std::string Scene::to_string() const noexcept {
     std::stringstream str;
 
-    str << "Scene Name: " << getName()<<" # of entities: "<<this->entities.size()<<" # of components: "<<this->components.size();
+    str << "Scene Name: " << getName()<<" # of entities: "<<this->entities.size()<<" # of components: "<<this->components.size()<<" CollisionData: "<<this->getCollisionData();
     return str.str();
   }
 

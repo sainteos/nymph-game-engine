@@ -5,23 +5,23 @@
 #include "exceptions/texture_not_loaded_exception.h"
 
 namespace Graphics {
-  BaseTexture::BaseTexture(const GLenum texture_type) : loaded(false), texture_object(0), texture_type(texture_type), width(0), height(0) {
+  BaseTexture::BaseTexture(const GLenum texture_type) : texture_object(0), texture_type(texture_type), loaded(false), width(0), height(0)   {
 
   }
 
   BaseTexture::~BaseTexture() {
     glDeleteTextures(1, &texture_object);
   }
-  
-  const unsigned int BaseTexture::getWidth() const noexcept {
+
+  unsigned int BaseTexture::getWidth() const noexcept {
     return width;
   }
 
-  const unsigned int BaseTexture::getHeight() const noexcept {
+  unsigned int BaseTexture::getHeight() const noexcept {
     return height;
   }
 
-  const bool BaseTexture::load(const std::string& filename) {
+  bool BaseTexture::load(const std::string& filename) {
     unsigned int image_id;
     ilGenImages(1, &image_id);
     ilBindImage(image_id);
@@ -33,7 +33,7 @@ namespace Graphics {
       glBindTexture(texture_type, texture_object);
       width = ilGetInteger(IL_IMAGE_WIDTH);
       height = ilGetInteger(IL_IMAGE_HEIGHT);
-        
+
       if(ilGetInteger(IL_IMAGE_FORMAT) == IL_RGBA) {
         glTexImage2D(texture_type, 0, GL_RGBA8, width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
         glGenerateMipmap(texture_type);
@@ -74,12 +74,12 @@ namespace Graphics {
     glBindTexture(texture_type, texture_object);
   }
 
-  const unsigned int BaseTexture::getTextureObject() const noexcept {
+  unsigned int BaseTexture::getTextureObject() const noexcept {
     return texture_object;
   }
 
 
-  const bool BaseTexture::isLoaded() const noexcept {
+  bool BaseTexture::isLoaded() const noexcept {
     return loaded;
   }
 
@@ -87,11 +87,11 @@ namespace Graphics {
     this->name = name;
   }
 
-  const std::string BaseTexture::getName() const noexcept {
+  std::string BaseTexture::getName() const noexcept {
     return this->name;
   }
 
-  const std::string BaseTexture::to_string() const noexcept {
+  std::string BaseTexture::to_string() const noexcept {
     std::stringstream str;
 
     str << "Texture: "<<getName()<<" Width: "<<getWidth()<<" Height: "<<getHeight()<<" Loaded: "<<isLoaded();

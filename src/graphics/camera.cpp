@@ -15,16 +15,16 @@
 #include <chaiscript/utility/utility.hpp>
 
 namespace Graphics {
-  
+
   Camera::Camera(const std::shared_ptr<ShaderManager> shader_manager) : shader_manager(shader_manager), projection_matrix(1.0), screen_padding_in_tiles(2), free_camera(false), free_camera_speed(1.0) {
 
   }
 
-  Camera::Camera(const std::shared_ptr<ShaderManager> shader_manager, const float viewport_width, const float viewport_height, const float near, const float far) 
+  Camera::Camera(const std::shared_ptr<ShaderManager> shader_manager, const float viewport_width, const float viewport_height, const float near, const float far)
     : viewport_width(viewport_width), viewport_height(viewport_height), near(near), far(far), projection_matrix(1.0), shader_manager(shader_manager), screen_padding_in_tiles(2), free_camera_speed(1.0) {
   }
 
-  void Camera::onStart() { 
+  void Camera::onStart() {
     projection_matrix = glm::ortho(viewport_width / -2.0f, viewport_width / 2.0f, viewport_height / -2.0f, viewport_height / 2.0f, near, far);
     shader_manager->setUniformForAllPrograms<glm::mat4>("projection", projection_matrix);
 
@@ -40,7 +40,7 @@ namespace Graphics {
     notify(Graphics::UI::ChangeTextEvent::create(pos_string.str()));
   }
 
-  const bool Camera::onUpdate(const double delta) {
+  bool Camera::onUpdate(const double delta) {
     std::stringstream pos_string;
 
     pos_string << std::fixed << std::setprecision(2) << getTransform()->getAbsoluteTranslation().x << ", "<<getTransform()->getAbsoluteTranslation().y;
@@ -49,7 +49,7 @@ namespace Graphics {
 
     if(!active)
       return false;
-    
+
     if(free_camera) {
       getTransform()->translate(velocity * 1.0 / 1000.0 * delta);
     }
@@ -64,7 +64,7 @@ namespace Graphics {
         }
       }
     }
-    
+
     if(projection_matrix != last_projection_matrix) {
       shader_manager->setUniformForAllPrograms<glm::mat4>("projection", projection_matrix);
       last_projection_matrix = projection_matrix;
@@ -80,7 +80,7 @@ namespace Graphics {
   void Camera::onDestroy() {
   }
 
-  void Camera::handleQueuedEvent(std::shared_ptr<Events::Event> event) { 
+  void Camera::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
     switch(event->getEventType()) {
       case Events::EventType::SPRITE_MOVE: {
         free_camera = false;
@@ -175,7 +175,7 @@ namespace Graphics {
     screen_padding_in_tiles = padding;
   }
 
-  const int Camera::getScreenPaddingInTiles() const noexcept {
+  int Camera::getScreenPaddingInTiles() const noexcept {
     return screen_padding_in_tiles;
   }
 
@@ -183,7 +183,7 @@ namespace Graphics {
     viewport_width = width;
   }
 
-  const float Camera::getWidth() const noexcept {
+  float Camera::getWidth() const noexcept {
     return viewport_width;
   }
 
@@ -191,7 +191,7 @@ namespace Graphics {
     viewport_height = height;
   }
 
-  const float Camera::getHeight() const noexcept {
+  float Camera::getHeight() const noexcept {
     return viewport_height;
   }
 
@@ -199,7 +199,7 @@ namespace Graphics {
     this->near = near;
   }
 
-  const float Camera::getNear() const noexcept {
+  float Camera::getNear() const noexcept {
     return near;
   }
 
@@ -207,7 +207,7 @@ namespace Graphics {
     this->far = far;
   }
 
-  const float Camera::getFar() const noexcept {
+  float Camera::getFar() const noexcept {
     return far;
   }
 
@@ -215,22 +215,22 @@ namespace Graphics {
     this->free_camera_speed = speed;
   }
 
-  const float Camera::getFreeCameraSpeed() const noexcept {
+  float Camera::getFreeCameraSpeed() const noexcept {
     return this->free_camera_speed;
   }
 
-  const glm::mat4 Camera::getProjectionMatrix() const noexcept {
+  glm::mat4 Camera::getProjectionMatrix() const noexcept {
     return projection_matrix;
   }
 
-  const unsigned long long Camera::getValueForSorting() const noexcept {
+  unsigned long long Camera::getValueForSorting() const noexcept {
     return getId();
   }
 
-  const bool Camera::isComponentWithin(const Component& component) const {
+  bool Camera::isComponentWithin(const Component& component) const {
     auto translation = component.getTransform()->getAbsoluteTranslation();
     auto camera_translation = getTransform()->getAbsoluteTranslation();
-    
+
     auto camera_bound_left = -(viewport_width + 2.0) / 2.0 + camera_translation.x;
     auto camera_bound_right = (viewport_width + 2.0) / 2.0 + camera_translation.x;
     auto camera_bound_bottom = -(viewport_height + 2.0) / 2.0 + camera_translation.y;
@@ -254,7 +254,7 @@ namespace Graphics {
     Component::log(os);
   }
 
-  const std::string Camera::className() const noexcept  {
+  std::string Camera::className() const noexcept  {
     return "Graphics::Camera";
   }
 }

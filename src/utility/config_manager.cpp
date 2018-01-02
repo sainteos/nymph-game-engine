@@ -8,21 +8,20 @@ namespace Utility {
 
   }
 
-  const bool ConfigManager::loadConfig(const std::string& file_path) {
+  bool ConfigManager::loadConfig(const std::string& file_path) {
     LOG(INFO)<<"Loading config: "<<file_path;
     std::ifstream config_doc(file_path.c_str());
     if(!config_doc.is_open())
       return false;
-    
+
     config_handle.clear();
     config_doc >> config_handle;
     return true;
   }
 
-  const std::vector<std::string> ConfigManager::getStringVector(const std::string& key) {
+  std::vector<std::string> ConfigManager::getStringVector(const std::string& key) {
     if(!config_handle)
       throw Exceptions::ConfigNotLoadedException();
-
     std::vector<std::string> strings;
 
     if(config_handle[key].isArray()) {
@@ -30,14 +29,13 @@ namespace Utility {
         strings.push_back(config_handle[key][i].asString());
       }
     }
-
     return strings;
   }
 
-  const std::vector<unsigned int> ConfigManager::getUnsignedIntVector(const std::string& key) {
+  std::vector<unsigned int> ConfigManager::getUnsignedIntVector(const std::string& key) {
     if(!config_handle)
       throw Exceptions::ConfigNotLoadedException();
-    
+
     std::vector<unsigned int> uints;
 
     if(config_handle[key].isArray()) {
@@ -49,37 +47,37 @@ namespace Utility {
     return uints;
   }
 
-  const int ConfigManager::getInt(const std::string& key) {
+  int ConfigManager::getInt(const std::string& key) {
     if(!config_handle)
       throw Exceptions::ConfigNotLoadedException();
     return (int)config_handle[key].asInt();
   }
 
-  const unsigned int ConfigManager::getUnsignedInt(const std::string& key) {
+  unsigned int ConfigManager::getUnsignedInt(const std::string& key) {
     if(!config_handle)
       throw Exceptions::ConfigNotLoadedException();
     return (unsigned int)config_handle[key].asUInt();
   }
 
-  const std::string ConfigManager::getString(const std::string& key) {
+  std::string ConfigManager::getString(const std::string& key) {
     if(!config_handle)
       throw Exceptions::ConfigNotLoadedException();
     return config_handle[key].asString();
   }
 
-  const float ConfigManager::getFloat(const std::string& key) {
+  float ConfigManager::getFloat(const std::string& key) {
     if(!config_handle)
       throw Exceptions::ConfigNotLoadedException();
     return config_handle[key].asFloat();
   }
 
-  const double ConfigManager::getDouble(const std::string& key) {
+  double ConfigManager::getDouble(const std::string& key) {
     if(!config_handle)
       throw Exceptions::ConfigNotLoadedException();
     return config_handle[key].asDouble();
   }
 
-  const bool ConfigManager::getBool(const std::string& key) {
+  bool ConfigManager::getBool(const std::string& key) {
     if(!config_handle)
       throw Exceptions::ConfigNotLoadedException();
     return config_handle[key].asBool();

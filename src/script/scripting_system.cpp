@@ -11,7 +11,7 @@
 namespace Script {
 
   ScriptingSystem::ScriptingSystem(const std::string scripts_location) : scripts_location(scripts_location) {
-    ChaiscriptWrapper::getInstance()->add(chaiscript::fun([&](std::shared_ptr<ScriptObject> so, std::string name) { 
+    ChaiscriptWrapper::getInstance()->add(chaiscript::fun([&](std::shared_ptr<ScriptObject> so, std::string name) {
       so->setSerializable(name);
     }), "set_serializable");
   }
@@ -120,6 +120,7 @@ namespace Script {
 
   void ScriptingSystem::load(const std::string& filename) {
     std::ifstream file(filename);
+    LOG(INFO)<<"Loading save file: "<<filename;
     if(file.good()) {
       Json::Value save_file;
 
@@ -130,6 +131,10 @@ namespace Script {
         }
       }
       file.close();
+      LOG(INFO)<<"Save file load successful!";
+    }
+    else {
+      LOG(INFO)<<"Save file not loaded!";
     }
   }
 
@@ -137,9 +142,10 @@ namespace Script {
     ChaiscriptWrapper::getInstance()->add(chaiscript::bootstrap::standard_library::map_type<std::map<std::shared_ptr<Game::Scene>, bool>>("SceneMap"));
     ChaiscriptWrapper::getInstance()->add(chaiscript::bootstrap::standard_library::vector_type<std::vector<std::string>>("StringVector"));
     for(auto script : scripts) {
+      LOG(INFO)<<script->getClassName()<<".onStart()";
       try {
         script->onStart();
-      } 
+      }
       catch (const chaiscript::exception::eval_error &ee) {
         std::stringstream s;
         s << ee.what();
@@ -155,6 +161,7 @@ namespace Script {
 
   void ScriptingSystem::update(const float delta) {
     for(auto script : scripts) {
+      LOG(INFO)<<script->getClassName()<<".onUpdate()";
       try {
         script->onUpdate(delta);
       } catch(chaiscript::exception::eval_error e) {
@@ -167,6 +174,7 @@ namespace Script {
 
   void ScriptingSystem::destroy() {
     for(auto script : scripts) {
+      LOG(INFO)<<script->getClassName()<<".onDestroy()";
       try {
         script->onDestroy();
       } catch(chaiscript::exception::eval_error e) {

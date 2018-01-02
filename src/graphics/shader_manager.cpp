@@ -19,14 +19,14 @@ namespace Graphics {
   char const* ShaderManager::SHADER_DIRECTORY = "./shaders/";
 
   ShaderManager::ShaderManager() {
-    
+
   }
 
   ShaderManager::~ShaderManager() {
 
   }
 
-  const bool ShaderManager::loadShader(const std::string& name, const bool geometry_shader) {
+  bool ShaderManager::loadShader(const std::string& name, const bool geometry_shader) {
     std::string geom_name = "";
     if(geometry_shader)
       geom_name = name + GEOMETRY_EXTENSION;
@@ -34,13 +34,13 @@ namespace Graphics {
     return loadShader(name, name+VERTEX_EXTENSION, name+FRAGMENT_EXTENSION, geom_name);
   }
 
-  const bool ShaderManager::loadShader(const std::string& name, const std::string& vertex_filename, const std::string& fragment_filename, const std::string& geometry_filename) {
+  bool ShaderManager::loadShader(const std::string& name, const std::string& vertex_filename, const std::string& fragment_filename, const std::string& geometry_filename) {
     std::ifstream vertex_file;
     if(vertex_filename != "") {
       vertex_file.open((SHADER_DIRECTORY + vertex_filename).c_str(), std::ios_base::binary);
     }
     std::ifstream fragment_file;
-    if(fragment_filename != "") 
+    if(fragment_filename != "")
       fragment_file.open((SHADER_DIRECTORY + fragment_filename).c_str(), std::ios_base::binary);
     std::ifstream geometry_file;
     if(geometry_filename != "") {
@@ -59,7 +59,7 @@ namespace Graphics {
       vertex_shader = glCreateShader(GL_VERTEX_SHADER);
       const char *vc_str;
       std::string vertex_string;
-      vertex_file.seekg(0, std::ios::end);   
+      vertex_file.seekg(0, std::ios::end);
       vertex_string.reserve(vertex_file.tellg());
       vertex_file.seekg(0, std::ios::beg);
 
@@ -71,7 +71,7 @@ namespace Graphics {
 
       glShaderSource(vertex_shader, 1, &vc_str, new int[1] {(int)vertex_string.size()});
       glCompileShader(vertex_shader);
-      
+
       if(!checkCompilation(vertex_shader)) {
         logShaderInfoLog(vertex_shader);
         throw Exceptions::ShaderCompilationException(vertex_filename);
@@ -85,7 +85,7 @@ namespace Graphics {
       fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
       const char *fc_str;
       std::string fragment_string;
-      fragment_file.seekg(0, std::ios::end);   
+      fragment_file.seekg(0, std::ios::end);
       fragment_string.reserve(fragment_file.tellg());
       fragment_file.seekg(0, std::ios::beg);
 
@@ -110,7 +110,7 @@ namespace Graphics {
       geometry_shader = glCreateShader(GL_GEOMETRY_SHADER);
       const char *gc_str;
       std::string geometry_string;
-      geometry_file.seekg(0, geometry_file.end);   
+      geometry_file.seekg(0, geometry_file.end);
       geometry_string.reserve(geometry_file.tellg());
       geometry_file.seekg(0, geometry_file.beg);
 
@@ -146,7 +146,7 @@ namespace Graphics {
   std::shared_ptr<Shader> ShaderManager::getShader(const std::string& name) const {
     if(shaders_to_names.count(name) == 0) {
       throw Exceptions::InvalidShaderNameException(name);
-    } 
+    }
     return shaders_to_names.at(name);
   }
 
@@ -156,7 +156,7 @@ namespace Graphics {
     }
   }
 
-  const bool ShaderManager::checkCompilation(const unsigned int& shader_object) {
+  bool ShaderManager::checkCompilation(const unsigned int& shader_object) {
     int status = 0;
     glGetShaderiv(shader_object, GL_COMPILE_STATUS, &status);
     return (bool)status;

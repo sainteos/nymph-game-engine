@@ -25,7 +25,7 @@ namespace Events {
         }
       }
 
-      const bool eventsWaiting() const noexcept {
+      bool eventsWaiting() const noexcept {
         return !events.empty();
       }
 

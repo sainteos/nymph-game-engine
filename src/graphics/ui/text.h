@@ -27,7 +27,7 @@ namespace Graphics {
 
       public:
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      Constructor for Text
          */
@@ -49,7 +49,7 @@ namespace Graphics {
          *
          * @return     The text string.
          */
-        const std::string getText() const noexcept;
+        std::string getText() const noexcept;
         /**
          * @brief      Sets the color.
          *
@@ -61,7 +61,7 @@ namespace Graphics {
          *
          * @return     The color.
          */
-        const glm::vec4 getColor() const noexcept;
+        glm::vec4 getColor() const noexcept;
         /**
          * @brief      Sets the shader.
          *
@@ -79,23 +79,23 @@ namespace Graphics {
          *
          * @return     The kerning.
          */
-        const float getKerning() const noexcept;
+        float getKerning() const noexcept;
         /**
          * @brief      Returns a string representation of the object.
          *
          * @return     String representation of the object.
          */
-        const std::string to_string() const noexcept;
-        virtual const std::string className() const noexcept override;
+        std::string to_string() const noexcept;
+        virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
 
         virtual void onDestroy() override;
         virtual void onStart() override;
-        virtual const bool onUpdate(const double delta) override;
+        virtual bool onUpdate(const double delta) override;
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
-        virtual const unsigned long long getValueForSorting() const noexcept override;
-        
+        virtual unsigned long long getValueForSorting() const noexcept override;
+
         virtual void log(el::base::type::ostream_t& os) const;
     };
   }

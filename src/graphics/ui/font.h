@@ -12,7 +12,7 @@ namespace Graphics {
      */
     struct Character {
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * The character's opengl texture handle.
        */
@@ -57,7 +57,7 @@ namespace Graphics {
          */
         Font(const unsigned int size = 12, const unsigned int pixels_per_unit = 32);
       //= BEGIN SCRIPTABLE
-      
+
         /**
          * @brief      Adds a character.
          *
@@ -84,13 +84,13 @@ namespace Graphics {
          *
          * @return     The size.
          */
-        const unsigned int getSize() const noexcept;
+        unsigned int getSize() const noexcept;
         /**
          * @brief      Gets the open gl size.
          *
          * @return     The open gl size.
          */
-        const float getOpenGLSize() const noexcept;
+        float getOpenGLSize() const noexcept;
       //= END SCRIPTABLE
     };
   }

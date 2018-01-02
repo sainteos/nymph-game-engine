@@ -12,7 +12,7 @@ namespace Events {
       EventType type;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Event constructor
        *
@@ -24,7 +24,7 @@ namespace Events {
        *
        * @return     The event type.
        */
-      const EventType getEventType() const { return type; }
+      EventType getEventType() const { return type; }
       //= END SCRIPTABLE
   };
 }

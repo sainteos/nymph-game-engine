@@ -24,7 +24,7 @@ namespace Game {
   SceneGenerator::~SceneGenerator() {
   }
 
-  const Graphics::VertexData SceneGenerator::generateBasisCube() {
+  Graphics::VertexData SceneGenerator::generateBasisCube() {
     std::vector<glm::vec3> verts {
       glm::vec3(0.0, 0.0, 0.0),
       glm::vec3(0.0, 1.0, 0.0),
@@ -38,12 +38,12 @@ namespace Game {
     };
 
     std::vector<unsigned int> indices {
-      0, 1, 2, 3, 
+      0, 1, 2, 3,
       0, 1, 4, 5,
       1, 5, 6, 2,
 
       7, 6, 5, 4,
-      3, 2, 6, 7, 
+      3, 2, 6, 7,
       3, 7, 4, 0
     };
 
@@ -56,7 +56,7 @@ namespace Game {
     return vertex_data;
   }
 
-  const Graphics::VertexData SceneGenerator::generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos, const unsigned int y_pos, const unsigned int offset_x, const unsigned int offset_y) {
+  Graphics::VertexData SceneGenerator::generateBasisTile(const unsigned int base_width, const unsigned int base_height, const unsigned int current_width, const unsigned int current_height, const unsigned int x_pos, const unsigned int y_pos, const unsigned int offset_x, const unsigned int offset_y) {
     std::vector<glm::vec2> texs {
       glm::vec2(0.0, 0.0),
       glm::vec2(0.0, 1.0),
@@ -74,7 +74,7 @@ namespace Game {
     return vert_data;
   }
 
-  const SpriteMovementMotor::SpriteState SceneGenerator::transformStateStringToEnum(const std::string& state) {
+  SpriteMovementMotor::SpriteState SceneGenerator::transformStateStringToEnum(const std::string& state) {
     std::map<std::string, SpriteMovementMotor::SpriteState> states {
       {"Up_Movement", SpriteMovementMotor::MOVE_UP},
       {"Up_Still", SpriteMovementMotor::FACE_UP},
@@ -89,7 +89,7 @@ namespace Game {
     return states[state];
   }
 
-  const float SceneGenerator::calculateZ(const unsigned int layer_index, const unsigned int total_layers) {
+  float SceneGenerator::calculateZ(const unsigned int layer_index, const unsigned int total_layers) {
     return -((float)total_layers - (float)layer_index + ui_z_slots);
   }
 
@@ -187,7 +187,7 @@ namespace Game {
       glm::vec2(0.5, 0.5),
       glm::vec2(0.5, -0.5)
     };
-    
+
     //Tile flipping
     if(layer->IsTileFlippedDiagonally(x_pos, y_pos) && layer->IsTileFlippedHorizontally(x_pos, y_pos) && layer->IsTileFlippedVertically(x_pos, y_pos)) {
       for(int i = 0; i < texs.size(); i++) {
@@ -199,40 +199,40 @@ namespace Game {
       for(int i = 0; i < texs.size(); i++) {
         //Rotate 90 Anticlockwise
         texs[i] = texs[i] * glm::mat2(0.0, -1.0, 1.0, 0.0);
-      }               
+      }
     }
     else if(layer->IsTileFlippedDiagonally(x_pos, y_pos) && !layer->IsTileFlippedHorizontally(x_pos, y_pos) && layer->IsTileFlippedVertically(x_pos, y_pos)) {
       for(int i = 0; i < texs.size(); i++) {
         //Rotate 90 Clockwise
         texs[i] = texs[i] * glm::mat2(0.0, 1.0, -1.0, 0.0);
-      }       
+      }
     }
     else if(!layer->IsTileFlippedDiagonally(x_pos, y_pos) && layer->IsTileFlippedHorizontally(x_pos, y_pos) && layer->IsTileFlippedVertically(x_pos, y_pos)) {
       for(int i = 0; i < texs.size(); i++) {
         //Rotate 180
         texs[i] = texs[i] * glm::mat2(-1.0, 0.0, 0.0, -1.0);
-      }       
+      }
     }
     else if(layer->IsTileFlippedDiagonally(x_pos, y_pos) && !layer->IsTileFlippedHorizontally(x_pos, y_pos) && !layer->IsTileFlippedVertically(x_pos, y_pos)) {
       for(int i = 0; i < texs.size(); i++) {
         //rotate anticlockwise 90, reflect across x
         texs[i] = texs[i] * glm::mat2(0.0, -1.0, 1.0, 0.0);
         texs[i] = texs[i] * glm::mat2(1.0, 0.0, 0.0, -1.0);
-      }       
+      }
     }
     else if(!layer->IsTileFlippedDiagonally(x_pos, y_pos) && !layer->IsTileFlippedHorizontally(x_pos, y_pos) && layer->IsTileFlippedVertically(x_pos, y_pos)) {
       for(int i = 0; i < texs.size(); i++) {
         //Reflect across x
         texs[i] = texs[i] * glm::mat2(1.0, 0.0, 0.0, -1.0);
-      }       
+      }
     }
     else if(!layer->IsTileFlippedDiagonally(x_pos, y_pos) && layer->IsTileFlippedHorizontally(x_pos, y_pos) && !layer->IsTileFlippedVertically(x_pos, y_pos)) {
       for(int i = 0; i < texs.size(); i++) {
         //Reflect across y
         texs[i] = texs[i] * glm::mat2(-1.0, 0.0, 0.0, 1.0);
-      }       
+      }
     }
-    
+
     //Translate to bottom left at 0,0
     for(int i = 0; i < texs.size(); i++) {
       texs[i] = texs[i] + glm::vec2(0.5, 0.5);
@@ -240,7 +240,7 @@ namespace Game {
 
     float width = (float)tile_width / (float)texture_width;
     float height = (float)tile_height / (float)texture_height;
-     
+
     //scale by width/height
     for(int i = 0; i < texs.size(); i++) {
       texs[i] = texs[i] * glm::vec2(width, height);
@@ -274,12 +274,12 @@ namespace Game {
   }
 
   std::shared_ptr<Scene> SceneGenerator::createSceneFromMap(const unsigned int patch_width_tiles, const unsigned int patch_height_tiles, const Map& map) {
-    auto scene = std::make_shared<Scene>();
+    auto scene = std::make_shared<Scene>(getStrippedMapName(map.getPath()));
 
     auto map_renderables = createRenderablesFromMap(patch_width_tiles, patch_height_tiles, map);
 
     scene->addEntities(map_renderables.entities);
-    
+
     for(auto placeholder : map_renderables.dynamic_animations) {
       auto new_entity = dynamic_animations[placeholder.sprite_name].entity;
       new_entity->getTransform()->translate(glm::vec3((float)placeholder.x_pos, (float)placeholder.y_pos, placeholder.z_order));
@@ -289,7 +289,7 @@ namespace Game {
 
       scene->addEntity(new_entity);
     }
-    
+
     auto static_animations = createStaticallyAnimatedTilesFromMap(map);
 
     scene->addEntities(static_animations);
@@ -318,7 +318,7 @@ namespace Game {
 
   std::vector<std::string> SceneGenerator::getDynamicEntityNames() const noexcept {
     std::vector<std::string> names;
-    for(auto dynamic_entity : dynamic_animations) 
+    for(auto dynamic_entity : dynamic_animations)
       names.push_back(dynamic_entity.first);
     return names;
   }
@@ -329,7 +329,7 @@ namespace Game {
     auto layers = map.getImpl()->GetTileLayers();
     auto tilesets = map.getImpl()->GetTilesets();
     unsigned int layer_index = 0;
-    
+
     for(auto layer : layers) {
       for(int y = 0; y < layer->GetHeight(); y++) {
         for(int x = 0; x < layer->GetWidth(); x++) {
@@ -367,10 +367,10 @@ namespace Game {
       if(map_light->GetProperties().HasProperty("LightType")) {
         light_type = Graphics::Light::stringToType(map_light->GetProperties().GetStringProperty("LightType"));
       }
-      
+
       std::shared_ptr<Graphics::Light> new_light = std::make_shared<Graphics::Light>(light_type);
       if(map_light->GetProperties().HasProperty("Color")) {
-        new_light->setColor(Utility::stringToVec3(map_light->GetProperties().GetStringProperty("Color")) / glm::vec3(256.0, 256.0, 256.0)); 
+        new_light->setColor(Utility::stringToVec3(map_light->GetProperties().GetStringProperty("Color")) / glm::vec3(256.0, 256.0, 256.0));
       }
       if(map_light->GetProperties().HasProperty("Intensity")) {
         new_light->setIntensity(map_light->GetProperties().GetFloatProperty("Intensity"));
@@ -385,7 +385,7 @@ namespace Game {
         new_light->setConeAngle(map_light->GetProperties().GetFloatProperty("ConeAngle"));
       }
       if(map_light->GetProperties().HasProperty("ConeDirection")) {
-        new_light->setConeDirection(Utility::stringToVec3(map_light->GetProperties().GetStringProperty("ConeDirection"))); 
+        new_light->setConeDirection(Utility::stringToVec3(map_light->GetProperties().GetStringProperty("ConeDirection")));
       }
 
       new_light->setTransform(std::make_shared<Transform>());
@@ -405,7 +405,7 @@ namespace Game {
     auto tilesets = map.getImpl()->GetTilesets();
     auto path = map.getImpl()->GetFilepath();
     unsigned int layer_index = 0;
-    
+
     for(auto layer : layers) {
       for(int y = 0; y < layer->GetHeight(); y++) {
         for(int x = 0; x < layer->GetWidth(); x++) {
@@ -423,14 +423,14 @@ namespace Game {
               auto frames = tile->GetFrames();
 
               renderable->addTexture(unit, "tileset0", texture);
-              
+
               for(auto frame : frames) {
                 auto id = frame.GetTileID();
                 auto duration = frame.GetDuration();
 
                 int width_in_tiles = texture->getWidth() / tileset->GetTileWidth();
                 int height_in_tiles = texture->getHeight() / tileset->GetTileHeight();
-                
+
                 int x_pos = id % width_in_tiles;
                 int y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
@@ -438,14 +438,14 @@ namespace Game {
               }
 
               renderable->setShader((*shader_manager.lock())["tile_animation"]);
-              
+
               //subtract y from layer height, and then subtract an additional 1 to normalize it to 0
               std::shared_ptr<Entity> entity = std::make_shared<Entity>();
               entity->addComponent(renderable);
               entity->addComponent(animator);
 
               entity->getTransform()->translate(glm::vec3((float)x, layer->GetHeight() - (float)y - 1.0, calculateZ(layer_index, layers.size())));
-              if(layer->IsVisible()) 
+              if(layer->IsVisible())
                 entity->setActive(true);
               else {
                 entity->setActive(false);
@@ -494,7 +494,7 @@ namespace Game {
               auto map_y = patch_y * patch_height_tiles + tile_y;
               auto opengl_map_y = map.getImpl()->GetHeight() - map_y - 1;
 
-              
+
               //If the generated map tile coord is out of bounds for the map, discard this iteration
               //This will happen if ASSERT(map.getWidth() % patch_width_tiles != 0 || map.getHeight() % patch_height_tiles != 0]
               if(map_x >= map.getImpl()->GetWidth() || map_y >= map.getImpl()->GetHeight())
@@ -529,11 +529,11 @@ namespace Game {
                 //Generate Vertex Coords
                 auto vertex_coords = generateVertexCoords(map.getImpl()->GetTileWidth(), map.getImpl()->GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), map_x, opengl_map_y);
                 patch_vertices.insert(patch_vertices.end(), vertex_coords.begin(), vertex_coords.end());
-                
+
                 //Generate Textures
                 auto next_texture = textureFromTileset(tileset, path);
                 int texture_unit;
-                
+
                 //See if texture already exists on patch
                 auto found_texture = std::find(patch_textures.begin(), patch_textures.end(), next_texture);
 
@@ -551,7 +551,7 @@ namespace Game {
                 else {
                   texture_unit = (int)(found_texture - patch_textures.begin());
                 }
-                
+
                 //Generate Texture Unit Vector
                 for(int i = 0; i < 6; i++) {
                   patch_texture_units.push_back(texture_unit);
@@ -591,7 +591,7 @@ namespace Game {
             }
             //If it isn't, it just needs a simple texturing shader
             else {
-              renderable->setShader((*shader_manager.lock())["simple_texture"]); 
+              renderable->setShader((*shader_manager.lock())["simple_texture"]);
             }
 
             layer_entity->addComponent(renderable);
@@ -605,7 +605,7 @@ namespace Game {
           layer_entity->setActive(false);
         }
       }
-       
+
       layer_entity->getTransform()->translate(glm::vec3(0.0, 0.0, calculateZ(layer_index, total_layers)));
       layer_index++;
       renderables.entities.push_back(layer_entity);
@@ -614,7 +614,7 @@ namespace Game {
   }
 
   std::map<std::string, SceneGenerator::DynamicAnimation> SceneGenerator::createAnimationsFromAnimationMap(const Map& map) {
-    std::map<std::string, DynamicAnimation> animations; 
+    std::map<std::string, DynamicAnimation> animations;
     auto path = map.getImpl()->GetFilepath();
     for(auto& tileset : map.getImpl()->GetTilesets()) {
       for(auto& tile : tileset->GetTiles()) {
@@ -646,14 +646,14 @@ namespace Game {
             animations[sprite_name].animator = Graphics::TileAnimator<SpriteMovementMotor::SpriteState>::create(tileset->GetImage()->GetWidth(), tileset->GetImage()->GetHeight(), tileset->GetTileWidth(), tileset->GetTileHeight());
             animations[sprite_name].entity->addComponent(animations[sprite_name].animator);
           }
-           
+
           for(auto frame : frames) {
             auto id = frame.GetTileID();
             auto duration = frame.GetDuration();
 
             int width_in_tiles = tileset->GetImage()->GetWidth() / tileset->GetTileWidth();
             int height_in_tiles = tileset->GetImage()->GetHeight() / tileset->GetTileHeight();
-            
+
             int x_pos = id % width_in_tiles;
             int y_pos = height_in_tiles - 1 - id / width_in_tiles;
 
@@ -665,7 +665,7 @@ namespace Game {
     return animations;
   }
 
-  const std::string SceneGenerator::getStrippedMapName(const std::string path) {
+  std::string SceneGenerator::getStrippedMapName(const std::string path) {
     auto stripped_name = path.substr(path.find_last_of("/") + 1, path.size() - path.find_last_of("/") - 5);
     return stripped_name;
   }

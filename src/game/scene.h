@@ -22,12 +22,14 @@ namespace Game {
       std::shared_ptr<Physics::CollisionData> collision_data;
 
     public:
+      Scene() = delete;
       //= BEGIN SCRIPTABLE
-      
       /**
        * @brief      Scene constructor
+       *
+       * @param[in]  scene_name  The name of the scene.
        */
-      Scene();  
+      Scene(const std::string scene_name);
       /**
        * @brief      Sets the transform.
        *
@@ -60,17 +62,17 @@ namespace Game {
       void addComponents(std::vector<std::shared_ptr<Component>> components);
       /**
        * @brief      Gets all components
-       * 
+       *
        * @return     A vector of components
        */
       std::vector<std::shared_ptr<Component>> getComponents() const noexcept;
-      
+
       /**
        * @brief      Gets the collision data.
        *
        * @return     The collision data.
        */
-      std::shared_ptr<Physics::CollisionData> getCollisionData() const noexcept; 
+      std::shared_ptr<Physics::CollisionData> getCollisionData() const noexcept;
       /**
        * @brief      Adds an entity.
        *
@@ -85,7 +87,7 @@ namespace Game {
       void addEntities(std::vector<std::shared_ptr<Entity>> entities) noexcept;
       /**
        * @brief      Gets all entities
-       * 
+       *
        * @return     A vector of entities
        */
       std::vector<std::shared_ptr<Entity>> getEntities() const noexcept;
@@ -100,14 +102,14 @@ namespace Game {
        *
        * @return     The name.
        */
-      const std::string getName() const noexcept;
+      std::string getName() const noexcept;
 
       /**
        * @brief      Returns a string representation of the object, mostly for use in chaiscript.
        *
        * @return     String representation of the object.
        */
-      const std::string to_string() const noexcept;
+      std::string to_string() const noexcept;
       //= END SCRIPTABLE
   };
 }

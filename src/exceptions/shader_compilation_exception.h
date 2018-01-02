@@ -1,6 +1,9 @@
 #ifndef SHADER_COMPILATION_EXCEPTION_H
 #define SHADER_COMPILATION_EXCEPTION_H
 
+#include <exception>
+#include <string>
+
 namespace Exceptions {
   class ShaderCompilationException : public std::exception {
     private:

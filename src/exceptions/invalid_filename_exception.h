@@ -1,6 +1,9 @@
 #ifndef INVALID_FILENAME_EXCEPTION_H
 #define INVALID_FILENAME_EXCEPTION_H
 
+#include <exception>
+#include <string>
+
 namespace Exceptions {
   class InvalidFilenameException : public std::exception {
     private:

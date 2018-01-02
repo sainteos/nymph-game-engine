@@ -15,7 +15,7 @@ namespace Input {
       int button;
     public:
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      MouseButtonUpEvent constructor
        *
@@ -35,7 +35,7 @@ namespace Input {
        *
        * @return     The button.
        */
-      const int getButton() const noexcept { return button; }
+      int getButton() const noexcept { return button; }
       //= END SCRIPTABLE
   };
 }

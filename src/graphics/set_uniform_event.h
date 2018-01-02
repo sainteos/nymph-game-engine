@@ -1,6 +1,8 @@
 #ifndef SET_UNIFORM_EVENT_H
 #define SET_UNIFORM_EVENT_H
 #include "graphics/uniform.h"
+#include "events/event.h"
+
 //= SCRIPTABLE
 //= SCRIPTABLE BASES Event
 
@@ -14,7 +16,7 @@ namespace Graphics {
     public:
       SetUniformEvent() = delete;
       //= BEGIN SCRIPTABLE
-      
+
       /**
        * @brief      Constructor for setUniformEvent
        *
@@ -34,7 +36,7 @@ namespace Graphics {
        *
        * @return     The uniform.
        */
-      const Uniform getUniform() const noexcept { return uniform; }
+      Uniform getUniform() const noexcept { return uniform; }
       //= END SCRIPTABLE
   };
 }

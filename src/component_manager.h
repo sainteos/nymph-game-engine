@@ -17,7 +17,7 @@ class ComponentManager {
     std::weak_ptr<Graphics::Camera> camera;
   public:
     //= BEGIN SCRIPTABLE
-    
+
     /**
      * @brief      Adds a component.
      *
@@ -53,9 +53,9 @@ class ComponentManager {
      *
      * @return     # of components
      */
-    const unsigned int count() const noexcept;
+    unsigned int count() const noexcept;
     //= END SCRIPTABLE
-    
+
     /**
      * @brief      Adds a camera.
      *
