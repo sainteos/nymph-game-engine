@@ -39,11 +39,12 @@ make                                     #Generates executable
 At The moment, this engine is tested with an unnamed game in progress that exists as [nymph-game-one](https://github.com/sainteos/nymph-game-one). This project contains all tmx maps, textures, sounds, etc. (and eventually scripts too). Currently, the [config](https://github.com/sainteos/nymph-game-engine/blob/master/config/default.json) lets you define various input variable including tmx map locations, default starting map, an animation database I use to cache different animations for different characters (this will probably change in the future).
 
 Given all of these things are in place and correctly pointed to in the config file running is as simple as running the executable:
+
 ```bash
 ./TileEngine.out
 ```
 
-##Sample script file
+## Sample script file
 ```chaiscript
 class MapLoading {
   attr thiss
