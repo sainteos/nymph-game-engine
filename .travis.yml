@@ -35,12 +35,13 @@ install:
 
 script:
   #Build
-  - premake4 gmake
   - nymph-generate
-  - make config=Debug
-  - doxygen .
+  - premake4 gmake
+  - make
 
 after_success:
+  #Generate Docs
+  - doxygen doxyfile
   #Consolidate Build Artifacts
   - mkdir nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then mv *.out ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ && mv ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux; fi
