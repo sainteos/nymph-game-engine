@@ -19,7 +19,7 @@ cd deps
 git clone https://github.com/yvanvds/yse-soundengine
 cd yse-soundengine
 yes n | ./make_linux_release
-make install
+sudo make install
 cd ..
 pwd
 
@@ -27,7 +27,7 @@ git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
     git checkout tags/6.0.0
 cmake .
 make
-make install
+sudo make install
 cd ..
 pwd
 
@@ -35,7 +35,7 @@ git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/6.0.0
 cmake .
 make
-make install
+sudo make install
 cd ..
 pwd
 git clone https://github.com/sainteos/tmxparser
@@ -44,6 +44,6 @@ mkdir build
 cd build
 cmake ..
 make
-make install
+sudo make install
 cd .. && cd .. & cd ..
 pwd

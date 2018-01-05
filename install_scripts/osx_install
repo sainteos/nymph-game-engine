@@ -20,7 +20,7 @@ cd deps
 git clone https://github.com/yvanvds/yse-soundengine
 cd yse-soundengine
 yes n | ./make_mac_release
-make install
+sudo make install
 cd ..
 
 git clone https://github.com/sainteos/tmxparser
@@ -29,5 +29,5 @@ mkdir build
 cd build
 cmake ..
 make
-make install
+sudo make install
 cd .. && cd .. && cd
