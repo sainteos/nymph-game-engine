@@ -11,7 +11,6 @@ sudo apt-get install glew
 sudo apt-get isntall lipbng
 sudo apt-get install zlib
 sudo apt-get install devil
-sudo apt-get install tinyxml2
 sudo apt-get install chaiscript
 
 mkdir deps
@@ -19,6 +18,13 @@ cd deps
 git clone https://github.com/yvanvds/yse-soundengine
 cd yse-soundengine
 yes n | ./make_linux_release
+make install
+cd ..
+
+git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
+    git checkout tags/6.0.0
+cmake .
+make
 make install
 cd ..
 
