@@ -6,11 +6,11 @@ gem install nymph-generate
 
 #Install build dependencies
 sudo apt-get install libfreetype6
-sudo apt-get install libglfw3
-sudo apt-get install libglew2.0
+sudo apt-get install libglfw
+sudo apt-get install libglew
 sudo apt-get isntall lipbng
 sudo apt-get install libz
-sudo apt-get install libdevil1c2
+sudo apt-get install libdevil
 sudo apt-get install libjuce0
 
 mkdir deps
@@ -33,7 +33,7 @@ git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
 cmake .
 make
 make install
-..
+cd ..
 
 git clone https://github.com/sainteos/tmxparser
 cd tmxparser
