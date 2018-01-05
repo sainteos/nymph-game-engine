@@ -18,7 +18,7 @@ mkdir deps
 cd deps
 git clone https://github.com/yvanvds/yse-soundengine
 cd yse-soundengine
-./make_mac_release
+yes n | ./make_mac_release
 make install
 cd ..
 
