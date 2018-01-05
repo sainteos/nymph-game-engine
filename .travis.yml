@@ -37,9 +37,9 @@ script:
   #Build
   - nymph-generate
   - premake4 gmake
-  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then make config=LinuxDebug; fi
-  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then make config=WindowsDebug; fi
-  - if [ $TRAVIS_OS_NAME = osx ]; then make config=MacDebug; fi
+  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then make config=linuxdebug; fi
+  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then make config=windowsdebug; fi
+  - if [ $TRAVIS_OS_NAME = osx ]; then make config=macdebug; fi
 
 after_success:
   #Generate Docs
