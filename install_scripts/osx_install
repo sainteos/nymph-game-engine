@@ -14,7 +14,6 @@ brew install devil
 brew install tinyxml2
 brew install chaiscript
 brew install tinydir
-brew install juce
 
 mkdir deps
 cd deps

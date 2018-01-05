@@ -5,14 +5,13 @@ sudo apt-get install doxygen
 gem install nymph-generate
 
 #Install build dependencies
-sudo apt-get install freetype
-sudo apt-get install glfw
-sudo apt-get install glew
+sudo apt-get install libfreetype6
+sudo apt-get install libglfw3
+sudo apt-get install libglew2.0
 sudo apt-get isntall lipbng
-sudo apt-get install zlib
-sudo apt-get install devil
-sudo apt-get install chaiscript
-sudo apt-get install juce
+sudo apt-get install libz
+sudo apt-get install libdevil1c2
+sudo apt-get install libjuce0
 
 mkdir deps
 cd deps
@@ -28,6 +27,13 @@ cmake .
 make
 make install
 cd ..
+
+git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
+    git checkout tags/6.0.0
+cmake .
+make
+make install
+..
 
 git clone https://github.com/sainteos/tmxparser
 cd tmxparser
