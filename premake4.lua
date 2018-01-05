@@ -14,16 +14,30 @@ solution "NymphGameEngine"
     files { "**.h", "**.hpp", "**.cpp", "**.cc" }
     excludes { "./test/**" }
 
-    configuration "Debug"
+    configuration "MacDebug"
       buildoptions { "-std=c++14",  "-g", "-O0", '-pthread' }
       links {  "freetype", "yse", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
 
-    configuration "Release"
+    configuration "MacRelease"
       buildoptions { "-std=c++14", "-pthread" }
       links {  "freetype", "yse", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript" }
+      defines { "NDEBUG" }
+      flags { "Optimize" }
+      targetextension ".out"
+
+    configuration "LinuxDebug"
+      buildoptions { "-std=c++14",  "-g", "-O0", '-pthread' }
+      links {  "freetype", "yse", "glfw", "png", "z", "GL", "glew", "IL", "tmxparser", "chaiscript" }
+      defines { "DEBUG" }
+      flags { "Symbols" }
+      targetextension ".out"
+
+    configuration "LinuxRelease"
+      buildoptions { "-std=c++14", "-pthread" }
+      links {  "freetype", "yse", "glfw", "png", "z", "GL", "glew", "IL", "tmxparser", "chaiscript" }
       defines { "NDEBUG" }
       flags { "Optimize" }
       targetextension ".out"
