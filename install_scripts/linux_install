@@ -13,7 +13,7 @@ sudo apt-get install libz
 sudo apt-get install libdevil
 sudo apt-get install libjuce0
 
-pwd
+cd ..
 mkdir deps
 cd deps
 git clone https://github.com/yvanvds/yse-soundengine
@@ -45,5 +45,4 @@ cd build
 cmake ..
 make
 sudo make install
-cd .. && cd .. & cd ..
-pwd
+cd ~/nymph-game-engine
