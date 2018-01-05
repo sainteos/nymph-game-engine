@@ -37,7 +37,7 @@ script:
   #Build
   - premake4 gmake
   - nymph-generate
-  - make
+  - make config=DEBUG
   - doxygen .
 
 after_success:
