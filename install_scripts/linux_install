@@ -13,6 +13,7 @@ sudo apt-get install libz
 sudo apt-get install libdevil
 sudo apt-get install libjuce0
 
+pwd
 mkdir deps
 cd deps
 git clone https://github.com/yvanvds/yse-soundengine
@@ -20,6 +21,7 @@ cd yse-soundengine
 yes n | ./make_linux_release
 make install
 cd ..
+pwd
 
 git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
     git checkout tags/6.0.0
@@ -27,6 +29,7 @@ cmake .
 make
 make install
 cd ..
+pwd
 
 git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/6.0.0
@@ -34,7 +37,7 @@ cmake .
 make
 make install
 cd ..
-
+pwd
 git clone https://github.com/sainteos/tmxparser
 cd tmxparser
 mkdir build
@@ -43,3 +46,4 @@ cmake ..
 make
 make install
 cd .. && cd .. & cd ..
+pwd
