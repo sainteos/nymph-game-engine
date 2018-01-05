@@ -1,0 +1,32 @@
+#Install development dependencies
+sudo apt-get install lua
+sudo apt-get install premake4
+sudo apt-get install doxygen
+gem install nymph-generate
+
+#Install build dependencies
+sudo apt-get install freetype
+sudo apt-get install glfw
+sudo apt-get install glew
+sudo apt-get isntall lipbng
+sudo apt-get install zlib
+sudo apt-get install devil
+sudo apt-get install tinyxml2
+sudo apt-get install chaiscript
+
+mkdir deps
+cd deps
+git clone https://github.com/yvanvds/yse-soundengine
+cd yse-soundengine
+./make_mac_release
+make install
+cd ..
+
+git clone https://github.com/sainteos/tmxparser
+cd tmxparser
+mkdir build
+cd build
+cmake ..
+make
+make install
+cd .. && cd ..

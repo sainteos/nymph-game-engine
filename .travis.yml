@@ -1,0 +1,79 @@
+language: cpp
+compiler: clang
+sudo: true
+branches:
+  only: travis
+git:
+  depth: false
+
+os:
+  - osx
+  - linux
+
+before_install:
+  - export VERSION=$(git describe --always --tags --abbrev=0)
+  #Update package managers
+  - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get -qq -y update; fi
+  - if [ $TRAVIS_OS_NAME = osx]; then brew update; fi
+  #Setup Git Deploy Key
+  - openssl aes-256-cbc -K $encrypted_04e9769beb1e_key -iv $encrypted_04e9769beb1e_iv -in deploy-key.enc -out deploy-key -d
+  - chmod 600 deploy-key
+  - eval `ssh-agent -s`
+  - ssh-add deploy-key
+  #Setup Git User
+  - git config user.name "NymphBuildBot"
+  - git config user.email "adaleigh.martin@gmail.com"
+  - echo "Building Version $VERSION"
+  - echo "Build Number $TRAVIS_BUILD_NUMBER"
+
+install:
+  #Install Libraries
+  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then sh install_scripts/linux_install; fi
+  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = true]; then sh install_scripts/win_install; fi
+  - if [ $TRAVIS_OS_NAME = osx ]; then sh install_scripts/osx_install; fi
+
+script:
+  #Build
+  - premake4 gmake
+  - nymph-generate
+  - make
+  - doxygen .
+
+after_success:
+  #Consolidate Build Artifacts
+  - mkdir nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER
+  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then mv *.out ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ && mv ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux; fi
+  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = true]; then mv *.exe ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ && mv ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win; fi
+  - if [ $TRAVIS_OS_NAME = osx ]; then mv *.out ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ && mv ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-osx; fi
+  #Tar Build Artifacts
+  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then tar -zcvf nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux.tar.gz nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux; fi
+  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = true]; then tar -zcvf nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win.tar.gz nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win; fi
+  - if [ $TRAVIS_OS_NAME = osx]; then tar -zcvf nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-osx.tar.gz nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-osx; fi
+
+  #Push off Build Artifacts to git build repo (git-lfs)
+  - git clone $BUILD_REPO
+     #Oauth
+  - echo -e "machine github.com\n  login $GITHUB_TOKEN" >> ~/.netrc
+  - cd $BUILD_REPO_NAME
+  - git lfs pull
+  #Checkout to appropriate OS
+  - if [$TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then git checkout $TRAVIS_OS_NAME; fi
+  - if [$TRAVIS_OS_NAME = linux && $MINGW_BUILD = true]; then git checkout win; fi
+  - if [$TRAVIS_OS_NAME = osx]; then git checkout $TRAVIS_OS_NAME; fi
+  #Find current number of builds in this branch
+  - export NUMBER_OF_BUILDS=`find . -mindepth 1 -type f -name "*.tar.gz" -printf x | wc -c`
+  #Remove old builds over the amount allowed plus one for the new build
+  - find . -name '*.tar.gz' -type f -print0 | xargs -0 ls -tr | head -n $(echo "$NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1" | bc) | xargs rm
+  - mv ../nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER*.tar.gz .
+  - git add tmxparser-$VERSION-b$TRAVIS_BUILD_NUMBER*.tar.gz
+  - if [$TRAVIS_OS_NAME = osx || $TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then git commit -a -m "Build success for $TRAVIS_OS_NAME, version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
+  - if [$MINGW_BUILD = true]; then git commit -a -m "Build success for win, version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
+  - git push origin $(git branch | grep \* | cut -d ' ' -f2)
+
+  #Push off newly generated documentation, only need to do for one OS
+  - if [ $TRAVIS_OS_NAME = osx ]; then git clone $DOCS_REPO; fi
+  - if [ $TRAVIS_OS_NAME = osx ]; then cd $DOCS_REPO_NAME && rm -rf *; fi
+  - if [ $TRAVIS_OS_NAME = osx ]; then mv html/* .; fi
+  - if [ $TRAVIS_OS_NAME = osx ]; then git add *; fi
+  - if [ $TRAVIS_OS_NAME = osx ]; then git commit -m "Documentation update for version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
+  - if [ $TRAVIS_OS_NAME = osx ]; then git push origin master; fi

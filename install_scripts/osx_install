@@ -1,0 +1,32 @@
+#Install development dependencies
+brew install lua
+brew install premake4
+brew install doxygen
+gem install nymph-generate
+
+#Install build dependencies
+brew install freetype
+brew install glfw
+brew install glew
+brew isntall lipbng
+brew install zlib
+brew install devil
+brew install tinyxml2
+brew install chaiscript
+
+mkdir deps
+cd deps
+git clone https://github.com/yvanvds/yse-soundengine
+cd yse-soundengine
+./make_mac_release
+make install
+cd ..
+
+git clone https://github.com/sainteos/tmxparser
+cd tmxparser
+mkdir build
+cd build
+cmake ..
+make
+make install
+cd .. && cd ..
