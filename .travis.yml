@@ -10,6 +10,7 @@ os:
   - osx
   - linux
 
+
 before_install:
   - export VERSION=$(git describe --always --tags --abbrev=0)
   #Update package managers
