@@ -12,6 +12,7 @@ sudo apt-get isntall lipbng
 sudo apt-get install zlib
 sudo apt-get install devil
 sudo apt-get install chaiscript
+sudo apt-get install juce
 
 mkdir deps
 cd deps
@@ -35,4 +36,4 @@ cd build
 cmake ..
 make
 make install
-cd .. && cd ..
+cd .. && cd .. & cd ..

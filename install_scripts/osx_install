@@ -13,6 +13,8 @@ brew install zlib
 brew install devil
 brew install tinyxml2
 brew install chaiscript
+brew install tinydir
+brew install juce
 
 mkdir deps
 cd deps
@@ -29,4 +31,4 @@ cd build
 cmake ..
 make
 make install
-cd .. && cd ..
+cd .. && cd .. && cd
