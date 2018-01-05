@@ -29,8 +29,8 @@ before_install:
 
 install:
   #Install Libraries
-  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then sh install_scripts/linux_install; fi
-  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = true]; then sh install_scripts/win_install; fi
+  - if [ $TRAVIS_OS_NAME = linux] && [[$MINGW_BUILD = false]]; then sh install_scripts/linux_install; fi
+  - if [ $TRAVIS_OS_NAME = linux] && [[$MINGW_BUILD = true]]; then sh install_scripts/win_install; fi
   - if [ $TRAVIS_OS_NAME = osx ]; then sh install_scripts/osx_install; fi
 
 script:
@@ -43,12 +43,12 @@ script:
 after_success:
   #Consolidate Build Artifacts
   - mkdir nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER
-  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then mv *.out ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ && mv ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux; fi
-  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = true]; then mv *.exe ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ && mv ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win; fi
+  - if [ $TRAVIS_OS_NAME = linux] && [[$MINGW_BUILD = false]]; then mv *.out ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ && mv ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux; fi
+  - if [ $TRAVIS_OS_NAME = linux] && [[$MINGW_BUILD = true]]; then mv *.exe ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ && mv ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win; fi
   - if [ $TRAVIS_OS_NAME = osx ]; then mv *.out ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ && mv ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER/ ./nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-osx; fi
   #Tar Build Artifacts
-  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then tar -zcvf nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux.tar.gz nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux; fi
-  - if [ $TRAVIS_OS_NAME = linux && $MINGW_BUILD = true]; then tar -zcvf nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win.tar.gz nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win; fi
+  - if [ $TRAVIS_OS_NAME = linux] && [[$MINGW_BUILD = false]]; then tar -zcvf nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux.tar.gz nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-linux; fi
+  - if [ $TRAVIS_OS_NAME = linux] && [[$MINGW_BUILD = true]]; then tar -zcvf nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win.tar.gz nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win; fi
   - if [ $TRAVIS_OS_NAME = osx]; then tar -zcvf nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-osx.tar.gz nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-osx; fi
 
   #Push off Build Artifacts to git build repo (git-lfs)
@@ -58,8 +58,8 @@ after_success:
   - cd $BUILD_REPO_NAME
   - git lfs pull
   #Checkout to appropriate OS
-  - if [$TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then git checkout $TRAVIS_OS_NAME; fi
-  - if [$TRAVIS_OS_NAME = linux && $MINGW_BUILD = true]; then git checkout win; fi
+  - if [ $TRAVIS_OS_NAME = linux] && [[$MINGW_BUILD = false]]; then git checkout $TRAVIS_OS_NAME; fi
+  - if [ $TRAVIS_OS_NAME = linux] && [[$MINGW_BUILD = true]]; then git checkout win; fi
   - if [$TRAVIS_OS_NAME = osx]; then git checkout $TRAVIS_OS_NAME; fi
   #Find current number of builds in this branch
   - export NUMBER_OF_BUILDS=`find . -mindepth 1 -type f -name "*.tar.gz" -printf x | wc -c`
@@ -67,7 +67,7 @@ after_success:
   - find . -name '*.tar.gz' -type f -print0 | xargs -0 ls -tr | head -n $(echo "$NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1" | bc) | xargs rm
   - mv ../nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER*.tar.gz .
   - git add tmxparser-$VERSION-b$TRAVIS_BUILD_NUMBER*.tar.gz
-  - if [$TRAVIS_OS_NAME = osx || $TRAVIS_OS_NAME = linux && $MINGW_BUILD = false]; then git commit -a -m "Build success for $TRAVIS_OS_NAME, version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
+  - if [$TRAVIS_OS_NAME = osx] || [[$TRAVIS_OS_NAME = linux]] && [[[$MINGW_BUILD = false]]]; then git commit -a -m "Build success for $TRAVIS_OS_NAME, version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
   - if [$MINGW_BUILD = true]; then git commit -a -m "Build success for win, version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
   - git push origin $(git branch | grep \* | cut -d ' ' -f2)
 
