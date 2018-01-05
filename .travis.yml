@@ -37,7 +37,7 @@ script:
   #Build
   - premake4 gmake
   - nymph-generate
-  - make config=DEBUG
+  - make config=Debug
   - doxygen .
 
 after_success:
@@ -66,7 +66,7 @@ after_success:
   #Remove old builds over the amount allowed plus one for the new build
   - find . -name '*.tar.gz' -type f -print0 | xargs -0 ls -tr | head -n $(echo "$NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1" | bc) | xargs rm
   - mv ../nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER*.tar.gz .
-  - git add tmxparser-$VERSION-b$TRAVIS_BUILD_NUMBER*.tar.gz
+  - git add nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER*.tar.gz
   - if [[ ($TRAVIS_OS_NAME = osx) || ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then git commit -a -m "Build success for $TRAVIS_OS_NAME, version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
   - if [ $MINGW_BUILD = true ]; then git commit -a -m "Build success for win, version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
   - git push origin $(git branch | grep \* | cut -d ' ' -f2)
