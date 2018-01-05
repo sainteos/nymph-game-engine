@@ -12,7 +12,7 @@ solution "TileEngine"
     includedirs { "./include", "./src" }
 
     files { "**.h", "**.hpp", "**.cpp", "**.cc" }
-    excludes { "./test/**" }
+    excludes { "./test/**, ./deps/**" }
 
     configuration "WindowsDebug"
       buildoptions { "-std=c++11" }
