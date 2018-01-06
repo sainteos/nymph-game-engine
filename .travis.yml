@@ -35,6 +35,9 @@ install:
 
 script:
   #Build
+  - echo "WHERE ARE WE"
+  - pwd
+  - ls
   - nymph-generate
   - premake4 gmake
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then make config=linuxdebug; fi
