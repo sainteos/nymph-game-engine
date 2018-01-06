@@ -1,12 +1,12 @@
 #include <easylogging++.h>
-#define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
 #include "input/character_typed_event.h"
 #include "text_field.h"
 #include "events/event_type.h"
 #include "graphics/ui/suspend_key_input_event.h"
 #include "graphics/ui/resume_key_input_event.h"
 #include "utility/debug_command_event.h"
+#define GLFW_INCLUDE_GLCOREARB
+#include <GLFW/glfw3.h>
 
 namespace Graphics {
   namespace UI {
