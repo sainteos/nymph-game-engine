@@ -6,6 +6,7 @@ Welcome to the Nymph Game Engine codebase. This README is in progress. Doxygen g
 Nymph Game Engine is a C++ engine that uses chaiscript for game scripting. It uses tiled maps for levels and sprite animations. It uses a renderer that is OpenGL 3.3/GLSL 3.3 based, currently only 2D graphics are supported (though, I will not rule out that I won't touch 3D one day). It supports loading Tiled .tmx files, including support for lighting, and animations. It uses YSE for sound.
 
 ## Dependencies
+* [tinydir](https://github.com/cxong/tinydir)
 * [freetype2](https://www.freetype.org/)
 * [DevIL](https://github.com/DentonW/DevIL)
 * [png](http://www.libpng.org/pub/png/libpng.html)
