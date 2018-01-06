@@ -2,7 +2,7 @@
 #define FONT_GENERATOR_H
 #include <memory>
 #include <map>
-#include <ft2build.h>
+#include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 #include "graphics/ui/text.h"
 #include "graphics/ui/font.h"
