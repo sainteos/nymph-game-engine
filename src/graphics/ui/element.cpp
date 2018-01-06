@@ -1,6 +1,4 @@
 #include <easylogging++.h>
-#define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
 #include "element.h"
 #include "input/key_down_event.h"
 #include "input/key_up_event.h"
@@ -9,6 +7,8 @@
 #include "input/mouse_button_up_event.h"
 #include "input/mouse_cursor_event.h"
 #include "input/mouse_scroll_event.h"
+#define GLFW_INCLUDE_GLCOREARB
+#include <GLFW/glfw3.h>
 
 namespace Graphics {
   namespace UI {
