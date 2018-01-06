@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <sstream>
 #include <functional>
-#include <tmx/Tmx.h>
+#include <tmxparser/Tmx.h>
 #include "scene_generator.h"
 #include "graphics/renderable.h"
 #include "transform.h"
