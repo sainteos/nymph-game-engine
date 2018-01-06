@@ -20,9 +20,9 @@ sudo apt-get install lipbng-dev
 sudo apt-get install zlib1g-dev
 sudo apt-get install libdevil-dev
 
-# cd ..
-# mkdir deps
-# cd deps
+cd ..
+mkdir deps
+cd deps
 # git clone https://github.com/yvanvds/yse-soundengine
 # cd yse-soundengine
 # yes n | ./make_linux_release
@@ -38,7 +38,7 @@ cd ..
 
 git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/v6.0.0
-cmake -DBUILD_TESTING=false -DBUILD_MODULES=false . 
+cmake -DBUILD_TESTING=false -DBUILD_MODULES=false .
 make chaiscript_stdlib-6.0.0
 sudo mv libchaiscript_stdlib-6.0.0.so /usr/local/lib/
 sudo mv include/chaiscript /usr/local/include/chaiscript
