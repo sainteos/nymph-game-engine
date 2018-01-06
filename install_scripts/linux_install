@@ -23,7 +23,6 @@ cd yse-soundengine
 yes n | ./make_linux_release
 sudo make install
 cd ..
-pwd
 
 git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
     git checkout tags/6.0.0
@@ -31,17 +30,14 @@ cmake .
 make
 sudo make install
 cd ..
-pwd
 
 git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/v6.0.0
 cmake . -DBUILD_TESTING=false -DBUILD_MODULES=false
-pwd
-make
-pwd
+make chaiscript_stdlib-6.0.0
 sudo make install
 cd ..
-pwd
+
 git clone https://github.com/sainteos/tmxparser
 cd tmxparser
 mkdir build
