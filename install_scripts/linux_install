@@ -26,7 +26,7 @@ pwd
 
 git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
     git checkout tags/6.0.0
-cmake .
+cmake . -DBUILD_TESTING=false
 make
 sudo make install
 cd ..
