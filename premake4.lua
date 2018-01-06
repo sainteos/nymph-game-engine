@@ -29,15 +29,15 @@ solution "NymphGameEngine"
       targetextension ".out"
 
     configuration "LinuxDebug"
-      buildoptions { "-std=c++14", "-lstdc++",  "-g", "-O0", '-pthread' }
-      links {  "freetype", "yse", "glfw", "png", "z", "GL", "glew", "IL", "tmxparser", "chaiscript" }
+      buildoptions { "-std=c++14", "-g", "-O0", '-pthread' }
+      links {  "stdc++", "freetype", "yse", "glfw", "png", "z", "GL", "glew", "IL", "tmxparser", "chaiscript" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
 
     configuration "LinuxRelease"
-      buildoptions { "-std=c++14", "-lstdc++", "-pthread" }
-      links {  "freetype", "yse", "glfw", "png", "z", "GL", "glew", "IL", "tmxparser", "chaiscript" }
+      buildoptions { "-std=c++14", "-pthread" }
+      links {  "stdc++", "freetype", "yse", "glfw", "png", "z", "GL", "glew", "IL", "tmxparser", "chaiscript" }
       defines { "NDEBUG" }
       flags { "Optimize" }
       targetextension ".out"
