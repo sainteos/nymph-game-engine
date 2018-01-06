@@ -13,10 +13,9 @@ brew install zlib
 brew install devil
 brew install tinyxml2
 brew install chaiscript
-brew install tinydir
 
-# mkdir deps
-# cd deps
+mkdir deps
+cd deps
 # git clone https://github.com/yvanvds/yse-soundengine
 # cd yse-soundengine
 # yes n | ./make_mac_release
@@ -31,3 +30,6 @@ cmake ..
 make
 sudo make install
 cd .. && cd .. && cd ..
+
+#Get tinydir.h
+sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxong/tinydir/master/tinydir.h

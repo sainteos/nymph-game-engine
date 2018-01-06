@@ -53,5 +53,9 @@ make
 sudo make install
 cd
 
+#Get glcorearb.h
 sudo mkdir /usr/local/include/GL
 sudo wget -O /usr/local/include/GL/glcorearb.h https://www.khronos.org/registry/OpenGL/api/GL/glcorearb.h
+
+#Get tinydir.h
+sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxong/tinydir/master/tinydir.h
