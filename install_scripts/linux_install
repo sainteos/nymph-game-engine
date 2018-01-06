@@ -26,7 +26,7 @@ pwd
 
 git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
     git checkout tags/6.0.0
-cmake . -DBUILD_TESTING=false
+cmake .
 make
 sudo make install
 cd ..
@@ -34,7 +34,7 @@ pwd
 
 git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/6.0.0
-cmake .
+cmake . -DBUILD_TESTING=false
 pwd
 make
 pwd
