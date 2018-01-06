@@ -53,4 +53,4 @@ make
 sudo make install
 cd
 
-wget -O /usr/local/include/GL/glcorearb.h https://www.khronos.org/registry/OpenGL/api/GL/glcorearb.h
+sudo wget -O /usr/local/include/GL/glcorearb.h https://www.khronos.org/registry/OpenGL/api/GL/glcorearb.h
