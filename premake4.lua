@@ -15,41 +15,41 @@ solution "NymphGameEngine"
     excludes { "./test/**" }
 
     configuration "MacDebug"
-      buildoptions { "-std=c++14",  "-g", "-O0", '-pthread' }
-      links {  "freetype", "yse", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript" }
+      buildoptions { "-std=c++14",  "-g", "-O0", '-pthread', "`freetype-config --cflags`", "`freetype-config --libs`" }
+      links {  "yse", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
 
     configuration "MacRelease"
       buildoptions { "-std=c++14", "-pthread" }
-      links {  "freetype", "yse", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript" }
+      links {  "yse", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript", "`freetype-config --cflags`", "`freetype-config --libs`" }
       defines { "NDEBUG" }
       flags { "Optimize" }
       targetextension ".out"
 
     configuration "LinuxDebug"
-      buildoptions { "-stdlib=libc++", "-std=c++14", "-g", "-O0", '-pthread' }
+      buildoptions { "-stdlib=libc++", "-std=c++14", "-g", "-O0", '-pthread', "`freetype-config --cflags`", "`freetype-config --libs`" }
       links {  "freetype", "yse", "glew", "glfw", "png", "z", "GL", "IL", "tmxparser", "dl", "chaiscript_stdlib-6.0.0" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
 
     configuration "LinuxRelease"
-      buildoptions { "-stdlib=libc++", "-std=c++14", "-pthread" }
+      buildoptions { "-stdlib=libc++", "-std=c++14", "-pthread", "`freetype-config --cflags`", "`freetype-config --libs`" }
       links {  "freetype", "yse", "glew", "glfw", "png", "z", "GL",  "IL", "tmxparser", "dl", "chaiscript_stdlib-6.0.0" }
       defines { "NDEBUG" }
       flags { "Optimize" }
       targetextension ".out"
 
     configuration "WindowsDebug"
-      buildoptions { "-std=c++14" }
-      links { "freetype_win", "yse", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-5.8.5" }
+      buildoptions { "-std=c++14", "`freetype-config --cflags`", "`freetype-config --libs`" }
+      links { "yse", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-5.8.5" }
       defines { "DEBUG", "GLEW_STATIC" }
       targetextension ".exe"
 
     configuration "WindowsRelease"
-      buildoptions { "-std=c++14" }
-      links { "freetype_win", "yse", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-5.8.5" }
+      buildoptions { "-std=c++14", "`freetype-config --cflags`", "`freetype-config --libs`" }
+      links { "yse", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-5.8.5" }
       defines { "DEBUG", "GLEW_STATIC" }
       targetextension ".exe"
