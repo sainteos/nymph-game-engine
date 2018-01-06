@@ -11,7 +11,7 @@
 #else
 #include <GL/glew.h>
 #endif
-#define GLFW_INCLUDE_NONE
+#define GLFW_INCLUDE_GLCOREARB
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "graphics/renderable.h"
