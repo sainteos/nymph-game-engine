@@ -33,8 +33,8 @@ cd ..
 pwd
 
 git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
-    git checkout tags/6.0.0
-cmake . -DBUILD_TESTING=false
+    git checkout tags/v6.0.0
+cmake . -DBUILD_TESTING=false -DBUILD_MODULES=false
 pwd
 make
 pwd
