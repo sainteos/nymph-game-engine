@@ -10,7 +10,7 @@
 #include "input/key_up_event.h"
 #include "graphics/ui/change_text_event.h"
 #define GLFW_INCLUDE_GLCOREARB
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 #include <chaiscript/chaiscript.hpp>
 #include <chaiscript/utility/utility.hpp>
 

@@ -1,6 +1,6 @@
 #include <easylogging++.h>
 #define GLFW_INCLUDE_GLCOREARB
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 #include "input/character_typed_event.h"
 #include "text_field.h"
 #include "events/event_type.h"
