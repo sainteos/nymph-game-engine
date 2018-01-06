@@ -3,7 +3,7 @@
 #include <memory>
 #include <map>
 #include <freetype2/ft2build.h>
-#include FT_FREETYPE_H
+#include <freetype2/freetype.h>
 #include "graphics/ui/text.h"
 #include "graphics/ui/font.h"
 //= SCRIPTABLE
