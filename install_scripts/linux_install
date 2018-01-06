@@ -1,5 +1,6 @@
 #Add glfw3 repository
-sudo add-apt-repository -s -y http://ppa.launchpad.net/keithw/glfw3/ubuntu
+sudo add-apt-repository ppa:keithw/glfw3
+sudo apt-get update
 
 #Install development dependencies
 sudo apt-get install libc++1
