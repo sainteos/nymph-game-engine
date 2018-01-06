@@ -1,23 +1,18 @@
 #ifndef SOUND_INSTANCE_H
 #define SOUND_INSTANCE_H
-#include <yse/yse.hpp>
+//#include <yse/yse.hpp>
 #include <memory>
 #include "component.h"
-
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Component
-
 
 namespace Sound {
   class SoundInstance : public Component {
     private:
-      std::shared_ptr<YSE::sound> sound;
+      //std::shared_ptr<YSE::sound> sound;
     public:
       SoundInstance() = delete;
       virtual ~SoundInstance() = default;
 
-      //= BEGIN SCRIPTABLE
-      SoundInstance(std::shared_ptr<YSE::sound> sound);
+      //SoundInstance(std::shared_ptr<YSE::sound> sound);
 
       void play();
       bool isPlaying() const noexcept;
@@ -26,7 +21,6 @@ namespace Sound {
       void setLooping(const bool looping);
       bool isLooping() const noexcept;
 
-      //= END SCRIPTABLE
 
       virtual void onStart() override;
       virtual bool onUpdate(const double delta) override;

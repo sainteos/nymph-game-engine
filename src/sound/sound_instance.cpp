@@ -1,5 +1,5 @@
 #include "sound_instance.h"
-
+/*
 namespace Sound {
   SoundInstance::SoundInstance(std::shared_ptr<YSE::sound> sound) : sound(sound) {
   }
@@ -52,3 +52,4 @@ namespace Sound {
     return 43434;
   }
 }
+*/

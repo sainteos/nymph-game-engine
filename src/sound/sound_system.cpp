@@ -1,6 +1,6 @@
 #include <easylogging++.h>
 #include "sound_system.h"
-
+/*
 namespace Sound {
 
   SoundSystem::SoundSystem(const std::string sounds_location) : sounds_location(sounds_location) {
@@ -41,3 +41,4 @@ namespace Sound {
     YSE::System().close();
   }
 }
+*/

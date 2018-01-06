@@ -16,7 +16,7 @@
 #include "utility/debug_parser.h"
 #include "graphics/ui/text_area.h"
 #include "script/scripting_system.h"
-#include "sound/sound_system.h"
+//#include "sound/sound_system.h"
 
 //= SCRIPTABLE
 
@@ -34,7 +34,7 @@ class Engine : public std::enable_shared_from_this<Engine> {
     std::shared_ptr<Graphics::TextureManager> texture_manager;
     std::shared_ptr<Utility::ConfigManager> config_manager;
     std::shared_ptr<Script::ScriptingSystem> scripting_system;
-    std::shared_ptr<Sound::SoundSystem> sound_system;
+    //std::shared_ptr<Sound::SoundSystem> sound_system;
 
     //Bool represents if the scene is active;
     std::map<std::shared_ptr<Game::Scene>, bool> scenes;
