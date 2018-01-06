@@ -8,12 +8,13 @@ gem install nymph-generate
 
 #Install build dependencies
 sudo apt-get install libfreetype6
-sudo apt-get install libglfw
-sudo apt-get install libglew
-sudo apt-get isntall lipbng
-sudo apt-get install libz
-sudo apt-get install libdevil
-sudo apt-get install libjuce0
+sudo apt-get install libglfw3
+sudo apt-get install libglfw3-dev
+sudo apt-get install libglew2.0
+sudo apt-get install libglew-dev
+sudo apt-get isntall lipbng-dev
+sudo apt-get install zlib1g-dev
+sudo apt-get install libdevil-dev
 
 cd ..
 mkdir deps
