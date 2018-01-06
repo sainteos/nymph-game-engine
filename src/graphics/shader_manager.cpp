@@ -3,7 +3,7 @@
 #ifdef __APPLE__
 #include <OpenGL/gl3.h>
 #else
-#include <glew.h>
+#include <GL/glew.h>
 #endif
 #include "shader_manager.h"
 #include "exceptions/invalid_filename_exception.h"
