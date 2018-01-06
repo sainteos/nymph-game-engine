@@ -1,6 +1,6 @@
 #ifndef MAP_H
 #define MAP_H
-#include <tmx/Tmx.h>
+#include <tmxparser/Tmx.h>
 
 //= SCRIPTABLE
 
