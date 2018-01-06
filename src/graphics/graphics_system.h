@@ -10,8 +10,8 @@
 #include <OpenGL/gl3.h>
 #else
 #include <GL/glew.h>
-#define GLFW_INCLUDE_NONE
 #endif
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "graphics/renderable.h"
