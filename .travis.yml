@@ -26,7 +26,7 @@ before_install:
   - git config user.email "adaleigh.martin@gmail.com"
   - echo "Building Version $VERSION"
   - echo "Build Number $TRAVIS_BUILD_NUMBER"
-  - echo "deb http://ppa.launchpad.net/keithw/glfw3/ubuntu trusty main" >> /etc/apt/sources.list
+  - sudo echo "deb http://ppa.launchpad.net/keithw/glfw3/ubuntu trusty main" >> /etc/apt/sources.list
 
 install:
   #Install Libraries
