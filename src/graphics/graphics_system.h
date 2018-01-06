@@ -10,7 +10,7 @@
 #include <OpenGL/gl3.h>
 #else
 #include <GL/glew.h>
-#define GLFW_INCLUDE_GLCOREARB
+#define GLFW_INCLUDE_NONE
 #endif
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
