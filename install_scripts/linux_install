@@ -1,5 +1,5 @@
 sudo apt-get install software-properties-common
-sudo add-apt-repository deb http://ppa.launchpad.net/keithw/glfw3/ubuntu
+sudo add-apt-repository http://ppa.launchpad.net/keithw/glfw3/ubuntu
 
 #Install development dependencies
 sudo apt-get install libc++1
