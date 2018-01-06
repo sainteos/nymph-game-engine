@@ -9,6 +9,7 @@ sudo apt-get install premake4
 sudo apt-get install doxygen
 gem install nymph-generate
 
+
 #Install build dependencies
 sudo apt-get install libfreetype6-dev
 sudo apt-get install libglfw3-dev
