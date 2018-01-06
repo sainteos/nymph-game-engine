@@ -20,14 +20,14 @@ sudo apt-get install lipbng-dev
 sudo apt-get install zlib1g-dev
 sudo apt-get install libdevil-dev
 
-cd ..
-mkdir deps
-cd deps
-git clone https://github.com/yvanvds/yse-soundengine
-cd yse-soundengine
-yes n | ./make_linux_release
-sudo make install
-cd ..
+# cd ..
+# mkdir deps
+# cd deps
+# git clone https://github.com/yvanvds/yse-soundengine
+# cd yse-soundengine
+# yes n | ./make_linux_release
+# sudo make install
+# cd ..
 
 git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
     git checkout tags/6.0.0
