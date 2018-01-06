@@ -35,7 +35,8 @@ git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/v6.0.0
 cmake . -DBUILD_TESTING=false -DBUILD_MODULES=false
 make chaiscript_stdlib-6.0.0
-sudo make install
+sudo mv chaiscript_stdlib-6.0.0.so /usr/local/lib/
+sudo mv include /usr/local/include/
 cd ..
 
 git clone https://github.com/sainteos/tmxparser
