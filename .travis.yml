@@ -36,7 +36,6 @@ install:
 script:
   #Build
   - nymph-generate
-  - echo $PATH
   - premake4 gmake
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then make config=linuxdebug; fi
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then make config=windowsdebug; fi
