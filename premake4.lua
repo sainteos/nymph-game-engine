@@ -29,14 +29,14 @@ solution "NymphGameEngine"
       targetextension ".out"
 
     configuration "LinuxDebug"
-      buildoptions { "-stdlib=libc++", "-std=c++14", "-g", "-O0", '-pthread', "`freetype-config --cflags`" }
+      buildoptions { "-std=c++14", "-stdlib=libc++", "-g", "-O0", '-pthread', "`freetype-config --cflags`" }
       links {  "freetype", "glfw", "png", "z", "GLEW", "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "dl", "GL", "pthread" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
 
     configuration "LinuxRelease"
-      buildoptions { "-stdlib=libc++", "-std=c++14", "-pthread", "`freetype-config --cflags`" }
+      buildoptions { "-std=c++14", "-stdlib=libc++", "-pthread", "`freetype-config --cflags`" }
       links {  "freetype", "glfw", "png", "z", "GLEW",  "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "dl", "GL", "pthread" }
       defines { "NDEBUG" }
       flags { "Optimize" }
