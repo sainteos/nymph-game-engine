@@ -29,7 +29,7 @@ solution "NymphGameEngine"
       targetextension ".out"
 
     configuration "LinuxDebug"
-      buildoptions { "-std=c++14", "-stdlib=libc++", "-g", "-O0", "-isystem", "-pthread", "`freetype-config --cflags`" }
+      buildoptions { "-std=c++14", "-stdlib=libc++", "-g", "-O0", "-pthread", "`freetype-config --cflags`" }
       linkoptions { "-stdlib=libc++" }
       links {  "freetype", "glfw", "png", "GLEW", "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "z", "dl", "GL", "pthread" }
       defines { "DEBUG" }
@@ -37,7 +37,7 @@ solution "NymphGameEngine"
       targetextension ".out"
 
     configuration "LinuxRelease"
-      buildoptions { "-std=c++14", "-stdlib=libc++",  "-isystem", "-pthread", "`freetype-config --cflags`" }
+      buildoptions { "-std=c++14", "-stdlib=libc++", "-pthread", "`freetype-config --cflags`" }
       linkoptions { "-stdlib=libc++" }
       links {  "freetype", "glfw", "png", "GLEW", "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "z", "dl", "GL", "pthread" }
       defines { "NDEBUG" }
