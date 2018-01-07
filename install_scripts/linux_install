@@ -27,6 +27,11 @@ cd deps
 # sudo make install
 # cd ..
 
+git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
+python amalgamate.py
+mv dist/json* /usr/local/include/
+cd ..
+
 git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
     git checkout tags/6.0.0
 cmake .
