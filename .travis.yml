@@ -37,7 +37,7 @@ script:
   #Build
   - nymph-generate
   - echo $PATH
-  - export PATH="$PATH:/usr/include/c++/4.9/" && premake4 gmake
+  - premake4 gmake
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then make config=linuxdebug; fi
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then make config=windowsdebug; fi
   - if [ $TRAVIS_OS_NAME = osx ]; then make config=macdebug; fi
