@@ -51,7 +51,7 @@ git clone https://github.com/sainteos/tmxparser
 cd tmxparser
 mkdir build
 cd build
-cmake ..
+cmake -DLIB_CFLAGS="-stdlib=libc++":LIB_CFLAGS ..
 make
 sudo make install
 cd
