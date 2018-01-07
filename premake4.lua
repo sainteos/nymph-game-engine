@@ -1,7 +1,7 @@
 #!lua
 
 solution "NymphGameEngine"
-  configurations { "Debug", "Release", "WindowsDebug", "WindowsRelease", "LinuxDebug", "LinuxRelease" }
+  configurations { "MacDebug", "MacRelease", "WindowsDebug", "WindowsRelease", "LinuxDebug", "LinuxRelease" }
 
   project "NymphGameEngine"
     kind "ConsoleApp"
