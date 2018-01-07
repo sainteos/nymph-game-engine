@@ -24,7 +24,7 @@ cd deps
 
 git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
 python amalgamate.py
-mv dist/json* /usr/local/include/
+sudo mv dist/json* /usr/local/include/
 cd ..
 
 
