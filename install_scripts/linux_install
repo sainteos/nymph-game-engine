@@ -3,7 +3,6 @@ sudo add-apt-repository -y ppa:keithw/glfw3
 sudo apt-get -qq -y update
 
 #Install development dependencies
-sudo apt-get install libc++1
 sudo apt-get install lua
 sudo apt-get install premake4
 sudo apt-get install doxygen
@@ -51,7 +50,7 @@ git clone https://github.com/sainteos/tmxparser
 cd tmxparser
 mkdir build
 cd build
-cmake -DLIB_CFLAGS="-stdlib=libc++":LIB_CFLAGS ..
+cmake ..
 make
 sudo make install
 cd
