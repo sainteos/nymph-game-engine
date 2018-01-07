@@ -18,14 +18,14 @@ solution "NymphGameEngine"
       buildoptions { "-std=c++14",  "-g", "-O0", '-pthread', "`freetype-config --cflags`" }
       links {  "freetype", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript" }
       defines { "DEBUG" }
-      flags { "Symbols", "C++14" }
+      flags { "Symbols" }
       targetextension ".out"
 
     configuration "MacRelease"
       buildoptions { "-std=c++14", "-pthread" }
       links {  "freetype", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript", "`freetype-config --cflags`" }
       defines { "NDEBUG" }
-      flags { "Optimize", "C++14" }
+      flags { "Optimize" }
       targetextension ".out"
 
     configuration "LinuxDebug"
@@ -41,7 +41,7 @@ solution "NymphGameEngine"
       linkoptions { "-stdlib=libc++" }
       links {  "freetype", "glfw", "png", "z", "GLEW",  "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "dl", "GL", "pthread" }
       defines { "NDEBUG" }
-      flags { "Optimize", "C++14" }
+      flags { "Optimize" }
       targetextension ".out"
 
     configuration "WindowsDebug"
