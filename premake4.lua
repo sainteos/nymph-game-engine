@@ -18,28 +18,28 @@ solution "NymphGameEngine"
       buildoptions { "-std=c++14",  "-g", "-O0", '-pthread', "`freetype-config --cflags`" }
       links {  "freetype", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript" }
       defines { "DEBUG" }
-      flags { "Symbols" }
+      flags { "Symbols", "C++14" }
       targetextension ".out"
 
     configuration "MacRelease"
       buildoptions { "-std=c++14", "-pthread" }
       links {  "freetype", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript", "`freetype-config --cflags`" }
       defines { "NDEBUG" }
-      flags { "Optimize" }
+      flags { "Optimize", "C++14" }
       targetextension ".out"
 
     configuration "LinuxDebug"
-      buildoptions { "-std=c++14", "-stdlib=libc++", "-g", "-O0", '-pthread', "`freetype-config --cflags`" }
-      links {  "freetype", "glfw", "png", "z", "GLEW", "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "dl", "GL", "pthread" }
+      buildoptions { "-stdlib=libc++", "-g", "-O0", "-pthread", "`freetype-config --cflags`" }
+      links {  "freetype", "glfw", "png", "z", "GLEW", "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "dl", "GL", "pthread", "c++" }
       defines { "DEBUG" }
-      flags { "Symbols" }
+      flags { "Symbols", "C++14" }
       targetextension ".out"
 
     configuration "LinuxRelease"
-      buildoptions { "-std=c++14", "-stdlib=libc++", "-pthread", "`freetype-config --cflags`" }
-      links {  "freetype", "glfw", "png", "z", "GLEW",  "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "dl", "GL", "pthread" }
+      buildoptions { "-stdlib=libc++", "-pthread", "`freetype-config --cflags`" }
+      links {  "freetype", "glfw", "png", "z", "GLEW",  "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "dl", "GL", "pthread", "c++" }
       defines { "NDEBUG" }
-      flags { "Optimize" }
+      flags { "Optimize", "C++14" }
       targetextension ".out"
 
     configuration "WindowsDebug"
