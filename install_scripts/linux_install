@@ -29,7 +29,7 @@ cd deps
 
 git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
 python amalgamate.py
-sudo mv dist/json* /usr/local/include/
+sudo mv dist/json* ../../nymph-game-engine/include/
 cd ..
 
 git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
