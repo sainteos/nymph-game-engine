@@ -3,7 +3,9 @@ sudo add-apt-repository -y ppa:keithw/glfw3
 sudo apt-get -qq -y update
 
 #Install development dependencies
-sudo apt-get install libstdc++6
+sudo apt-get install libc++-dev
+sudo apt-get remove libstdc++-4.8-dev
+sudo apt-get remove libstdc++6
 sudo apt-get install lua
 sudo apt-get install premake4
 sudo apt-get install doxygen
