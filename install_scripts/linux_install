@@ -53,8 +53,7 @@ mkdir build
 cd build
 cmake ..
 make
-sudo mv libtmxparser.so /usr/local/lib/
-sudo mv include/tmxparser /usr/local/include/tmxparser
+sudo make install
 cd
 
 #Get glcorearb.h
