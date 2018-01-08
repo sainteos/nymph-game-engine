@@ -1,6 +1,3 @@
-#Get all the brew
-git -C "$(brew --repo homebrew/core)" fetch --unshallow
-
 #Install development dependencies
 brew install lua
 brew install premake
@@ -27,11 +24,8 @@ cd deps
 
 git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
 python amalgamate.py
-ls
-pwd
 mv dist/json ../../nymph-game-engine/include/json
 mv dist/jsoncpp.cpp ../../nymph-game-engine/include/
-ls
 cd ..
 
 git clone https://github.com/sainteos/tmxparser
