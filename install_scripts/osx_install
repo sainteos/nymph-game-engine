@@ -2,6 +2,7 @@
 brew install lua
 brew install premake
 brew install doxygen
+brew install find-utils
 gem install nymph-generate
 
 #Install build dependencies
