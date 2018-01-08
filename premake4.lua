@@ -16,14 +16,14 @@ solution "NymphGameEngine"
 
     configuration "MacDebug"
       buildoptions { "-std=c++14",  "-g", "-O0", '-pthread', "`freetype-config --cflags`" }
-      links {  "freetype", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "dl" }
+      links {  "freetype", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "dl" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
 
     configuration "MacRelease"
       buildoptions { "-std=c++14", "-pthread" }
-      links {  "freetype", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "chaiscript_stdlib-6.0.0", "dl", "`freetype-config --cflags`" }
+      links {  "freetype", "glfw", "png", "z", "OpenGL.framework", "glew", "IL", "tmxparser", "dl", "`freetype-config --cflags`" }
       defines { "NDEBUG" }
       flags { "Optimize" }
       targetextension ".out"
