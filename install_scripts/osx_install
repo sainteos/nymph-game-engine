@@ -8,7 +8,7 @@ gem install nymph-generate
 brew install freetype
 brew install glfw
 brew install glew
-brew isntall lipbng
+brew install lipbng
 brew install devil
 brew install tinyxml2
 brew install chaiscript
