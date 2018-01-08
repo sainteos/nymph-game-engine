@@ -11,7 +11,6 @@ brew install glew
 brew install libpng
 brew install devil
 brew install tinyxml2
-brew install chaiscript
 
 cd ..
 mkdir deps
@@ -22,10 +21,21 @@ cd deps
 # sudo make install
 # cd ..
 
+git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
+    git checkout tags/v6.0.0
+cmake -DBUILD_TESTING=false -DBUILD_MODULES=false -DBUILD_SHARED_LIBS=ON .
+make chaiscript_stdlib-6.0.0
+sudo mv libchaiscript_stdlib-6.0.0.dylib /usr/local/lib/
+sudo mv include/chaiscript /usr/local/include/chaiscript
+cd ..
+
 git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
 python amalgamate.py
+ls
+pwd
 mv dist/json ../../nymph-game-engine/include/json
 mv dist/jsoncpp.cpp ../../nymph-game-engine/include/
+ls
 cd ..
 
 git clone https://github.com/sainteos/tmxparser
