@@ -1,6 +1,6 @@
 #Install development dependencies
 brew install lua
-brew install premake4
+brew install premake
 brew install doxygen
 gem install nymph-generate
 
@@ -9,7 +9,6 @@ brew install freetype
 brew install glfw
 brew install glew
 brew isntall lipbng
-brew install zlib
 brew install devil
 brew install tinyxml2
 brew install chaiscript
