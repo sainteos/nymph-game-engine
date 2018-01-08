@@ -1,1 +1,73 @@
-echo "WIN INSTALL SCRIPTS NOT CONFIGURED!"
+#Add glfw3 repository
+sudo add-apt-repository -y ppa:keithw/glfw3
+sudo apt-get -qq -y update
+
+#Install mingw for compiling
+sudo apt-get install mingw-w64
+sudo apt-get install mingw-w64-x86-64-dev
+sudo apt-get install binutils-mingw-w64-x86-64
+
+export CC=gcc-mingw-w64
+export CXX=g++-mingw-w64
+export AR=ar-mingw-w64
+export LD=ld-mingw-64
+
+#Install development dependencies
+sudo apt-get install lua
+sudo apt-get install premake4
+sudo apt-get install doxygen
+gem install nymph-generate
+
+
+#Install build dependencies
+sudo apt-get install libfreetype6-dev
+sudo apt-get install libglfw3-dev
+sudo apt-get install libglew-dev
+sudo apt-get install lipbng-dev
+sudo apt-get install zlib1g-dev
+sudo apt-get install libdevil-dev
+
+cd ..
+mkdir deps
+cd deps
+# git clone https://github.com/yvanvds/yse-soundengine
+# cd yse-soundengine
+# yes n | ./make_linux_release
+# sudo make install
+# cd ..
+
+git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
+python amalgamate.py
+sudo mv dist/json* ../../nymph-game-engine/include/
+cd ..
+
+git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
+    git checkout tags/6.0.0
+cmake .
+make
+sudo make install
+cd ..
+
+git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
+    git checkout tags/v6.0.0
+cmake -DBUILD_TESTING=false -DBUILD_MODULES=false -DUSE_LIBCXX=false .
+make chaiscript_stdlib-6.0.0
+sudo mv libchaiscript_stdlib-6.0.0.so /usr/local/lib/
+sudo mv include/chaiscript /usr/local/include/chaiscript
+cd ..
+
+git clone https://github.com/sainteos/tmxparser
+cd tmxparser
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+cd
+
+#Get glcorearb.h
+sudo mkdir /usr/local/include/GL
+sudo wget -O /usr/local/include/GL/glcorearb.h https://www.khronos.org/registry/OpenGL/api/GL/glcorearb.h
+
+#Get tinydir.h
+sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxong/tinydir/master/tinydir.h
