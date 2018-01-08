@@ -1,3 +1,6 @@
+#Get all the brew
+git -C "$(brew --repo homebrew/core)" fetch --unshallow
+
 #Install development dependencies
 brew install lua
 brew install premake
@@ -13,6 +16,7 @@ brew install devil
 brew install tinyxml2
 brew install chaiscript
 
+cd ..
 mkdir deps
 cd deps
 # git clone https://github.com/yvanvds/yse-soundengine
