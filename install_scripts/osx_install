@@ -23,9 +23,12 @@ cd deps
 
 git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
 python amalgamate.py
-mv dist/json* ../../nymph-game-engine/include/
+ls
+pwd
+mv dist/json ../../nymph-game-engine/include/json
+mv dist/jsoncpp.cpp ../../nymph-game-engine/include/
+ls
 cd ..
-
 
 git clone https://github.com/sainteos/tmxparser
 cd tmxparser
