@@ -6,10 +6,6 @@ branches:
 git:
   depth: false
 
-os:
-  - osx
-  - linux
-
 matrix:
   include:
     - os: osx
