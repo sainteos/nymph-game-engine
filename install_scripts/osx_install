@@ -23,7 +23,7 @@ cd deps
 
 git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
 python amalgamate.py
-sudo mv dist/json* ../../nymph-game-engine/include
+sudo mv dist/json* ../../nymph-game-engine/include/
 cd ..
 
 
