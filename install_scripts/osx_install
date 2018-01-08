@@ -14,6 +14,7 @@ brew install glew
 brew install libpng
 brew install devil
 brew install tinyxml2
+brew install chaiscript
 
 cd ..
 mkdir deps
@@ -23,14 +24,6 @@ cd deps
 # yes n | ./make_mac_release
 # sudo make install
 # cd ..
-
-git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
-    git checkout tags/v6.0.0
-cmake -DBUILD_TESTING=false -DBUILD_MODULES=false .
-make chaiscript_stdlib-6.0.0
-sudo mv libchaiscript_stdlib-6.0.0.so /usr/local/lib/
-sudo mv include/chaiscript /usr/local/include/chaiscript
-cd ..
 
 git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
 python amalgamate.py
