@@ -11,7 +11,7 @@ gem install nymph-generate
 brew install freetype
 brew install glfw
 brew install glew
-brew install lipbng
+brew install libpng
 brew install devil
 brew install tinyxml2
 
@@ -28,7 +28,7 @@ git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/v6.0.0
 cmake -DBUILD_TESTING=false -DBUILD_MODULES=false .
 make chaiscript_stdlib-6.0.0
-sudo mv libchaiscript_stdlib-6.0.0.so /usr/local/lib/
+sudo mv libchaiscript_stdlib-6.0.0.dylib /usr/local/lib/
 sudo mv include/chaiscript /usr/local/include/chaiscript
 cd ..
 
