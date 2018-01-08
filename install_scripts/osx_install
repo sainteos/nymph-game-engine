@@ -28,7 +28,7 @@ git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/v6.0.0
 cmake -DBUILD_TESTING=false -DBUILD_MODULES=false .
 make chaiscript_stdlib-6.0.0
-sudo mv libchaiscript_stdlib-6.0.0.dylib /usr/local/lib/
+sudo mv libchaiscript_stdlib-6.0.0.a /usr/local/lib/
 sudo mv include/chaiscript /usr/local/include/chaiscript
 cd ..
 
