@@ -1,26 +1,3 @@
-#Add glfw3 repository
-sudo add-apt-repository -y ppa:keithw/glfw3
-sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-sudo apt-get -qq -y update
-
-#Install mingw for compiling
-sudo apt-get install libstdc++-5-dev
-
-#Install development dependencies
-sudo apt-get install lua
-sudo apt-get install premake4
-sudo apt-get install doxygen
-gem install nymph-generate
-
-
-#Install build dependencies
-sudo apt-get install libfreetype6-dev
-sudo apt-get install libglfw3-dev
-sudo apt-get install libglew-dev
-sudo apt-get install lipbng-dev
-sudo apt-get install zlib1g-dev
-sudo apt-get install libdevil-dev
-
 cd ..
 mkdir deps
 cd deps
@@ -65,7 +42,3 @@ sudo wget -O /usr/local/include/GL/glcorearb.h https://www.khronos.org/registry/
 
 #Get tinydir.h
 sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxong/tinydir/master/tinydir.h
-
-sudo apt-get install mingw-w64
-sudo apt-get install mingw-w64-x86-64-dev
-sudo apt-get install binutils-mingw-w64-x86-64

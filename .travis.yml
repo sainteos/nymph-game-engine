@@ -1,5 +1,4 @@
 language: cpp
-compiler: clang
 sudo: true
 branches:
   only: travis
@@ -9,10 +8,46 @@ git:
 matrix:
   include:
     - os: osx
+      compiler: clang++
+
     - os: linux
+      compiler: clang++
       env: MINGW_BUILD=false
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - keithw-glfw3
+          packages:
+            - libstdc++-5-dev
+            - premake4
+            - libfreetype6-dev
+            - libglfw3-dev
+            - libglew-dev
+            - libpng-dev
+            - zlib1g-dev
+            - libdevil-dev
+
     - os: linux
+      compiler: x86_64-w64-mingw32-g++
       env: MINGW_BUILD=true
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - keithw-glfw3
+          packages:
+            - mingw-w64
+            - mingw-w64-x86-64-dev
+            - binutils-mingw-w64-x86-64
+            - libstdc++-5-dev
+            - premake4
+            - libfreetype6-dev
+            - libglfw3-dev
+            - libglew-dev
+            - libpng-dev
+            - zlib1g-dev
+            - libdevil-dev
 
 
 before_install:
