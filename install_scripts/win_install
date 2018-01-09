@@ -5,14 +5,6 @@ sudo apt-get -qq -y update
 
 #Install mingw for compiling
 sudo apt-get install libstdc++-5-dev
-sudo apt-get install mingw-w64
-sudo apt-get install mingw-w64-x86-64-dev
-sudo apt-get install binutils-mingw-w64-x86-64
-
-export CC=x86_64-w64-mingw32-gcc
-export CXX=x86_64-w64-mingw32-g++
-export AR=x86_64-w64-mingw32-ar
-export LD=x86_64-w64-mingw32-ld
 
 #Install development dependencies
 sudo apt-get install lua
@@ -73,3 +65,12 @@ sudo wget -O /usr/local/include/GL/glcorearb.h https://www.khronos.org/registry/
 
 #Get tinydir.h
 sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxong/tinydir/master/tinydir.h
+
+sudo apt-get install mingw-w64
+sudo apt-get install mingw-w64-x86-64-dev
+sudo apt-get install binutils-mingw-w64-x86-64
+
+export CC=x86_64-w64-mingw32-gcc
+export CXX=x86_64-w64-mingw32-g++
+export AR=x86_64-w64-mingw32-ar
+export LD=x86_64-w64-mingw32-ld
