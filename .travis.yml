@@ -42,7 +42,7 @@ script:
   - nymph-generate
   - premake4 gmake
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then make config=linuxdebug; fi
-  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then make config=windowsdebug; fi
+  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then export CC=x86_64-w64-mingw32-gcc && export CXX=x86_64-w64-mingw32-g++ && export AR=x86_64-w64-mingw32-ar && export LD=x86_64-w64-mingw32-ld && make config=windowsdebug; fi
   - if [ $TRAVIS_OS_NAME = osx ]; then make config=macdebug; fi
 
 after_success:

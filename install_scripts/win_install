@@ -69,8 +69,3 @@ sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxon
 sudo apt-get install mingw-w64
 sudo apt-get install mingw-w64-x86-64-dev
 sudo apt-get install binutils-mingw-w64-x86-64
-
-export CC=x86_64-w64-mingw32-gcc
-export CXX=x86_64-w64-mingw32-g++
-export AR=x86_64-w64-mingw32-ar
-export LD=x86_64-w64-mingw32-ld
