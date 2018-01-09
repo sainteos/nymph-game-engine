@@ -1,12 +1,23 @@
+#Put deps in own folder
 cd ..
 mkdir deps
 cd deps
+
+# Get new version of mingw!
+sudo wget https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v5.0.3.tar.bz2
+tar jxfv mingw-w64-v5.0.3.tar.bz2
+cd mingw-w64-v5.0.3
+./configure
+make
+sudo make install
+cd ..
+
+gem install nymph-generate
 # git clone https://github.com/yvanvds/yse-soundengine
 # cd yse-soundengine
 # yes n | ./make_linux_release
 # sudo make install
 # cd ..
-
 git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
 python amalgamate.py
 sudo mv dist/json* ../../nymph-game-engine/include/
