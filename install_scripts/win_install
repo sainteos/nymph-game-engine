@@ -47,7 +47,7 @@ git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
 cmake -DBUILD_TESTING=false -DBUILD_MODULES=false -DUSE_LIBCXX=false .
 make chaiscript_stdlib-6.0.0
 sudo mv libchaiscript_stdlib-6.0.0.so /usr/local/lib/
-sudo mv include/chaiscript /usr/local/include/chaiscript
+sudo mv include/chaiscript ../../nymph-game-engine/include/chaiscript
 cd ..
 
 git clone https://github.com/sainteos/tmxparser
