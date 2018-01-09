@@ -29,7 +29,7 @@ matrix:
             - libdevil-dev
 
     - os: linux
-      compiler: g++-5-mingw-w64
+      compiler: g++-mingw-w64
       env: MINGW_BUILD=true
       addons:
         apt:
@@ -38,6 +38,7 @@ matrix:
             - sourceline: ppa:keithw/glfw3
           packages:
             - premake4
+            - libstdc++-5-dev
             - libfreetype6-dev
             - libglfw3-dev
             - libglew-dev
