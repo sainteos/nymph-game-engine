@@ -29,7 +29,7 @@ matrix:
             - libdevil-dev
 
     - os: linux
-      compiler: x86_64-w64-mingw32-g++
+      compiler: g++-5-mingw-w64
       env: MINGW_BUILD=true
       addons:
         apt:
