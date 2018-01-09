@@ -36,8 +36,9 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
             - sourceline: ppa:keithw/glfw3
+            - sourceline: ppa:adrozdoff/mingw
           packages:
-            - libstdc++-5-dev
+            - gcc-5-mingw-w64
             - premake4
             - libfreetype6-dev
             - libglfw3-dev
