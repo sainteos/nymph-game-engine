@@ -17,7 +17,7 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - keithw-glfw3
+            - sourceline: ppa:keithw/glfw3
           packages:
             - libstdc++-5-dev
             - premake4
@@ -35,7 +35,7 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - keithw-glfw3
+            - sourceline: ppa:keithw/glfw3
           packages:
             - mingw-w64
             - mingw-w64-x86-64-dev
