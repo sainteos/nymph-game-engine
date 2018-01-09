@@ -43,13 +43,13 @@ solution "NymphGameEngine"
       targetextension ".out"
 
     configuration "WindowsDebug"
-      buildoptions { "-std=c++14", "`freetype-config --cflags`" }
-      links { "freetype", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-5.8.5" }
+      buildoptions { "-stdlib=libstdc++", "-std=c++14", "`freetype-config --cflags`" }
+      links { "freetype", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-6.0.0" }
       defines { "DEBUG", "GLEW_STATIC" }
       targetextension ".exe"
 
     configuration "WindowsRelease"
-      buildoptions { "-std=c++14", "`freetype-config --cflags`" }
-      links { "freetype", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-5.8.5" }
+      buildoptions { "-stdlib=libstdc++", "-std=c++14", "`freetype-config --cflags`" }
+      links { "freetype", "glfw3", "gdi32", "glew32s", "opengl32", "png", "z", "DevIL", "chaiscript_stdlib-6.0.0" }
       defines { "DEBUG", "GLEW_STATIC" }
       targetextension ".exe"
