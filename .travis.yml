@@ -48,6 +48,7 @@ matrix:
 
 
 before_install:
+  - sudo rm /etc/apt/sources.list.d/mongodb-3.2.list
   - export VERSION=$(git describe --always --tags --abbrev=0)
   #Update package managers
   - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get -qq -y update; fi
