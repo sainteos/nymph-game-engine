@@ -4,6 +4,7 @@ brew install premake
 brew install doxygen
 brew install find-utils
 gem install nymph-generate
+npm install --global create-dmg
 
 #Install build dependencies
 brew install freetype
@@ -21,6 +22,12 @@ cd deps
 # yes n | ./make_mac_release
 # sudo make install
 # cd ..
+
+git clone https://github.com/auriamg/macdylibbundler.git
+cd macdylibbundler
+make_s
+sudo make install
+cd ..
 
 git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/v6.0.0
@@ -46,7 +53,7 @@ cd build
 cmake ..
 make
 sudo make install
-cd .. && cd .. && cd ..
+cd .. && cd .. && cd nymph-game-engine
 
 #Get tinydir.h
 sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxong/tinydir/master/tinydir.h

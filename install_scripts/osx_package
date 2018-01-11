@@ -1,0 +1,27 @@
+mkdir -p ./NymphGameEngine.app/Contents/{MacOS,Resources}
+
+cp config/Info.plist ./NymphGameEngine.app/Contents/
+
+cp ./NymphGameEngine.out ./NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER
+
+dylibbundler -cd -b -x ./NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER -d ./NymphGameEngine.app/Contents/libs/
+create-dmg ./NymphGameEngine.app
+
+#Push off Build Artifacts to git build repo (git-lfs)
+git clone $BUILD_REPO
+   #Oauth
+echo -e "machine github.com\n  login $GITHUB_TOKEN" >> ~/.netrc
+cd $BUILD_REPO_NAME
+git lfs pull
+git checkout osx
+
+
+#Find current number of builds in this branch
+- export NUMBER_OF_BUILDS=`find . -mindepth 1 -type f -name "*.dmg" -printf x | wc -c`
+#Remove old builds over the amount allowed plus one for the new build
+- find . -name '*.dmg' -type f -print0 | xargs -0 ls -tr | head -n $(echo "if($NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1<0) 0 else $NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1" | bc) | xargs rm
+
+- mv ../NymphGameEngine.dmg ./NymphGameEngine-$VERSION-b$TRAVIS_BUILD_NUMBER.dmg
+- git add NymphGameEngine-$VERSION-b$TRAVIS_BUILD_NUMBER.dmg
+- git commit -m "Build success for osx, version $VERSION, build $TRAVIS_BUILD_NUMBER."
+- git push origin osx
