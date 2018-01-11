@@ -1,11 +1,11 @@
-mkdir -p ./NymphGameEngine.app/Contents/{MacOS,Resources}
+mkdir -p NymphGameEngine.app/Contents/{MacOS,Resources}
 
-cp config/Info.plist ./NymphGameEngine.app/Contents/
+cp config/Info.plist NymphGameEngine.app/Contents/
 
-cp ./NymphGameEngine.out ./NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER
+cp NymphGameEngine.out NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER
 
-sudo dylibbundler -cd -b -x ./NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER -d ./NymphGameEngine.app/Contents/libs/
-sudo create-dmg ./NymphGameEngine.app
+sudo dylibbundler -cd -b -x NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER -d NymphGameEngine.app/Contents/libs/
+sudo create-dmg NymphGameEngine.app
 
 #Push off Build Artifacts to git build repo (git-lfs)
 git clone $BUILD_REPO

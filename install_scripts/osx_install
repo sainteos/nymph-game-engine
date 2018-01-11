@@ -53,7 +53,7 @@ cd build
 cmake ..
 make
 sudo make install
-cd .. && cd .. && cd nymph-game-engine
+cd
 
 #Get tinydir.h
 sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxong/tinydir/master/tinydir.h
