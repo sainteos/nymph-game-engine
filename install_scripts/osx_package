@@ -4,8 +4,8 @@ cp config/Info.plist NymphGameEngine.app/Contents/
 
 cp NymphGameEngine.out NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER
 
-sudo dylibbundler -cd -b -x NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER -d NymphGameEngine.app/Contents/libs/
-sudo create-dmg NymphGameEngine.app
+dylibbundler -cd -b -x NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER -d NymphGameEngine.app/Contents/libs/
+create-dmg NymphGameEngine.app
 
 #Push off Build Artifacts to git build repo (git-lfs)
 git clone $BUILD_REPO
