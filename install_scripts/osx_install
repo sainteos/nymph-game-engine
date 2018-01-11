@@ -57,3 +57,5 @@ cd
 
 #Get tinydir.h
 sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxong/tinydir/master/tinydir.h
+
+export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:/usr/local/lib"
