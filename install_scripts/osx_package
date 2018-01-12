@@ -27,3 +27,5 @@ mv ../NymphGameEngine.dmg ./NymphGameEngine-$VERSION-b$TRAVIS_BUILD_NUMBER.dmg
 git add NymphGameEngine-$VERSION-b$TRAVIS_BUILD_NUMBER.dmg
 git commit -m "Build success for osx, version $VERSION, build $TRAVIS_BUILD_NUMBER."
 git push origin osx
+
+cd ..

@@ -77,13 +77,13 @@ script:
   - cd ..
 
 after_success:
-  #Generate Docs
-  - doxygen doxyfile
   #Package Build Artifacts
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then install_scripts/linux_package; fi
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then install_scripts/win_package; fi
   - if [ $TRAVIS_OS_NAME = osx ]; then install_scripts/osx_package; fi
 
+  #Generate Docs, only need to do for one OS
+  - if [ $TRAVIS_OS_NAME = osx ]; then doxygen doxyfile; fi
   #Push off newly generated documentation, only need to do for one OS
   - if [ $TRAVIS_OS_NAME = osx ]; then git clone $DOCS_REPO; fi
   - if [ $TRAVIS_OS_NAME = osx ]; then cd $DOCS_REPO_NAME && rm -rf *; fi
