@@ -70,9 +70,11 @@ script:
   #Build
   - nymph-generate
   - premake4 gmake
+  - cd ./build
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then make config=linuxdebug; fi
   - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then make config=windowsdebug; fi
   - if [ $TRAVIS_OS_NAME = osx ]; then make config=macdebug; fi
+  - cd ..
 
 after_success:
   #Generate Docs
