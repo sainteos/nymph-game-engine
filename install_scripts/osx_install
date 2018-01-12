@@ -1,4 +1,5 @@
 #Install development dependencies
+brew install git-lfs
 brew install lua
 brew install premake
 brew install doxygen
