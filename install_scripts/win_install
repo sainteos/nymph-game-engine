@@ -16,29 +16,31 @@ cd ..
 mkdir mingw-w64-build-headers
 cd mingw-w64-build-headers
 ../mingw-w64-v5.0.3/configure --target=x86_64-w64-mingw32 --prefix /usr/local
-ln -s /usr/local/x86_64-w64-mingw32 /usr/local/mingw
-mkdir -p /usr/local/x86_64-w64-mingw32/lib
-ln -s /usr/local/x86_64-w64-mingw32/lib /usr/local/x86_64-w64-mingw32/lib64
+sudo ln -s /usr/local/x86_64-w64-mingw32 /usr/local/mingw
+sudo mkdir -p /usr/local/x86_64-w64-mingw32/lib
+sudo ln -s /usr/local/x86_64-w64-mingw32/lib /usr/local/x86_64-w64-mingw32/lib64
 cd ..
 
 mkdir mingw-w64-build-gcc
 cd mingw-w64-build-gcc
 ../mingw-w64-v5.0.3/configure --target=x86_64-w64-mingw32 --disable-multilib
 make all-gcc
-make install-gcc
+sudo make install-gcc
 cd ..
 
 mkdir mingw-w64-build-crt
 cd mingw-w64-build-crt
 ../mingw-w64-v5.0.3/configure --target=x86_64-w64-mingw32
 make
-make install
+sudo make install
 cd ..
 
 cd mingw-w64-build-gcc
 make
-make install
+sudo make install
 cd ..
+
+g++-mingw-w64 -v
 
 gem install nymph-generate
 # git clone https://github.com/yvanvds/yse-soundengine
