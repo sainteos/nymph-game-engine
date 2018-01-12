@@ -9,10 +9,14 @@ matrix:
   include:
     - os: osx
       compiler: clang++
+      env: MXE_BUILD=false
+
+    - os: osx
+      compiler: mingw-w64-g++
+      env: MXE_BUILD=true
 
     - os: linux
       compiler: clang++
-      env: MINGW_BUILD=false
       addons:
         apt:
           sources:
@@ -21,24 +25,6 @@ matrix:
           packages:
             - libstdc++-5-dev
             - premake4
-            - libfreetype6-dev
-            - libglfw3-dev
-            - libglew-dev
-            - libpng-dev
-            - zlib1g-dev
-            - libdevil-dev
-
-    - os: linux
-      compiler: g++-mingw-w64
-      env: MINGW_BUILD=true
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - sourceline: ppa:keithw/glfw3
-          packages:
-            - premake4
-            - libstdc++-5-dev
             - libfreetype6-dev
             - libglfw3-dev
             - libglew-dev
@@ -62,32 +48,32 @@ before_install:
 
 install:
   #Install Libraries
-  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then sh install_scripts/linux_install; fi
-  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then sh install_scripts/win_install; fi
-  - if [ $TRAVIS_OS_NAME = osx ]; then sh install_scripts/osx_install; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then sh install_scripts/linux_install; fi
+  - if [[ ($TRAVIS_OS_NAME = osx) && ($MXE_BUILD = true) ]]; then sh install_scripts/win_install; fi
+  - if [[ ($TRAVIS_OS_NAME = osx) && ($MXE_BUILD = false) ]; then sh install_scripts/osx_install; fi
 
 script:
   #Build
   - nymph-generate
   - premake4 gmake
   - cd ./build
-  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then make config=linuxdebug; fi
-  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then make config=windowsdebug; fi
-  - if [ $TRAVIS_OS_NAME = osx ]; then make config=macdebug; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then make config=linuxdebug; fi
+  - if [[ ($TRAVIS_OS_NAME = osx) && ($MXE_BUILD = true) ]]; then make config=windowsdebug; fi
+  - if [[ ($TRAVIS_OS_NAME = osx) && ($MXE_BUILD = false) ]]; then make config=macdebug; fi
   - cd ..
 
 after_success:
   #Package Build Artifacts
-  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = false) ]]; then install_scripts/linux_package; fi
-  - if [[ ($TRAVIS_OS_NAME = linux) && ($MINGW_BUILD = true) ]]; then install_scripts/win_package; fi
-  - if [ $TRAVIS_OS_NAME = osx ]; then install_scripts/osx_package; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then install_scripts/linux_package; fi
+  - if [[ ($TRAVIS_OS_NAME = osx) && ($MXE_BUILD = true) ]]; then install_scripts/win_package; fi
+  - if [[ ($TRAVIS_OS_NAME = osx) && ($MXE_BUILD = false) ]]; then install_scripts/osx_package; fi
 
   #Generate Docs, only need to do for one OS
-  - if [ $TRAVIS_OS_NAME = osx ]; then doxygen doxyfile; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then doxygen doxyfile; fi
   #Push off newly generated documentation, only need to do for one OS
-  - if [ $TRAVIS_OS_NAME = osx ]; then git clone $DOCS_REPO; fi
-  - if [ $TRAVIS_OS_NAME = osx ]; then cd $DOCS_REPO_NAME && rm -rf *; fi
-  - if [ $TRAVIS_OS_NAME = osx ]; then mv html/* .; fi
-  - if [ $TRAVIS_OS_NAME = osx ]; then git add *; fi
-  - if [ $TRAVIS_OS_NAME = osx ]; then git commit -m "Documentation update for version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
-  - if [ $TRAVIS_OS_NAME = osx ]; then git push origin master; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then git clone $DOCS_REPO; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then cd $DOCS_REPO_NAME && rm -rf *; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then mv html/* .; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then git add *; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then git commit -m "Documentation update for version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then git push origin master; fi

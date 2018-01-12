@@ -1,71 +1,64 @@
-#Put deps in own folder
+#Install mxe for win cross compile
+brew install \
+    autoconf automake coreutils gdk-pixbuf gettext \
+    gnu-sed gnu-tar intltool libtool p7zip wget xz
+
+git clone https://github.com/mxe/mxe.git
+cd mxe
+make
+
+export PATH="$PATH:${PWD}"
+export CC=mingw-w64-gcc
+export CXX=mingw-w64-g++
+
+#Install development dependencies
+brew install git-lfs
+brew install lua
+brew install premake
+brew install doxygen
+brew install find-utils
+brew install xmlstarlet
+gem install nymph-generate
+npm install --global create-dmg
+
+#Install build dependencies
+brew install freetype
+brew install glfw
+brew install glew
+brew install libpng
+brew install devil
+brew install tinyxml2
+
 cd ..
 mkdir deps
 cd deps
-
-# Get new version of mingw!
-wget https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v5.0.3.tar.bz2
-tar jxf mingw-w64-v5.0.3.tar.bz2
-mkdir mingw-w64-build
-cd mingw-w64-build
-
-../mingw-w64-v5.0.3/configure  --target=x86_64-w64-mingw32 --disable-multilib
-make
-sudo make install
-cd ..
-mkdir mingw-w64-build-headers
-cd mingw-w64-build-headers
-../mingw-w64-v5.0.3/configure --target=x86_64-w64-mingw32 --prefix /usr/local
-sudo ln -s /usr/local/x86_64-w64-mingw32 /usr/local/mingw
-sudo mkdir -p /usr/local/x86_64-w64-mingw32/lib
-sudo ln -s /usr/local/x86_64-w64-mingw32/lib /usr/local/x86_64-w64-mingw32/lib64
-cd ..
-
-mkdir mingw-w64-build-gcc
-cd mingw-w64-build-gcc
-../mingw-w64-v5.0.3/configure --target=x86_64-w64-mingw32 --disable-multilib
-make all-gcc
-sudo make install-gcc
-cd ..
-
-mkdir mingw-w64-build-crt
-cd mingw-w64-build-crt
-../mingw-w64-v5.0.3/configure --target=x86_64-w64-mingw32
-make
-sudo make install
-cd ..
-
-cd mingw-w64-build-gcc
-make
-sudo make install
-cd ..
-
-g++-mingw-w64 -v
-
-gem install nymph-generate
 # git clone https://github.com/yvanvds/yse-soundengine
 # cd yse-soundengine
-# yes n | ./make_linux_release
+# yes n | ./make_mac_release
 # sudo make install
 # cd ..
-git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
-python amalgamate.py
-sudo mv dist/json* ../../nymph-game-engine/include/
-cd ..
 
-git clone https://github.com/leethomason/tinyxml2.git && cd tinyxml2 && \
-    git checkout tags/6.0.0
-cmake .
+git clone https://github.com/auriamg/macdylibbundler.git
+cd macdylibbundler
 make
 sudo make install
 cd ..
 
 git clone https://github.com/ChaiScript/ChaiScript.git && cd ChaiScript && \
     git checkout tags/v6.0.0
-cmake -DBUILD_TESTING=false -DBUILD_MODULES=false -DUSE_LIBCXX=false .
+cmake -DBUILD_TESTING=false -DBUILD_MODULES=false -DBUILD_SHARED_LIBS=ON .
 make chaiscript_stdlib-6.0.0
 sudo mv libchaiscript_stdlib-6.0.0.so /usr/local/lib/
-sudo mv include/chaiscript ../../nymph-game-engine/include/chaiscript
+sudo mv include/chaiscript /usr/local/include/chaiscript
+cd ..
+
+git clone https://github.com/open-source-parsers/jsoncpp.git && cd jsoncpp
+python amalgamate.py
+ls
+pwd
+mv dist/json ../../nymph-game-engine/include/json
+mv dist/jsoncpp.cpp ../../nymph-game-engine/include/
+ls
 cd ..
 
 git clone https://github.com/sainteos/tmxparser
@@ -77,9 +70,7 @@ make
 sudo make install
 cd
 
-#Get glcorearb.h
-sudo mkdir /usr/local/include/GL
-sudo wget -O /usr/local/include/GL/glcorearb.h https://www.khronos.org/registry/OpenGL/api/GL/glcorearb.h
-
 #Get tinydir.h
 sudo wget -O /usr/local/include/tinydir.h https://raw.githubusercontent.com/cxong/tinydir/master/tinydir.h
+
+export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:/usr/local/lib"
