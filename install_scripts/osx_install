@@ -25,7 +25,7 @@ cd deps
 
 git clone https://github.com/auriamg/macdylibbundler.git
 cd macdylibbundler
-make_s
+make
 sudo make install
 cd ..
 
