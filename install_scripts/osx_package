@@ -6,7 +6,7 @@ cp NymphGameEngine.out NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VER
 #update plist with actual executable name
 xmlstarlet ed --inplace -u '//key[.="CFBundleExecutable"]/following-sibling::string[1]' -v "nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER" ./NymphGameEngine.app/Contents/Info.plist
 
-dylibbundler -cd -b -x NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER -d NymphGameEngine.app/Contents/libs/ < /usr/local/lib/
+dylibbundler -cd -b -x NymphGameEngine.app/Contents/MacOS/nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER -d NymphGameEngine.app/Contents/libs/ <<< "/usr/local/lib/"
 create-dmg NymphGameEngine.app
 
 #Push off Build Artifacts to git build repo (git-lfs)
