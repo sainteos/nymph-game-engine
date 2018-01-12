@@ -6,11 +6,18 @@
 #include "graphics/ui/change_text_event.h"
 
 
-Engine::Engine() : time_to_exit(false) {
+Engine::Engine(const std::string& config_path) : time_to_exit(false) {
   config_manager = std::make_shared<Utility::ConfigManager>();
+
+  //Load Config
+  if(!config_manager->loadConfig(config_path)) {
+    LOG(FATAL)<<"Could not load config: "<<config_path;
+    throw;
+  }
+
   graphics_system = std::make_shared<Graphics::GraphicsSystem>();
   component_manager = std::make_shared<ComponentManager>();
-  shader_manager = std::make_shared<Graphics::ShaderManager>();
+  shader_manager = std::make_shared<Graphics::ShaderManager>(config_manager->getString("shaders_location"));
   texture_manager = std::make_shared<Graphics::TextureManager>();
 
   scripting_system = std::make_shared<Script::ScriptingSystem>("./scripts/");
@@ -97,12 +104,7 @@ void Engine::loadScriptingSystemSave() {
   scripting_system->load(config_manager->getString("save_file"));
 }
 
-void Engine::setup(const std::string config_path) {
-  //Load Config
-  if(!config_manager->loadConfig(config_path)) {
-    LOG(FATAL)<<"Could not load config: "<<config_path;
-    throw;
-  }
+void Engine::setup() {
 
   //LOG(INFO)<<"Using sounds location: "<<config_manager->getString("sounds_location");
   //sound_system = std::make_shared<Sound::SoundSystem>(config_manager->getString("sounds_location"));

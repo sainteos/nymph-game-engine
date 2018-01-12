@@ -28,9 +28,9 @@ int main(int argc, char** argv) {
     config_path = "./nymph_config.json";
   }
 
-  std::shared_ptr<Engine> engine = std::make_shared<Engine>();
+  std::shared_ptr<Engine> engine = std::make_shared<Engine>(config_path);
 
-  engine->setup(config_path);
+  engine->setup();
   engine->mainLoop();
   engine->cleanUp();
   return 0;

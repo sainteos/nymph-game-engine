@@ -15,6 +15,7 @@ namespace Graphics {
   class ShaderManager {
     private:
       std::map<std::string, std::shared_ptr<Shader>> shaders_to_names;
+      std::string shader_directory;
       bool checkCompilation(const unsigned int& shader_object);
       void logShaderInfoLog(const unsigned int& shader_object);
     public:
@@ -30,15 +31,12 @@ namespace Graphics {
        * Geometry Shader Extension
        */
       static char const* GEOMETRY_EXTENSION;
-      /**
-       * Shader directory location
-       */
-      static char const* SHADER_DIRECTORY;
+      ShaderManager() = delete;
 
       /**
        * @brief      Shader Manager constructor.
        */
-      ShaderManager();
+      ShaderManager(const std::string& shader_directory);
       /**
        * @brief      Destroys the object.
        */

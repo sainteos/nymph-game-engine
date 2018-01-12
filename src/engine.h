@@ -48,10 +48,12 @@ class Engine : public std::enable_shared_from_this<Engine> {
     void loadScriptingSystemSave();
 
   public:
+    Engine() = delete;
     /**
      * @brief      Engine constructor
      */
-    Engine();
+    Engine(const std::string& config_path);
+
     /**
      * @brief      Engine destructor
      */
@@ -114,10 +116,8 @@ class Engine : public std::enable_shared_from_this<Engine> {
 
     /**
      * @brief      Sets up the engine
-     *
-     * @param[in]  config_path  The configuration path
      */
-    void setup(const std::string config_path);
+    void setup();
     /**
      * @brief      Triggers the main loop for the engine
      */

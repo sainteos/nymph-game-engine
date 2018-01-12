@@ -16,9 +16,8 @@ namespace Graphics {
   char const* ShaderManager::VERTEX_EXTENSION = ".vert";
   char const* ShaderManager::FRAGMENT_EXTENSION = ".frag";
   char const* ShaderManager::GEOMETRY_EXTENSION = ".geom";
-  char const* ShaderManager::SHADER_DIRECTORY = "./shaders/";
 
-  ShaderManager::ShaderManager() {
+  ShaderManager::ShaderManager(const std::string& shader_directory) : shader_directory(shader_directory) {
 
   }
 
@@ -37,14 +36,14 @@ namespace Graphics {
   bool ShaderManager::loadShader(const std::string& name, const std::string& vertex_filename, const std::string& fragment_filename, const std::string& geometry_filename) {
     std::ifstream vertex_file;
     if(vertex_filename != "") {
-      vertex_file.open((SHADER_DIRECTORY + vertex_filename).c_str(), std::ios_base::binary);
+      vertex_file.open((this->shader_directory + vertex_filename).c_str(), std::ios_base::binary);
     }
     std::ifstream fragment_file;
     if(fragment_filename != "")
-      fragment_file.open((SHADER_DIRECTORY + fragment_filename).c_str(), std::ios_base::binary);
+      fragment_file.open((this->shader_directory + fragment_filename).c_str(), std::ios_base::binary);
     std::ifstream geometry_file;
     if(geometry_filename != "") {
-      geometry_file.open((SHADER_DIRECTORY + geometry_filename).c_str(), std::ios_base::binary);
+      geometry_file.open((this->shader_directory + geometry_filename).c_str(), std::ios_base::binary);
     }
 
     unsigned int vertex_shader = 0;
