@@ -50,7 +50,7 @@ install:
   #Install Libraries
   - if [ $TRAVIS_OS_NAME = linux ]; then sh install_scripts/linux_install; fi
   - if [[ ($TRAVIS_OS_NAME = osx) && ($MXE_BUILD = true) ]]; then sh install_scripts/win_install; fi
-  - if [[ ($TRAVIS_OS_NAME = osx) && ($MXE_BUILD = false) ]; then sh install_scripts/osx_install; fi
+  - if [[ ($TRAVIS_OS_NAME = osx) && ($MXE_BUILD = false) ]]; then sh install_scripts/osx_install; fi
 
 script:
   #Build
