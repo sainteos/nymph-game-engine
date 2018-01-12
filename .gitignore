@@ -19,3 +19,4 @@ Makefile
 YSElog.txt
 save.json
 .clang_complete
+include/json*
