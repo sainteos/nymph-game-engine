@@ -1,7 +1,7 @@
 # Nymph Game Engine #
 ##### 2D Tiled, Chaiscript, and OpenGL Based Game Engine
 
-Welcome to the Nymph Game Engine codebase. This README is in progress. Doxygen generated documentation can be found [here](http://sainteos.github.io/nymph-game-engine/).
+Welcome to the Nymph Game Engine codebase. This README is in progress. Doxygen generated documentation can be found [here](https://sainteos.github.io/nymph-game-engine-docs/).
 
 Nymph Game Engine is a C++ engine that uses chaiscript for game scripting. It uses tiled maps for levels and sprite animations. It uses a renderer that is OpenGL 3.3/GLSL 3.3 based, currently only 2D graphics are supported (though, I will not rule out that I won't touch 3D one day). It supports loading Tiled .tmx files, including support for lighting, and animations. It uses YSE for sound.
 
