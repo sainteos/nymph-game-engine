@@ -74,7 +74,8 @@ after_success:
   #Push off newly generated documentation, only need to do for one OS
   - if [ $TRAVIS_OS_NAME = linux ]; then git clone $DOCS_REPO; fi
   - if [ $TRAVIS_OS_NAME = linux ]; then cd $DOCS_REPO_NAME && rm -rf *; fi
-  - if [ $TRAVIS_OS_NAME = linux ]; then mv ../docs/* .; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then touch .nojekyll; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then mv ../docs/html/* .; fi
   - if [ $TRAVIS_OS_NAME = linux ]; then git add *; fi
   - if [ $TRAVIS_OS_NAME = linux ]; then git commit -m "Documentation update for version $VERSION, build $TRAVIS_BUILD_NUMBER."; fi
   - if [ $TRAVIS_OS_NAME = linux ]; then git push origin master; fi
