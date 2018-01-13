@@ -23,6 +23,7 @@ matrix:
             - ubuntu-toolchain-r-test
             - sourceline: ppa:keithw/glfw3
           packages:
+            - doxygen
             - libstdc++-5-dev
             - premake4
             - libfreetype6-dev
