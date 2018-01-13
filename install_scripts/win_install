@@ -16,7 +16,7 @@ brew install git-lfs
 brew install lua
 brew install premake
 brew install doxygen
-brew install find-utils
+brew install findutils
 brew install xmlstarlet
 gem install nymph-generate
 npm install --global create-dmg
