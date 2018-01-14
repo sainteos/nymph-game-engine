@@ -3,7 +3,7 @@
 #ifdef __APPLE__
 #include <OpenGL/gl3.h>
 #else
-#include <glew.h>
+#include <glad/glad.h>
 #endif
 #include <algorithm>
 #include <sstream>

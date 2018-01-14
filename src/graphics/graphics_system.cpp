@@ -61,13 +61,10 @@ namespace Graphics {
     glfwMakeContextCurrent(window);
 
     #ifndef __APPLE__
-    glewExperimental=GL_TRUE;
-    auto glew_status = glewInit();
-    if (glew_status != GLEW_OK)
-    {
-      LOG(ERROR)<<"Glew couldn't be initialized: "<<glew_status;
-      throw std::runtime_error("Glew couldn't be initialized");
-    }
+      if(!gladLoadGL()) {
+        LOG(ERROR)<<"Glad could not be initialized!";
+        throw std::runtime_error("Glad could not be initialized!");  
+      }
     #endif
 
     ilInit();
