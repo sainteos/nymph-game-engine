@@ -13,7 +13,6 @@ Makefile
 *.trace
 *.exe
 *.zip
-*Package/
 .ycm_extra_conf.py*
 *.so
 *.dylib
