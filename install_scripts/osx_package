@@ -25,7 +25,7 @@ if [ $NUMBER_OF_BUILDS -ge $BUILDS_TO_KEEP ]; then
   gfind . -name '*.dmg' -type f -print0 | xargs -0 ls -tr | head -n $(echo "$NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1" | bc) | xargs rm;
 fi
 
-mv ../NymphGameEngine.dmg ./NymphGameEngine-$VERSION-b$TRAVIS_BUILD_NUMBER.dmg
+mv ../NymphGameEngine-$VERSION.dmg ./NymphGameEngine-$VERSION-b$TRAVIS_BUILD_NUMBER.dmg
 git add NymphGameEngine-$VERSION-b$TRAVIS_BUILD_NUMBER.dmg
 git commit -m "Build success for osx, version $VERSION, build $TRAVIS_BUILD_NUMBER."
 git push origin osx
