@@ -14,7 +14,10 @@ git checkout win
 #Find current number of builds in this branch
 export NUMBER_OF_BUILDS=`gfind . -mindepth 1 -type f -name "*.tar.gz" -printf x | wc -c`
 #Remove old builds over the amount allowed plus one for the new build
-gfind . -name '*.tar.gz' -type f -print0 | xargs -0 ls -tr | head -n $(echo "if($NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1<0) 0 else $NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1" | bc) | xargs rm
+if [ $NUMBER_OF_BUILDS > 0 ]
+then
+  gfind . -name '*.dmg' -type f -print0 | xargs -0 ls -tr | head -n $(echo "if($NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1<0) 0 else $NUMBER_OF_BUILDS-$BUILDS_TO_KEEP+1" | bc) | xargs rm
+fi
 mv ../nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win.tar.gz .
 git add nymph-game-engine-$VERSION-b$TRAVIS_BUILD_NUMBER-win.tar.gz
 git commit -m "Build success for win, version $VERSION, build $TRAVIS_BUILD_NUMBER."
