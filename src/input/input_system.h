@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <queue>
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 #include "events/subject.h"
 #include "events/observer.h"
 #include "events/event.h"

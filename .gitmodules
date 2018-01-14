@@ -1,3 +1,6 @@
 [submodule "nymph-game-one"]
 	path = nymph-game-one
 	url = https://github.com/sainteos/nymph-game-one.git
+[submodule "ext/nanogui"]
+	path = ext/nanogui
+	url = https://github.com/wjakob/nanogui.git

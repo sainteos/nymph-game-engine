@@ -19,6 +19,7 @@
 namespace Graphics {
 
   GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), next_id(1), max_influence_lights(8) {
+    screen = std::make_shared<nanogui::Screen>();
   }
 
   GraphicsSystem::~GraphicsSystem() {
@@ -63,7 +64,7 @@ namespace Graphics {
     #ifndef __APPLE__
       if(!gladLoadGL()) {
         LOG(ERROR)<<"Glad could not be initialized!";
-        throw std::runtime_error("Glad could not be initialized!");  
+        throw std::runtime_error("Glad could not be initialized!");
       }
     #endif
 
@@ -71,6 +72,8 @@ namespace Graphics {
     glfwSetFramebufferSizeCallback(window, windowSizeCallback);
 
     glfwSetWindowTitle(window, window_title.c_str());
+
+    screen->initialize(window, false);
 
     initialized = true;
     LOG(INFO)<<"Graphics system initialized!";
@@ -188,6 +191,10 @@ namespace Graphics {
   }
 
   void GraphicsSystem::stopFrame() {
+    //Draw nanogui last
+    screen->drawContents();
+    screen->drawWidgets();
+
     glfwSwapBuffers(window);
   }
 

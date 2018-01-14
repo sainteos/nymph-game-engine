@@ -12,7 +12,8 @@
 #include <glad/glad.h>
 #endif
 #define GLFW_INCLUDE_GLCOREARB
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
+#include <nanogui/nanogui.h>
 #include <glm/glm.hpp>
 #include "graphics/renderable.h"
 #include "graphics/window_exit_functor.h"
@@ -44,6 +45,8 @@ namespace Graphics {
 
       std::list<std::shared_ptr<Light>> lights;
       unsigned int max_influence_lights;
+
+      std::shared_ptr<nanogui::Screen> screen;
 
       //The next id for renderables
       int next_id;

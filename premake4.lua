@@ -9,10 +9,12 @@ solution "TileEngine"
 
     targetname "TileEngine"
 
-    includedirs { "./include", "./src" }
+    includedirs { "./include", "./ext/nanogui/include", "./ext/nanogui/ext/eigen", "./ext/nanogui/ext/nanovg/src", "./ext/nanogui/ext/glfw/include", "./src" }
 
     files { "**.h", "**.hpp", "**.cpp", "**.cc" }
-    excludes { "./test/**" }
+    excludes { "./test/**", "./ext/**" }
+
+    libdirs { "./ext/nanogui" }
 
     configuration "WindowsDebug"
       buildoptions { "-std=c++11" }
@@ -22,7 +24,7 @@ solution "TileEngine"
 
     configuration "Debug"
       buildoptions { "-std=c++14", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
-      links {  "freetype", "yse", "glfw", "png", "z", "OpenGL.framework", "IL" }
+      links {  "freetype", "yse", "nanogui", "png", "z", "OpenGL.framework", "IL" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"

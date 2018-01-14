@@ -1,7 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "graphics/ui/text_area.h"
+#include <nanogui/button.h>
 
 //= SCRIPTABLE
 //= SCRIPTABLE BASES TextArea
@@ -10,9 +10,10 @@ namespace Graphics {
     /**
      * @brief      Class for UI button.
      */
-    class Button : public TextArea {
+    class Button {
       private:
         bool cursor_over;
+        nanogui::Button nano_button;
       protected:
         const glm::vec4 mouse_over_dim = glm::vec4(0.1, 0.1, 0.1, 0.0);
       public:
