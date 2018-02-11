@@ -1,16 +1,13 @@
 #ifndef CHARACTER_TYPED_EVENT_H
 #define CHARACTER_TYPED_EVENT_H
 #include <glm/glm.hpp>
-#include "events/event.h"
-#include "events/event_type.h"
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Event
-
+#include "../events/event.h"
+#include "../events/event_type.h"
 namespace Input {
   /**
    * @brief      Class for character typed event.
    */
-  class CharacterTypedEvent : public Events::Event {
+  class [[scriptable]] CharacterTypedEvent : public Events::Event {
     private:
       unsigned char character;
     public:
@@ -21,7 +18,7 @@ namespace Input {
        *
        * @param[in]  character  The character
        */
-      CharacterTypedEvent(const unsigned char character) : Event(Events::EventType::CHARACTER_TYPED), character(character) {}
+      [[scriptable]] CharacterTypedEvent(const unsigned char character) : Event(Events::EventType::CHARACTER_TYPED), character(character) {}
       /**
        * @brief      Factory function
        *
@@ -29,14 +26,13 @@ namespace Input {
        *
        * @return     Newly constructed CharacterTypedEvent
        */
-      static std::shared_ptr<CharacterTypedEvent> create(const unsigned char character) { return std::make_shared<CharacterTypedEvent>(character); }
+      [[scriptable]] static std::shared_ptr<CharacterTypedEvent> create(const unsigned char character) { return std::make_shared<CharacterTypedEvent>(character); }
       /**
        * @brief      Gets the character.
        *
        * @return     The character.
        */
-      unsigned char getCharacter() const noexcept { return character; }
-      //= END SCRIPTABLE
+      [[scriptable]] unsigned char getCharacter() const noexcept { return character; }
   };
 }
 

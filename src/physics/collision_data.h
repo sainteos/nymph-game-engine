@@ -2,7 +2,7 @@
 #define COLLISION_DATA_H
 #include <easylogging++.h>
 #include <vector>
-#include "component.h"
+#include "../component.h"
 
 namespace Physics {
   class CollisionData : public Component, virtual public el::Loggable {

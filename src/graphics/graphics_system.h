@@ -15,16 +15,16 @@
 #include <GLFW/glfw3.h>
 #include <nanogui/nanogui.h>
 #include <glm/glm.hpp>
-#include "graphics/renderable.h"
-#include "graphics/window_exit_functor.h"
-#include "graphics/camera.h"
+#include "renderable.h"
+#include "window_exit_functor.h"
+#include "camera.h"
 //= SCRIPTABLE
 
 namespace Graphics {
   /**
    * @brief      Class for graphics system.
    */
-  class GraphicsSystem {
+  class [[scriptable]] GraphicsSystem {
     private:
       struct RankedLight {
         std::shared_ptr<Light> light;
@@ -46,7 +46,7 @@ namespace Graphics {
       std::list<std::shared_ptr<Light>> lights;
       unsigned int max_influence_lights;
 
-      std::shared_ptr<nanogui::Screen> screen;
+      //std::shared_ptr<nanogui::Screen> screen;
 
       //The next id for renderables
       int next_id;
@@ -109,33 +109,33 @@ namespace Graphics {
        * @return     The window.
        */
       GLFWwindow* getWindow() const noexcept;
-      //= BEGIN SCRIPTABLE
+
       /**
        * @brief Getter for the window width
        * @details This Pings GLFW to get the width of the window.
        * @return integer denoting pixel width of window
        */
-      int windowHeight();
+      [[scriptable]] int windowHeight();
       /**
        * @brief Getter for the window height
        * @details This Pings GLFW to get the height of the window.
        * @return integer denoting pixel height of window
        */
-      int windowWidth();
+      [[scriptable]] int windowWidth();
 
       /**
        * @brief Getter for the window name
        * @details This will return the name of the window
        * @return a string that is the name of the window
        */
-      std::string windowName() const noexcept;
+      [[scriptable]] std::string windowName() const noexcept;
 
       /**
        * @brief      Sets the window name.
        *
        * @param[in]  name  The name
        */
-      void setWindowName(const std::string& name);
+      [[scriptable]] void setWindowName(const std::string& name);
 
       /**
        * @brief Adds a renderable to the renderable pool
@@ -145,7 +145,7 @@ namespace Graphics {
        * @param renderable Shared Pointer to a previously created renderable
        * @return id integer of the renderable
        */
-      int addRenderable(std::shared_ptr<Graphics::Renderable> renderable);
+      [[scriptable]] int addRenderable(std::shared_ptr<Graphics::Renderable> renderable);
       /**
        * @brief Removes a renderable from the renderable pool
        * @details Removed from the pool of renderables to take it out of
@@ -154,7 +154,7 @@ namespace Graphics {
        * @param id id integer of renderable to remove
        * @return true if successful, false if it didn't exist
        */
-      bool removeRenderable(const int id);
+      [[scriptable]] bool removeRenderable(const int id);
 
       /**
        * @brief Returns the number of renderables currently in the system
@@ -162,33 +162,33 @@ namespace Graphics {
        *          added to the system, and are ready to be updated and rendered.
        * @return integer representing number of renderables in the system
        */
-      int renderablesCount();
+      [[scriptable]] int renderablesCount();
 
       /**
        * @brief      Sets the maximum number influencing lights.
        *
        * @param[in]  number  The number
        */
-      void setMaxInfluenceLights(const unsigned int number) noexcept;
+      [[scriptable]] void setMaxInfluenceLights(const unsigned int number) noexcept;
       /**
        * @brief      Gets the maximum number of influencing lights.
        *
        * @return     The maximum influence lights.
        */
-      unsigned int getMaxInfluenceLights() const noexcept;
+      [[scriptable]] unsigned int getMaxInfluenceLights() const noexcept;
       /**
        * @brief      Adds a light.
        *
        * @param[in]  light  The light
        */
-      void addLight(std::shared_ptr<Light> light) noexcept;
+      [[scriptable]] void addLight(std::shared_ptr<Light> light) noexcept;
       /**
        * @brief      Removes a light.
        *
        * @param[in]  light  The light
        */
-      void removeLight(std::shared_ptr<Light> light);
-      //= END SCRIPTABLE
+      [[scriptable]] void removeLight(std::shared_ptr<Light> light);
+
       GLFWwindow* getCurrentWindow() noexcept;
 
 

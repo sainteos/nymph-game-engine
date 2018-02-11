@@ -23,7 +23,6 @@ class DebugConsole {
 
   def setupConsole() {
     this.debug.addObserver(this.thiss)
-
     var default_text := WrappableText()
     default_text.setFont(font_generator.getFont("8bit"))
     var text := WrappableText()

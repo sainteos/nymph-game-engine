@@ -3,15 +3,13 @@
 
 #include <memory>
 #include <glm/glm.hpp>
-#include "graphics/ui/skin.h"
-#include "events/event.h"
-#include "graphics/renderable.h"
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Renderable
+#include "skin.h"
+#include "../../events/event.h"
+#include "../renderable.h"
 
 namespace Graphics {
   namespace UI {
-    class Element : public Renderable, virtual public el::Loggable  {
+    class [[scriptable]] Element : public Renderable, virtual public el::Loggable  {
       private:
         std::shared_ptr<Skin> skin;
         glm::vec4 color;
@@ -39,82 +37,80 @@ namespace Graphics {
          */
         virtual ~Element();
 
-      //= BEGIN SCRIPTABLE
-
         /**
          * @brief      Gets the UI skin.
          *
          * @return     The skin.
          */
-        std::shared_ptr<Skin> getSkin() const noexcept;
+        [[scriptable]] std::shared_ptr<Skin> getSkin() const noexcept;
         /**
          * @brief      Sets the UI skin.
          *
          * @param[in]  skin  The skin
          */
-        void setSkin(std::shared_ptr<Skin> skin) noexcept;
+        [[scriptable]] void setSkin(std::shared_ptr<Skin> skin) noexcept;
         /**
          * @brief      Gets the anchor point.
          *
          * @return     The anchor point.
          */
-        glm::vec2 getAnchorPoint() const noexcept;
+        [[scriptable]] glm::vec2 getAnchorPoint() const noexcept;
         /**
          * @brief      Sets the anchor point.
          *
          * @param[in]  anchor_point  The anchor point
          */
-        void setAnchorPoint(const glm::vec2 anchor_point);
+        [[scriptable]] void setAnchorPoint(const glm::vec2 anchor_point);
         /**
          * @brief      Gets the width.
          *
          * @return     The width.
          */
-        float getWidth() const noexcept;
+        [[scriptable]] float getWidth() const noexcept;
         /**
          * @brief      Gets the height.
          *
          * @return     The height.
          */
-        float getHeight() const noexcept;
+        [[scriptable]] float getHeight() const noexcept;
         /**
          * @brief      Sets the width.
          *
          * @param[in]  width  The width
          */
-        void setWidth(const float width) noexcept;
+        [[scriptable]] void setWidth(const float width) noexcept;
         /**
          * @brief      Sets the height.
          *
          * @param[in]  height  The height
          */
-        void setHeight(const float height) noexcept;
+        [[scriptable]] void setHeight(const float height) noexcept;
         /**
          * @brief      Gets the text padding.
          *
          * @return     The text padding.
          */
-        float getTextPadding() const noexcept;
+        [[scriptable]] float getTextPadding() const noexcept;
         /**
          * @brief      Sets the text padding.
          *
          * @param[in]  text_padding  The text padding
          */
-        void setTextPadding(const float text_padding) noexcept;
+        [[scriptable]] void setTextPadding(const float text_padding) noexcept;
         /**
          * @brief      Gets the color.
          *
          * @return     The color.
          */
-        glm::vec4 getColor() const noexcept;
+        [[scriptable]] glm::vec4 getColor() const noexcept;
         /**
          * @brief      Sets the color.
          *
          * @param[in]  color  The color
          */
-        void setColor(const glm::vec4 color) noexcept;
+        [[scriptable]] void setColor(const glm::vec4 color) noexcept;
 
-        virtual std::string to_string() const noexcept override;
+        [[scriptable]] virtual std::string to_string() const noexcept override;
 
         /**
          * @brief      Determines if point is within element.
@@ -123,9 +119,8 @@ namespace Graphics {
          *
          * @return     True if point within, False otherwise.
          */
-        bool isPointWithin(glm::vec2 point) noexcept;
-        virtual std::string className() const noexcept override;
-      //= END SCRIPTABLE
+        [[scriptable]] bool isPointWithin(glm::vec2 point) noexcept;
+        [[scriptable]] virtual std::string className() const noexcept override;
 
         virtual void onDestroy() override;
         virtual void onStart() override;

@@ -2,20 +2,16 @@
 #define AREA_H
 
 #include <memory>
-#include "graphics/ui/element.h"
-#include "graphics/ui/skin.h"
-#include "events/event.h"
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Element
-
+#include "element.h"
+#include "skin.h"
+#include "../../events/event.h"
 namespace Graphics {
   namespace UI {
     /**
      * @brief      Class for UI Area.
      */
-    class Area : public Element, virtual public el::Loggable  {
+    class [[scriptable]] Area : public Element, virtual public el::Loggable  {
       public:
-      //= BEGIN SCRIPTABLE
 
         /**
          * @brief      Area constructor
@@ -23,7 +19,7 @@ namespace Graphics {
          * @param[in]  vertex_data  The vertex data
          * @param[in]  skin         The skin
          */
-        Area(VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
+        [[scriptable]] Area(VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
         /**
          * @brief      Area factory function.
          *
@@ -38,21 +34,20 @@ namespace Graphics {
          *
          * @return     a newly constructed Area
          */
-        static std::shared_ptr<Area> create(std::shared_ptr<Skin> skin, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
+        [[scriptable]] static std::shared_ptr<Area> create(std::shared_ptr<Skin> skin, glm::vec4 color, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
 
-        virtual void onLeftClick() override;
-        virtual void onRightClick() override;
-        virtual void onLeftClickRelease() override;
-        virtual void onRightClickRelease() override;
-        virtual void onCursorEnter() override;
-        virtual void onCursorLeave() override;
-        virtual void onKeyDown(const int key) override;
-        virtual void onKeyUp(const int key) override;
-        virtual void onKeyRepeat(const int key) override;
-        virtual void onScroll(const glm::dvec2 position_change) override;
-        virtual std::string to_string() const noexcept override;
-        virtual std::string className() const noexcept override;
-      //= END SCRIPTABLE
+        [[scriptable]] virtual void onLeftClick() override;
+        [[scriptable]] virtual void onRightClick() override;
+        [[scriptable]] virtual void onLeftClickRelease() override;
+        [[scriptable]] virtual void onRightClickRelease() override;
+        [[scriptable]] virtual void onCursorEnter() override;
+        [[scriptable]] virtual void onCursorLeave() override;
+        [[scriptable]] virtual void onKeyDown(const int key) override;
+        [[scriptable]] virtual void onKeyUp(const int key) override;
+        [[scriptable]] virtual void onKeyRepeat(const int key) override;
+        [[scriptable]] virtual void onScroll(const glm::dvec2 position_change) override;
+        [[scriptable]] virtual std::string to_string() const noexcept override;
+        [[scriptable]] virtual std::string className() const noexcept override;
 
         virtual void onDestroy() override;
         virtual void onStart() override;

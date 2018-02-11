@@ -138,6 +138,7 @@ namespace Script {
       std::stringstream error;
       error << "File: "<<e.filename<<" eval error at ("<<e.start_position.line<<", "<<e.start_position.column<<"): "<<e.reason;
       LOG(INFO)<<error.str();
+      LOG(INFO)<<e.pretty_print();
     }
     catch(chaiscript::exception::dispatch_error& e) {
       std::stringstream error;

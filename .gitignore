@@ -4,7 +4,11 @@ doc
 lib
 obj
 logs
+pkg
 src/generated
+include/Eigen
+include/nanogui
+include/nanovg.h
 Makefile
 *.make
 *.out

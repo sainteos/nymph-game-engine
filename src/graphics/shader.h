@@ -8,13 +8,12 @@
 #include <glad/glad.h>
 #endif
 #include "uniform.h"
-//= SCRIPTABLE
 
 namespace Graphics {
   /**
    * @brief      Class for shader.
    */
-  class Shader {
+  class [[scriptable]] Shader {
     private:
       unsigned int program_object;
       std::map<std::string, int> name_to_location;
@@ -42,14 +41,12 @@ namespace Graphics {
        */
       void useProgram() const;
 
-      //= BEGIN SCRIPTABLE
-
       /**
        * @brief      Gets the uniform names.
        *
        * @return     The uniform names.
        */
-      std::vector<std::string> getUniformNames() const noexcept;
+      [[scriptable]] std::vector<std::string> getUniformNames() const noexcept;
       /**
        * @brief      Sets the uniform.
        *
@@ -61,20 +58,19 @@ namespace Graphics {
        *
        * @param[in]  name  The name
        */
-      void setName(const std::string& name);
+      [[scriptable]] void setName(const std::string& name);
       /**
        * @brief      Gets the name.
        *
        * @return     The name.
        */
-      std::string getName() const noexcept;
+      [[scriptable]] std::string getName() const noexcept;
       /**
        * @brief      Returns a string representation of the object.
        *
        * @return     String representation of the object.
        */
-      std::string to_string() const noexcept;
-      //= END SCRIPTABLE
+      [[scriptable]] std::string to_string() const noexcept;
 
       /**
        * @brief      Sets the uniform.

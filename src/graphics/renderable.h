@@ -4,22 +4,20 @@
 #include <map>
 #include <memory>
 #include <set>
-#include "component.h"
+#include "../component.h"
+#include "../transform.h"
+#include "../events/observer.h"
 #include "vertex_data.h"
 #include "shader.h"
 #include "base_texture.h"
-#include "transform.h"
 #include "light.h"
-#include "events/observer.h"
 #include "uniform.h"
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Component
 
 namespace Graphics {
   /**
    * @brief      Class for renderable.
    */
-  class Renderable : public Component {
+  class [[scriptable]] Renderable : public Component {
     private:
       unsigned int vertex_array_object;
       std::shared_ptr<Shader> shader;
@@ -64,20 +62,18 @@ namespace Graphics {
 
       virtual ~Renderable();
 
-      //= BEGIN SCRIPTABLE
-
       /**
        * @brief      Sets the shader.
        *
        * @param[in]  shader_object  The shader object
        */
-      void setShader(std::shared_ptr<Shader> shader_object) noexcept;
+      [[scriptable]] void setShader(std::shared_ptr<Shader> shader_object) noexcept;
       /**
        * @brief      Gets the shader.
        *
        * @return     The shader.
        */
-      std::shared_ptr<Shader> getShader() const noexcept;
+      [[scriptable]] std::shared_ptr<Shader> getShader() const noexcept;
 
       /**
        * @brief      Adds a texture.
@@ -86,78 +82,77 @@ namespace Graphics {
        * @param[in]  uniform_name    The uniform name
        * @param[in]  texture_object  The texture object
        */
-      void addTexture(const unsigned int unit, const std::string uniform_name, std::shared_ptr<BaseTexture> texture_object) noexcept;
+      [[scriptable]] void addTexture(const unsigned int unit, const std::string uniform_name, std::shared_ptr<BaseTexture> texture_object) noexcept;
       /**
        * @brief      Removes a texture.
        *
        * @param[in]  unit  The unit
        */
-      void removeTexture(const unsigned int unit);
+      [[scriptable]] void removeTexture(const unsigned int unit);
       /**
        * @brief      Gets the textures
        *
        * @return     A map of texture units to textures
        */
-      std::map<unsigned int, std::shared_ptr<BaseTexture>> getTextures() const noexcept;
+      [[scriptable]] std::map<unsigned int, std::shared_ptr<BaseTexture>> getTextures() const noexcept;
 
       /**
        * @brief      Sets if the renderable should be light reactive
        *
        * @param[in]  reactive  True if reactive
        */
-      void setLightReactive(const bool reactive) noexcept;
+      [[scriptable]] void setLightReactive(const bool reactive) noexcept;
       /**
        * @brief      Determines if light reactive.
        *
        * @return     True if light reactive, False otherwise.
        */
-      bool isLightReactive() const noexcept;
+      [[scriptable]] bool isLightReactive() const noexcept;
 
       /**
        * @brief      Sets the ambient light.
        *
        * @param[in]  color  The color
        */
-      void setAmbientLight(const glm::vec3 color) noexcept;
+      [[scriptable]] void setAmbientLight(const glm::vec3 color) noexcept;
       /**
        * @brief      Gets the ambient light.
        *
        * @return     The ambient light.
        */
-      glm::vec3 getAmbientLight() const noexcept;
+      [[scriptable]] glm::vec3 getAmbientLight() const noexcept;
       /**
        * @brief      Sets the ambient intensity.
        *
        * @param[in]  intensity  The intensity
        */
-      void setAmbientIntensity(const float intensity) noexcept;
+      [[scriptable]] void setAmbientIntensity(const float intensity) noexcept;
       /**
        * @brief      Gets the ambient intensity.
        *
        * @return     The ambient intensity.
        */
-      float getAmbientIntensity() const noexcept;
+      [[scriptable]] float getAmbientIntensity() const noexcept;
 
       /**
        * @brief      Adds an influencing light.
        *
        * @param[in]  light  The light
        */
-      void addInfluencingLight(std::shared_ptr<Light> light) noexcept;
+      [[scriptable]] void addInfluencingLight(std::shared_ptr<Light> light) noexcept;
       /**
        * @brief      Clears all influencing lights.
        */
-      void clearInfluencingLights();
+      [[scriptable]] void clearInfluencingLights();
 
       /**
        * @brief      Returns a string representation of the object.
        *
        * @return     String representation of the object.
        */
-      virtual std::string to_string() const noexcept override;
+      [[scriptable]] virtual std::string to_string() const noexcept override;
 
-      virtual std::string className() const noexcept override;
-      //= END SCRIPTABLE
+      [[scriptable]] virtual std::string className() const noexcept override;
 
       /**
        * @brief      The highest possible z value in the renderable

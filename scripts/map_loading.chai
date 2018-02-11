@@ -52,12 +52,9 @@ class MapLoading {
 
     print(engine.findSceneByName(this.map_name))
     var active_scene = engine.findSceneByName(this.map_name)
-    print("ASS")
     this.sprite_movement.addCollisionData(active_scene.getCollisionData())
-    print("ASS")
 
     this.thiss.notify(LoadMapEvent_create(this.map_name))
-    print("ASS")
   }
 
   def onUpdate(delta) {

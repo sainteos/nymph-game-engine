@@ -2,31 +2,24 @@
 #define SOUND_INSTANCE_H
 #include <yse/yse.hpp>
 #include <memory>
-#include "component.h"
-
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Component
-
+#include "../component.h"
 
 namespace Sound {
-  class SoundInstance : public Component {
+  class [[scriptable]] SoundInstance : public Component {
     private:
       std::shared_ptr<YSE::sound> sound;
     public:
       SoundInstance() = delete;
       virtual ~SoundInstance() = default;
 
-      //= BEGIN SCRIPTABLE
-      SoundInstance(std::shared_ptr<YSE::sound> sound);
+      [[scriptable]] SoundInstance(std::shared_ptr<YSE::sound> sound);
 
-      void play();
-      bool isPlaying() const noexcept;
-      void stop();
-      bool isStopped() const noexcept;
-      void setLooping(const bool looping);
-      bool isLooping() const noexcept;
-
-      //= END SCRIPTABLE
+      [[scriptable]] void play();
+      [[scriptable]] bool isPlaying() const noexcept;
+      [[scriptable]] void stop();
+      [[scriptable]] bool isStopped() const noexcept;
+      [[scriptable]] void setLooping(const bool looping);
+      [[scriptable]] bool isLooping() const noexcept;
 
       virtual void onStart() override;
       virtual bool onUpdate(const double delta) override;

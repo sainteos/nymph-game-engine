@@ -7,7 +7,7 @@ namespace Graphics {
   /**
    * @brief      Class for shader uniform.
    */
-  class Uniform {
+  class [[scriptable]] Uniform {
     public:
       /**
        * Enum describing the different types that can be held in a uniform.
@@ -45,12 +45,10 @@ namespace Graphics {
 
       bool dirty;
     public:
-      //= BEGIN SCRIPTABLE
-
       /**
        * @brief      Uniform constructor.
        */
-      Uniform();
+      [[scriptable]] Uniform();
       /**
        * @brief      Sets the data.
        *
@@ -66,23 +64,23 @@ namespace Graphics {
        *
        * @return     The type.
        */
-      UniformTypes getType() const noexcept;
+      [[scriptable]] UniformTypes getType() const noexcept;
       /**
        * @brief      Gets the name.
        *
        * @return     The name.
        */
-      std::string getName() const noexcept;
+      [[scriptable]] std::string getName() const noexcept;
       /**
        * @brief      Determines if dirty.
        *
        * @return     True if dirty, False otherwise.
        */
-      bool isDirty() const noexcept;
+      [[scriptable]] bool isDirty() const noexcept;
       /**
        * @brief      dirty = false
        */
-      void clean() noexcept;
+      [[scriptable]] void clean() noexcept;
 
       /**
        * @brief      Gets the data.
@@ -101,7 +99,7 @@ namespace Graphics {
        *
        * @return     true if right.name is alphabetically higher than this.name
        */
-      bool operator<(const Uniform& right) const noexcept;
+      [[scriptable]] bool operator<(const Uniform& right) const noexcept;
       /**
        * @brief      == operator
        *
@@ -109,7 +107,7 @@ namespace Graphics {
        *
        * @return     True if same uniform
        */
-      bool operator==(const Uniform& right) const noexcept;
+      [[scriptable]] bool operator==(const Uniform& right) const noexcept;
       /**
        * @brief      != operator
        *
@@ -117,15 +115,14 @@ namespace Graphics {
        *
        * @return     True if not the same uniform
        */
-      bool operator!=(const Uniform& right) const noexcept;
+      [[scriptable]] bool operator!=(const Uniform& right) const noexcept;
 
       /**
        * @brief      Returns a string representation of the object.
        *
        * @return     String representation of the object.
        */
-      std::string to_string() const noexcept;
-      //= END SCRIPTABLE
+      [[scriptable]] std::string to_string() const noexcept;
   };
 }
 

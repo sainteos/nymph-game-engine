@@ -4,16 +4,15 @@
 #include <map>
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include "graphics/ui/text.h"
-#include "graphics/ui/font.h"
-//= SCRIPTABLE
+#include "text.h"
+#include "font.h"
 
 namespace Graphics {
   namespace UI {
     /**
      * @brief      Class for font generator.
      */
-    class FontGenerator {
+    class [[scriptable]] FontGenerator {
       private:
         FT_Library freetype;
         std::string font_path;
@@ -32,20 +31,18 @@ namespace Graphics {
          */
         ~FontGenerator();
 
-      //= BEGIN SCRIPTABLE
-
         /**
          * @brief      Sets the font path.
          *
          * @param[in]  font_path  The font path
          */
-        void setFontPath(const std::string& font_path) noexcept;
+        [[scriptable]] void setFontPath(const std::string& font_path) noexcept;
         /**
          * @brief      Gets the font path.
          *
          * @return     The font path.
          */
-        std::string getFontPath() const noexcept;
+        [[scriptable]] std::string getFontPath() const noexcept;
 
         /**
          * @brief      Loads a font.
@@ -54,7 +51,7 @@ namespace Graphics {
          * @param[in]  size      The size
          * @param[in]  name      The name
          */
-        void loadFont(const std::string& ttf_file, const unsigned int size, const std::string& name="");
+        [[scriptable]] void loadFont(const std::string& ttf_file, const unsigned int size, const std::string& name="");
         /**
          * @brief      Gets the font.
          *
@@ -62,8 +59,7 @@ namespace Graphics {
          *
          * @return     The font.
          */
-        std::shared_ptr<Font> getFont(const std::string& name) const noexcept;
-      //= END SCRIPTABLE
+        [[scriptable]] std::shared_ptr<Font> getFont(const std::string& name) const noexcept;
     };
   }
 }

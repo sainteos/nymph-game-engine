@@ -2,27 +2,23 @@
 #define WRAPPABLE_TEXT_H
 
 #include <map>
-#include "graphics/ui/text.h"
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Text
+#include "text.h"
 
 namespace Graphics {
   namespace UI {
     /**
      * @brief      Class for wrappable text.
      */
-    class WrappableText : public Text {
+    class [[scriptable]] WrappableText : public Text {
       public:
-        //= SCRIPTABLE ENUM
         /**
          * @brief      Horizontal Alignment Enum
          */
-        enum HorizontalAlignment : unsigned int {LEFT, HCENTER, RIGHT};
-        //= SCRIPTABLE ENUM
+        enum [[scriptable]] HorizontalAlignment : unsigned int {LEFT, HCENTER, RIGHT};
         /**
          * @brief      Vertical Alignment Enum
          */
-        enum VerticalAlignment : unsigned int { TOP, VCENTER, BOTTOM};
+        enum [[scriptable]] VerticalAlignment : unsigned int { TOP, VCENTER, BOTTOM};
       private:
         float width;
         float height;
@@ -35,52 +31,50 @@ namespace Graphics {
       protected:
         std::vector<std::pair<float, std::vector<Character>>> splitTextIntoLines();
       public:
-      //= BEGIN SCRIPTABLE
 
         /**
          * @brief      Wrappable Text constructor.
          */
-        WrappableText();
+        [[scriptable]] WrappableText();
         /**
          * @brief      Sets the size.
          *
          * @param[in]  width   The width
          * @param[in]  height  The height
          */
-        void setSize(float width, float height);
+        [[scriptable]] void setSize(float width, float height);
         /**
          * @brief      Sets the line spacing.
          *
          * @param[in]  spacing  The spacing
          */
-        void setLineSpacing(float spacing);
+        [[scriptable]] void setLineSpacing(float spacing);
         /**
          * @brief      Sets the horizontal alignment.
          *
          * @param[in]  alignment  The alignment
          */
-        void setHorizontalAlignment(const HorizontalAlignment& alignment);
+        [[scriptable]] void setHorizontalAlignment(const HorizontalAlignment& alignment);
         /**
          * @brief      Sets the vertical alignment.
          *
          * @param[in]  alignment  The alignment
          */
-        void setVerticalAlignment(const VerticalAlignment& alignment);
+        [[scriptable]] void setVerticalAlignment(const VerticalAlignment& alignment);
 
         /**
          * @brief      Sets the text string.
          *
          * @param[in]  text  The text string
          */
-        virtual void setText(const std::string& text) override;
+        [[scriptable]] virtual void setText(const std::string& text) override;
         /**
          * @brief      Returns a string representation of the object.
          *
          * @return     String representation of the object.
          */
-        virtual std::string to_string() const noexcept override;
-        virtual std::string className() const noexcept override;
-      //= END SCRIPTABLE
+        [[scriptable]] virtual std::string to_string() const noexcept override;
+        [[scriptable]] virtual std::string className() const noexcept override;
 
         virtual void onDestroy() override;
         virtual void onStart() override;

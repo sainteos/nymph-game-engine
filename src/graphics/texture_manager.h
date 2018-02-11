@@ -3,14 +3,13 @@
 #include <map>
 #include <memory>
 #include <string>
-#include "graphics/base_texture.h"
-//= SCRIPTABLE
+#include "base_texture.h"
 
 namespace Graphics {
   /**
    * @brief      Class for texture manager.
    */
-  class TextureManager {
+  class [[scriptable]] TextureManager {
     private:
       std::map<std::string, std::shared_ptr<BaseTexture>> textures_to_names;
     public:
@@ -23,8 +22,6 @@ namespace Graphics {
        */
       ~TextureManager();
 
-      //= BEGIN SCRIPTABLE
-
       /**
        * @brief      Loads a texture.
        *
@@ -32,7 +29,7 @@ namespace Graphics {
        *
        * @return     True if successful
        */
-      bool loadTexture(const std::string& path);
+      [[scriptable]] bool loadTexture(const std::string& path);
 
       /**
        * @brief      Get's texture with name
@@ -49,7 +46,7 @@ namespace Graphics {
        *
        * @return     The texture.
        */
-      std::shared_ptr<BaseTexture> getTexture(const std::string& name) const;
+      [[scriptable]] std::shared_ptr<BaseTexture> getTexture(const std::string& name) const;
 
       /**
        * @brief      Function to see if texture with name exists
@@ -58,8 +55,7 @@ namespace Graphics {
        *
        * @return     True if it exists
        */
-      bool textureExists(const std::string& name) const noexcept;
-      //= END SCRIPTABLE
+      [[scriptable]] bool textureExists(const std::string& name) const noexcept;
 
       /**
        * @brief      Gets the name from path.

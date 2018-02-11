@@ -2,15 +2,12 @@
 #define CAMERA_H
 #include <glm/glm.hpp>
 #include <memory>
-#include "component.h"
-#include "transform.h"
-#include "graphics/shader_manager.h"
-#include "graphics/renderable.h"
-#include "events/observer.h"
-#include "events/event_type.h"
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Component
-
+#include "../component.h"
+#include "../transform.h"
+#include "shader_manager.h"
+#include "renderable.h"
+#include "../events/observer.h"
+#include "../events/event_type.h"
 #undef near
 #undef far
 
@@ -18,7 +15,7 @@ namespace Graphics {
   /**
    * @brief      Class for camera.
    */
-  class Camera : public Component {
+  class [[scriptable]] Camera : public Component {
     private:
       glm::mat4 projection_matrix;
       //THESE NEED TO BE MOVED TO SOMEWHERE ELSE, PERHAPS AN INHERITED CLASS
@@ -61,87 +58,85 @@ namespace Graphics {
       virtual bool onUpdate(const double delta) override;
       virtual void onDestroy() override;
 
-      //= BEGIN SCRIPTABLE
-
       /**
        * @brief      Sets the screen padding in tiles.
        *
        * @param[in]  padding  The padding
        */
-      void setScreenPaddingInTiles(const int padding) noexcept;
+      [[scriptable]] void setScreenPaddingInTiles(const int padding) noexcept;
       /**
        * @brief      Gets the screen padding in tiles.
        *
        * @return     The screen padding in tiles.
        */
-      int getScreenPaddingInTiles() const noexcept;
+      [[scriptable]] int getScreenPaddingInTiles() const noexcept;
       /**
        * @brief      Sets the width.
        *
        * @param[in]  width  The width
        */
-      void setWidth(const float width) noexcept;
+      [[scriptable]] void setWidth(const float width) noexcept;
       /**
        * @brief      Gets the width.
        *
        * @return     The width.
        */
-      float getWidth() const noexcept;
+      [[scriptable]] float getWidth() const noexcept;
       /**
        * @brief      Sets the height.
        *
        * @param[in]  height  The height
        */
-      void setHeight(const float height) noexcept;
+      [[scriptable]] void setHeight(const float height) noexcept;
       /**
        * @brief      Gets the height.
        *
        * @return     The height.
        */
-      float getHeight() const noexcept;
+      [[scriptable]] float getHeight() const noexcept;
       /**
        * @brief      Sets the near z plane
        *
        * @param[in]  near  The near
        */
-      void setNear(const float near) noexcept;
+      [[scriptable]] void setNear(const float near) noexcept;
       /**
        * @brief      Gets the near z plane.
        *
        * @return     The near.
        */
-      float getNear() const noexcept;
+      [[scriptable]] float getNear() const noexcept;
       /**
        * @brief      Sets the far z plane.
        *
        * @param[in]  far   The far
        */
-      void setFar(const float far) noexcept;
+      [[scriptable]] void setFar(const float far) noexcept;
       /**
        * @brief      Gets the far z plane.
        *
        * @return     The far.
        */
-      float getFar() const noexcept;
+      [[scriptable]] float getFar() const noexcept;
       /**
        * @brief      Sets the free camera speed when in free camera mode
        *
        * @param[in]  speed  The speed
        */
-      void setFreeCameraSpeed(const float speed) noexcept;
+      [[scriptable]] void setFreeCameraSpeed(const float speed) noexcept;
       /**
        * @brief      Gets the free camera speed when in free camera mode
        *
        * @return     The free camera speed.
        */
-      float getFreeCameraSpeed() const noexcept;
+      [[scriptable]] float getFreeCameraSpeed() const noexcept;
 
       /**
        * @brief      Gets the projection matrix.
        *
        * @return     The projection matrix.
        */
-      glm::mat4 getProjectionMatrix() const noexcept;
+      [[scriptable]] glm::mat4 getProjectionMatrix() const noexcept;
 
       /**
        * @brief      Determines if component within.
@@ -150,9 +145,8 @@ namespace Graphics {
        *
        * @return     True if component within, False otherwise.
        */
-      bool isComponentWithin(const Component& component) const;
-      virtual std::string className() const noexcept override;
-      //= END SCRIPTABLE
+      [[scriptable]] bool isComponentWithin(const Component& component) const;
+      [[scriptable]] virtual std::string className() const noexcept override;
 
       virtual unsigned long long getValueForSorting() const noexcept override;
 

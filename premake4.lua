@@ -1,5 +1,4 @@
 #!lua
-
 solution "TileEngine"
   configurations { "Debug", "Release", "WindowsDebug" }
 
@@ -9,7 +8,7 @@ solution "TileEngine"
 
     targetname "TileEngine"
 
-    includedirs { "./include", "./ext/nanogui/include", "./ext/nanogui/ext/eigen", "./ext/nanogui/ext/nanovg/src", "./ext/nanogui/ext/glfw/include", "./src" }
+    includedirs { "./include", "./ext/nanogui/ext/nanovg/src", "./ext/nanogui/ext/glfw/include", "./src" }
 
     files { "**.h", "**.hpp", "**.cpp", "**.cc" }
     excludes { "./test/**", "./ext/**" }
@@ -23,8 +22,9 @@ solution "TileEngine"
       targetextension ".exe"
 
     configuration "Debug"
-      buildoptions { "-std=c++14", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
-      links {  "freetype", "yse", "nanogui", "png", "z", "OpenGL.framework", "IL" }
+      buildoptions { "-std=c++14", "-Wno-unknown-pragmas", "-Wno-unknown-attributes", "-g", "-O0", '-pthread' }
+      links {  "freetype", "yse", "glfw", "png", "z", "OpenGL.framework", "IL" }
+      --"nanogui",
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"

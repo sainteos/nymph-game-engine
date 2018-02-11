@@ -1,16 +1,13 @@
 #ifndef FPS_COUNTER_H
 #define FPS_COUNTER_H
 #include <chrono>
-#include "events/subject.h"
-
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Subject
+#include "../events/subject.h"
 
 namespace Utility {
   /**
    * @brief      Class for fps counter.
    */
-  class FPSCounter : public Events::Subject {
+  class [[scriptable]] FPSCounter : public Events::Subject {
     private:
       float max_fps;
       float current_fps;
@@ -41,31 +38,28 @@ namespace Utility {
        */
       float assessCountAndGetDelta();
 
-      //= BEGIN SCRIPTABLE
-
       /**
        * @brief      Gets the maximum fps.
        *
        * @return     The maximum fps.
        */
-      float getMaxFPS() const noexcept;
+      [[scriptable]] float getMaxFPS() const noexcept;
       /**
        * @brief      Gets the current fps.
        *
        * @return     The current fps.
        */
-      float getCurrentFPS() const noexcept;
+      [[scriptable]] float getCurrentFPS() const noexcept;
       /**
        * @brief      Gets the average fps.
        *
        * @return     The average fps.
        */
-      float getAverageFPS() const noexcept;
+      [[scriptable]] float getAverageFPS() const noexcept;
       /**
        * @brief      Resets FPS Average
        */
-      void resetAverageFPS() noexcept;
-      //= END SCRIPTABLE
+      [[scriptable]] void resetAverageFPS() noexcept;
   };
 }
 

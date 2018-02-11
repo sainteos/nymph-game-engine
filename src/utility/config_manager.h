@@ -3,12 +3,11 @@
 #include <json/json.h>
 #include <vector>
 
-//= SCRIPTABLE
 namespace Utility {
   /**
    * @brief      Class for configuration manager to load json configurations
    */
-  class ConfigManager {
+  class [[scriptable]] ConfigManager {
     private:
       Json::Value config_handle;
     public:
@@ -25,7 +24,6 @@ namespace Utility {
        * @return     True if successful
        */
       bool loadConfig(const std::string& file_path);
-      //= BEGIN SCRIPTABLE
 
       /**
        * @brief      Gets an int from config.
@@ -34,7 +32,7 @@ namespace Utility {
        *
        * @return     The int.
        */
-      int getInt(const std::string& key);
+      [[scriptable]] int getInt(const std::string& key);
       /**
        * @brief      Gets an unsigned int from config
        *
@@ -42,7 +40,7 @@ namespace Utility {
        *
        * @return     The unsigned int.
        */
-      unsigned int getUnsignedInt(const std::string& key);
+      [[scriptable]] unsigned int getUnsignedInt(const std::string& key);
       /**
        * @brief      Gets a string from config
        *
@@ -50,7 +48,7 @@ namespace Utility {
        *
        * @return     The string.
        */
-      std::string getString(const std::string& key);
+      [[scriptable]] std::string getString(const std::string& key);
       /**
        * @brief      Gets a float from config
        *
@@ -58,7 +56,7 @@ namespace Utility {
        *
        * @return     The float.
        */
-      float getFloat(const std::string& key);
+      [[scriptable]] float getFloat(const std::string& key);
       /**
        * @brief      Gets a double from config
        *
@@ -66,7 +64,7 @@ namespace Utility {
        *
        * @return     The double.
        */
-      double getDouble(const std::string& key);
+      [[scriptable]] double getDouble(const std::string& key);
       /**
        * @brief      Gets a bool from config
        *
@@ -74,7 +72,7 @@ namespace Utility {
        *
        * @return     The bool.
        */
-      bool getBool(const std::string& key);
+      [[scriptable]] bool getBool(const std::string& key);
       /**
        * @brief      Gets a string vector from config
        *
@@ -82,7 +80,7 @@ namespace Utility {
        *
        * @return     The string vector.
        */
-      std::vector<std::string> getStringVector(const std::string& key);
+      [[scriptable]] std::vector<std::string> getStringVector(const std::string& key);
       /**
        * @brief      Gets an unsigned int vector from config
        *
@@ -90,8 +88,7 @@ namespace Utility {
        *
        * @return     The unsigned int vector.
        */
-      std::vector<unsigned int> getUnsignedIntVector(const std::string& key);
-      //= END SCRIPTABLE
+      [[scriptable]] std::vector<unsigned int> getUnsignedIntVector(const std::string& key);
   };
 }
 

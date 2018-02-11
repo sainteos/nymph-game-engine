@@ -3,7 +3,7 @@
 namespace Graphics {
   namespace UI {
 
-    Button::Button(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer) : nano_button(), cursor_over(false) {
+    Button::Button(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer) : TextArea(text, vertex_data, skin, layer),  /*nano_button(),*/ cursor_over(false) {
 
     }
 

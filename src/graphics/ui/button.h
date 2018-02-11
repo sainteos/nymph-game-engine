@@ -1,23 +1,25 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <nanogui/button.h>
+#include <glm/glm.hpp>
+//#include <nanogui/button.h>
+#include "wrappable_text.h"
+#include "../vertex_data.h"
+#include "text_area.h"
+#include "skin.h"
 
-//= SCRIPTABLE
-//= SCRIPTABLE BASES TextArea
 namespace Graphics {
   namespace UI {
     /**
      * @brief      Class for UI button.
      */
-    class Button {
+    class [[scriptable]] Button : public TextArea {
       private:
         bool cursor_over;
-        nanogui::Button nano_button;
+        //nanogui::Button nano_button;
       protected:
         const glm::vec4 mouse_over_dim = glm::vec4(0.1, 0.1, 0.1, 0.0);
       public:
-      //= BEGIN SCRIPTABLE
 
         /**
          * @brief      Button constructor
@@ -26,7 +28,7 @@ namespace Graphics {
          * @param[in]  vertex_data  The vertex data
          * @param[in]  skin         The skin
          */
-        Button(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
+        [[scriptable]] Button(std::shared_ptr<WrappableText> text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
         /**
          * @brief      Factory function for Button
          *
@@ -44,20 +46,19 @@ namespace Graphics {
          *
          * @return     a newly constructed Button
          */
-        static std::shared_ptr<Button> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
+        [[scriptable]] static std::shared_ptr<Button> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> text, glm::vec4 color, glm::vec4 text_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
 
-        virtual void onLeftClick() override;
-        virtual void onRightClick() override;
-        virtual void onLeftClickRelease() override;
-        virtual void onRightClickRelease() override;
-        virtual void onCursorEnter() override;
-        virtual void onCursorLeave() override;
-        virtual void onKeyDown(const int key) override;
-        virtual void onKeyUp(const int key) override;
-        virtual void onKeyRepeat(const int key) override;
-        virtual void onScroll(const glm::dvec2 position_change) override;
-        virtual std::string className() const noexcept override;
-      //= END SCRIPTABLE
+        [[scriptable]] virtual void onLeftClick() override;
+        [[scriptable]] virtual void onRightClick() override;
+        [[scriptable]] virtual void onLeftClickRelease() override;
+        [[scriptable]] virtual void onRightClickRelease() override;
+        [[scriptable]] virtual void onCursorEnter() override;
+        [[scriptable]] virtual void onCursorLeave() override;
+        [[scriptable]] virtual void onKeyDown(const int key) override;
+        [[scriptable]] virtual void onKeyUp(const int key) override;
+        [[scriptable]] virtual void onKeyRepeat(const int key) override;
+        [[scriptable]] virtual void onScroll(const glm::dvec2 position_change) override;
+        [[scriptable]] virtual std::string className() const noexcept override;
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
 

@@ -4,3 +4,6 @@
 [submodule "ext/nanogui"]
 	path = ext/nanogui
 	url = https://github.com/wjakob/nanogui.git
+[submodule "ext/premake-export-compile-commands"]
+	path = ext/premake-export-compile-commands
+	url = https://github.com/tarruda/premake-export-compile-commands.git

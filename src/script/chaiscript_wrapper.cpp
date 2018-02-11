@@ -2,7 +2,7 @@
 #include "generated/generated_registrations.h"
 #include "glm_registrations.h"
 
-namespace Script { 
+namespace Script {
   std::shared_ptr<chaiscript::ChaiScript> ChaiscriptWrapper::interpreter = nullptr;
 
 

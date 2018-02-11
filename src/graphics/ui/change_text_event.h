@@ -1,8 +1,8 @@
 #ifndef CHANGE_TEXT_EVENT_H
 #define CHANGE_TEXT_EVENT_H
 #include <glm/glm.hpp>
-#include "events/event.h"
-#include "events/event_type.h"
+#include "../../events/event.h"
+#include "../../events/event_type.h"
 //= SCRIPTABLE
 //= SCRIPTABLE BASES Event
 
@@ -11,7 +11,7 @@ namespace Graphics {
     /**
      * @brief      Class for change text event.
      */
-    class ChangeTextEvent : public Events::Event {
+    class [[scriptable]] ChangeTextEvent : public Events::Event {
       private:
         std::string text;
       public:
@@ -22,7 +22,7 @@ namespace Graphics {
          *
          * @param[in]  text  The text
          */
-        ChangeTextEvent(const std::string& text) : Event(Events::EventType::CHANGE_TEXT), text(text) {}
+        [[scriptable]] ChangeTextEvent(const std::string& text) : Event(Events::EventType::CHANGE_TEXT), text(text) {}
         /**
          * @brief      ChangeTextEvent factory function
          *
@@ -30,14 +30,13 @@ namespace Graphics {
          *
          * @return     A newly created ChangeTextEvent
          */
-        static std::shared_ptr<ChangeTextEvent> create(const std::string& text) { return std::make_shared<ChangeTextEvent>(text); }
+        [[scriptable]] static std::shared_ptr<ChangeTextEvent> create(const std::string& text) { return std::make_shared<ChangeTextEvent>(text); }
         /**
          * @brief      Gets the text.
          *
          * @return     The text.
          */
-        std::string getText() const noexcept { return text; }
-      //= END SCRIPTABLE
+        [[scriptable]] std::string getText() const noexcept { return text; }
     };
   }
 }

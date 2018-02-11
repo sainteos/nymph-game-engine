@@ -1,6 +1,7 @@
 #ifndef SYSTEM_ALREADY_INITIALIZED_EXCEPTION_H
 #define SYSTEM_ALREADY_INITIALIZED_EXCEPTION_H
 
+#include <string>
 #include <exception>
 
 namespace Exceptions {

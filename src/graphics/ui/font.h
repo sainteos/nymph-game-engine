@@ -2,7 +2,7 @@
 #define FONT_H
 #include <map>
 #include <glm/glm.hpp>
-#include "graphics/vertex_data.h"
+#include "../vertex_data.h"
 //= SCRIPTABLE
 
 namespace Graphics {
@@ -10,9 +10,7 @@ namespace Graphics {
     /**
      * @brief      Struct holding font character information.
      */
-    struct Character {
-      //= BEGIN SCRIPTABLE
-
+    struct [[scriptable]] Character {
       /**
        * The character's opengl texture handle.
        */
@@ -37,13 +35,12 @@ namespace Graphics {
        * The character's vao.
        */
       unsigned int vertex_array_object;
-      //= END SCRIPTABLE
     };
 
     /**
      * @brief      Class for font.
      */
-    class Font {
+    class [[scriptable]] Font {
       private:
         std::map<char, Character> characters;
         unsigned int size;
@@ -56,7 +53,6 @@ namespace Graphics {
          * @param[in]  pixels_per_unit  The pixels per unit
          */
         Font(const unsigned int size = 12, const unsigned int pixels_per_unit = 32);
-      //= BEGIN SCRIPTABLE
 
         /**
          * @brief      Adds a character.
@@ -64,7 +60,7 @@ namespace Graphics {
          * @param[in]  text_char  The text character
          * @param[in]  character  The engine character
          */
-        void addCharacter(const char text_char, const Character& character);
+        [[scriptable]] void addCharacter(const char text_char, const Character& character);
         /**
          * @brief      Gets the character.
          *
@@ -72,26 +68,25 @@ namespace Graphics {
          *
          * @return     The character.
          */
-        Character getCharacter(const char text_char);
+        [[scriptable]] Character getCharacter(const char text_char);
         /**
          * @brief      Gets the characters.
          *
          * @return     The characters.
          */
-        std::map<char, Character> getCharacters() const;
+        [[scriptable]] std::map<char, Character> getCharacters() const;
         /**
          * @brief      Gets the size.
          *
          * @return     The size.
          */
-        unsigned int getSize() const noexcept;
+        [[scriptable]] unsigned int getSize() const noexcept;
         /**
          * @brief      Gets the open gl size.
          *
          * @return     The open gl size.
          */
-        float getOpenGLSize() const noexcept;
-      //= END SCRIPTABLE
+        [[scriptable]] float getOpenGLSize() const noexcept;
     };
   }
 }
