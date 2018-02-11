@@ -30,7 +30,7 @@ namespace Graphics {
       std::vector<Character> line;
       float current_line_width = 0.0;
       for(auto character : text) {
-        if(character != '\n' && current_line_width + font->getCharacter(character).advance + kerning > width || character == '\n') {
+        if((character != '\n' && current_line_width + font->getCharacter(character).advance + kerning > width) || character == '\n') {
           lines.push_back(std::pair<float, std::vector<Character>>(current_line_width, line));
           line.clear();
           if(character != '\n') {

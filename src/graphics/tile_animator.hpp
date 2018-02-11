@@ -160,9 +160,8 @@ namespace Graphics {
             tile_coord_multiplier.setData(std::string("tile_coord_multiplier"), multiplier);
             notifyNow(SetUniformEvent::create(tile_coord_multiplier));
           }
-
-          return true;
         }
+        return true;
       }
 
       virtual void onDestroy() override {
@@ -190,7 +189,7 @@ namespace Graphics {
         return getId();
       }
 
-      virtual void log(el::base::type::ostream_t& os) const  {
+      virtual void log(el::base::type::ostream_t& os) const override {
         os << "Current State: " << current_state << " Tile Width: "<<tile_width<<" Tile Height: "<<tile_height<<" Tileset Width: "<<tileset_width<<" Tileset Height: "<<tileset_height;
         Component::log(os);
       }

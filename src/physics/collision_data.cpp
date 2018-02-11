@@ -27,7 +27,7 @@ namespace Physics {
   }
 
   bool CollisionData::onUpdate(const double delta) {
-
+    return true;
   }
 
   void CollisionData::onDestroy() {

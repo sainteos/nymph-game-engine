@@ -20,10 +20,14 @@ namespace Utility {
 
   void DebugParser::handleQueuedEvent(std::shared_ptr<Events::Event> event) {
     switch(event->getEventType()) {
-      case Events::EventType::DEBUG_COMMAND:
+    case Events::EventType::DEBUG_COMMAND: {
         auto casted_event = std::static_pointer_cast<DebugCommandEvent>(event);
         parseCommand(casted_event->getDebugCommand());
         break;
+      }
+    default: {
+        break;
+      }
     }
 
   }
@@ -45,7 +49,7 @@ namespace Utility {
 
   void DebugParser::parseCommand(const std::string& command) {
     auto tokens = tokenSplit(command);
-    
+
     if(tokens.front() == "load") {
       tokens.pop();
       if(tokens.front() == "map") {
@@ -87,7 +91,7 @@ namespace Utility {
     }
     else if(tokens.front() == "layer") {
       tokens.pop();
-      
+
       unsigned int layer_number = std::stoul(tokens.front());
       tokens.pop();
       notify(ToggleLayerEvent::create(layer_number, tokens.front() == "on"));

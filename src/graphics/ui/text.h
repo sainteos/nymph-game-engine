@@ -85,7 +85,7 @@ namespace Graphics {
          *
          * @return     String representation of the object.
          */
-        std::string to_string() const noexcept;
+        std::string to_string() const noexcept override;
         virtual std::string className() const noexcept override;
       //= END SCRIPTABLE
 
@@ -96,7 +96,7 @@ namespace Graphics {
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
         virtual unsigned long long getValueForSorting() const noexcept override;
 
-        virtual void log(el::base::type::ostream_t& os) const;
+        virtual void log(el::base::type::ostream_t& os) const override;
     };
   }
 }

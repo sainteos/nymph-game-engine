@@ -525,7 +525,7 @@ namespace Game {
               else if(tile != nullptr && tile->IsAnimated()) {
                 continue;
               }
-              else if(!tile || tile != nullptr && !tile->IsAnimated()) {
+              else if(!tile || (tile != nullptr && !tile->IsAnimated())) {
                 //Generate Vertex Coords
                 auto vertex_coords = generateVertexCoords(map.getImpl()->GetTileWidth(), map.getImpl()->GetTileHeight(), tileset->GetTileWidth(), tileset->GetTileHeight(), map_x, opengl_map_y);
                 patch_vertices.insert(patch_vertices.end(), vertex_coords.begin(), vertex_coords.end());

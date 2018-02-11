@@ -60,7 +60,7 @@ namespace Graphics {
         void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
         void onNotifyNow(std::shared_ptr<Events::Event> event) override;
 
-        virtual void log(el::base::type::ostream_t& os) const;
+        virtual void log(el::base::type::ostream_t& os) const override;
     };
   }
 }

@@ -150,7 +150,7 @@ namespace Script {
         std::stringstream s;
         s << ee.what();
         if (ee.call_stack.size() > 0) {
-          s << "during evaluation at (" << ee.call_stack[0]->start().line << ", " << ee.call_stack[0]->start().column << ")";
+          s << "during evaluation at (" << ee.call_stack[0].start().line << ", " << ee.call_stack[0].start().column << ")";
         }
         s << '\n';
         LOG(INFO)<<s.str();

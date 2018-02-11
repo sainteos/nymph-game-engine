@@ -67,12 +67,12 @@ namespace Input {
     }
 
     for(auto& key : keys_to_actions) {
-      if(key.second == GLFW_PRESS && last_keys_to_actions.count(key.first) == 0 ||
-         key.second == GLFW_PRESS && last_keys_to_actions.count(key.first) > 0 && last_keys_to_actions[key.first] != key.second && last_keys_to_actions[key.first] != GLFW_REPEAT) {
+      if((key.second == GLFW_PRESS && last_keys_to_actions.count(key.first) == 0) ||
+         (key.second == GLFW_PRESS && last_keys_to_actions.count(key.first) > 0 && last_keys_to_actions[key.first] != key.second && last_keys_to_actions[key.first] != GLFW_REPEAT)) {
         notify(KeyDownEvent::create(key.first));
       }
-      else if(key.second == GLFW_RELEASE && last_keys_to_actions.count(key.first) == 0 ||
-         key.second == GLFW_RELEASE && last_keys_to_actions.count(key.first) > 0 && last_keys_to_actions[key.first] != key.second) {
+      else if((key.second == GLFW_RELEASE && last_keys_to_actions.count(key.first) == 0) ||
+         (key.second == GLFW_RELEASE && last_keys_to_actions.count(key.first) > 0 && last_keys_to_actions[key.first] != key.second)) {
         notify(KeyUpEvent::create(key.first));
       }
       else if(key.second == GLFW_REPEAT) {
@@ -84,12 +84,12 @@ namespace Input {
     keys_to_actions.clear();
 
     for(auto& button : mouse_buttons_to_actions) {
-      if(button.second == GLFW_PRESS && last_mouse_buttons_to_actions.count(button.first) == 0 ||
-         button.second == GLFW_PRESS && last_mouse_buttons_to_actions.count(button.first) > 0 && last_mouse_buttons_to_actions[button.first] != button.second) {
+      if((button.second == GLFW_PRESS && last_mouse_buttons_to_actions.count(button.first) == 0) ||
+         (button.second == GLFW_PRESS && last_mouse_buttons_to_actions.count(button.first) > 0 && last_mouse_buttons_to_actions[button.first] != button.second)) {
         notify(MouseButtonDownEvent::create(button.first));
       }
-      else if(button.second == GLFW_RELEASE && last_mouse_buttons_to_actions.count(button.first) == 0 ||
-         button.second == GLFW_RELEASE && last_mouse_buttons_to_actions.count(button.first) > 0 && last_mouse_buttons_to_actions[button.first] != button.second) {
+      else if((button.second == GLFW_RELEASE && last_mouse_buttons_to_actions.count(button.first) == 0) ||
+         (button.second == GLFW_RELEASE && last_mouse_buttons_to_actions.count(button.first) > 0 && last_mouse_buttons_to_actions[button.first] != button.second)) {
         notify(MouseButtonUpEvent::create(button.first));
       }
     }
@@ -101,7 +101,7 @@ namespace Input {
   }
 
   void InputSystem::keyCallback(GLFWwindow* window, int key, int scan_code, int action, int mods) {
-    if(!key_input_suspended || key_input_suspended && key > GLFW_KEY_GRAVE_ACCENT) {
+    if(!key_input_suspended || (key_input_suspended && key > GLFW_KEY_GRAVE_ACCENT)) {
       keys_to_actions[key] = action;
     }
   }
