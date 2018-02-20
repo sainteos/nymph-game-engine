@@ -5,7 +5,6 @@
 #include "../events/subject.h"
 #include "../events/observer.h"
 #include "../events/event.h"
-#include "../script/scriptable.hpp"
 
 namespace Utility {
   /**
