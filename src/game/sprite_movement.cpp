@@ -6,7 +6,7 @@
 #include "animation_trigger_event.hpp"
 #include <easylogging++.h>
 #define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
+#include <glfw3.h>
 #include <glm/ext.hpp>
 
 namespace Game {

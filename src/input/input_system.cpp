@@ -1,5 +1,5 @@
 #include <easylogging++.h>
-#include <GLFW/glfw3.h>
+#include <glfw3.h>
 #include <glm/ext.hpp>
 #include "input_system.h"
 #include "cursor_enter_event.h"

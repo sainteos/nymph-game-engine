@@ -1,7 +1,7 @@
 #ifndef WINDOW_EXIT_FUNCTOR_H
 #define WINDOW_EXIT_FUNCTOR_H
 #define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
+#include <glfw3.h>
 
 namespace Graphics {
   class WindowExitFunctor {

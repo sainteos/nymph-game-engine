@@ -19,7 +19,6 @@
 namespace Graphics {
 
   GraphicsSystem::GraphicsSystem() : window(nullptr), initialized(false), next_id(1), max_influence_lights(8) {
-    //screen = std::make_shared<nanogui::Screen>();
   }
 
   GraphicsSystem::~GraphicsSystem() {
@@ -73,8 +72,11 @@ namespace Graphics {
 
     glfwSetWindowTitle(window, window_title.c_str());
 
+<<<<<<< HEAD
     //screen->initialize(window, false);
 
+=======
+>>>>>>> parent of 3c7a465... Start including nanogui.
     initialized = true;
     LOG(INFO)<<"Graphics system initialized!";
   }
@@ -191,10 +193,13 @@ namespace Graphics {
   }
 
   void GraphicsSystem::stopFrame() {
+<<<<<<< HEAD
     //Draw nanogui last
     //screen->drawContents();
     //screen->drawWidgets();
 
+=======
+>>>>>>> parent of 3c7a465... Start including nanogui.
     glfwSwapBuffers(window);
   }
 

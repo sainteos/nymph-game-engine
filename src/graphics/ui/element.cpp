@@ -1,6 +1,6 @@
 #include <easylogging++.h>
 #define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
+#include <glfw3.h>
 #include "element.h"
 #include "input/key_down_event.h"
 #include "input/key_up_event.h"

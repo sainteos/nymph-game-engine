@@ -1,12 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <glm/glm.hpp>
-//#include <nanogui/button.h>
-#include "wrappable_text.h"
-#include "../vertex_data.h"
-#include "text_area.h"
-#include "skin.h"
+#include "graphics/ui/text_area.h"
 
 namespace Graphics {
   namespace UI {
@@ -16,7 +11,6 @@ namespace Graphics {
     class [[scriptable]] Button : public TextArea {
       private:
         bool cursor_over;
-        //nanogui::Button nano_button;
       protected:
         const glm::vec4 mouse_over_dim = glm::vec4(0.1, 0.1, 0.1, 0.0);
       public:
