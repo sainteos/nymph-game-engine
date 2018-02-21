@@ -9,7 +9,6 @@ namespace Graphics {
      */
     class [[scriptable]] SuspendKeyInputEvent : public Events::Event {
       public:
-      //= BEGIN SCRIPTABLE
 
         /**
          * @brief      Constructor for SuspendKeyInputEvent

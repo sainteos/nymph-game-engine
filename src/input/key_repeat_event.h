@@ -4,8 +4,6 @@
 #include "../events/event.h"
 #include "../events/event_type.h"
 
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Event
 namespace Input {
   /**
    * @brief      Class for key repeat event.
@@ -14,7 +12,6 @@ namespace Input {
     private:
       int key;
     public:
-      //= BEGIN SCRIPTABLE
 
       /**
        * @brief      Constructor for KeyRepeatEvent

@@ -4,16 +4,12 @@
 #include "../events/event.h"
 #include "../events/event_type.h"
 
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Event
-
 namespace Utility {
   /**
    * @brief      Class for toggle free camera event.
    */
   class [[scriptable]] ToggleFreeCameraEvent : public Events::Event {
     public:
-      //= BEGIN SCRIPTABLE
 
       /**
        * @brief      ToggleFreeCameraEvent constructor

@@ -3,7 +3,6 @@
 #include <map>
 #include <glm/glm.hpp>
 #include "../vertex_data.h"
-//= SCRIPTABLE
 
 namespace Graphics {
   namespace UI {

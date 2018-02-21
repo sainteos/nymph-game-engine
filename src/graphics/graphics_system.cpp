@@ -72,11 +72,6 @@ namespace Graphics {
 
     glfwSetWindowTitle(window, window_title.c_str());
 
-<<<<<<< HEAD
-    //screen->initialize(window, false);
-
-=======
->>>>>>> parent of 3c7a465... Start including nanogui.
     initialized = true;
     LOG(INFO)<<"Graphics system initialized!";
   }
@@ -193,13 +188,6 @@ namespace Graphics {
   }
 
   void GraphicsSystem::stopFrame() {
-<<<<<<< HEAD
-    //Draw nanogui last
-    //screen->drawContents();
-    //screen->drawWidgets();
-
-=======
->>>>>>> parent of 3c7a465... Start including nanogui.
     glfwSwapBuffers(window);
   }
 

@@ -4,8 +4,6 @@
 #include "../events/event.h"
 #include "../events/event_type.h"
 
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Event
 namespace Utility {
   /**
    * @brief      Class for list layers event.

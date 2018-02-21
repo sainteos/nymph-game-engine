@@ -38,7 +38,6 @@ namespace Utility {
        * out of the event queue and use them
        */
       [[scriptable]] void handleEvents();
-      //= END SCRIPTABLE
 
       /**
        * @brief      Destroys the object.

@@ -17,7 +17,6 @@
 #include "renderable.h"
 #include "window_exit_functor.h"
 #include "camera.h"
-//= SCRIPTABLE
 
 namespace Graphics {
   /**

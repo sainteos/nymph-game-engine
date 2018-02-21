@@ -3,8 +3,6 @@
 #include <glm/glm.hpp>
 #include "../../events/event.h"
 #include "../../events/event_type.h"
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Event
 
 namespace Graphics {
   namespace UI {
@@ -15,7 +13,6 @@ namespace Graphics {
       private:
         std::string text;
       public:
-      //= BEGIN SCRIPTABLE
 
         /**
          * @brief      ChangeTextEvent constructor

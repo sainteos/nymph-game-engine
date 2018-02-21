@@ -11,7 +11,6 @@ namespace Input {
     private:
       unsigned char character;
     public:
-      //= BEGIN SCRIPTABLE
 
       /**
        * @brief      CharacterTypedEvent constructor
