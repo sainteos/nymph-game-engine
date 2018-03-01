@@ -1,7 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "graphics/ui/text_area.h"
+#include "text_area.h"
 
 namespace Graphics {
   namespace UI {

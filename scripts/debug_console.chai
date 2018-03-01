@@ -29,13 +29,13 @@ class DebugConsole {
     text.setFont(font_generator.getFont("8bit"))
 
     text.setShader(shader_manager.getShader("simple_text"))
-    text.setHorizontalAlignment(WrappableText_HorizontalAlignment_LEFT)
-    text.setVerticalAlignment(WrappableText_VerticalAlignment_VCENTER)
+    text.setHorizontalAlignment(HorizontalAlignment_LEFT)
+    text.setVerticalAlignment(VerticalAlignment_VCENTER)
     text.setColor(vec4(0.1, 1.0, 0.1, 0.9))
     text.setKerning(0.12)
     default_text.setShader(shader_manager.getShader("simple_text"))
-    default_text.setHorizontalAlignment(WrappableText_HorizontalAlignment_LEFT)
-    default_text.setVerticalAlignment(WrappableText_VerticalAlignment_VCENTER)
+    default_text.setHorizontalAlignment(HorizontalAlignment_LEFT)
+    default_text.setVerticalAlignment(VerticalAlignment_VCENTER)
     default_text.setColor(vec4(0.4, 0.4, 0.4, 0.9))
     default_text.setKerning(0.12)
 
@@ -71,8 +71,8 @@ class DebugConsole {
     var map_list_text = WrappableText()
     map_list_text.setFont(font_generator.getFont("8bit"))
     map_list_text.setShader(shader_manager.getShader("simple_text"))
-    map_list_text.setHorizontalAlignment(WrappableText_HorizontalAlignment_HCENTER)
-    map_list_text.setVerticalAlignment(WrappableText_VerticalAlignment_TOP)
+    map_list_text.setHorizontalAlignment(HorizontalAlignment_HCENTER)
+    map_list_text.setVerticalAlignment(VerticalAlignment_TOP)
     map_list_text.setColor(vec4(1.0, 1.0, 1.0, 1.0))
     map_list_text.setKerning(0.12)
 
@@ -117,7 +117,7 @@ class DebugConsole {
     var name_text = WrappableText()
     name_text.setFont(font_generator.getFont("8bit"))
     name_text.setShader(shader_manager.getShader("simple_text"))
-    name_text.setHorizontalAlignment(WrappableText_HorizontalAlignment_HCENTER)
+    name_text.setHorizontalAlignment(HorizontalAlignment_HCENTER)
 
     this.name_area = TextArea_create(this.console_skin, name_text, vec4(0.0, 0.0, 1.0, 0.0), vec4(1.0, 1.0, 1.0, 0.8), 0.1, this.screen_width_tiles, this.screen_height_tiles, 0.0, 0.0, 10.0, 1.0, 1)
 
@@ -130,7 +130,7 @@ class DebugConsole {
     var pos_text = WrappableText()
     pos_text.setFont(font_generator.getFont("8bit"))
     pos_text.setShader(shader_manager.getShader("simple_text"))
-    pos_text.setHorizontalAlignment(WrappableText_HorizontalAlignment_RIGHT)
+    pos_text.setHorizontalAlignment(HorizontalAlignment_RIGHT)
 
     auto pos_area = TextArea_create(this.console_skin, pos_text, vec4(1.0, 0.0, 1.0, 0.0), vec4(1.0, 1.0, 1.0, 0.8), 0.0, this.screen_width_tiles, this.screen_height_tiles, 2.5, 0.0, 5.0, 1.0, 1)
 

@@ -20,14 +20,14 @@ solution "TileEngine"
       targetextension ".exe"
 
     configuration "Debug"
-      buildoptions { "-std=c++14", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
+      buildoptions { "-std=c++14", "-Wno-unknown-pragmas", "-Wno-unknown-attributes", "-g", "-O0", '-pthread' }
       links {  "freetype", "yse", "glfw", "png", "z", "OpenGL.framework", "IL" }
       defines { "DEBUG" }
       flags { "Symbols" }
       targetextension ".out"
 
     configuration "Release"
-      buildoptions { "-std=c++11", "-Wno-unknown-pragmas", "-g", "-O0", '-pthread' }
+      buildoptions { "-std=c++11", "-Wno-unknown-pragmas", "-Wno-unknown-attributes", "-g", "-O0", '-pthread' }
       links {  "freetype", "yse", "glfw3.3.1", "png", "z", "OpenGL.framework", "IL", "chaiscript_stdlib-5.8.5" }
       defines { "NDEBUG" }
       flags { "Optimize" }

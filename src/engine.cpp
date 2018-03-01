@@ -25,12 +25,6 @@ void Engine::addScene(std::shared_ptr<Game::Scene> scene) noexcept {
 }
 
 std::shared_ptr<Game::Scene> Engine::findSceneByName(const std::string& name) noexcept {
-  LOG(INFO)<<"Finding scene: "<<name;
-
-  for(auto s : scenes) {
-    LOG(INFO)<<s.first->getName();
-  }
-
   auto find_by_name = [&](std::pair<std::shared_ptr<Game::Scene>, bool> pair) {
     return pair.first->getName() == name;
   };
@@ -38,11 +32,9 @@ std::shared_ptr<Game::Scene> Engine::findSceneByName(const std::string& name) no
   auto scene_iter = std::find_if(scenes.begin(), scenes.end(), find_by_name);
 
   if(scene_iter == scenes.end()) {
-    LOG(INFO)<<"Didn't find scene: "<<name;
     return nullptr;
   }
   else {
-    LOG(INFO)<<"Found scene: "<<name;
     return scene_iter->first;
   }
 }
