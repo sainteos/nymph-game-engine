@@ -3,7 +3,7 @@
 #include <memory>
 #include <stdexcept>
 #include <type_traits>
-#include "events/subject.h"
+#include "../subject.h"
 
 namespace Events {
   namespace FSM {

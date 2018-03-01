@@ -18,12 +18,10 @@
 #include "script/scripting_system.h"
 #include "sound/sound_system.h"
 
-//= SCRIPTABLE
-
 /**
  * @brief      Class for engine.
  */
-class Engine : public std::enable_shared_from_this<Engine> {
+class [[scriptable]] Engine : public std::enable_shared_from_this<Engine> {
   private:
     std::shared_ptr<ComponentManager> component_manager;
     std::shared_ptr<Utility::FPSCounter> fps_counter;
@@ -57,14 +55,12 @@ class Engine : public std::enable_shared_from_this<Engine> {
      */
     virtual ~Engine() = default;
 
-    //= BEGIN SCRIPTABLE
-
     /**
      * @brief      Adds a scene to the engine.
      *
      * @param[in]  scene  The scene
      */
-    void addScene(std::shared_ptr<Game::Scene> scene) noexcept;
+    [[scriptable]] void addScene(std::shared_ptr<Game::Scene> scene) noexcept;
     /**
      * @brief      Finds a scene by name
      *
@@ -72,45 +68,44 @@ class Engine : public std::enable_shared_from_this<Engine> {
      *
      * @return     The scene, nullptr if it doesn't exist
      */
-    std::shared_ptr<Game::Scene> findSceneByName(const std::string& name) noexcept;
+    [[scriptable]] std::shared_ptr<Game::Scene> findSceneByName(const std::string& name) noexcept;
 
     /**
      * @brief      Gets the scenes.
      *
      * @return     The scenes.
      */
-    std::map<std::shared_ptr<Game::Scene>, bool> getScenes() const noexcept;
+    [[scriptable]] std::map<std::shared_ptr<Game::Scene>, bool> getScenes() const noexcept;
 
     /**
      * @brief      Activates a scene by name
      *
      * @param[in]  name  The name
      */
-    void activateScene(const std::string& name);
+    [[scriptable]] void activateScene(const std::string& name);
     /**
      * @brief      Deactivates a scene by name
      *
      * @param[in]  name  The name
      */
-    void deactivateScene(const std::string& name);
+    [[scriptable]] void deactivateScene(const std::string& name);
     /**
      * @brief      Gets the scene names.
      *
      * @return     The scene names.
      */
-    std::vector<std::string> getSceneNames() const noexcept;
+    [[scriptable]] std::vector<std::string> getSceneNames() const noexcept;
     /**
      * @brief      Gets the active scene names.
      *
      * @return     The active scene names.
      */
-    std::vector<std::string> getActiveSceneNames() const noexcept;
+    [[scriptable]] std::vector<std::string> getActiveSceneNames() const noexcept;
 
     /**
      * @brief      This is to signal the engine that it is time to shut down
      */
-    void timeToExit() noexcept;
-    //= END SCRIPTABLE
+    [[scriptable]] void timeToExit() noexcept;
 
     /**
      * @brief      Sets up the engine

@@ -1,0 +1,9 @@
+---
+verbose_parsing: false
+verbose_processing: false
+output_directory: "./generated/"
+libraries:
+  - name: "Nymph Game Engine"
+    location: "/Users/nixiethefae/Programming/nymph-game-engine/src/"
+    includes: "/Users/nixiethefae/Programming/nymph-game-engine/include/"
+    namespace: "nymph"

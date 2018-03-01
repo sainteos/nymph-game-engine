@@ -1,5 +1,5 @@
-#include "events/subject.h"
-#include "events/event_type.h"
+#include "subject.h"
+#include "event_type.h"
 
 namespace Events {
   void Subject::addObserver(std::shared_ptr<Observer> observer) {

@@ -3,16 +3,14 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <chaiscript/chaiscript.hpp>
-#include "graphics/shader.h"
-#include "graphics/uniform.h"
-//= SCRIPTABLE
+#include "shader.h"
+#include "uniform.h"
 
+/**
+ * @brief      Class for shader manager.
+ */
 namespace Graphics {
-  /**
-   * @brief      Class for shader manager.
-   */
-  class ShaderManager {
+  class [[scriptable]] ShaderManager {
     private:
       std::map<std::string, std::shared_ptr<Shader>> shaders_to_names;
       bool checkCompilation(const unsigned int& shader_object);
@@ -43,7 +41,6 @@ namespace Graphics {
        * @brief      Destroys the object.
        */
       ~ShaderManager();
-      //= BEGIN SCRIPTABLE
 
       /**
        * @brief      Loads a shader.
@@ -53,7 +50,7 @@ namespace Graphics {
        *
        * @return     True if successful
        */
-      bool loadShader(const std::string& name, const bool geometry_shader = false);
+      [[scriptable]] bool loadShader(const std::string& name, const bool geometry_shader = false);
       /**
        * @brief      Loads a shader.
        *
@@ -64,7 +61,7 @@ namespace Graphics {
        *
        * @return     True if successful
        */
-      bool loadShader(const std::string& name, const std::string& vertex_filename, const std::string& fragment_filename, const std::string& geometry_filename);
+      [[scriptable]] bool loadShader(const std::string& name, const std::string& vertex_filename, const std::string& fragment_filename, const std::string& geometry_filename);
 
       /**
        * @brief      looks up shader by name
@@ -81,7 +78,7 @@ namespace Graphics {
        *
        * @return     The shader.
        */
-      std::shared_ptr<Shader> getShader(const std::string& name) const;
+      [[scriptable]] std::shared_ptr<Shader> getShader(const std::string& name) const;
 
       /**
        * @brief      Sets the uniform for all programs.
@@ -89,7 +86,6 @@ namespace Graphics {
        * @param[in]  u     The uniform to set
        */
       void setUniformForAllPrograms(const Uniform& u);
-      //= END SCRIPTABLE
 
       /**
        * @brief      Sets the uniform for all programs.

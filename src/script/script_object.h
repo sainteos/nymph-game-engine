@@ -3,20 +3,17 @@
 #include <memory>
 #include <type_traits>
 #include <json/json.h>
-#include "events/subject.h"
-#include "events/observer.h"
-#include "events/event.h"
+#include "../events/subject.h"
+#include "../events/observer.h"
+#include "../events/event.h"
 #include "chaiscript_wrapper.h"
-
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Subject Observer
 
 namespace Script {
   class ScriptingSystem;
   /**
    * @brief      Class for script object.
    */
-  class ScriptObject : public Events::Subject, public Events::Observer, public std::enable_shared_from_this<ScriptObject> {
+  class [[scriptable]] ScriptObject : public Events::Subject, public Events::Observer, public std::enable_shared_from_this<ScriptObject> {
     private:
       friend class ScriptingSystem;
 
@@ -61,17 +58,14 @@ namespace Script {
        */
       ~ScriptObject() = default;
 
-      //= BEGIN SCRIPTABLE
-
       /**
        * @brief      Sets the class name on the scripting object
        *
        * @param[in]  name  The name
        */
-      void setClassName(const std::string& name);
+      [[scriptable]] void setClassName(const std::string& name);
 
-      std::string getClassName() const noexcept;
-      //= END SCRIPTABLE
+      [[scriptable]] std::string getClassName() const noexcept;
 
       /**
        * @brief      Calls onStart in the attached script object

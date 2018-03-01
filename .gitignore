@@ -4,6 +4,7 @@ doc
 lib
 obj
 logs
+pkg
 src/generated
 Makefile
 *.make

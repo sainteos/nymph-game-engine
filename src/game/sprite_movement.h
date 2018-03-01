@@ -3,11 +3,11 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <memory>
-#include "events/event.h"
-#include "physics/collision_data.h"
 #include <list>
-#include "component.h"
-#include "events/fsm/fsm.hpp"
+#include "../events/event.h"
+#include "../physics/collision_data.h"
+#include "../component.h"
+#include "../events/fsm/fsm.hpp"
 #include "sprite_move_event.h"
 #include "animation_trigger_event.hpp"
 
@@ -436,9 +436,7 @@ namespace Game {
   /**
    * @brief      Class for sprite movement.
    */
-  //= SCRIPTABLE
-  //= SCRIPTABLE BASES Component
-  class SpriteMovement : public Component, public std::enable_shared_from_this<SpriteMovement> {
+  class [[scriptable]] SpriteMovement : public Component, public std::enable_shared_from_this<SpriteMovement> {
     private:
       std::unique_ptr<SpriteMovementMotor::SpriteFSM> state_machine;
       std::shared_ptr<SpriteMovementMotor::SpriteData> data;
@@ -452,36 +450,33 @@ namespace Game {
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual unsigned long long getValueForSorting() const noexcept override;
 
-      //= BEGIN SCRIPTABLE
-
       /**
        * @brief      Sprite Movement constructor
        */
-      SpriteMovement();
+      [[scriptable]] SpriteMovement();
 
       /**
        * @brief      Adds a collision data.
        *
        * @param[in]  collision_data  The collision data
        */
-      void addCollisionData(std::shared_ptr<Physics::CollisionData> collision_data);
+      [[scriptable]] void addCollisionData(std::shared_ptr<Physics::CollisionData> collision_data);
       /**
        * @brief      Sets the moving speed.
        *
        * @param[in]  speed  The speed
        */
-      void setMovingSpeed(const float speed);
+      [[scriptable]] void setMovingSpeed(const float speed);
       /**
        * @brief      Sets the move quantization.
        *
        * @param[in]  number_of_tiles  The number of tiles
        */
-      void setMoveQuantization(const float number_of_tiles);
+      [[scriptable]] void setMoveQuantization(const float number_of_tiles);
 
 
-      virtual std::string className() const noexcept override;
-      virtual std::string to_string() const noexcept override;
-      //= END SCRIPTABLE
+      [[scriptable]] virtual std::string className() const noexcept override;
+      [[scriptable]] virtual std::string to_string() const noexcept override;
 
       virtual void log(el::base::type::ostream_t& os) const override;
   };

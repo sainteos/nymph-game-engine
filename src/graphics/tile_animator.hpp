@@ -1,13 +1,13 @@
 #ifndef TILE_ANIMATOR_H
 #define TILE_ANIMATOR_H
 #include <glm/glm.hpp>
-#include "component.h"
-#include "graphics/vertex_data.h"
-#include "events/subject.h"
-#include "graphics/set_uniform_event.h"
-#include "set_active_event.h"
-#include "game/animation_trigger_event.hpp"
-#include "cloneable.hpp"
+#include "../component.h"
+#include "vertex_data.h"
+#include "../events/subject.h"
+#include "set_uniform_event.h"
+#include "../set_active_event.h"
+#include "../game/animation_trigger_event.hpp"
+#include "../cloneable.hpp"
 
 namespace Graphics {
   /**

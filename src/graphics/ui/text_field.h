@@ -1,16 +1,13 @@
 #ifndef TEXT_FIELD_H
 #define TEXT_FIELD_H
 
-#include "graphics/ui/text_area.h"
-//= SCRIPTABLE
-//= SCRIPTABLE BASES TextArea
-
+#include "text_area.h"
 namespace Graphics {
   namespace UI {
     /**
      * @brief      Class for text field.
      */
-    class TextField : public TextArea {
+    class [[scriptable]] TextField : public TextArea {
       private:
         bool cursor_over;
         std::shared_ptr<WrappableText> default_text;
@@ -25,7 +22,6 @@ namespace Graphics {
       protected:
         const glm::vec4 mouse_over_dim = glm::vec4(0.1, 0.1, 0.1, 0.0);
       public:
-      //= BEGIN SCRIPTABLE
 
         /**
          * @brief      TextField constructor
@@ -35,7 +31,7 @@ namespace Graphics {
          * @param[in]  vertex_data   The vertex data
          * @param[in]  skin          The skin
          */
-        TextField(std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
+        [[scriptable]] TextField(std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, VertexData vertex_data, std::shared_ptr<Skin> skin, const unsigned int layer);
         /**
          * @brief      TextField factory function
          *
@@ -53,27 +49,26 @@ namespace Graphics {
          *
          * @return     { description_of_the_return_value }
          */
-        static std::shared_ptr<TextField> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, glm::vec4 background_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
+        [[scriptable]] static std::shared_ptr<TextField> create(std::shared_ptr<Skin> skin, std::shared_ptr<WrappableText> default_text, std::shared_ptr<WrappableText> typed_text, glm::vec4 background_color, float padding, float screen_width, float screen_height, float x_pos, float y_pos, float width, float height, const unsigned int layer);
 
-        virtual void onLeftClick() override;
-        virtual void onRightClick() override;
-        virtual void onLeftClickRelease() override;
-        virtual void onRightClickRelease() override;
-        virtual void onCursorEnter() override;
-        virtual void onCursorLeave() override;
-        virtual void onKeyDown(const int key) override;
-        virtual void onKeyUp(const int key) override;
-        virtual void onKeyRepeat(const int key) override;
-        virtual void onScroll(const glm::dvec2 position_change) override;
-        virtual void onCharacterTyped(const unsigned char character);
+        [[scriptable]] virtual void onLeftClick() override;
+        [[scriptable]] virtual void onRightClick() override;
+        [[scriptable]] virtual void onLeftClickRelease() override;
+        [[scriptable]] virtual void onRightClickRelease() override;
+        [[scriptable]] virtual void onCursorEnter() override;
+        [[scriptable]] virtual void onCursorLeave() override;
+        [[scriptable]] virtual void onKeyDown(const int key) override;
+        [[scriptable]] virtual void onKeyUp(const int key) override;
+        [[scriptable]] virtual void onKeyRepeat(const int key) override;
+        [[scriptable]] virtual void onScroll(const glm::dvec2 position_change) override;
+        [[scriptable]] virtual void onCharacterTyped(const unsigned char character);
         /**
          * @brief      Returns a string representation of the object.
          *
          * @return     String representation of the object.
          */
-        virtual std::string to_string() const noexcept override;
-        virtual std::string className() const noexcept override;
-      //= END SCRIPTABLE
+        [[scriptable]] virtual std::string to_string() const noexcept override;
+        [[scriptable]] virtual std::string className() const noexcept override;
 
         virtual void onDestroy() override;
         virtual void onStart() override;

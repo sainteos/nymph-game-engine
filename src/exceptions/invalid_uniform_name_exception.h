@@ -1,5 +1,6 @@
 #ifndef INVALID_UNIFORM_NAME_EXCEPTION_H
 #define INVALID_UNIFORM_NAME_EXCEPTION_H
+#include <string>
 #include <exception>
 
 namespace Exceptions {

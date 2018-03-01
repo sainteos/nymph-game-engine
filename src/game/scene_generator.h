@@ -2,21 +2,20 @@
 #define SCENE_GENERATOR_H
 #include <memory>
 #include <map>
-#include "physics/collision_data.h"
-#include "graphics/vertex_data.h"
-#include "graphics/texture_manager.h"
-#include "graphics/shader_manager.h"
-#include "graphics/renderable.h"
-#include "graphics/tile_animator.hpp"
-#include "component_manager.h"
-#include "entity.h"
+#include "../physics/collision_data.h"
+#include "../graphics/vertex_data.h"
+#include "../graphics/texture_manager.h"
+#include "../graphics/shader_manager.h"
+#include "../graphics/renderable.h"
+#include "../graphics/tile_animator.hpp"
+#include "../component_manager.h"
+#include "../entity.h"
 #include "scene.h"
 #include "map.h"
 #include "sprite_movement.h"
-//= SCRIPTABLE
 
 namespace Game {
-  class SceneGenerator {
+  class [[scriptable]] SceneGenerator {
     private:
 
       struct AnimationPlaceholder {
@@ -65,8 +64,6 @@ namespace Game {
       SceneGenerator() = delete;
       ~SceneGenerator();
 
-      //= BEGIN SCRIPTABLE
-
       /**
        * @brief      SceneGenerator constructor
        *
@@ -74,13 +71,13 @@ namespace Game {
        * @param[in]  texture_manager  The texture manager
        * @param[in]  shader_manager   The shader manager
        */
-      SceneGenerator(const Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager, const unsigned int ui_z_slots);
+      [[scriptable]] SceneGenerator(const Map& animation_index, std::shared_ptr<Graphics::TextureManager> texture_manager, std::shared_ptr<Graphics::ShaderManager> shader_manager, const unsigned int ui_z_slots);
       /**
        * @brief      SceneGenerator copy constructor
        *
        * @param[in]  s  The other SceneGenerator
        */
-      SceneGenerator(const SceneGenerator& s) = default;
+      [[scriptable]] SceneGenerator(const SceneGenerator& s) = default;
       /**
        * @brief      SceneGenerator equal operator
        *
@@ -88,7 +85,7 @@ namespace Game {
        *
        * @return     *this
        */
-      SceneGenerator& operator=(const SceneGenerator& other) = default;
+      [[scriptable]] SceneGenerator& operator=(const SceneGenerator& other) = default;
 
       /**
        * @brief      Creates a scene from a map.
@@ -99,7 +96,7 @@ namespace Game {
        *
        * @return     A newly created scene
        */
-      std::shared_ptr<Scene> createSceneFromMap(const unsigned int patch_width_tiles, const unsigned int patch_height_tiles, const Map& map);
+      [[scriptable]] std::shared_ptr<Scene> createSceneFromMap(const unsigned int patch_width_tiles, const unsigned int patch_height_tiles, const Map& map);
 
       /**
        * @brief      Gets a dynamic entity by name.
@@ -108,14 +105,14 @@ namespace Game {
        *
        * @return     The dynamic entity by name.
        */
-      std::shared_ptr<Entity> getDynamicEntityByName(const std::string& name);
+      [[scriptable]] std::shared_ptr<Entity> getDynamicEntityByName(const std::string& name);
 
       /**
        * @brief      Gets all dynamic entity names
        *
        * @return     The dynamic entity names.
        */
-      std::vector<std::string> getDynamicEntityNames() const noexcept;
+      [[scriptable]] std::vector<std::string> getDynamicEntityNames() const noexcept;
 
       /**
        * @brief      Strips path specification from map name
@@ -124,8 +121,7 @@ namespace Game {
        *
        * @return     The stripped map name.
        */
-      std::string getStrippedMapName(const std::string path);
-      //= END SCRIPTABLE
+      [[scriptable]] std::string getStrippedMapName(const std::string path);
   };
 }
 

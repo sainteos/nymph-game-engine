@@ -2,8 +2,8 @@
 #define ANIMATION_TRIGGER_EVENT_H
 #include <glm/glm.hpp>
 #include <easylogging++.h>
-#include "events/event.h"
-#include "events/event_type.h"
+#include "../events/event.h"
+#include "../events/event_type.h"
 
 namespace Game {
   /**

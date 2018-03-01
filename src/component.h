@@ -2,14 +2,10 @@
 #define COMPONENT_H
 
 #include <memory>
-#include <chaiscript/chaiscript.hpp>
 #include "transform.h"
 #include "events/subject.h"
 #include "events/observer.h"
 #include "events/event.h"
-
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Subject Observer
 
 class ComponentManager;
 class Entity;
@@ -17,7 +13,7 @@ class Entity;
 /**
  * @brief      Base Class for all components.
  */
-class Component : public Events::Subject, public Events::Observer, virtual public el::Loggable  {
+class [[scriptable]] Component : public Events::Subject, public Events::Observer, virtual public el::Loggable  {
   protected:
     std::weak_ptr<Entity> entity;
     std::shared_ptr<Transform> transform;
@@ -50,53 +46,50 @@ class Component : public Events::Subject, public Events::Observer, virtual publi
      */
     virtual void onDestroy() = 0;
 
-    //= BEGIN SCRIPTABLE
-
     /**
      * @brief      Sets the transform.
      *
      * @param[in]  transform  The transform
      */
-    void setTransform(std::shared_ptr<Transform> transform);
+    [[scriptable]] void setTransform(std::shared_ptr<Transform> transform);
     /**
      * @brief      Gets the transform.
      *
      * @return     The transform.
      */
-    std::shared_ptr<Transform> getTransform() const noexcept;
+    [[scriptable]] std::shared_ptr<Transform> getTransform() const noexcept;
 
     /**
      * @brief      Sets the component active or inactive.
      *
      * @param[in]  active  True if active
      */
-    void setActive(const bool active) noexcept;
+    [[scriptable]] void setActive(const bool active) noexcept;
     /**
      * @brief      Determines if active.
      *
      * @return     True if active, False otherwise.
      */
-    bool isActive() const noexcept;
+    [[scriptable]] bool isActive() const noexcept;
 
     /**
      * @brief      Gets the identifier.
      *
      * @return     The identifier.
      */
-    unsigned int getId() const noexcept;
+    [[scriptable]] unsigned int getId() const noexcept;
     /**
      * @brief      Returns a string representation of the object.
      *
      * @return     String representation of the object.
      */
-    virtual std::string to_string() const noexcept;
+    [[scriptable]] virtual std::string to_string() const noexcept;
     /**
      * @brief      Returns a string representing the class name
      *
      * @return     The class name
      */
-    virtual std::string className() const noexcept;
-    //= END SCRIPTABLE
+    [[scriptable]] virtual std::string className() const noexcept;
 
     /**
      * @brief      Gets the value for sorting.

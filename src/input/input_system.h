@@ -3,18 +3,16 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <queue>
-#include <glfw3.h>
-#include "events/subject.h"
-#include "events/observer.h"
-#include "events/event.h"
-//= SCRIPTABLE
-//= SCRIPTABLE BASES Subject Observer
+#include <GLFW/glfw3.h>
+#include "../events/subject.h"
+#include "../events/observer.h"
+#include "../events/event.h"
 
 namespace Input {
   /**
    * @brief      Class for input system.
    */
-  class InputSystem : public Events::Subject, public Events::Observer {
+  class [[scriptable]] InputSystem : public Events::Subject, public Events::Observer {
     private:
       static std::map<int, int> keys_to_actions;
       static std::map<int, int> mouse_buttons_to_actions;
@@ -61,9 +59,8 @@ namespace Input {
 
       virtual void onNotifyNow(std::shared_ptr<Events::Event> event) override;
       virtual void handleQueuedEvent(std::shared_ptr<Events::Event> event) override;
-      //= BEGIN SCRIPTABLE
-      void dummy() {}
-      //= END SCRIPTABLE
+      //necessary for getting into chaiscript with no functions
+      [[scriptable]] void dummy() {}
   };
 }
 

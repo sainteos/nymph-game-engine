@@ -17,7 +17,7 @@ Nymph Game Engine is a C++ engine that uses chaiscript for game scripting. It us
 * [easylogging++](https://github.com/muflihun/easyloggingpp)
 * [glm](https://glm.g-truc.net/0.9.8/index.html)
 * [glfw](http://www.glfw.org/)
-* [glew](https://github.com/nigels-com/glew)
+* [glad](https://github.com/Dav1dde/glad)
 * [chaiscript](http://chaiscript.com/)
 
 ## Build

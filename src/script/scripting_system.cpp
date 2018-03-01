@@ -48,9 +48,7 @@ namespace Script {
     try {
       ChaiscriptWrapper::getInstance()->use(name);
     } catch(chaiscript::exception::eval_error e) {
-      std::stringstream error;
-      error << "File: "<<e.filename<<" eval error at ("<<e.start_position.line<<", "<<e.start_position.column<<"): "<<e.reason;
-      LOG(INFO)<<error.str();
+      LOG(INFO)<<e.pretty_print();
     }
 
     auto class_name = filenameToTitleCase(name);
@@ -147,13 +145,7 @@ namespace Script {
         script->onStart();
       }
       catch (const chaiscript::exception::eval_error &ee) {
-        std::stringstream s;
-        s << ee.what();
-        if (ee.call_stack.size() > 0) {
-          s << "during evaluation at (" << ee.call_stack[0].start().line << ", " << ee.call_stack[0].start().column << ")";
-        }
-        s << '\n';
-        LOG(INFO)<<s.str();
+        LOG(INFO)<<ee.pretty_print();
       }
     }
 
@@ -165,9 +157,7 @@ namespace Script {
       try {
         script->onUpdate(delta);
       } catch(chaiscript::exception::eval_error e) {
-        std::stringstream error;
-        error << "Error During on update, File: "<<e.filename<<" eval error at ("<<e.start_position.line<<", "<<e.start_position.column<<"): "<<e.reason;
-        LOG(INFO)<<error.str();
+        LOG(INFO)<<e.pretty_print();
       }
     }
   }
@@ -178,9 +168,7 @@ namespace Script {
       try {
         script->onDestroy();
       } catch(chaiscript::exception::eval_error e) {
-        std::stringstream error;
-        error << "Error During on destroy, File: "<<e.filename<<" eval error at ("<<e.start_position.line<<", "<<e.start_position.column<<"): "<<e.reason;
-        LOG(INFO)<<error.str();
+        LOG(INFO)<<e.pretty_print();
       }
     }
     ChaiscriptWrapper::destroyInstance();

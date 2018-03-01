@@ -1,5 +1,6 @@
 #include "component_manager.h"
 #include "exceptions/no_camera_attached_exception.h"
+#include "graphics/camera.h"
 #include <easylogging++.h>
 #include <typeinfo>
 #include <algorithm>

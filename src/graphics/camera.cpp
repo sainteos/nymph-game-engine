@@ -1,14 +1,14 @@
 #include <easylogging++.h>
 #include <sstream>
 #include <iomanip>
+#include <glm/ext.hpp>
 #include "camera.h"
-#include "glm/ext.hpp"
-#include "graphics/shader_manager.h"
+#include "shader_manager.h"
 #include "game/sprite_move_event.h"
 #include "input/key_down_event.h"
 #include "input/key_repeat_event.h"
 #include "input/key_up_event.h"
-#include "graphics/ui/change_text_event.h"
+#include "ui/change_text_event.h"
 #define GLFW_INCLUDE_GLCOREARB
 #include <glfw3.h>
 #include <chaiscript/chaiscript.hpp>

@@ -1,6 +1,6 @@
 #include <easylogging++.h>
-#include "graphics/ui/quit_button.h"
-#include "set_entity_active_event.h"
+#include "quit_button.h"
+#include "../../set_entity_active_event.h"
 
 namespace Graphics {
   namespace UI {
